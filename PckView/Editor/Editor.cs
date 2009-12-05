@@ -5,14 +5,15 @@ using System.ComponentModel;
 using System.Windows.Forms;
 using XCom;
 using XCom.Interfaces;
+using DSShared;
+using DSShared.Windows;
 
 namespace PckView
 {
 	public class Editor : System.Windows.Forms.Form
 	{
+		private IContainer components;
 		public event EventHandler PalViewClosing;
-
-		private System.ComponentModel.Container components = null;
 		private EditorPanel edit;
 		private PalView palView;
 		private System.Windows.Forms.MainMenu menu;
@@ -54,6 +55,8 @@ namespace PckView
 
 			palView.PaletteIndexChanged+=new PaletteClickDelegate(edit.Editor.SelectColor);
 			size.Scroll+=new EventHandler(sizeScroll);
+
+			RegistryInfo ri = new RegistryInfo(this, "Editor");
 		}
 
 		private void sizeScroll(object sender, EventArgs e)
@@ -73,8 +76,8 @@ namespace PckView
 				palView.BringToFront();
 			else
 			{
-				palView.Left = Right;
-				palView.Top = Top;
+//				palView.Left = Right;
+//				palView.Top = Top;
 				palView.Show();
 			}
 			showPalette.Checked=true;
@@ -129,23 +132,25 @@ namespace PckView
 		/// </summary>
 		private void InitializeComponent()
 		{
-			this.menu = new System.Windows.Forms.MainMenu();
+			this.components = new System.ComponentModel.Container();
+			this.menu = new System.Windows.Forms.MainMenu(this.components);
 			this.paletteMain = new System.Windows.Forms.MenuItem();
 			this.showPalette = new System.Windows.Forms.MenuItem();
 			this.linesItem = new System.Windows.Forms.MenuItem();
 			this.showLines = new System.Windows.Forms.MenuItem();
+			this.SuspendLayout();
 			// 
 			// menu
 			// 
 			this.menu.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
-																				 this.paletteMain,
-																				 this.linesItem});
+            this.paletteMain,
+            this.linesItem});
 			// 
 			// paletteMain
 			// 
 			this.paletteMain.Index = 0;
 			this.paletteMain.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
-																						this.showPalette});
+            this.showPalette});
 			this.paletteMain.Text = "Palette";
 			// 
 			// showPalette
@@ -158,7 +163,7 @@ namespace PckView
 			// 
 			this.linesItem.Index = 1;
 			this.linesItem.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
-																					  this.showLines});
+            this.showLines});
 			this.linesItem.Text = "Lines";
 			// 
 			// showLines
@@ -171,10 +176,14 @@ namespace PckView
 			// 
 			this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
 			this.ClientSize = new System.Drawing.Size(292, 273);
+			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
 			this.Menu = this.menu;
 			this.Name = "Editor";
+			this.ShowInTaskbar = false;
 			this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
 			this.Text = "Editor";
+			this.TopMost = true;
+			this.ResumeLayout(false);
 
 		}
 		#endregion

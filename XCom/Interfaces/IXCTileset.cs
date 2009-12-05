@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using XCom.Interfaces.Base;
+using DSShared;
 
 namespace XCom.Interfaces
 {
@@ -45,11 +46,11 @@ namespace XCom.Interfaces
 				{
 					case "palette":
 						if (rest.ToLower() == "ufo")
-							myPal = Palette.UFOBattle;
+							myPal = XCPalette.UFOBattle;
 						else if (rest.ToLower() == "tftd")
-							myPal = Palette.TFTDBattle;
+							myPal = XCPalette.TFTDBattle;
 						else
-							myPal = Palette.GetPalette(rest);
+							myPal = Palette.LoadedPalettes[rest];
 						break;
 					case "dll":
 						string dllName = rest.Substring(rest.LastIndexOf(@"\") + 1);

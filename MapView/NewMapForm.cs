@@ -91,8 +91,8 @@ namespace MapView
 			// 
 			this.txtRows.Location = new System.Drawing.Point(8, 32);
 			this.txtRows.Name = "txtRows";
+			this.txtRows.Size = new System.Drawing.Size(100, 20);
 			this.txtRows.TabIndex = 0;
-			this.txtRows.Text = "";
 			// 
 			// label1
 			// 
@@ -114,8 +114,8 @@ namespace MapView
 			// 
 			this.txtCols.Location = new System.Drawing.Point(8, 80);
 			this.txtCols.Name = "txtCols";
+			this.txtCols.Size = new System.Drawing.Size(100, 20);
 			this.txtCols.TabIndex = 2;
-			this.txtCols.Text = "";
 			// 
 			// label3
 			// 
@@ -129,8 +129,8 @@ namespace MapView
 			// 
 			this.txtHeight.Location = new System.Drawing.Point(112, 32);
 			this.txtHeight.Name = "txtHeight";
+			this.txtHeight.Size = new System.Drawing.Size(100, 20);
 			this.txtHeight.TabIndex = 4;
-			this.txtHeight.Text = "";
 			// 
 			// label4
 			// 
@@ -146,17 +146,15 @@ namespace MapView
 			this.txtMapName.Name = "txtMapName";
 			this.txtMapName.Size = new System.Drawing.Size(216, 20);
 			this.txtMapName.TabIndex = 6;
-			this.txtMapName.Text = "";
 			// 
 			// groupBox1
 			// 
-			this.groupBox1.Controls.AddRange(new System.Windows.Forms.Control[] {
-																					this.txtRows,
-																					this.label1,
-																					this.txtCols,
-																					this.label2,
-																					this.label3,
-																					this.txtHeight});
+			this.groupBox1.Controls.Add(this.txtRows);
+			this.groupBox1.Controls.Add(this.label1);
+			this.groupBox1.Controls.Add(this.txtCols);
+			this.groupBox1.Controls.Add(this.label2);
+			this.groupBox1.Controls.Add(this.label3);
+			this.groupBox1.Controls.Add(this.txtHeight);
 			this.groupBox1.Location = new System.Drawing.Point(0, 104);
 			this.groupBox1.Name = "groupBox1";
 			this.groupBox1.Size = new System.Drawing.Size(224, 112);
@@ -168,6 +166,7 @@ namespace MapView
 			// 
 			this.btnOk.Location = new System.Drawing.Point(72, 224);
 			this.btnOk.Name = "btnOk";
+			this.btnOk.Size = new System.Drawing.Size(75, 23);
 			this.btnOk.TabIndex = 9;
 			this.btnOk.Text = "Ok";
 			this.btnOk.Click += new System.EventHandler(this.btnOk_Click);
@@ -175,6 +174,7 @@ namespace MapView
 			// label5
 			// 
 			this.label5.ForeColor = System.Drawing.Color.Red;
+			this.label5.Location = new System.Drawing.Point(0, 0);
 			this.label5.Name = "label5";
 			this.label5.Size = new System.Drawing.Size(224, 56);
 			this.label5.TabIndex = 10;
@@ -185,20 +185,21 @@ namespace MapView
 			// 
 			this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
 			this.ClientSize = new System.Drawing.Size(224, 247);
-			this.Controls.AddRange(new System.Windows.Forms.Control[] {
-																		  this.label5,
-																		  this.btnOk,
-																		  this.groupBox1,
-																		  this.label4,
-																		  this.txtMapName});
-			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+			this.Controls.Add(this.label5);
+			this.Controls.Add(this.btnOk);
+			this.Controls.Add(this.groupBox1);
+			this.Controls.Add(this.label4);
+			this.Controls.Add(this.txtMapName);
+			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
 			this.MaximizeBox = false;
 			this.MinimizeBox = false;
 			this.Name = "NewMapForm";
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
 			this.Text = "New Map";
 			this.groupBox1.ResumeLayout(false);
+			this.groupBox1.PerformLayout();
 			this.ResumeLayout(false);
+			this.PerformLayout();
 
 		}
 		#endregion

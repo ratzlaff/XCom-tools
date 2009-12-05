@@ -1,5 +1,7 @@
 using System;
 using XCom.Interfaces;
+using XCom;
+using DSShared;
 
 namespace PckView
 {
@@ -15,7 +17,7 @@ namespace PckView
 
 			fileOptions.Init(false, false, true, false);
 
-			defPal = XCom.Palette.TFTDBattle;
+			defPal = XCPalette.TFTDBattle;
 		}
 
 		//public override int FilterIndex
@@ -24,7 +26,7 @@ namespace PckView
 		//    set { base.FilterIndex = value; FIDX = value; }
 		//}
 
-		protected override XCom.XCImageCollection LoadFileOverride(string directory,string file,int imgWid,int imgHei,XCom.Palette pal)
+		protected override XCom.XCImageCollection LoadFileOverride(string directory,string file,int imgWid,int imgHei,Palette pal)
 		{
 			OpenCustomForm ocf = new OpenCustomForm(directory,file);
 			ocf.TryClick+=new TryDecodeEventHandler(tryIt);

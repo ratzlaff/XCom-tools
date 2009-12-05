@@ -72,7 +72,7 @@ namespace PckView
 			this.drawPanel.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.drawPanel.Location = new System.Drawing.Point(0, 76);
 			this.drawPanel.Name = "drawPanel";
-			this.drawPanel.Size = new System.Drawing.Size(542, 337);
+			this.drawPanel.Size = new System.Drawing.Size(542, 316);
 			this.drawPanel.TabIndex = 6;
 			this.drawPanel.Paint += new System.Windows.Forms.PaintEventHandler(this.drawPanel_Paint);
 			// 
@@ -294,6 +294,7 @@ namespace PckView
 			this.ClientSize = new System.Drawing.Size(542, 413);
 			this.Controls.Add(this.drawPanel);
 			this.Controls.Add(this.panel3);
+			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
 			this.Menu = this.mainMenu1;
 			this.Name = "BmpForm";
 			this.Text = "BmpForm";

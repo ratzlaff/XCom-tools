@@ -3,6 +3,7 @@ using System.Collections;
 using System.IO;
 using System.Drawing;
 using XCom.Interfaces;
+using DSShared;
 
 namespace XCom
 {

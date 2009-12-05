@@ -14,7 +14,7 @@ namespace PckView
 		public ImgProfile() { }
 
 		private int imgWid = 0, imgHei = 0;
-		private IXCImageFile imgType = null;		
+		private IXCImageFile imgType = null;
 		private string desc = "";
 		private string defPal = "";
 		private string single = "";
@@ -28,8 +28,7 @@ namespace PckView
 
 			List<xcProfile> profileList = new List<xcProfile>();
 
-			foreach (string s in vs.KeyValList.Keys)
-			{
+			foreach (string s in vs.KeyValList.Keys) {
 				ImgProfile profile = new ImgProfile();
 				Dictionary<string, DSShared.KeyVal> info = vs.KeyValList[s].SubHash;
 				profile.ext = info["open"].Rest;
@@ -38,13 +37,12 @@ namespace PckView
 				profile.desc = s;
 				profile.defPal = info["palette"].Rest;
 				profile.ext = info["open"].Rest;
-				
-				if(info.ContainsKey("openSingle") && info["openSingle"]!=null)
-					profile.single = info["openSingle"].Rest+info["open"].Rest;
+
+				if (info.ContainsKey("openSingle") && info["openSingle"] != null)
+					profile.single = info["openSingle"].Rest + info["open"].Rest;
 
 				foreach (IXCImageFile ixc in SharedSpace.Instance.GetImageModList())
-					if (ixc.ExplorerDescription == info["codec"].Rest)
-					{
+					if (ixc.ExplorerDescription == info["codec"].Rest) {
 						profile.imgType = ixc;
 						break;
 					}
@@ -107,7 +105,7 @@ namespace PckView
 			bool append = false;
 			if (File.Exists(outFile))
 				append = MessageBox.Show("File exists, append new profile? Clicking 'No' will overwrite the file", "File exists", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes;
-				
+
 			StreamWriter sw = new StreamWriter(outFile, append);
 			sw.WriteLine(Description);
 			sw.WriteLine("{");

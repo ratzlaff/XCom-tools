@@ -89,6 +89,7 @@ namespace MapView
 			// 
 			// label1
 			// 
+			this.label1.Location = new System.Drawing.Point(0, 0);
 			this.label1.Name = "label1";
 			this.label1.Size = new System.Drawing.Size(80, 16);
 			this.label1.TabIndex = 0;
@@ -100,12 +101,12 @@ namespace MapView
 			this.txtTileset.Name = "txtTileset";
 			this.txtTileset.Size = new System.Drawing.Size(160, 20);
 			this.txtTileset.TabIndex = 1;
-			this.txtTileset.Text = "";
 			// 
 			// btnOk
 			// 
 			this.btnOk.Location = new System.Drawing.Point(112, 160);
 			this.btnOk.Name = "btnOk";
+			this.btnOk.Size = new System.Drawing.Size(75, 23);
 			this.btnOk.TabIndex = 2;
 			this.btnOk.Text = "Ok";
 			this.btnOk.Click += new System.EventHandler(this.btnOk_Click);
@@ -116,7 +117,6 @@ namespace MapView
 			this.txtRmp.Name = "txtRmp";
 			this.txtRmp.Size = new System.Drawing.Size(272, 20);
 			this.txtRmp.TabIndex = 4;
-			this.txtRmp.Text = "";
 			// 
 			// label2
 			// 
@@ -132,7 +132,6 @@ namespace MapView
 			this.txtMap.Name = "txtMap";
 			this.txtMap.Size = new System.Drawing.Size(272, 20);
 			this.txtMap.TabIndex = 6;
-			this.txtMap.Text = "";
 			// 
 			// label3
 			// 
@@ -175,7 +174,6 @@ namespace MapView
 			this.txtBlank.Name = "txtBlank";
 			this.txtBlank.Size = new System.Drawing.Size(272, 20);
 			this.txtBlank.TabIndex = 10;
-			this.txtBlank.Text = "";
 			// 
 			// label4
 			// 
@@ -189,26 +187,26 @@ namespace MapView
 			// 
 			this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
 			this.ClientSize = new System.Drawing.Size(306, 191);
-			this.Controls.AddRange(new System.Windows.Forms.Control[] {
-																		  this.btnFindBlank,
-																		  this.txtBlank,
-																		  this.label4,
-																		  this.btnFindRmp,
-																		  this.btnFindMap,
-																		  this.txtMap,
-																		  this.label3,
-																		  this.txtRmp,
-																		  this.label2,
-																		  this.btnOk,
-																		  this.txtTileset,
-																		  this.label1});
-			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+			this.Controls.Add(this.btnFindBlank);
+			this.Controls.Add(this.txtBlank);
+			this.Controls.Add(this.label4);
+			this.Controls.Add(this.btnFindRmp);
+			this.Controls.Add(this.btnFindMap);
+			this.Controls.Add(this.txtMap);
+			this.Controls.Add(this.label3);
+			this.Controls.Add(this.txtRmp);
+			this.Controls.Add(this.label2);
+			this.Controls.Add(this.btnOk);
+			this.Controls.Add(this.txtTileset);
+			this.Controls.Add(this.label1);
+			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
 			this.MaximizeBox = false;
 			this.MinimizeBox = false;
 			this.Name = "TilesetForm";
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
 			this.Text = "TilesetForm";
 			this.ResumeLayout(false);
+			this.PerformLayout();
 
 		}
 		#endregion

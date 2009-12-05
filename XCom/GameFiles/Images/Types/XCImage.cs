@@ -1,5 +1,6 @@
 using System;
 using System.Drawing;
+using DSShared;
 
 namespace XCom.Interfaces
 {
@@ -9,6 +10,8 @@ namespace XCom.Interfaces
 		protected int fileNum;
 		protected Bitmap image;
 		protected Bitmap gray;
+		protected string mName = "";
+
 		private Palette palette;
 		private byte transparent=0xFE;
 
@@ -20,7 +23,7 @@ namespace XCom.Interfaces
 			palette=pal;
 
 			if(pal!=null)
-				image = Bmp.MakeBitmap8(width,height,entries,pal.Colors);
+				image = DSShared.Bmp.MakeBitmap8(width,height,entries,pal.Colors);
 		}
 
 		public XCImage():this(new byte[]{},0,0,null,-1)
@@ -37,7 +40,9 @@ namespace XCom.Interfaces
 		public byte[] Bytes{get{return idx;}}
 		public int FileNum{get{return fileNum;}set{fileNum=value;}}
 		public Bitmap Image{get{return image;}}
-		public Palette Palette{get{return palette;}
+		public Palette Palette
+		{
+			get{return palette;}
 			set
 			{
 				palette=value;
@@ -48,6 +53,13 @@ namespace XCom.Interfaces
 		}
 		public virtual byte TransparentIndex{get{return transparent;}}
 		public Bitmap Gray { get { return gray; } }
+
+		public Color GetColor(int x, int y)
+		{
+			if (image.Width * y + x > idx.Length)
+				return image.GetPixel(x, y);
+			return palette[idx[image.Width * y + x]];
+		}
 
 		public object Clone()
 		{
@@ -67,7 +79,12 @@ namespace XCom.Interfaces
 
 		public virtual void Hq2x()
 		{
-			image = Bmp.Hq2x(image);
+			image = DSShared.Bmp.Hq2x(image);
+		}
+
+		public override string ToString()
+		{
+			return mName;
 		}
 	}
 }

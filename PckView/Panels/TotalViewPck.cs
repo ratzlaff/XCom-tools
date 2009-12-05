@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Collections;
 using XCom;
 using XCom.Interfaces;
+using DSShared;
 
 namespace PckView
 {
@@ -15,7 +16,7 @@ namespace PckView
 
 		private System.Windows.Forms.VScrollBar scroll;
 		private StatusBar statusBar;
-		private StatusBarPanel statusOverTile, statusBPP;
+		private StatusBarPanel statusOverTile, statusBPP, statusClickName;
 		private int click, move;
 
 		public event PckViewMouseClicked ViewClicked;
@@ -28,8 +29,13 @@ namespace PckView
 			scroll = new VScrollBar();
 
 			statusBar = new StatusBar();
+			statusBar.SizingGrip = false;
+			
 			statusOverTile = new StatusBarPanel();
-			statusOverTile.AutoSize = StatusBarPanelAutoSize.Spring;
+			statusOverTile.Width = 150;
+			statusOverTile.AutoSize = StatusBarPanelAutoSize.None;
+			statusOverTile.Alignment = HorizontalAlignment.Left;
+
 			statusBar.Panels.Add(statusOverTile);
 			statusBar.ShowPanels = true;
 			statusBar.Dock = DockStyle.Bottom;
@@ -39,6 +45,12 @@ namespace PckView
 			statusBPP.Width = 50;
 			statusBPP.Alignment = HorizontalAlignment.Right;
 			statusBar.Panels.Add(statusBPP);
+
+			statusClickName = new StatusBarPanel();
+			statusClickName.AutoSize = StatusBarPanelAutoSize.Spring;
+			statusClickName.Width = 150;
+			statusClickName.Alignment = HorizontalAlignment.Right;
+			statusBar.Panels.Add(statusClickName);
 
 			scroll.Dock = System.Windows.Forms.DockStyle.Right;
 			scroll.Maximum = 5000;
@@ -55,15 +67,11 @@ namespace PckView
 			this.Controls.AddRange(new System.Windows.Forms.Control[] {
 																		  statusBar,
 																		  scroll,view});
-
 			view.SizeChanged += new EventHandler(viewSizeChange);
 			OnResize(null);
 		}
 
-		public ViewPck View
-		{
-			get { return view; }
-		}
+		public ViewPck View { get { return view; } }
 
 		public static TotalViewPck Instance
 		{
@@ -83,18 +91,8 @@ namespace PckView
 
 		public Palette Pal
 		{
-			get
-			{
-				return view != null ? view.Pal : null;
-			}
-			set
-			{
-				if (view != null)
-				{
-					view.Pal = value;
-					Console.WriteLine("Pal set: " + value.ToString());
-				}
-			}
+			get { return view != null ? view.Pal : null; }
+			set { if (view != null) view.Pal = value; }
 		}
 
 		protected override void OnResize(EventArgs e)
@@ -173,6 +171,9 @@ namespace PckView
 		{
 			click = x;
 			statusOverTile.Text = "Selected: " + click + " Over: " + move;
+
+			if (click < view.Collection.Count)
+				statusClickName.Text = view.Collection[click].ToString()+"  ";
 		}
 
 		private void viewMoved(int x)

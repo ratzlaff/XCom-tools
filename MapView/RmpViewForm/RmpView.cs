@@ -218,7 +218,7 @@ namespace MapView.RmpViewForm
 
 			cbType.SelectedItem = currEntry.UType;
 
-			if (map.Tiles[0][0].Palette == Palette.UFOBattle)
+			if (map.Tiles[0][0].Palette == XCPalette.UFOBattle)
 				cbRank1.SelectedItem = RmpFile.UnitRankUFO[(byte)currEntry.URank1];
 			else
 				cbRank1.SelectedItem = RmpFile.UnitRankTFTD[(byte)currEntry.URank1];
@@ -289,7 +289,7 @@ namespace MapView.RmpViewForm
 					fillGUI();
 					cbRank1.Items.Clear();
 
-					if (map.Tiles[0][0].Palette == Palette.UFOBattle)
+					if (map.Tiles[0][0].Palette == XCPalette.UFOBattle)
 						cbRank1.Items.AddRange(RmpFile.UnitRankUFO);
 					else
 						cbRank1.Items.AddRange(RmpFile.UnitRankTFTD);

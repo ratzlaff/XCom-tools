@@ -9,6 +9,7 @@ using XCom;
 using XCom.Interfaces;
 using Microsoft.Win32;
 using XCom.Interfaces.Base;
+using DSShared;
 
 namespace MapView
 {
@@ -51,10 +52,7 @@ namespace MapView
 		private System.Windows.Forms.Button btnDown;
 		private System.Windows.Forms.Button btnUp;
 		private System.Windows.Forms.Button btnClearRegistry;
-		/// <summary>
-		/// Required designer variable.
-		/// </summary>
-		private System.ComponentModel.Container components = null;
+		private IContainer components;
 		private System.Windows.Forms.TextBox txtPalettes;
 		private System.Windows.Forms.Label label10;
 		private System.Windows.Forms.Button btnFindMap;
@@ -106,8 +104,8 @@ namespace MapView
 
 			populateTree();
 
-			cbPalette.Items.Add(Palette.TFTDBattle);
-			cbPalette.Items.Add(Palette.UFOBattle);
+			cbPalette.Items.Add(XCPalette.TFTDBattle);
+			cbPalette.Items.Add(XCPalette.UFOBattle);
 		}
 
 		private void populateTree()
@@ -200,7 +198,8 @@ namespace MapView
 		/// </summary>
 		private void InitializeComponent()
 		{
-			this.mainMenu = new System.Windows.Forms.MainMenu();
+			this.components = new System.ComponentModel.Container();
+			this.mainMenu = new System.Windows.Forms.MainMenu(this.components);
 			this.miFile = new System.Windows.Forms.MenuItem();
 			this.menuItem1 = new System.Windows.Forms.MenuItem();
 			this.closeItem = new System.Windows.Forms.MenuItem();
@@ -222,6 +221,8 @@ namespace MapView
 			this.label1 = new System.Windows.Forms.Label();
 			this.tabMaps = new System.Windows.Forms.TabPage();
 			this.grpMap = new System.Windows.Forms.GroupBox();
+			this.btnPaste = new System.Windows.Forms.Button();
+			this.btnCopy = new System.Windows.Forms.Button();
 			this.btnUp = new System.Windows.Forms.Button();
 			this.btnDown = new System.Windows.Forms.Button();
 			this.button2 = new System.Windows.Forms.Button();
@@ -231,6 +232,8 @@ namespace MapView
 			this.listMapImages = new System.Windows.Forms.ListBox();
 			this.label8 = new System.Windows.Forms.Label();
 			this.grpMapGroup = new System.Windows.Forms.GroupBox();
+			this.label11 = new System.Windows.Forms.Label();
+			this.txtBlank = new System.Windows.Forms.TextBox();
 			this.cbPalette = new System.Windows.Forms.ComboBox();
 			this.label7 = new System.Windows.Forms.Label();
 			this.label6 = new System.Windows.Forms.Label();
@@ -260,10 +263,6 @@ namespace MapView
 			this.addImageset = new System.Windows.Forms.MenuItem();
 			this.delImageset = new System.Windows.Forms.MenuItem();
 			this.openFile = new System.Windows.Forms.OpenFileDialog();
-			this.label11 = new System.Windows.Forms.Label();
-			this.txtBlank = new System.Windows.Forms.TextBox();
-			this.btnCopy = new System.Windows.Forms.Button();
-			this.btnPaste = new System.Windows.Forms.Button();
 			this.tabs.SuspendLayout();
 			this.tabPaths.SuspendLayout();
 			this.tabMaps.SuspendLayout();
@@ -275,14 +274,14 @@ namespace MapView
 			// mainMenu
 			// 
 			this.mainMenu.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
-																					 this.miFile});
+            this.miFile});
 			// 
 			// miFile
 			// 
 			this.miFile.Index = 0;
 			this.miFile.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
-																				   this.menuItem1,
-																				   this.closeItem});
+            this.menuItem1,
+            this.closeItem});
 			this.miFile.Text = "File";
 			// 
 			// menuItem1
@@ -298,36 +297,35 @@ namespace MapView
 			// 
 			// tabs
 			// 
-			this.tabs.Controls.AddRange(new System.Windows.Forms.Control[] {
-																			   this.tabPaths,
-																			   this.tabMaps,
-																			   this.tabImages});
+			this.tabs.Controls.Add(this.tabPaths);
+			this.tabs.Controls.Add(this.tabMaps);
+			this.tabs.Controls.Add(this.tabImages);
 			this.tabs.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.tabs.Location = new System.Drawing.Point(0, 0);
 			this.tabs.Name = "tabs";
 			this.tabs.SelectedIndex = 0;
-			this.tabs.Size = new System.Drawing.Size(432, 427);
+			this.tabs.Size = new System.Drawing.Size(432, 406);
 			this.tabs.TabIndex = 0;
 			// 
 			// tabPaths
 			// 
-			this.tabPaths.Controls.AddRange(new System.Windows.Forms.Control[] {
-																				   this.btnSave,
-																				   this.runInstaller,
-																				   this.btnFindImage,
-																				   this.btnFindMap,
-																				   this.txtPalettes,
-																				   this.label10,
-																				   this.btnClearRegistry,
-																				   this.lblReminder,
-																				   this.txtCursor,
-																				   this.txtImages,
-																				   this.txtMap,
-																				   this.label3,
-																				   this.label2,
-																				   this.label1});
+			this.tabPaths.Controls.Add(this.btnSave);
+			this.tabPaths.Controls.Add(this.runInstaller);
+			this.tabPaths.Controls.Add(this.btnFindImage);
+			this.tabPaths.Controls.Add(this.btnFindMap);
+			this.tabPaths.Controls.Add(this.txtPalettes);
+			this.tabPaths.Controls.Add(this.label10);
+			this.tabPaths.Controls.Add(this.btnClearRegistry);
+			this.tabPaths.Controls.Add(this.lblReminder);
+			this.tabPaths.Controls.Add(this.txtCursor);
+			this.tabPaths.Controls.Add(this.txtImages);
+			this.tabPaths.Controls.Add(this.txtMap);
+			this.tabPaths.Controls.Add(this.label3);
+			this.tabPaths.Controls.Add(this.label2);
+			this.tabPaths.Controls.Add(this.label1);
 			this.tabPaths.Location = new System.Drawing.Point(4, 22);
 			this.tabPaths.Name = "tabPaths";
-			this.tabPaths.Size = new System.Drawing.Size(424, 329);
+			this.tabPaths.Size = new System.Drawing.Size(424, 380);
 			this.tabPaths.TabIndex = 0;
 			this.tabPaths.Text = "Paths";
 			// 
@@ -351,7 +349,7 @@ namespace MapView
 			// 
 			// btnFindImage
 			// 
-			this.btnFindImage.Anchor = (System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right);
+			this.btnFindImage.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.btnFindImage.Location = new System.Drawing.Point(376, 32);
 			this.btnFindImage.Name = "btnFindImage";
 			this.btnFindImage.Size = new System.Drawing.Size(48, 23);
@@ -361,7 +359,7 @@ namespace MapView
 			// 
 			// btnFindMap
 			// 
-			this.btnFindMap.Anchor = (System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right);
+			this.btnFindMap.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.btnFindMap.Location = new System.Drawing.Point(376, 8);
 			this.btnFindMap.Name = "btnFindMap";
 			this.btnFindMap.Size = new System.Drawing.Size(48, 23);
@@ -371,13 +369,12 @@ namespace MapView
 			// 
 			// txtPalettes
 			// 
-			this.txtPalettes.Anchor = ((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-				| System.Windows.Forms.AnchorStyles.Right);
+			this.txtPalettes.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+						| System.Windows.Forms.AnchorStyles.Right)));
 			this.txtPalettes.Location = new System.Drawing.Point(64, 80);
 			this.txtPalettes.Name = "txtPalettes";
 			this.txtPalettes.Size = new System.Drawing.Size(352, 20);
 			this.txtPalettes.TabIndex = 9;
-			this.txtPalettes.Text = "";
 			this.txtPalettes.Visible = false;
 			// 
 			// label10
@@ -408,33 +405,30 @@ namespace MapView
 			// 
 			// txtCursor
 			// 
-			this.txtCursor.Anchor = ((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-				| System.Windows.Forms.AnchorStyles.Right);
+			this.txtCursor.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+						| System.Windows.Forms.AnchorStyles.Right)));
 			this.txtCursor.Location = new System.Drawing.Point(64, 56);
 			this.txtCursor.Name = "txtCursor";
 			this.txtCursor.Size = new System.Drawing.Size(352, 20);
 			this.txtCursor.TabIndex = 5;
-			this.txtCursor.Text = "";
 			// 
 			// txtImages
 			// 
-			this.txtImages.Anchor = ((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-				| System.Windows.Forms.AnchorStyles.Right);
+			this.txtImages.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+						| System.Windows.Forms.AnchorStyles.Right)));
 			this.txtImages.Location = new System.Drawing.Point(64, 32);
 			this.txtImages.Name = "txtImages";
 			this.txtImages.Size = new System.Drawing.Size(312, 20);
 			this.txtImages.TabIndex = 4;
-			this.txtImages.Text = "";
 			// 
 			// txtMap
 			// 
-			this.txtMap.Anchor = ((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-				| System.Windows.Forms.AnchorStyles.Right);
+			this.txtMap.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+						| System.Windows.Forms.AnchorStyles.Right)));
 			this.txtMap.Location = new System.Drawing.Point(64, 8);
 			this.txtMap.Name = "txtMap";
 			this.txtMap.Size = new System.Drawing.Size(312, 20);
 			this.txtMap.TabIndex = 3;
-			this.txtMap.Text = "";
 			// 
 			// label3
 			// 
@@ -462,12 +456,11 @@ namespace MapView
 			// 
 			// tabMaps
 			// 
-			this.tabMaps.Controls.AddRange(new System.Windows.Forms.Control[] {
-																				  this.grpMap,
-																				  this.grpMapGroup,
-																				  this.treeMaps,
-																				  this.btnSaveMapEdit,
-																				  this.btnEditTree});
+			this.tabMaps.Controls.Add(this.grpMap);
+			this.tabMaps.Controls.Add(this.grpMapGroup);
+			this.tabMaps.Controls.Add(this.treeMaps);
+			this.tabMaps.Controls.Add(this.btnSaveMapEdit);
+			this.tabMaps.Controls.Add(this.btnEditTree);
 			this.tabMaps.Location = new System.Drawing.Point(4, 22);
 			this.tabMaps.Name = "tabMaps";
 			this.tabMaps.Size = new System.Drawing.Size(424, 401);
@@ -476,19 +469,18 @@ namespace MapView
 			// 
 			// grpMap
 			// 
-			this.grpMap.Anchor = ((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-				| System.Windows.Forms.AnchorStyles.Left);
-			this.grpMap.Controls.AddRange(new System.Windows.Forms.Control[] {
-																				 this.btnPaste,
-																				 this.btnCopy,
-																				 this.btnUp,
-																				 this.btnDown,
-																				 this.button2,
-																				 this.btnMoveLeft,
-																				 this.listAllImages,
-																				 this.label9,
-																				 this.listMapImages,
-																				 this.label8});
+			this.grpMap.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+						| System.Windows.Forms.AnchorStyles.Left)));
+			this.grpMap.Controls.Add(this.btnPaste);
+			this.grpMap.Controls.Add(this.btnCopy);
+			this.grpMap.Controls.Add(this.btnUp);
+			this.grpMap.Controls.Add(this.btnDown);
+			this.grpMap.Controls.Add(this.button2);
+			this.grpMap.Controls.Add(this.btnMoveLeft);
+			this.grpMap.Controls.Add(this.listAllImages);
+			this.grpMap.Controls.Add(this.label9);
+			this.grpMap.Controls.Add(this.listMapImages);
+			this.grpMap.Controls.Add(this.label8);
 			this.grpMap.Enabled = false;
 			this.grpMap.Location = new System.Drawing.Point(152, 184);
 			this.grpMap.Name = "grpMap";
@@ -496,6 +488,24 @@ namespace MapView
 			this.grpMap.TabIndex = 2;
 			this.grpMap.TabStop = false;
 			this.grpMap.Text = "Map File";
+			// 
+			// btnPaste
+			// 
+			this.btnPaste.Location = new System.Drawing.Point(104, 176);
+			this.btnPaste.Name = "btnPaste";
+			this.btnPaste.Size = new System.Drawing.Size(56, 23);
+			this.btnPaste.TabIndex = 9;
+			this.btnPaste.Text = "Paste";
+			this.btnPaste.Click += new System.EventHandler(this.btnPaste_Click);
+			// 
+			// btnCopy
+			// 
+			this.btnCopy.Location = new System.Drawing.Point(104, 152);
+			this.btnCopy.Name = "btnCopy";
+			this.btnCopy.Size = new System.Drawing.Size(56, 23);
+			this.btnCopy.TabIndex = 8;
+			this.btnCopy.Text = "Copy";
+			this.btnCopy.Click += new System.EventHandler(this.btnCopy_Click);
 			// 
 			// btnUp
 			// 
@@ -535,8 +545,8 @@ namespace MapView
 			// 
 			// listAllImages
 			// 
-			this.listAllImages.Anchor = ((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-				| System.Windows.Forms.AnchorStyles.Left);
+			this.listAllImages.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+						| System.Windows.Forms.AnchorStyles.Left)));
 			this.listAllImages.Location = new System.Drawing.Point(168, 32);
 			this.listAllImages.Name = "listAllImages";
 			this.listAllImages.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
@@ -553,8 +563,8 @@ namespace MapView
 			// 
 			// listMapImages
 			// 
-			this.listMapImages.Anchor = ((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-				| System.Windows.Forms.AnchorStyles.Left);
+			this.listMapImages.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+						| System.Windows.Forms.AnchorStyles.Left)));
 			this.listMapImages.Location = new System.Drawing.Point(8, 32);
 			this.listMapImages.Name = "listMapImages";
 			this.listMapImages.Size = new System.Drawing.Size(88, 173);
@@ -570,15 +580,14 @@ namespace MapView
 			// 
 			// grpMapGroup
 			// 
-			this.grpMapGroup.Controls.AddRange(new System.Windows.Forms.Control[] {
-																					  this.label11,
-																					  this.txtBlank,
-																					  this.cbPalette,
-																					  this.label7,
-																					  this.label6,
-																					  this.label5,
-																					  this.txtRmp,
-																					  this.txtRoot});
+			this.grpMapGroup.Controls.Add(this.label11);
+			this.grpMapGroup.Controls.Add(this.txtBlank);
+			this.grpMapGroup.Controls.Add(this.cbPalette);
+			this.grpMapGroup.Controls.Add(this.label7);
+			this.grpMapGroup.Controls.Add(this.label6);
+			this.grpMapGroup.Controls.Add(this.label5);
+			this.grpMapGroup.Controls.Add(this.txtRmp);
+			this.grpMapGroup.Controls.Add(this.txtRoot);
 			this.grpMapGroup.Enabled = false;
 			this.grpMapGroup.Location = new System.Drawing.Point(152, 0);
 			this.grpMapGroup.Name = "grpMapGroup";
@@ -586,6 +595,23 @@ namespace MapView
 			this.grpMapGroup.TabIndex = 1;
 			this.grpMapGroup.TabStop = false;
 			this.grpMapGroup.Text = "Map Group";
+			// 
+			// label11
+			// 
+			this.label11.Location = new System.Drawing.Point(8, 96);
+			this.label11.Name = "label11";
+			this.label11.Size = new System.Drawing.Size(100, 16);
+			this.label11.TabIndex = 7;
+			this.label11.Text = "Blanks Path";
+			// 
+			// txtBlank
+			// 
+			this.txtBlank.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+						| System.Windows.Forms.AnchorStyles.Right)));
+			this.txtBlank.Location = new System.Drawing.Point(8, 112);
+			this.txtBlank.Name = "txtBlank";
+			this.txtBlank.Size = new System.Drawing.Size(256, 20);
+			this.txtBlank.TabIndex = 6;
 			// 
 			// cbPalette
 			// 
@@ -622,37 +648,33 @@ namespace MapView
 			// 
 			// txtRmp
 			// 
-			this.txtRmp.Anchor = ((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-				| System.Windows.Forms.AnchorStyles.Right);
+			this.txtRmp.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+						| System.Windows.Forms.AnchorStyles.Right)));
 			this.txtRmp.Location = new System.Drawing.Point(8, 72);
 			this.txtRmp.Name = "txtRmp";
 			this.txtRmp.Size = new System.Drawing.Size(256, 20);
 			this.txtRmp.TabIndex = 1;
-			this.txtRmp.Text = "";
-			this.txtRmp.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtRmp_KeyPress);
 			this.txtRmp.Leave += new System.EventHandler(this.txtRmp_Leave);
+			this.txtRmp.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtRmp_KeyPress);
 			// 
 			// txtRoot
 			// 
-			this.txtRoot.Anchor = ((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-				| System.Windows.Forms.AnchorStyles.Right);
+			this.txtRoot.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+						| System.Windows.Forms.AnchorStyles.Right)));
 			this.txtRoot.Location = new System.Drawing.Point(8, 32);
 			this.txtRoot.Name = "txtRoot";
 			this.txtRoot.Size = new System.Drawing.Size(256, 20);
 			this.txtRoot.TabIndex = 0;
-			this.txtRoot.Text = "";
-			this.txtRoot.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtRoot_KeyPress);
 			this.txtRoot.Leave += new System.EventHandler(this.txtRoot_Leave);
+			this.txtRoot.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtRoot_KeyPress);
 			// 
 			// treeMaps
 			// 
-			this.treeMaps.Anchor = ((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-				| System.Windows.Forms.AnchorStyles.Left);
+			this.treeMaps.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+						| System.Windows.Forms.AnchorStyles.Left)));
 			this.treeMaps.ContextMenu = this.cmTree;
-			this.treeMaps.ImageIndex = -1;
 			this.treeMaps.Location = new System.Drawing.Point(0, 24);
 			this.treeMaps.Name = "treeMaps";
-			this.treeMaps.SelectedImageIndex = -1;
 			this.treeMaps.Size = new System.Drawing.Size(152, 376);
 			this.treeMaps.TabIndex = 0;
 			this.treeMaps.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeMaps_AfterSelect);
@@ -660,12 +682,12 @@ namespace MapView
 			// cmTree
 			// 
 			this.cmTree.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
-																				   this.newGroup,
-																				   this.delGroup,
-																				   this.addSub,
-																				   this.delSub,
-																				   this.addMap,
-																				   this.delMap});
+            this.newGroup,
+            this.delGroup,
+            this.addSub,
+            this.delSub,
+            this.addMap,
+            this.delMap});
 			// 
 			// newGroup
 			// 
@@ -695,8 +717,8 @@ namespace MapView
 			// 
 			this.addMap.Index = 4;
 			this.addMap.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
-																				   this.addNewMap,
-																				   this.addExistingMap});
+            this.addNewMap,
+            this.addExistingMap});
 			this.addMap.Text = "Add map";
 			// 
 			// addNewMap
@@ -719,6 +741,7 @@ namespace MapView
 			// 
 			// btnSaveMapEdit
 			// 
+			this.btnSaveMapEdit.Location = new System.Drawing.Point(0, 0);
 			this.btnSaveMapEdit.Name = "btnSaveMapEdit";
 			this.btnSaveMapEdit.Size = new System.Drawing.Size(48, 23);
 			this.btnSaveMapEdit.TabIndex = 8;
@@ -736,16 +759,15 @@ namespace MapView
 			// 
 			// tabImages
 			// 
-			this.tabImages.Controls.AddRange(new System.Windows.Forms.Control[] {
-																					this.lblImage2,
-																					this.txtImage2,
-																					this.btnSaveImages,
-																					this.label4,
-																					this.txtImagePath,
-																					this.lstImages});
+			this.tabImages.Controls.Add(this.lblImage2);
+			this.tabImages.Controls.Add(this.txtImage2);
+			this.tabImages.Controls.Add(this.btnSaveImages);
+			this.tabImages.Controls.Add(this.label4);
+			this.tabImages.Controls.Add(this.txtImagePath);
+			this.tabImages.Controls.Add(this.lstImages);
 			this.tabImages.Location = new System.Drawing.Point(4, 22);
 			this.tabImages.Name = "tabImages";
-			this.tabImages.Size = new System.Drawing.Size(424, 329);
+			this.tabImages.Size = new System.Drawing.Size(424, 401);
 			this.tabImages.TabIndex = 2;
 			this.tabImages.Text = "Image Files";
 			// 
@@ -759,19 +781,19 @@ namespace MapView
 			// 
 			// txtImage2
 			// 
-			this.txtImage2.Anchor = ((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-				| System.Windows.Forms.AnchorStyles.Right);
+			this.txtImage2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+						| System.Windows.Forms.AnchorStyles.Right)));
 			this.txtImage2.Location = new System.Drawing.Point(120, 224);
 			this.txtImage2.Name = "txtImage2";
 			this.txtImage2.ReadOnly = true;
 			this.txtImage2.Size = new System.Drawing.Size(272, 20);
 			this.txtImage2.TabIndex = 12;
-			this.txtImage2.Text = "";
 			// 
 			// btnSaveImages
 			// 
 			this.btnSaveImages.Location = new System.Drawing.Point(120, 248);
 			this.btnSaveImages.Name = "btnSaveImages";
+			this.btnSaveImages.Size = new System.Drawing.Size(75, 23);
 			this.btnSaveImages.TabIndex = 3;
 			this.btnSaveImages.Text = "Save";
 			this.btnSaveImages.Click += new System.EventHandler(this.btnSaveImages_Click);
@@ -786,30 +808,30 @@ namespace MapView
 			// 
 			// txtImagePath
 			// 
-			this.txtImagePath.Anchor = ((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-				| System.Windows.Forms.AnchorStyles.Right);
+			this.txtImagePath.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+						| System.Windows.Forms.AnchorStyles.Right)));
 			this.txtImagePath.Location = new System.Drawing.Point(120, 112);
 			this.txtImagePath.Name = "txtImagePath";
 			this.txtImagePath.ReadOnly = true;
 			this.txtImagePath.Size = new System.Drawing.Size(296, 20);
 			this.txtImagePath.TabIndex = 1;
-			this.txtImagePath.Text = "";
 			this.txtImagePath.TextChanged += new System.EventHandler(this.txtImagePath_TextChanged);
 			// 
 			// lstImages
 			// 
 			this.lstImages.ContextMenu = this.imagesCM;
 			this.lstImages.Dock = System.Windows.Forms.DockStyle.Left;
+			this.lstImages.Location = new System.Drawing.Point(0, 0);
 			this.lstImages.Name = "lstImages";
-			this.lstImages.Size = new System.Drawing.Size(120, 329);
+			this.lstImages.Size = new System.Drawing.Size(120, 394);
 			this.lstImages.TabIndex = 0;
 			this.lstImages.SelectedIndexChanged += new System.EventHandler(this.lstImages_SelectedIndexChanged);
 			// 
 			// imagesCM
 			// 
 			this.imagesCM.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
-																					 this.addImageset,
-																					 this.delImageset});
+            this.addImageset,
+            this.delImageset});
 			// 
 			// addImageset
 			// 
@@ -827,49 +849,12 @@ namespace MapView
 			// 
 			this.openFile.Filter = "map files|*.map|dat files|*.dat|Pck files|*.pck|All files|*.*";
 			// 
-			// label11
-			// 
-			this.label11.Location = new System.Drawing.Point(8, 96);
-			this.label11.Name = "label11";
-			this.label11.Size = new System.Drawing.Size(100, 16);
-			this.label11.TabIndex = 7;
-			this.label11.Text = "Blanks Path";
-			// 
-			// txtBlank
-			// 
-			this.txtBlank.Anchor = ((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-				| System.Windows.Forms.AnchorStyles.Right);
-			this.txtBlank.Location = new System.Drawing.Point(8, 112);
-			this.txtBlank.Name = "txtBlank";
-			this.txtBlank.Size = new System.Drawing.Size(256, 20);
-			this.txtBlank.TabIndex = 6;
-			this.txtBlank.Text = "";
-			// 
-			// btnCopy
-			// 
-			this.btnCopy.Location = new System.Drawing.Point(104, 152);
-			this.btnCopy.Name = "btnCopy";
-			this.btnCopy.Size = new System.Drawing.Size(56, 23);
-			this.btnCopy.TabIndex = 8;
-			this.btnCopy.Text = "Copy";
-			this.btnCopy.Click += new System.EventHandler(this.btnCopy_Click);
-			// 
-			// btnPaste
-			// 
-			this.btnPaste.Location = new System.Drawing.Point(104, 176);
-			this.btnPaste.Name = "btnPaste";
-			this.btnPaste.Size = new System.Drawing.Size(56, 23);
-			this.btnPaste.TabIndex = 9;
-			this.btnPaste.Text = "Paste";
-			this.btnPaste.Click += new System.EventHandler(this.btnPaste_Click);
-			// 
 			// PathsEditor
 			// 
 			this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
 			this.ClientSize = new System.Drawing.Size(432, 427);
-			this.Controls.AddRange(new System.Windows.Forms.Control[] {
-																		  this.tabs});
-			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+			this.Controls.Add(this.tabs);
+			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
 			this.MaximizeBox = false;
 			this.Menu = this.mainMenu;
 			this.MinimizeBox = false;
@@ -878,10 +863,13 @@ namespace MapView
 			this.Text = "PathsEditor";
 			this.tabs.ResumeLayout(false);
 			this.tabPaths.ResumeLayout(false);
+			this.tabPaths.PerformLayout();
 			this.tabMaps.ResumeLayout(false);
 			this.grpMap.ResumeLayout(false);
 			this.grpMapGroup.ResumeLayout(false);
+			this.grpMapGroup.PerformLayout();
 			this.tabImages.ResumeLayout(false);
+			this.tabImages.PerformLayout();
 			this.ResumeLayout(false);
 
 		}

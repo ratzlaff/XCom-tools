@@ -2,6 +2,7 @@ using System;
 using XCom;
 using XCom.Interfaces;
 using System.Collections.Generic;
+using DSShared;
 
 namespace PckView
 {
@@ -49,11 +50,13 @@ namespace PckView
 
 			try
 			{
-				defPal = XCom.SharedSpace.Instance.GetPaletteTable()[profile.Palette];
+				defPal = Palette.LoadedPalettes[profile.Palette];
+				if (defPal == null)
+					defPal = XCPalette.TFTDBattle;
 			}
 			catch
 			{
-				defPal = XCom.Palette.TFTDBattle;
+				defPal = XCPalette.TFTDBattle;
 			}
 		}
 

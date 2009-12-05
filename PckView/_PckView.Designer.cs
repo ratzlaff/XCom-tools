@@ -32,6 +32,7 @@ namespace PckView
 			this.mainMenu = new System.Windows.Forms.MainMenu(this.components);
 			this.menuItem1 = new System.Windows.Forms.MenuItem();
 			this.openItem = new System.Windows.Forms.MenuItem();
+			this.miCompare = new System.Windows.Forms.MenuItem();
 			this.saveitem = new System.Windows.Forms.MenuItem();
 			this.miSaveDir = new System.Windows.Forms.MenuItem();
 			this.miHq2x = new System.Windows.Forms.MenuItem();
@@ -49,7 +50,6 @@ namespace PckView
 			this.openFile = new System.Windows.Forms.OpenFileDialog();
 			this.saveBmpSingle = new System.Windows.Forms.SaveFileDialog();
 			this.openBMP = new System.Windows.Forms.OpenFileDialog();
-			this.miCompare = new System.Windows.Forms.MenuItem();
 			this.SuspendLayout();
 			// 
 			// mainMenu
@@ -78,6 +78,12 @@ namespace PckView
 			this.openItem.Index = 0;
 			this.openItem.Text = "&Open";
 			this.openItem.Click += new System.EventHandler(this.openItem_Click);
+			// 
+			// miCompare
+			// 
+			this.miCompare.Index = 1;
+			this.miCompare.Text = "Compare";
+			this.miCompare.Click += new System.EventHandler(this.miCompare_Click);
 			// 
 			// saveitem
 			// 
@@ -133,6 +139,7 @@ namespace PckView
 			// 
 			// transOn
 			// 
+			this.transOn.Checked = true;
 			this.transOn.Index = 0;
 			this.transOn.Text = "On";
 			this.transOn.Click += new System.EventHandler(this.transOn_Click);
@@ -180,16 +187,10 @@ namespace PckView
 			// 
 			this.openBMP.Filter = "8-bit 32x40 bmp|*.bmp";
 			// 
-			// miCompare
-			// 
-			this.miCompare.Index = 1;
-			this.miCompare.Text = "Compare";
-			this.miCompare.Click += new System.EventHandler(this.miCompare_Click);
-			// 
 			// PckViewForm
 			// 
 			this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
-			this.ClientSize = new System.Drawing.Size(288, 287);
+			this.ClientSize = new System.Drawing.Size(288, 267);
 			this.Location = new System.Drawing.Point(50, 50);
 			this.Menu = this.mainMenu;
 			this.Name = "PckViewForm";

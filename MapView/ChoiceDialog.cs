@@ -61,6 +61,7 @@ namespace MapView
 			// txt
 			// 
 			this.txt.Dock = System.Windows.Forms.DockStyle.Top;
+			this.txt.Location = new System.Drawing.Point(0, 0);
 			this.txt.Name = "txt";
 			this.txt.Size = new System.Drawing.Size(292, 48);
 			this.txt.TabIndex = 0;
@@ -69,6 +70,7 @@ namespace MapView
 			// 
 			this.overwrite.Location = new System.Drawing.Point(29, 48);
 			this.overwrite.Name = "overwrite";
+			this.overwrite.Size = new System.Drawing.Size(75, 23);
 			this.overwrite.TabIndex = 1;
 			this.overwrite.Text = "Overwrite";
 			this.overwrite.Click += new System.EventHandler(this.overwrite_Click);
@@ -77,6 +79,7 @@ namespace MapView
 			// 
 			this.cancel.Location = new System.Drawing.Point(189, 48);
 			this.cancel.Name = "cancel";
+			this.cancel.Size = new System.Drawing.Size(75, 23);
 			this.cancel.TabIndex = 2;
 			this.cancel.Text = "Cancel";
 			this.cancel.Click += new System.EventHandler(this.cancel_Click);
@@ -85,6 +88,7 @@ namespace MapView
 			// 
 			this.exist.Location = new System.Drawing.Point(109, 48);
 			this.exist.Name = "exist";
+			this.exist.Size = new System.Drawing.Size(75, 23);
 			this.exist.TabIndex = 3;
 			this.exist.Text = "Use Existing";
 			this.exist.Click += new System.EventHandler(this.exist_Click);
@@ -93,11 +97,11 @@ namespace MapView
 			// 
 			this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
 			this.ClientSize = new System.Drawing.Size(292, 77);
-			this.Controls.AddRange(new System.Windows.Forms.Control[] {
-																		  this.exist,
-																		  this.cancel,
-																		  this.overwrite,
-																		  this.txt});
+			this.Controls.Add(this.exist);
+			this.Controls.Add(this.cancel);
+			this.Controls.Add(this.overwrite);
+			this.Controls.Add(this.txt);
+			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
 			this.MaximizeBox = false;
 			this.MinimizeBox = false;
 			this.Name = "ChoiceDialog";

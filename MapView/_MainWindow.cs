@@ -63,13 +63,13 @@ namespace MapView
 			}
 
 			GameInfo.ParseLine += new ParseLineDelegate(parseLine);
-			GameInfo.Init(Palette.TFTDBattle, pathsFile);
+			GameInfo.Init(XCPalette.TFTDBattle, pathsFile);
 			LogFile.Instance.WriteLine("GameInfo.Init done");
 
-			Palette.TFTDBattle.SetTransparent(true);
-			Palette.UFOBattle.SetTransparent(true);
-			Palette.TFTDBattle.Grayscale.SetTransparent(true);
-			Palette.UFOBattle.Grayscale.SetTransparent(true);
+			XCPalette.TFTDBattle.SetTransparent(true);
+			XCPalette.UFOBattle.SetTransparent(true);
+			XCPalette.TFTDBattle.Grayscale.SetTransparent(true);
+			XCPalette.UFOBattle.Grayscale.SetTransparent(true);
 
 			LogFile.Instance.WriteLine("Palette transparencies set");
 
@@ -98,13 +98,13 @@ namespace MapView
 
 			try
 			{
-				mapView.View.Cursor = new Cursor(GameInfo.CachePck(SharedSpace.Instance.GetString("cursorFile"), "", 4, Palette.TFTDBattle));
+				mapView.View.Cursor = new Cursor(GameInfo.CachePck(SharedSpace.Instance.GetString("cursorFile"), "", 4, XCPalette.TFTDBattle));
 			}
 			catch
 			{
 				try
 				{
-					mapView.View.Cursor = new Cursor(GameInfo.CachePck(SharedSpace.Instance.GetString("cursorFile"), "", 2, Palette.UFOBattle));
+					mapView.View.Cursor = new Cursor(GameInfo.CachePck(SharedSpace.Instance.GetString("cursorFile"), "", 2, XCPalette.UFOBattle));
 				}
 				catch { mapView.Cursor = null; }
 			}
@@ -143,7 +143,7 @@ namespace MapView
 			this.Closing += new CancelEventHandler(closing);
 
 			lf = new LoadingForm();
-			Bmp.LoadingEvent += new LoadingDelegate(lf.Update);
+			XCom.Bmp.LoadingEvent += new LoadingDelegate(lf.Update);
 
 			//I should rewrite the hq2x wrapper for .net sometime (not the code, its pretty insane)
 			//if(!File.Exists("hq2xa.dll"))
@@ -468,7 +468,7 @@ namespace MapView
 			PathsEditor p = new PathsEditor(SharedSpace.Instance["MV_PathsFile"].ToString());
 			p.ShowDialog();
 
-			GameInfo.Init(Palette.TFTDBattle, (PathInfo)SharedSpace.Instance["MV_PathsFile"]);
+			GameInfo.Init(XCPalette.TFTDBattle, (PathInfo)SharedSpace.Instance["MV_PathsFile"]);
 			initList();
 		}
 

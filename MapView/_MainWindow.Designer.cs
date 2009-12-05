@@ -31,6 +31,7 @@ namespace MapView
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainWindow));
 			this.mainMenu = new System.Windows.Forms.MainMenu(this.components);
 			this.fileMenu = new System.Windows.Forms.MenuItem();
+			this.miOpen = new System.Windows.Forms.MenuItem();
 			this.saveItem = new System.Windows.Forms.MenuItem();
 			this.miSaveImage = new System.Windows.Forms.MenuItem();
 			this.miExport = new System.Windows.Forms.MenuItem();
@@ -56,7 +57,6 @@ namespace MapView
 			this.toolStripContainer1 = new System.Windows.Forms.ToolStripContainer();
 			this.toolStrip = new System.Windows.Forms.ToolStrip();
 			this.cSplitList = new DSShared.Windows.CollapsibleSplitter();
-			this.miOpen = new System.Windows.Forms.MenuItem();
 			this.statusStrip1.SuspendLayout();
 			this.toolStripContainer1.TopToolStripPanel.SuspendLayout();
 			this.toolStripContainer1.SuspendLayout();
@@ -84,6 +84,12 @@ namespace MapView
             this.bar,
             this.quititem});
 			this.fileMenu.Text = "&File";
+			// 
+			// miOpen
+			// 
+			this.miOpen.Index = 0;
+			this.miOpen.Text = "Open";
+			this.miOpen.Click += new System.EventHandler(this.miOpen_Click);
 			// 
 			// saveItem
 			// 
@@ -202,7 +208,7 @@ namespace MapView
 			this.mapList.Dock = System.Windows.Forms.DockStyle.Left;
 			this.mapList.Location = new System.Drawing.Point(0, 0);
 			this.mapList.Name = "mapList";
-			this.mapList.Size = new System.Drawing.Size(152, 281);
+			this.mapList.Size = new System.Drawing.Size(152, 260);
 			this.mapList.TabIndex = 0;
 			this.mapList.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.mapList_AfterSelect);
 			// 
@@ -217,7 +223,7 @@ namespace MapView
 			this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.statusMapName,
             this.tsMapSize});
-			this.statusStrip1.Location = new System.Drawing.Point(160, 259);
+			this.statusStrip1.Location = new System.Drawing.Point(160, 238);
 			this.statusStrip1.Name = "statusStrip1";
 			this.statusStrip1.Size = new System.Drawing.Size(376, 22);
 			this.statusStrip1.TabIndex = 2;
@@ -250,7 +256,7 @@ namespace MapView
 			// 
 			// toolStripContainer1.ContentPanel
 			// 
-			this.toolStripContainer1.ContentPanel.Size = new System.Drawing.Size(376, 234);
+			this.toolStripContainer1.ContentPanel.Size = new System.Drawing.Size(376, 213);
 			this.toolStripContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
 			// 
 			// toolStripContainer1.LeftToolStripPanel
@@ -262,7 +268,7 @@ namespace MapView
 			// toolStripContainer1.RightToolStripPanel
 			// 
 			this.toolStripContainer1.RightToolStripPanel.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
-			this.toolStripContainer1.Size = new System.Drawing.Size(376, 259);
+			this.toolStripContainer1.Size = new System.Drawing.Size(376, 238);
 			this.toolStripContainer1.TabIndex = 3;
 			this.toolStripContainer1.Text = "toolStripContainer1";
 			// 
@@ -276,7 +282,7 @@ namespace MapView
 			this.toolStrip.Dock = System.Windows.Forms.DockStyle.None;
 			this.toolStrip.Location = new System.Drawing.Point(3, 0);
 			this.toolStrip.Name = "toolStrip";
-			this.toolStrip.Size = new System.Drawing.Size(109, 25);
+			this.toolStrip.Size = new System.Drawing.Size(111, 25);
 			this.toolStrip.TabIndex = 0;
 			// 
 			// cSplitList
@@ -286,21 +292,15 @@ namespace MapView
 			this.cSplitList.Location = new System.Drawing.Point(152, 0);
 			this.cSplitList.MinimumSize = new System.Drawing.Size(5, 5);
 			this.cSplitList.Name = "cSplitList";
-			this.cSplitList.Size = new System.Drawing.Size(8, 281);
+			this.cSplitList.Size = new System.Drawing.Size(8, 260);
 			this.cSplitList.TabIndex = 1;
 			this.cSplitList.TabStop = false;
-			// 
-			// miOpen
-			// 
-			this.miOpen.Index = 0;
-			this.miOpen.Text = "Open";
-			this.miOpen.Click += new System.EventHandler(this.miOpen_Click);
 			// 
 			// MainWindow
 			// 
 			this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
 			this.BackColor = System.Drawing.SystemColors.Control;
-			this.ClientSize = new System.Drawing.Size(536, 281);
+			this.ClientSize = new System.Drawing.Size(536, 260);
 			this.Controls.Add(this.toolStripContainer1);
 			this.Controls.Add(this.statusStrip1);
 			this.Controls.Add(this.cSplitList);

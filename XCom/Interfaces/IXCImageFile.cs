@@ -11,11 +11,11 @@ namespace XCom.Interfaces
 	/// Class that contains all information needed to read/save image files and collections.
 	/// This class should not be instantiated directly. Upon startup, objects from derived classes will be created and tracked
 	/// </summary>
-	public class IXCImageFile:IAssemblyLoadable,IOpenSave
+	public class IXCImageFile : IAssemblyLoadable, IOpenSave
 	{
-		protected Palette defPal = Palette.TFTDBattle;
+		protected Palette defPal = XCPalette.TFTDBattle;
 		protected System.Drawing.Size imageSize;
-		protected xcFileOptions fileOptions=new xcFileOptions();
+		protected xcFileOptions fileOptions = new xcFileOptions();
 		protected string ext = ".bad";
 		protected string expDesc = "Bad Description";
 		//private int fIdx=0;
@@ -58,7 +58,7 @@ namespace XCom.Interfaces
 		/// </summary>
 		public virtual string FileExtension { get { return ext; } }
 
-        public void Unload() { }
+		public void Unload() { }
 
 		/// <summary>
 		/// It is not recommended to instantiate objects of this type directly.
@@ -68,7 +68,7 @@ namespace XCom.Interfaces
 		/// <param name="height">Default Height</param>
 		public IXCImageFile(int width, int height)
 		{
-			imageSize = new System.Drawing.Size(width,height);
+			imageSize = new System.Drawing.Size(width, height);
 			expDesc = this.GetType().ToString();
 		}
 
@@ -101,7 +101,7 @@ namespace XCom.Interfaces
 		/// <param name="imgWid"></param>
 		/// <param name="imgHei"></param>
 		/// <returns></returns>
-		protected virtual XCImageCollection LoadFileOverride(string directory, string file, int imgWid, int imgHei,Palette pal)
+		protected virtual XCImageCollection LoadFileOverride(string directory, string file, int imgWid, int imgHei, Palette pal)
 		{
 			throw new Exception("Override not yet implemented: IXCFile::LoadFileOverride(...)");
 		}
@@ -126,7 +126,7 @@ namespace XCom.Interfaces
 		/// <param name="imgWid"></param>
 		/// <param name="imgHei"></param>
 		/// <returns></returns>
-		public XCImageCollection LoadFile(string directory, string file,int imgWid,int imgHei)
+		public XCImageCollection LoadFile(string directory, string file, int imgWid, int imgHei)
 		{
 			return LoadFile(directory, file, imgWid, imgHei, defPal);
 		}
@@ -135,8 +135,7 @@ namespace XCom.Interfaces
 		{
 			XCImageCollection ixc = LoadFileOverride(directory, file, imgWid, imgHei, pal);
 
-			if (ixc != null)
-			{
+			if (ixc != null) {
 				ixc.IXCFile = this;
 				ixc.Path = directory;
 				ixc.Name = file;
@@ -154,7 +153,7 @@ namespace XCom.Interfaces
 		/// </summary>
 		public xcFileOptions FileOptions
 		{
-			get{return fileOptions;}
+			get { return fileOptions; }
 		}
 
 		/// <summary>
@@ -171,12 +170,21 @@ namespace XCom.Interfaces
 		/// <summary>
 		/// Defines the initial coloring of the sprites when loaded
 		/// </summary>
-		public virtual Palette DefaultPalette{get{return defPal;}}
+		public virtual Palette DefaultPalette { get { return defPal; } }
 
 		/// <summary>
 		/// Image size that will be loaded
 		/// </summary>
-		public System.Drawing.Size ImageSize{get{return imageSize;}}
+		public System.Drawing.Size ImageSize
+		{ 
+			get { return imageSize; }
+			set { imageSize = value; }
+		}
+
+		public void SetImageSize(System.Drawing.Size inSize)
+		{
+			imageSize = inSize;
+		}
 
 		/// <summary>
 		/// The complete file.extension that this object will open. If null, then this object will open files
@@ -191,7 +199,8 @@ namespace XCom.Interfaces
 		private int bitDepth = 8;
 		private int space = 1;
 
-		public xcFileOptions():this(true,true,true,true)
+		public xcFileOptions()
+			: this(true, true, true, true)
 		{
 
 		}

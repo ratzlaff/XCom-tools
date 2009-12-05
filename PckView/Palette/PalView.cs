@@ -4,6 +4,8 @@ using System.Collections;
 using System.ComponentModel;
 using System.Windows.Forms;
 using XCom;
+using DSShared;
+using DSShared.Windows;
 
 namespace PckView
 {
@@ -25,6 +27,7 @@ namespace PckView
 		{
 			InitializeComponent();
 			OnResize(null);
+			RegistryInfo ri = new RegistryInfo(this, "PalView");
 		}
 
 		private void palClick(int idx)
@@ -102,6 +105,7 @@ namespace PckView
 			// palPanel
 			// 
 			this.palPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.palPanel.Location = new System.Drawing.Point(0, 0);
 			this.palPanel.Name = "palPanel";
 			this.palPanel.Size = new System.Drawing.Size(292, 237);
 			this.palPanel.TabIndex = 0;
@@ -111,14 +115,16 @@ namespace PckView
 			// 
 			this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
 			this.ClientSize = new System.Drawing.Size(292, 253);
-			this.Controls.AddRange(new System.Windows.Forms.Control[] {
-																		  this.palPanel,
-																		  this.status});
+			this.Controls.Add(this.palPanel);
+			this.Controls.Add(this.status);
+			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
 			this.MaximizeBox = false;
 			this.MinimizeBox = false;
 			this.Name = "PalView";
+			this.ShowInTaskbar = false;
 			this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
 			this.Text = "PalView";
+			this.TopMost = true;
 			this.ResumeLayout(false);
 
 		}

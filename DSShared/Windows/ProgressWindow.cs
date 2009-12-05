@@ -12,16 +12,21 @@ namespace DSShared.Windows
 		private System.ComponentModel.Container components = null;
 		private Form parent;
 
-		public ProgressWindow(Form parent)
+		public ProgressWindow()
 		{
 			InitializeComponent();
+		}
 
-			if (parent != null)
+		public Form ParentWindow
+		{
+			set
 			{
-				this.parent = parent;
+				if (parent != null) {
+					this.parent = value;
 
-				Left = parent.Left + (parent.Width - Width) / 2;
-				Top = parent.Top + (parent.Height - Height) / 2;
+					Left = parent.Left + (parent.Width - Width) / 2;
+					Top = parent.Top + (parent.Height - Height) / 2;
+				}
 			}
 		}
 
@@ -85,17 +90,17 @@ namespace DSShared.Windows
 			// progress
 			// 
 			this.progress.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.progress.Location = new System.Drawing.Point(0, 0);
 			this.progress.Name = "progress";
-			this.progress.Size = new System.Drawing.Size(320, 32);
+			this.progress.Size = new System.Drawing.Size(320, 39);
 			this.progress.TabIndex = 0;
 			// 
 			// ProgressWindow
 			// 
 			this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
-			this.ClientSize = new System.Drawing.Size(320, 32);
+			this.ClientSize = new System.Drawing.Size(320, 39);
 			this.ControlBox = false;
-			this.Controls.AddRange(new System.Windows.Forms.Control[] {
-																		  this.progress});
+			this.Controls.Add(this.progress);
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
 			this.Name = "ProgressWindow";
 			this.ShowInTaskbar = false;

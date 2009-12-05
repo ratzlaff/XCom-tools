@@ -1,6 +1,7 @@
 using System;
 using XCom.Interfaces;
 using System.Windows.Forms;
+using DSShared;
 
 namespace XCom.GameFiles.Images.xcFiles
 {

@@ -56,6 +56,7 @@ namespace MapView
 			// 
 			// label1
 			// 
+			this.label1.Location = new System.Drawing.Point(0, 0);
 			this.label1.Name = "label1";
 			this.label1.Size = new System.Drawing.Size(128, 16);
 			this.label1.TabIndex = 0;
@@ -67,12 +68,12 @@ namespace MapView
 			this.txtName.Name = "txtName";
 			this.txtName.Size = new System.Drawing.Size(128, 20);
 			this.txtName.TabIndex = 1;
-			this.txtName.Text = "";
 			// 
 			// btnOk
 			// 
 			this.btnOk.Location = new System.Drawing.Point(24, 40);
 			this.btnOk.Name = "btnOk";
+			this.btnOk.Size = new System.Drawing.Size(75, 23);
 			this.btnOk.TabIndex = 2;
 			this.btnOk.Text = "Ok";
 			this.btnOk.Click += new System.EventHandler(this.btnOk_Click);
@@ -81,17 +82,17 @@ namespace MapView
 			// 
 			this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
 			this.ClientSize = new System.Drawing.Size(128, 69);
-			this.Controls.AddRange(new System.Windows.Forms.Control[] {
-																		  this.btnOk,
-																		  this.txtName,
-																		  this.label1});
-			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+			this.Controls.Add(this.btnOk);
+			this.Controls.Add(this.txtName);
+			this.Controls.Add(this.label1);
+			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
 			this.MaximizeBox = false;
 			this.MinimizeBox = false;
 			this.Name = "SubsetForm";
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
 			this.Text = "SubsetForm";
 			this.ResumeLayout(false);
+			this.PerformLayout();
 
 		}
 		#endregion

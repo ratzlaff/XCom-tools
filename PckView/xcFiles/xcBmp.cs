@@ -1,5 +1,6 @@
 using System;
 using XCom.Interfaces;
+using DSShared;
 
 namespace PckView
 {
@@ -21,7 +22,7 @@ namespace PckView
 			expDesc = "8-bit bmp file";
 		}
 
-		protected override XCom.XCImageCollection LoadFileOverride(string directory,string file,int imgWid,int imgHei,XCom.Palette pal)
+		protected override XCom.XCImageCollection LoadFileOverride(string directory,string file,int imgWid,int imgHei,Palette pal)
 		{
 			System.Drawing.Bitmap bmp =new System.Drawing.Bitmap(directory+"\\"+file);
 			BmpForm bmf = new BmpForm();

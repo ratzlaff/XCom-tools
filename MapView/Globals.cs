@@ -1,4 +1,5 @@
 using System;
+using XCom;
 
 namespace MapView
 {	
@@ -24,7 +25,7 @@ namespace MapView
 				System.IO.Stream sPck = System.Reflection.Assembly.GetExecutingAssembly().GetManifestResourceStream("MapView._Embedded.Extra.PCK");
 				System.IO.Stream sTab = System.Reflection.Assembly.GetExecutingAssembly().GetManifestResourceStream("MapView._Embedded.Extra.TAB");
 
-				extraTiles = new XCom.PckFile(sPck, sTab, 2, XCom.Palette.TFTDBattle);
+				extraTiles = new XCom.PckFile(sPck, sTab, 2, XCPalette.TFTDBattle);
 			}
 		}
 	}

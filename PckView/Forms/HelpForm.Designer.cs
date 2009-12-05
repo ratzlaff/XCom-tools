@@ -33,6 +33,7 @@ namespace PckView
 		/// </summary>
 		private void InitializeComponent()
 		{
+			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(HelpForm));
 			this.label1 = new System.Windows.Forms.Label();
 			this.label2 = new System.Windows.Forms.Label();
 			this.label3 = new System.Windows.Forms.Label();
@@ -41,6 +42,7 @@ namespace PckView
 			// 
 			// label1
 			// 
+			this.label1.Location = new System.Drawing.Point(0, 0);
 			this.label1.Name = "label1";
 			this.label1.Size = new System.Drawing.Size(336, 24);
 			this.label1.TabIndex = 0;
@@ -52,10 +54,7 @@ namespace PckView
 			this.label2.Name = "label2";
 			this.label2.Size = new System.Drawing.Size(336, 64);
 			this.label2.TabIndex = 1;
-			this.label2.Text = "When editing BMP files, DO NOT add any colors that are not part of the palette. T" +
-				"he game works on palettes, which means for any given image, only 256 colors can " +
-				"be used. The colors have been encoded into each BMP that gets saved, use only th" +
-				"ose colors";
+			this.label2.Text = resources.GetString("label2.Text");
 			// 
 			// label3
 			// 
@@ -79,12 +78,11 @@ namespace PckView
 			// 
 			this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
 			this.ClientSize = new System.Drawing.Size(346, 159);
-			this.Controls.AddRange(new System.Windows.Forms.Control[] {
-																		  this.label4,
-																		  this.label3,
-																		  this.label2,
-																		  this.label1});
-			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+			this.Controls.Add(this.label4);
+			this.Controls.Add(this.label3);
+			this.Controls.Add(this.label2);
+			this.Controls.Add(this.label1);
+			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
 			this.MaximizeBox = false;
 			this.MinimizeBox = false;
 			this.Name = "HelpForm";

@@ -78,28 +78,29 @@ namespace PckView
 			v.XCImageCollectionSet += new XCImageCollectionHandler(v_XCImageCollectionSet);
 			v.ContextMenu = makeContextMenu();
 
-			sharedSpace["Palettes"] = new Dictionary<string, Palette>();
 			palMI = new Dictionary<Palette, MenuItem>();
-			selectedMI = AddPalette(Palette.TFTDBattle, miPalette);
-			AddPalette(Palette.TFTDGeo, miPalette);
-			AddPalette(Palette.TFTDGraph, miPalette);
-			AddPalette(Palette.TFTDResearch, miPalette);
-			AddPalette(Palette.UFOBattle, miPalette);
-			AddPalette(Palette.UFOGeo, miPalette);
-			AddPalette(Palette.UFOGraph, miPalette);
-			AddPalette(Palette.UFOResearch, miPalette);
+			selectedMI = AddPalette(XCPalette.TFTDBattle, miPalette);
+			AddPalette(XCPalette.TFTDGeo, miPalette);
+			AddPalette(XCPalette.TFTDGraph, miPalette);
+			AddPalette(XCPalette.TFTDResearch, miPalette);
+			AddPalette(XCPalette.UFOBattle, miPalette);
+			AddPalette(XCPalette.UFOGeo, miPalette);
+			AddPalette(XCPalette.UFOGraph, miPalette);
+			AddPalette(XCPalette.UFOResearch, miPalette);
+
+			Palette.PaletteLoaded += new PaletteLoadedDelegate(newPal);
 
 			editor = new Editor(null);
 			editor.Closing += new CancelEventHandler(editorClosing);
 
-			currPal = Palette.TFTDBattle;
+			currPal = XCPalette.TFTDBattle;
 
 			RegistryInfo ri = new RegistryInfo(this, "PckView");
 			ri.AddProperty("FilterIndex");
 			ri.AddProperty("SelectedPalette");
 
 			if (!File.Exists("hq2xa.dll"))
-				miHq2x.Visible = false;
+				miHq2x.Enabled = false;
 
 			loadedTypes = new LoadOfType<IXCImageFile>();
 			loadedTypes.OnLoad += new LoadOfType<IXCImageFile>.TypeLoadDelegate(loadedTypes_OnLoad);
@@ -134,6 +135,11 @@ namespace PckView
 			osFilter.SetFilter(IXCImageFile.Filter.Open);
 			string filter = loadedTypes.CreateFilter(osFilter, openDictionary);
 			openFile.Filter = filter;
+		}
+
+		void newPal(Palette newPalette)
+		{
+			AddPalette(newPalette, miPalette);
 		}
 
 		void v_XCImageCollectionSet(object sender, XCImageCollectionSetEventArgs e)
@@ -196,11 +202,6 @@ namespace PckView
 
 		void sb_Click(object sender, EventArgs e)
 		{
-			Form f = new Form();
-			RichTextBox rtb = new RichTextBox();
-			rtb.Dock = DockStyle.Fill;
-			f.Controls.Add(rtb);
-
 			TotalViewPck v = null;
 
 			if (tabs == null)
@@ -212,11 +213,20 @@ namespace PckView
 						v = (TotalViewPck)o;
 			}
 
-			foreach (byte b in v.Selected.Bytes)
-				rtb.Text += string.Format("{0:x} ", b);
+			if (v.Selected.Bytes != null) {
+				Form f = new Form();
+				f.FormBorderStyle = FormBorderStyle.SizableToolWindow;
+				f.Text = "Bytes";
+				RichTextBox rtb = new RichTextBox();
+				rtb.Dock = DockStyle.Fill;
+				f.Controls.Add(rtb);
 
-			f.Text = "Bytes: " + v.Selected.Bytes.Length;
-			f.Show();
+				foreach (byte b in v.Selected.Bytes)
+					rtb.Text += string.Format("{0:x} ", b);
+				f.Text = "Bytes: " + v.Selected.Bytes.Length;
+
+				f.Show();	
+			}
 		}
 
 		void addMany_Click(object sender, EventArgs e)
@@ -230,7 +240,7 @@ namespace PckView
 					foreach (string s in openBMP.FileNames)
 					{
 						Bitmap b = new Bitmap(s);
-						v.Collection.Add(Bmp.LoadTile(b,0,v.Pal,0,0,v.Collection.IXCFile.ImageSize.Width, v.Collection.IXCFile.ImageSize.Height));
+						v.Collection.Add(XCom.Bmp.LoadTile(b,0,v.Pal,0,0,v.Collection.IXCFile.ImageSize.Width, v.Collection.IXCFile.ImageSize.Height));
 					}
 
 					Refresh();
@@ -271,8 +281,6 @@ namespace PckView
 			mi2.Click += new EventHandler(palClick);
 			//palMI[mi2]=p;
 			palMI[p] = mi2;
-
-			((Dictionary<string, Palette>)sharedSpace["Palettes"])[p.Name] = p;
 			return mi2;
 		}
 
@@ -437,7 +445,7 @@ namespace PckView
 					saveBmpSingle.FileName = v.Collection.Name + v.Selected.FileNum;
 
 				if (saveBmpSingle.ShowDialog() == DialogResult.OK)
-					Bmp.Save(saveBmpSingle.FileName, v.Selected.Image);
+					DSShared.Bmp.Save(saveBmpSingle.FileName, v.Selected.Image);
 			}
 		}
 
@@ -451,7 +459,7 @@ namespace PckView
 				{
 					Bitmap b = new Bitmap(openBMP.FileName);
 
-					v.Selected = Bmp.Load(b, v.Pal, v.Collection.IXCFile.ImageSize.Width, v.Collection.IXCFile.ImageSize.Height,1)[0];
+					v.Selected = XCom.Bmp.Load(b, v.Pal, v.Collection.IXCFile.ImageSize.Width, v.Collection.IXCFile.ImageSize.Height,1)[0];
 					Refresh();
 				}
 
@@ -482,8 +490,9 @@ namespace PckView
 				bytesText.Dock = DockStyle.Fill;
 				bytesFrame.Controls.Add(bytesText);
 
-				foreach (byte b in v.Selected.Bytes)
-					bytesText.Text += b + " ";
+				if (v.Selected.Bytes != null)
+					foreach (byte b in v.Selected.Bytes)
+						bytesText.Text += b + " ";
 
 				bytesFrame.Closing += new CancelEventHandler(bClosing);
 				bytesFrame.Location = new Point(this.Right, this.Top);
@@ -527,8 +536,8 @@ namespace PckView
 					editor.BringToFront();
 				else
 				{
-					editor.Left = Right;
-					editor.Top = Top;
+//					editor.Left = Right;
+//					editor.Top = Top;
 					editor.Palette = currPal;
 					editor.Show();
 				}
@@ -608,7 +617,8 @@ namespace PckView
 						tens /= 10;
 					}
 
-					ProgressWindow pw = new ProgressWindow(this);
+					ProgressWindow pw = new ProgressWindow();
+					pw.ParentWindow = this;
 					pw.Minimum = 0;
 					pw.Maximum = v.Collection.Count;
 					pw.Width = 300;
@@ -619,7 +629,7 @@ namespace PckView
 					{
 						//Console.WriteLine("Save to: "+path+@"\"+fName+(xc.FileNum+countNum)+"."+ext);
 						//Console.WriteLine("Save: " + path + @"\" + fName + string.Format("{0:" + zeros + "}", xc.FileNum) + "." + ext);
-						Bmp.Save(path + @"\" + fName + string.Format("{0:" + zeros + "}", xc.FileNum) + "." + ext, xc.Image);
+						DSShared.Bmp.Save(path + @"\" + fName + string.Format("{0:" + zeros + "}", xc.FileNum) + "." + ext, xc.Image);
 						//Console.WriteLine("---");
 						pw.Value = xc.FileNum;
 					}

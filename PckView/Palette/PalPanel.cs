@@ -4,6 +4,7 @@ using System.Collections;
 using System.ComponentModel;
 using System.Windows.Forms;
 using XCom;
+using DSShared;
 
 namespace PckView
 {

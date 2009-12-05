@@ -107,8 +107,13 @@ namespace DSShared.Windows
 			RegistryKey riKey = swKey.CreateSubKey(regKey);
 			RegistryKey ppKey = riKey.CreateSubKey(name);
 
-			foreach (string s in properties.Keys)
-				properties[s].SetValue(obj, ppKey.GetValue(s, properties[s].GetValue(obj, null)), null);
+			foreach (string s in properties.Keys) {
+				try {
+					properties[s].SetValue(obj, ppKey.GetValue(s, properties[s].GetValue(obj, null)), null);
+				} catch {
+
+				}
+			}
 
 			if(Loading!=null)
 				Loading(this,new RegistrySaveLoadEventArgs(ppKey));
@@ -183,8 +188,11 @@ namespace DSShared.Windows
 				RegistryKey riKey = swKey.CreateSubKey(regKey);
 				RegistryKey ppKey = riKey.CreateSubKey(name);
 
-				foreach(string s in properties.Keys)
-					ppKey.SetValue(s, properties[s].GetValue(obj, null));
+				foreach (string s in properties.Keys) {
+					try {
+						ppKey.SetValue(s, properties[s].GetValue(obj, null));
+					} catch { }
+				}
 
 				if(Saving!=null)
 					Saving(this,new RegistrySaveLoadEventArgs(ppKey));

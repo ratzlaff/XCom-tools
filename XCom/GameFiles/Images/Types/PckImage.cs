@@ -5,6 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using XCom.Interfaces;
+using DSShared;
 
 namespace XCom
 {
@@ -74,9 +75,9 @@ namespace XCom
 				}					
 			}
 			this.idx=expanded;
-		
-			image = Bmp.MakeBitmap8(Width,Height,expanded,pal.Colors);
-			gray = Bmp.MakeBitmap8(Width,Height,expanded,pal.Grayscale.Colors);
+
+            image = DSShared.Bmp.MakeBitmap8(Width, Height, expanded, pal.Colors);
+            gray = DSShared.Bmp.MakeBitmap8(Width, Height, expanded, pal.Grayscale.Colors);
 		}
 
 		public static int EncodePck(System.IO.BinaryWriter output, XCImage tile)
@@ -164,8 +165,8 @@ namespace XCom
 
 		public void ReImage()
 		{
-			image = Bmp.MakeBitmap8(Width,Height,expanded,Palette.Colors);
-			gray = Bmp.MakeBitmap8(Width,Height,expanded,Palette.Grayscale.Colors);			
+            image = DSShared.Bmp.MakeBitmap8(Width, Height, expanded, Palette.Colors);
+            gray = DSShared.Bmp.MakeBitmap8(Width, Height, expanded, Palette.Grayscale.Colors);			
 		}
 
 		public void MoveImage(byte offset)
@@ -196,9 +197,9 @@ namespace XCom
 						break;
 				}					
 			}
-		
-			image = Bmp.MakeBitmap8(Width,Height,expanded,Palette.Colors);
-			gray = Bmp.MakeBitmap8(Width,Height,expanded,Palette.Grayscale.Colors);
+
+            image = DSShared.Bmp.MakeBitmap8(Width, Height, expanded, Palette.Colors);
+            gray = DSShared.Bmp.MakeBitmap8(Width, Height, expanded, Palette.Grayscale.Colors);
 		}
 
 		public int MapID

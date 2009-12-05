@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using XCom.Interfaces;
 using XCom;
+using DSShared;
 
 namespace PckView
 {
@@ -15,8 +16,8 @@ namespace PckView
 		private XCImageCollection myFile;
 
 		private int space=2;
-		private Color goodColor = Color.FromArgb(204,204,255);
-		private SolidBrush goodBrush = new SolidBrush(Color.FromArgb(204,204,255));
+		private static Color goodColor = Color.FromArgb(204,204,255);
+		private SolidBrush goodBrush = new SolidBrush(goodColor);
 		private int clickX, clickY,moveX, moveY;
 		private int startY;
 
@@ -37,7 +38,7 @@ namespace PckView
 		//saves a bitmap as a 8-bit image
 		public void SaveBMP(string file,Palette pal)
 		{
-			Bmp.SaveBMP(file,myFile,pal,numAcross(),1);
+			XCom.Bmp.SaveBMP(file,myFile,pal,numAcross(),1);
 		}
 
 		public void Hq2x()
@@ -143,9 +144,12 @@ namespace PckView
 				{
 					int x = i%numAcross();
 					int y = i/numAcross();
+					
+					Size cellSize = myFile.IXCFile.ImageSize;
+
 					try
 					{
-						g.DrawImage(myFile[i].Image,x*(myFile.IXCFile.ImageSize.Width+2*space),startY+y*(myFile.IXCFile.ImageSize.Height+2*space));
+						g.DrawImage(myFile[i].Image, x * (cellSize.Width + 2 * space) + (cellSize.Width - myFile[i].Image.Width) / 2, startY + y * (cellSize.Height + 2 * space) + (cellSize.Height - myFile[i].Image.Height) / 2);
 					}
 					catch(Exception)
 					{}

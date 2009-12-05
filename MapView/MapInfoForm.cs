@@ -179,8 +179,8 @@ namespace MapView
 			// 
 			// lblDimensions
 			// 
-			this.lblDimensions.Anchor = ((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-				| System.Windows.Forms.AnchorStyles.Right);
+			this.lblDimensions.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+						| System.Windows.Forms.AnchorStyles.Right)));
 			this.lblDimensions.Location = new System.Drawing.Point(112, 16);
 			this.lblDimensions.Name = "lblDimensions";
 			this.lblDimensions.Size = new System.Drawing.Size(288, 16);
@@ -188,8 +188,8 @@ namespace MapView
 			// 
 			// lblPckFiles
 			// 
-			this.lblPckFiles.Anchor = ((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-				| System.Windows.Forms.AnchorStyles.Right);
+			this.lblPckFiles.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+						| System.Windows.Forms.AnchorStyles.Right)));
 			this.lblPckFiles.Location = new System.Drawing.Point(112, 32);
 			this.lblPckFiles.Name = "lblPckFiles";
 			this.lblPckFiles.Size = new System.Drawing.Size(288, 16);
@@ -205,8 +205,8 @@ namespace MapView
 			// 
 			// lblPckImages
 			// 
-			this.lblPckImages.Anchor = ((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-				| System.Windows.Forms.AnchorStyles.Right);
+			this.lblPckImages.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+						| System.Windows.Forms.AnchorStyles.Right)));
 			this.lblPckImages.Location = new System.Drawing.Point(112, 48);
 			this.lblPckImages.Name = "lblPckImages";
 			this.lblPckImages.Size = new System.Drawing.Size(288, 16);
@@ -222,8 +222,8 @@ namespace MapView
 			// 
 			// lblMcd
 			// 
-			this.lblMcd.Anchor = ((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-				| System.Windows.Forms.AnchorStyles.Right);
+			this.lblMcd.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+						| System.Windows.Forms.AnchorStyles.Right)));
 			this.lblMcd.Location = new System.Drawing.Point(112, 64);
 			this.lblMcd.Name = "lblMcd";
 			this.lblMcd.Size = new System.Drawing.Size(288, 16);
@@ -239,8 +239,8 @@ namespace MapView
 			// 
 			// lblFilled
 			// 
-			this.lblFilled.Anchor = ((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-				| System.Windows.Forms.AnchorStyles.Right);
+			this.lblFilled.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+						| System.Windows.Forms.AnchorStyles.Right)));
 			this.lblFilled.Location = new System.Drawing.Point(112, 80);
 			this.lblFilled.Name = "lblFilled";
 			this.lblFilled.Size = new System.Drawing.Size(288, 16);
@@ -264,8 +264,7 @@ namespace MapView
 			// 
 			// groupAnalyze
 			// 
-			this.groupAnalyze.Controls.AddRange(new System.Windows.Forms.Control[] {
-																					   this.pBar});
+			this.groupAnalyze.Controls.Add(this.pBar);
 			this.groupAnalyze.Dock = System.Windows.Forms.DockStyle.Bottom;
 			this.groupAnalyze.Location = new System.Drawing.Point(0, 104);
 			this.groupAnalyze.Name = "groupAnalyze";
@@ -276,18 +275,18 @@ namespace MapView
 			// 
 			// groupInfo
 			// 
-			this.groupInfo.Controls.AddRange(new System.Windows.Forms.Control[] {
-																					this.lblPckImages,
-																					this.label3,
-																					this.lblPckFiles,
-																					this.label1,
-																					this.lblMcd,
-																					this.label4,
-																					this.label6,
-																					this.lblFilled,
-																					this.label8,
-																					this.lblDimensions});
+			this.groupInfo.Controls.Add(this.lblPckImages);
+			this.groupInfo.Controls.Add(this.label3);
+			this.groupInfo.Controls.Add(this.lblPckFiles);
+			this.groupInfo.Controls.Add(this.label1);
+			this.groupInfo.Controls.Add(this.lblMcd);
+			this.groupInfo.Controls.Add(this.label4);
+			this.groupInfo.Controls.Add(this.label6);
+			this.groupInfo.Controls.Add(this.lblFilled);
+			this.groupInfo.Controls.Add(this.label8);
+			this.groupInfo.Controls.Add(this.lblDimensions);
 			this.groupInfo.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.groupInfo.Location = new System.Drawing.Point(0, 0);
 			this.groupInfo.Name = "groupInfo";
 			this.groupInfo.Size = new System.Drawing.Size(408, 104);
 			this.groupInfo.TabIndex = 12;
@@ -298,9 +297,8 @@ namespace MapView
 			// 
 			this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
 			this.ClientSize = new System.Drawing.Size(408, 144);
-			this.Controls.AddRange(new System.Windows.Forms.Control[] {
-																		  this.groupInfo,
-																		  this.groupAnalyze});
+			this.Controls.Add(this.groupInfo);
+			this.Controls.Add(this.groupAnalyze);
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
 			this.Name = "MapInfoForm";
 			this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;

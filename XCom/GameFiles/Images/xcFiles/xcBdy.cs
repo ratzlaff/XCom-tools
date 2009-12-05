@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using XCom.Interfaces;
 using System.IO;
+using DSShared;
 
 namespace XCom.GameFiles.Images.xcFiles
 {
@@ -17,7 +18,7 @@ namespace XCom.GameFiles.Images.xcFiles
 			author = "Ben Ratzlaff";
 			desc = "Bdy file codec";
 
-			defPal = Palette.TFTDResearch;
+			defPal = XCPalette.TFTDResearch;
 
 
 			expDesc = "BDY Image";

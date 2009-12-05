@@ -5,7 +5,7 @@ using DSShared;
 
 namespace PckView
 {
-	public class OpenSaveFilter:IFilter<XCom.Interfaces.IXCImageFile>
+	public class OpenSaveFilter : IFilter<XCom.Interfaces.IXCImageFile>
 	{
 		private XCom.Interfaces.IXCImageFile.Filter filterBy;
 

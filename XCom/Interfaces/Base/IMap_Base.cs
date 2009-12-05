@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Drawing;
+using DSShared;
 
 namespace XCom.Interfaces.Base
 {
@@ -194,7 +195,7 @@ namespace XCom.Interfaces.Base
 						}
 		outLoop:
 
-			Bitmap b = Bmp.MakeBitmap((mapSize.Rows + mapSize.Cols) * (PckImage.Width / 2), (mapSize.Height - currentHeight) * 24 + (mapSize.Rows + mapSize.Cols) * 8, curPal.Colors);
+			Bitmap b = DSShared.Bmp.MakeBitmap((mapSize.Rows + mapSize.Cols) * (PckImage.Width / 2), (mapSize.Height - currentHeight) * 24 + (mapSize.Rows + mapSize.Cols) * 8, curPal.Colors);
 
 			Point start = new Point((mapSize.Rows - 1) * (PckImage.Width / 2), -(24 * currentHeight));
 
@@ -206,15 +207,15 @@ namespace XCom.Interfaces.Base
 						for (int col = 0, x = startX, y = startY; col < mapSize.Cols; col++, x += hWid, y += hHeight, curr++)
 						{
 							foreach (XCTile t in this[row, col, h].UsedTiles)
-								Bmp.Draw(t[0].Image, b, x, y - t.Info.TileOffset);
+								DSShared.Bmp.Draw(t[0].Image, b, x, y - t.Info.TileOffset);
 
 							Bmp.FireLoadingEvent(curr, (mapSize.Height - currentHeight) * mapSize.Rows * mapSize.Cols);
 						}
 			try
 			{
-				Rectangle rect = Bmp.GetBoundsRect(b, Bmp.DefaultTransparentIndex);
+				Rectangle rect = DSShared.Bmp.GetBoundsRect(b, DSShared.Bmp.DefaultTransparentIndex);
 
-				Bitmap b2 = Bmp.Crop(b, rect);
+				Bitmap b2 = DSShared.Bmp.Crop(b, rect);
 
 				b2.Save(file, System.Drawing.Imaging.ImageFormat.Gif);
 			}

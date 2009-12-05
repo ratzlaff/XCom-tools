@@ -6,6 +6,7 @@ using System.Drawing;
 using XCom.Interfaces;
 using System.Reflection;
 using XCom.Interfaces.Base;
+using DSShared;
 
 namespace XCom 
 {
@@ -13,7 +14,7 @@ namespace XCom
 
 	public class GameInfo
 	{
-		private static Palette currentPalette = Palette.TFTDBattle;
+		private static Palette currentPalette = XCPalette.TFTDBattle;
 
 		private static ImageInfo imageInfo;
 		private static TilesetDesc tileInfo;

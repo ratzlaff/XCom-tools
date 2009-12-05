@@ -29,7 +29,7 @@ namespace PckView
 
 			saveFile.Filter = "Image Profiles|*" + xcProfile.PROFILE_EXT;			
 
-			foreach (string key in ((Dictionary<string, Palette>)SharedSpace.Instance["Palettes"]).Keys)
+			foreach (string key in DSShared.Palette.LoadedPalettes.Keys)
 				cbPalette.Items.Add(key);
 
 			if (cbPalette.Items.Count > 0)

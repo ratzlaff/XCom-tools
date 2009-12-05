@@ -134,22 +134,22 @@ namespace MapView
 			this.label16 = new System.Windows.Forms.Label();
 			this.label21 = new System.Windows.Forms.Label();
 			this.tabPage4 = new System.Windows.Forms.TabPage();
-			this.label19 = new System.Windows.Forms.Label();
 			this.groupBox1 = new System.Windows.Forms.GroupBox();
-			this.l1 = new System.Windows.Forms.Label();
-			this.l2 = new System.Windows.Forms.Label();
-			this.l3 = new System.Windows.Forms.Label();
-			this.l6 = new System.Windows.Forms.Label();
-			this.l5 = new System.Windows.Forms.Label();
-			this.l4 = new System.Windows.Forms.Label();
-			this.l9 = new System.Windows.Forms.Label();
-			this.l8 = new System.Windows.Forms.Label();
-			this.l7 = new System.Windows.Forms.Label();
+			this.l14 = new System.Windows.Forms.Label();
+			this.l13 = new System.Windows.Forms.Label();
 			this.l12 = new System.Windows.Forms.Label();
 			this.l11 = new System.Windows.Forms.Label();
 			this.l10 = new System.Windows.Forms.Label();
-			this.l14 = new System.Windows.Forms.Label();
-			this.l13 = new System.Windows.Forms.Label();
+			this.l9 = new System.Windows.Forms.Label();
+			this.l8 = new System.Windows.Forms.Label();
+			this.l7 = new System.Windows.Forms.Label();
+			this.l6 = new System.Windows.Forms.Label();
+			this.l5 = new System.Windows.Forms.Label();
+			this.l4 = new System.Windows.Forms.Label();
+			this.l3 = new System.Windows.Forms.Label();
+			this.l2 = new System.Windows.Forms.Label();
+			this.l1 = new System.Windows.Forms.Label();
+			this.label19 = new System.Windows.Forms.Label();
 			this.tabMain.SuspendLayout();
 			this.tabPage1.SuspendLayout();
 			this.tabPage2.SuspendLayout();
@@ -160,12 +160,12 @@ namespace MapView
 			// 
 			// tabMain
 			// 
-			this.tabMain.Controls.AddRange(new System.Windows.Forms.Control[] {
-																				  this.tabPage1,
-																				  this.tabPage2,
-																				  this.tabPage3,
-																				  this.tabPage4});
+			this.tabMain.Controls.Add(this.tabPage1);
+			this.tabMain.Controls.Add(this.tabPage2);
+			this.tabMain.Controls.Add(this.tabPage3);
+			this.tabMain.Controls.Add(this.tabPage4);
 			this.tabMain.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.tabMain.Location = new System.Drawing.Point(0, 0);
 			this.tabMain.Name = "tabMain";
 			this.tabMain.SelectedIndex = 0;
 			this.tabMain.Size = new System.Drawing.Size(456, 273);
@@ -173,11 +173,10 @@ namespace MapView
 			// 
 			// tabPage1
 			// 
-			this.tabPage1.Controls.AddRange(new System.Windows.Forms.Control[] {
-																				   this.label17,
-																				   this.label12,
-																				   this.label2,
-																				   this.label1});
+			this.tabPage1.Controls.Add(this.label17);
+			this.tabPage1.Controls.Add(this.label12);
+			this.tabPage1.Controls.Add(this.label2);
+			this.tabPage1.Controls.Add(this.label1);
 			this.tabPage1.Location = new System.Drawing.Point(4, 22);
 			this.tabPage1.Name = "tabPage1";
 			this.tabPage1.Size = new System.Drawing.Size(448, 247);
@@ -211,6 +210,7 @@ namespace MapView
 			// 
 			// label1
 			// 
+			this.label1.Location = new System.Drawing.Point(0, 0);
 			this.label1.Name = "label1";
 			this.label1.Size = new System.Drawing.Size(448, 16);
 			this.label1.TabIndex = 0;
@@ -218,17 +218,16 @@ namespace MapView
 			// 
 			// tabPage2
 			// 
-			this.tabPage2.Controls.AddRange(new System.Windows.Forms.Control[] {
-																				   this.label22,
-																				   this.label11,
-																				   this.label10,
-																				   this.label9,
-																				   this.label8,
-																				   this.label7,
-																				   this.label6,
-																				   this.label5,
-																				   this.label4,
-																				   this.label3});
+			this.tabPage2.Controls.Add(this.label22);
+			this.tabPage2.Controls.Add(this.label11);
+			this.tabPage2.Controls.Add(this.label10);
+			this.tabPage2.Controls.Add(this.label9);
+			this.tabPage2.Controls.Add(this.label8);
+			this.tabPage2.Controls.Add(this.label7);
+			this.tabPage2.Controls.Add(this.label6);
+			this.tabPage2.Controls.Add(this.label5);
+			this.tabPage2.Controls.Add(this.label4);
+			this.tabPage2.Controls.Add(this.label3);
 			this.tabPage2.Location = new System.Drawing.Point(4, 22);
 			this.tabPage2.Name = "tabPage2";
 			this.tabPage2.Size = new System.Drawing.Size(448, 247);
@@ -280,7 +279,7 @@ namespace MapView
 			// 
 			// label7
 			// 
-			this.label7.ForeColor = System.Drawing.Color.FromArgb(((System.Byte)(255)), ((System.Byte)(128)), ((System.Byte)(0)));
+			this.label7.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
 			this.label7.Location = new System.Drawing.Point(64, 208);
 			this.label7.Name = "label7";
 			this.label7.Size = new System.Drawing.Size(56, 16);
@@ -313,6 +312,7 @@ namespace MapView
 			// 
 			// label3
 			// 
+			this.label3.Location = new System.Drawing.Point(0, 0);
 			this.label3.Name = "label3";
 			this.label3.Size = new System.Drawing.Size(376, 16);
 			this.label3.TabIndex = 0;
@@ -320,14 +320,13 @@ namespace MapView
 			// 
 			// tabPage3
 			// 
-			this.tabPage3.Controls.AddRange(new System.Windows.Forms.Control[] {
-																				   this.label20,
-																				   this.label18,
-																				   this.label13,
-																				   this.label14,
-																				   this.label15,
-																				   this.label16,
-																				   this.label21});
+			this.tabPage3.Controls.Add(this.label20);
+			this.tabPage3.Controls.Add(this.label18);
+			this.tabPage3.Controls.Add(this.label13);
+			this.tabPage3.Controls.Add(this.label14);
+			this.tabPage3.Controls.Add(this.label15);
+			this.tabPage3.Controls.Add(this.label16);
+			this.tabPage3.Controls.Add(this.label21);
 			this.tabPage3.Location = new System.Drawing.Point(4, 22);
 			this.tabPage3.Name = "tabPage3";
 			this.tabPage3.Size = new System.Drawing.Size(448, 247);
@@ -394,41 +393,31 @@ namespace MapView
 			// 
 			// tabPage4
 			// 
-			this.tabPage4.Controls.AddRange(new System.Windows.Forms.Control[] {
-																				   this.groupBox1,
-																				   this.label19});
+			this.tabPage4.Controls.Add(this.groupBox1);
+			this.tabPage4.Controls.Add(this.label19);
 			this.tabPage4.Location = new System.Drawing.Point(4, 22);
 			this.tabPage4.Name = "tabPage4";
 			this.tabPage4.Size = new System.Drawing.Size(448, 247);
 			this.tabPage4.TabIndex = 3;
 			this.tabPage4.Text = "Tile View";
 			// 
-			// label19
-			// 
-			this.label19.Location = new System.Drawing.Point(0, 8);
-			this.label19.Name = "label19";
-			this.label19.Size = new System.Drawing.Size(376, 16);
-			this.label19.TabIndex = 10;
-			this.label19.Text = "Left click to set the tile to place";
-			// 
 			// groupBox1
 			// 
 			this.groupBox1.BackColor = System.Drawing.SystemColors.ControlDark;
-			this.groupBox1.Controls.AddRange(new System.Windows.Forms.Control[] {
-																					this.l14,
-																					this.l13,
-																					this.l12,
-																					this.l11,
-																					this.l10,
-																					this.l9,
-																					this.l8,
-																					this.l7,
-																					this.l6,
-																					this.l5,
-																					this.l4,
-																					this.l3,
-																					this.l2,
-																					this.l1});
+			this.groupBox1.Controls.Add(this.l14);
+			this.groupBox1.Controls.Add(this.l13);
+			this.groupBox1.Controls.Add(this.l12);
+			this.groupBox1.Controls.Add(this.l11);
+			this.groupBox1.Controls.Add(this.l10);
+			this.groupBox1.Controls.Add(this.l9);
+			this.groupBox1.Controls.Add(this.l8);
+			this.groupBox1.Controls.Add(this.l7);
+			this.groupBox1.Controls.Add(this.l6);
+			this.groupBox1.Controls.Add(this.l5);
+			this.groupBox1.Controls.Add(this.l4);
+			this.groupBox1.Controls.Add(this.l3);
+			this.groupBox1.Controls.Add(this.l2);
+			this.groupBox1.Controls.Add(this.l1);
 			this.groupBox1.Location = new System.Drawing.Point(8, 56);
 			this.groupBox1.Name = "groupBox1";
 			this.groupBox1.Size = new System.Drawing.Size(320, 136);
@@ -436,78 +425,21 @@ namespace MapView
 			this.groupBox1.TabStop = false;
 			this.groupBox1.Text = "Color Key";
 			// 
-			// l1
+			// l14
 			// 
-			this.l1.ForeColor = System.Drawing.SystemColors.ControlText;
-			this.l1.Location = new System.Drawing.Point(8, 16);
-			this.l1.Name = "l1";
-			this.l1.Size = new System.Drawing.Size(84, 16);
-			this.l1.TabIndex = 12;
-			this.l1.Text = "Tile";
+			this.l14.Location = new System.Drawing.Point(104, 112);
+			this.l14.Name = "l14";
+			this.l14.Size = new System.Drawing.Size(84, 16);
+			this.l14.TabIndex = 25;
+			this.l14.Text = "Must Destroy";
 			// 
-			// l2
+			// l13
 			// 
-			this.l2.Location = new System.Drawing.Point(104, 16);
-			this.l2.Name = "l2";
-			this.l2.Size = new System.Drawing.Size(84, 16);
-			this.l2.TabIndex = 13;
-			this.l2.Text = "Xcom unit start";
-			// 
-			// l3
-			// 
-			this.l3.Location = new System.Drawing.Point(200, 16);
-			this.l3.Name = "l3";
-			this.l3.Size = new System.Drawing.Size(112, 16);
-			this.l3.TabIndex = 14;
-			this.l3.Text = "Ion beam accelerator";
-			// 
-			// l6
-			// 
-			this.l6.Location = new System.Drawing.Point(200, 40);
-			this.l6.Name = "l6";
-			this.l6.Size = new System.Drawing.Size(84, 16);
-			this.l6.TabIndex = 17;
-			this.l6.Text = "Cryogenics";
-			// 
-			// l5
-			// 
-			this.l5.Location = new System.Drawing.Point(104, 40);
-			this.l5.Name = "l5";
-			this.l5.Size = new System.Drawing.Size(84, 16);
-			this.l5.TabIndex = 16;
-			this.l5.Text = "Navigation";
-			// 
-			// l4
-			// 
-			this.l4.Location = new System.Drawing.Point(8, 40);
-			this.l4.Name = "l4";
-			this.l4.Size = new System.Drawing.Size(96, 16);
-			this.l4.TabIndex = 15;
-			this.l4.Text = "Destroy Objective";
-			// 
-			// l9
-			// 
-			this.l9.Location = new System.Drawing.Point(200, 64);
-			this.l9.Name = "l9";
-			this.l9.Size = new System.Drawing.Size(84, 16);
-			this.l9.TabIndex = 20;
-			this.l9.Text = "Implanter";
-			// 
-			// l8
-			// 
-			this.l8.Location = new System.Drawing.Point(104, 64);
-			this.l8.Name = "l8";
-			this.l8.Size = new System.Drawing.Size(84, 16);
-			this.l8.TabIndex = 19;
-			this.l8.Text = "Learning Array";
-			// 
-			// l7
-			// 
-			this.l7.Location = new System.Drawing.Point(8, 64);
-			this.l7.Name = "l7";
-			this.l7.Size = new System.Drawing.Size(84, 16);
-			this.l7.TabIndex = 18;
-			this.l7.Text = "Cloning";
+			this.l13.Location = new System.Drawing.Point(8, 112);
+			this.l13.Name = "l13";
+			this.l13.Size = new System.Drawing.Size(84, 16);
+			this.l13.TabIndex = 24;
+			this.l13.Text = "End Point";
 			// 
 			// l12
 			// 
@@ -533,28 +465,93 @@ namespace MapView
 			this.l10.TabIndex = 21;
 			this.l10.Text = "Plastics";
 			// 
-			// l14
+			// l9
 			// 
-			this.l14.Location = new System.Drawing.Point(104, 112);
-			this.l14.Name = "l14";
-			this.l14.Size = new System.Drawing.Size(84, 16);
-			this.l14.TabIndex = 25;
-			this.l14.Text = "Must Destroy";
+			this.l9.Location = new System.Drawing.Point(200, 64);
+			this.l9.Name = "l9";
+			this.l9.Size = new System.Drawing.Size(84, 16);
+			this.l9.TabIndex = 20;
+			this.l9.Text = "Implanter";
 			// 
-			// l13
+			// l8
 			// 
-			this.l13.Location = new System.Drawing.Point(8, 112);
-			this.l13.Name = "l13";
-			this.l13.Size = new System.Drawing.Size(84, 16);
-			this.l13.TabIndex = 24;
-			this.l13.Text = "End Point";
+			this.l8.Location = new System.Drawing.Point(104, 64);
+			this.l8.Name = "l8";
+			this.l8.Size = new System.Drawing.Size(84, 16);
+			this.l8.TabIndex = 19;
+			this.l8.Text = "Learning Array";
+			// 
+			// l7
+			// 
+			this.l7.Location = new System.Drawing.Point(8, 64);
+			this.l7.Name = "l7";
+			this.l7.Size = new System.Drawing.Size(84, 16);
+			this.l7.TabIndex = 18;
+			this.l7.Text = "Cloning";
+			// 
+			// l6
+			// 
+			this.l6.Location = new System.Drawing.Point(200, 40);
+			this.l6.Name = "l6";
+			this.l6.Size = new System.Drawing.Size(84, 16);
+			this.l6.TabIndex = 17;
+			this.l6.Text = "Cryogenics";
+			// 
+			// l5
+			// 
+			this.l5.Location = new System.Drawing.Point(104, 40);
+			this.l5.Name = "l5";
+			this.l5.Size = new System.Drawing.Size(84, 16);
+			this.l5.TabIndex = 16;
+			this.l5.Text = "Navigation";
+			// 
+			// l4
+			// 
+			this.l4.Location = new System.Drawing.Point(8, 40);
+			this.l4.Name = "l4";
+			this.l4.Size = new System.Drawing.Size(96, 16);
+			this.l4.TabIndex = 15;
+			this.l4.Text = "Destroy Objective";
+			// 
+			// l3
+			// 
+			this.l3.Location = new System.Drawing.Point(200, 16);
+			this.l3.Name = "l3";
+			this.l3.Size = new System.Drawing.Size(112, 16);
+			this.l3.TabIndex = 14;
+			this.l3.Text = "Ion beam accelerator";
+			// 
+			// l2
+			// 
+			this.l2.Location = new System.Drawing.Point(104, 16);
+			this.l2.Name = "l2";
+			this.l2.Size = new System.Drawing.Size(84, 16);
+			this.l2.TabIndex = 13;
+			this.l2.Text = "Xcom unit start";
+			// 
+			// l1
+			// 
+			this.l1.ForeColor = System.Drawing.SystemColors.ControlText;
+			this.l1.Location = new System.Drawing.Point(8, 16);
+			this.l1.Name = "l1";
+			this.l1.Size = new System.Drawing.Size(84, 16);
+			this.l1.TabIndex = 12;
+			this.l1.Text = "Tile";
+			// 
+			// label19
+			// 
+			this.label19.Location = new System.Drawing.Point(0, 8);
+			this.label19.Name = "label19";
+			this.label19.Size = new System.Drawing.Size(376, 16);
+			this.label19.TabIndex = 10;
+			this.label19.Text = "Left click to set the tile to place";
 			// 
 			// HelpScreen
 			// 
 			this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
 			this.ClientSize = new System.Drawing.Size(456, 273);
-			this.Controls.AddRange(new System.Windows.Forms.Control[] {
-																		  this.tabMain});
+			this.Controls.Add(this.tabMain);
+			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
 			this.Name = "HelpScreen";
 			this.Text = "HelpScreen";
 			this.tabMain.ResumeLayout(false);

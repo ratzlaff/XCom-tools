@@ -5,6 +5,7 @@ using System.Drawing;
 using XCom.Interfaces;
 using XCom;
 using System.IO;
+using DSShared;
 
 namespace PckView
 {

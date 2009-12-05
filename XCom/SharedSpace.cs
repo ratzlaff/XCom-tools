@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using XCom.Interfaces;
+using DSShared;
 
 namespace XCom
 {
@@ -58,11 +59,6 @@ namespace XCom
 		public List<XCom.Interfaces.IXCImageFile> GetImageModList()
 		{
 			return (List<XCom.Interfaces.IXCImageFile>)mySpace["ImageMods"];
-		}
-
-		public Dictionary<string, XCom.Palette> GetPaletteTable()
-		{
-			return (Dictionary<string, XCom.Palette>)mySpace["Palettes"];
 		}
 	}
 }
