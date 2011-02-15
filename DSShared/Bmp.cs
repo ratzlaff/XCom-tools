@@ -1,4 +1,4 @@
-#define hq2xWorks
+//#define hq2xWorks
 
 using System;
 using System.Drawing;
@@ -50,8 +50,8 @@ namespace DSShared
 			bw.Write((short)8);
 			bw.Write((int)0);
 			bw.Write((int)0);
-			bw.Write((int)0);
-			bw.Write((int)0);
+			bw.Write((int)3000);
+			bw.Write((int)3000);
 			bw.Write((int)0);
 			bw.Write((int)0);
 			bw.Write((int)0);
