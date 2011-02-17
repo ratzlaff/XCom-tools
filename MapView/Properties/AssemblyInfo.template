@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("DSShared")]
-[assembly: AssemblyDescription("Cross-program utility library")]
+[assembly: AssemblyTitle("MapView")]
+[assembly: AssemblyDescription("Isometric Map Editor")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("DSShared")]
+[assembly: AssemblyProduct("MapView")]
 [assembly: AssemblyCopyright("")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("CB6F00C2-BDF3-4432-A57A-1982DD251532")]
+[assembly: Guid("67613839-3B8C-40ab-A48B-9E6B64C43CB2")]
 
 // Version information for an assembly consists of the following four values:
 //
@@ -29,5 +29,5 @@ using System.Runtime.InteropServices;
 //      Build Number
 //      Revision
 //
-[assembly: AssemblyVersion("1.0.0.0")]
-[assembly: AssemblyFileVersionAttribute("1.0.0.0")]
+[assembly: AssemblyVersion("1.11.0.$WCREV$")]
+[assembly: AssemblyFileVersion("1.11.0.$WCREV$")]

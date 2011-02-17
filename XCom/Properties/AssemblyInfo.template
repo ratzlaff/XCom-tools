@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("PckView")]
-[assembly: AssemblyDescription("Game sprite image viewer")]
+[assembly: AssemblyTitle("XCom")]
+[assembly: AssemblyDescription("Library for xcom editing")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("PckView")]
+[assembly: AssemblyProduct("XCom")]
 [assembly: AssemblyCopyright("")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("49199299-DBBB-4178-96AE-19B2F91D3675")]
+[assembly: Guid("A1790457-D476-4b72-9E2E-95D387A97667")]
 
 // Version information for an assembly consists of the following four values:
 //
@@ -29,5 +29,5 @@ using System.Runtime.InteropServices;
 //      Build Number
 //      Revision
 //
-[assembly: AssemblyVersion("1.5.0.0")]
-[assembly: AssemblyFileVersion("1.5.0.0")]
+[assembly: AssemblyVersion("1.0.0.$WCREV$")]
+[assembly: AssemblyFileVersion("1.0.0.$WCREV$")]
