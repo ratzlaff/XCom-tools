@@ -1,0 +1,8 @@
+SCR Loader
+{
+	codec:Uncompressed Images
+	open:.scr
+	width:320
+	height:200
+	palette:ufo-research
+}

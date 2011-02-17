@@ -36,7 +36,6 @@ namespace PckView
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(HelpForm));
 			this.label1 = new System.Windows.Forms.Label();
 			this.label2 = new System.Windows.Forms.Label();
-			this.label3 = new System.Windows.Forms.Label();
 			this.label4 = new System.Windows.Forms.Label();
 			this.SuspendLayout();
 			// 
@@ -56,16 +55,6 @@ namespace PckView
 			this.label2.TabIndex = 1;
 			this.label2.Text = resources.GetString("label2.Text");
 			// 
-			// label3
-			// 
-			this.label3.Location = new System.Drawing.Point(0, 112);
-			this.label3.Name = "label3";
-			this.label3.Size = new System.Drawing.Size(336, 48);
-			this.label3.TabIndex = 2;
-			this.label3.Text = "If you find a bug in the program, and can reproduce it reliably, you may email me" +
-				" about it. Any other questions (use of program, etc) will be answered only on th" +
-				"e XTC messageboards";
-			// 
 			// label4
 			// 
 			this.label4.Location = new System.Drawing.Point(0, 24);
@@ -77,9 +66,8 @@ namespace PckView
 			// HelpForm
 			// 
 			this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
-			this.ClientSize = new System.Drawing.Size(346, 159);
+			this.ClientSize = new System.Drawing.Size(346, 109);
 			this.Controls.Add(this.label4);
-			this.Controls.Add(this.label3);
 			this.Controls.Add(this.label2);
 			this.Controls.Add(this.label1);
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
@@ -95,7 +83,6 @@ namespace PckView
 
 		private System.Windows.Forms.Label label1;
 		private System.Windows.Forms.Label label2;
-		private System.Windows.Forms.Label label3;
 		private System.Windows.Forms.Label label4;
 	}
 }

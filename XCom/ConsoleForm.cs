@@ -25,7 +25,6 @@ namespace XCom
 
 		void xConsole_BufferChanged(Node current)
 		{			
-			
 			string buffer = current.str+"\n";
 			Node curr = current.next;
 
@@ -37,13 +36,6 @@ namespace XCom
 
 			consoleText.Text = buffer;
 			Refresh();
-			
-			//consoleText.Text += current.str+"\n";
-		}
-
-		private void miClose_Click(object sender, EventArgs e)
-		{
-			Close();
 		}
 	}
 }

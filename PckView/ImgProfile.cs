@@ -107,6 +107,9 @@ namespace PckView
 				append = MessageBox.Show("File exists, append new profile? Clicking 'No' will overwrite the file", "File exists", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes;
 
 			StreamWriter sw = new StreamWriter(outFile, append);
+			if (Description == "")
+				Description = ext.Substring(ext.LastIndexOf(".") + 1);
+
 			sw.WriteLine(Description);
 			sw.WriteLine("{");
 

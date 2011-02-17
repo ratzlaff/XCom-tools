@@ -146,6 +146,11 @@ namespace PckView
 					int y = i/numAcross();
 					
 					Size cellSize = myFile.IXCFile.ImageSize;
+					if (cellSize.Width == 0)
+						cellSize.Width = myFile[i].Image.Width;
+
+					if (cellSize.Height == 0)
+						cellSize.Height = myFile[i].Image.Height;
 
 					try
 					{
@@ -159,7 +164,11 @@ namespace PckView
 
 		private int numAcross()
 		{
-			return Math.Max(1,(Width-8)/(myFile.IXCFile.ImageSize.Width+2*space));
+			int imgWidth = myFile.IXCFile.ImageSize.Width;
+			if (myFile.Count > 0 && (myFile.IXCFile.ImageSize.Width == 0 || myFile.IXCFile.ImageSize.Height == 0))
+				imgWidth = myFile[0].Image.Width;
+
+			return Math.Max(1, (Width - 8) / (imgWidth + 2 * space));
 		}
 
 		private int calcHeight()

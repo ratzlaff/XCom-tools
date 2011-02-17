@@ -44,9 +44,8 @@ namespace DSShared
 		{
 			get
 			{
-				if (loadedPalettes[mName + "#gray"] == null) {
+				if (!loadedPalettes.ContainsKey(mName + "#gray")) {
 					Palette p = new Palette(mName + "#gray", mTransIdx);
-					loadedPalettes[p.mName] = p;
 					for (int i = 0; i < mPalette.Entries.Length; i++) {
 						int s = (int)(this[i].R * .10 + this[i].G * .50 + this[i].B * .25);
 						p[i] = Color.FromArgb(s, s, s);

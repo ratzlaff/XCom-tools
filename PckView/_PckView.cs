@@ -62,12 +62,27 @@ namespace PckView
 			sharedSpace.GetObj("AppDir", Environment.CurrentDirectory);
 			sharedSpace.GetObj("CustomDir", Environment.CurrentDirectory + "\\custom");
 			sharedSpace.GetObj("SettingsDir", Environment.CurrentDirectory + "\\settings");	
-		
-
 
 			xConsole.AddLine("Current directory: " + sharedSpace["AppDir"]);
 			xConsole.AddLine("Custom directory: " + sharedSpace["CustomDir"].ToString());
 			#endregion
+
+			if (!Directory.Exists(XCom.SharedSpace.Instance["CustomDir"].ToString())) {
+				Directory.CreateDirectory(XCom.SharedSpace.Instance["CustomDir"].ToString());
+
+				try {
+					StreamReader sr = new StreamReader(Assembly.GetExecutingAssembly().GetManifestResourceStream("PckView._Embedded.scr.pvp"));
+					StreamWriter sw = new StreamWriter(XCom.SharedSpace.Instance["CustomDir"].ToString() + "/scr.pvp");
+
+					while (sr.Peek() != -1)
+						sw.WriteLine(sr.ReadLine());
+
+					sr.Close();
+					sw.Close();
+				} catch (Exception) {
+					xConsole.AddLine("Error writing out scr profile");
+				}
+			}
 
 			v = TotalViewPck.Instance;
 			v.Dock = DockStyle.Fill;
