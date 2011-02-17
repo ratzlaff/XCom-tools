@@ -46,6 +46,8 @@ namespace MapView
 
 			panels = new TilePanel[]{all,ground,wWalls,nWalls,objects};
 
+			settings = new Settings();
+
 			addPanel(all,allTab);
 			addPanel(ground,groundTab);
 			addPanel(wWalls,wWallsTab);
