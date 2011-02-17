@@ -73,9 +73,9 @@ namespace XCSuite
 			this.ClientSize = new System.Drawing.Size(322, 442);
 			this.Controls.Add(this.contentPane);
 			this.Controls.Add(this.statusStrip1);
-			this.MinimumSize = new System.Drawing.Size(330, 0);
+			this.MinimumSize = new System.Drawing.Size(330, 34);
 			this.Name = "_Main";
-			this.Text = "Form1";
+			this.Text = "Programs";
 			this.statusStrip1.ResumeLayout(false);
 			this.statusStrip1.PerformLayout();
 			this.ResumeLayout(false);
