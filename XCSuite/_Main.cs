@@ -8,6 +8,10 @@ using System.Windows.Forms;
 using System.Reflection;
 using System.IO;
 
+/*
+ * $Id$ 
+ */
+
 namespace XCSuite
 {
 	public partial class _Main : Form
