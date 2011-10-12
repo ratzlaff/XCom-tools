@@ -818,15 +818,18 @@ namespace MapView.RmpViewForm
 										g.DrawLine(pens["UnselectedLinkColor"], x, y + hHeight, 0, 0);
 										break;
 									default:
-										if (map.Rmp[l.Index] != null)
-										{
-											if (map.Rmp[l.Index].Height == map.CurrentHeight)
-											{
-												int toRow = map.Rmp[l.Index].Row;
-												int toCol = map.Rmp[l.Index].Col;
-												g.DrawLine(pens["UnselectedLinkColor"], x, y + hHeight, origin.X + (toCol - toRow) * hWidth, origin.Y + (toCol + toRow + 1) * hHeight);
-											}
-										}
+                                        if (map.Rmp.Length > l.Index)
+                                        {
+                                            if (map.Rmp[l.Index] != null)
+                                            {
+                                                if (map.Rmp[l.Index].Height == map.CurrentHeight)
+                                                {
+                                                    int toRow = map.Rmp[l.Index].Row;
+                                                    int toCol = map.Rmp[l.Index].Col;
+                                                    g.DrawLine(pens["UnselectedLinkColor"], x, y + hHeight, origin.X + (toCol - toRow) * hWidth, origin.Y + (toCol + toRow + 1) * hHeight);
+                                                }
+                                            }
+                                        }
 										break;
 								}
 							}
@@ -908,14 +911,17 @@ namespace MapView.RmpViewForm
 									case Link.ExitWest:
 										break;
 									default:
-										if (map.Rmp[l.Index] != null && map.Rmp[l.Index].Height < map.CurrentHeight)
-										{
-											g.DrawLine(pens["UnselectedLinkColor"], x, y, x, y + hHeight * 2);
-										}
-										else if (map.Rmp[l.Index] != null && map.Rmp[l.Index].Height > map.CurrentHeight)
-										{
-											g.DrawLine(pens["UnselectedLinkColor"], x - hWidth, y + hHeight, x + hWidth, y + hHeight);
-										}
+                                        if (map.Rmp.Length > l.Index)
+                                        {
+                                            if (map.Rmp[l.Index] != null && map.Rmp[l.Index].Height < map.CurrentHeight)
+                                            {
+                                                g.DrawLine(pens["UnselectedLinkColor"], x, y, x, y + hHeight * 2);
+                                            }
+                                            else if (map.Rmp[l.Index] != null && map.Rmp[l.Index].Height > map.CurrentHeight)
+                                            {
+                                                g.DrawLine(pens["UnselectedLinkColor"], x - hWidth, y + hHeight, x + hWidth, y + hHeight);
+                                            }
+                                        }
 										break;
 								}
 							}
