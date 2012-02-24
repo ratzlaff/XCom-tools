@@ -1,16 +1,19 @@
 solution "XCSuite"
 	framework "3.5"
 	location ".."
-	objdir "../obj"
-	targetdir "../bin"
+
 	configurations { "Debug", "Release" }
 		flags { "Unsafe" }
 		
 	configuration { "Debug" }
 		flags { "Symbols" }
+		objdir "../obj/Debug"
+		targetdir "../bin/Debug"
 		
 	configuration { "Release" }
 		flags { "Optimize" }
+		objdir "../obj/Release"
+		targetdir "../bin/Release"
  
 	-- MapView
 	project "MapView"
