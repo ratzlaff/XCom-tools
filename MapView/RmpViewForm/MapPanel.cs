@@ -9,13 +9,14 @@ namespace MapView.RmpViewForm
 {
 	public delegate void MapPanelClickDelegate(object sender, MapPanelClickEventArgs e);
 
-	public class MapPanel:Panel
+	public class MapPanel : Panel
 	{
 		protected XCMapFile map;
 		protected Point origin;
 		protected Point clickPoint;
-		protected Dictionary<string, Pen> pens;
-		protected Dictionary<string, SolidBrush> brushes;
+
+		public Dictionary<string, SolidBrush> Brushes { get; set; }
+		public Dictionary<string, Pen> Pens { get; set; }
 
 		protected int hWidth = 8, hHeight = 4;
 
@@ -23,8 +24,8 @@ namespace MapView.RmpViewForm
 
 		public MapPanel()
 		{
-			pens = new Dictionary<string, Pen>();
-			brushes = new Dictionary<string, SolidBrush>();
+			Pens = new Dictionary<string, Pen>();
+			Brushes = new Dictionary<string, SolidBrush>();
 			SetStyle(ControlStyles.AllPaintingInWmPaint | ControlStyles.DoubleBuffer | ControlStyles.UserPaint, true);
 		}
 
@@ -57,28 +58,21 @@ namespace MapView.RmpViewForm
 		{
 			//Point pt = convertCoordsDiamond(e.X, e.Y);
 
-			if (MapPanelClicked != null)
-			{
-				XCom.Interfaces.Base.IMapTile tile=null;
+			if (MapPanelClicked != null) {
+				XCom.Interfaces.Base.IMapTile tile = null;
 
 				Point p = convertCoordsDiamond(e.X, e.Y);
 				if (p.Y >= 0 && p.Y < map.MapSize.Rows &&
 					p.X >= 0 && p.X < map.MapSize.Cols)
-					tile =  map[p.Y, p.X];
+					tile = map[p.Y, p.X];
 
-				if (tile!=null)
-				{
+				if (tile != null) {
 					clickPoint.X = p.X;
 					clickPoint.Y = p.Y;
 
 					map.SelectedTile = new MapLocation(clickPoint.Y, clickPoint.X, map.CurrentHeight);
-					MapPanelClickEventArgs mpe = new MapPanelClickEventArgs();
-					mpe.ClickTile = tile;
-					mpe.MouseEventArgs=e;
-					mpe.ClickLocation = new MapLocation(clickPoint.Y, clickPoint.X, map.CurrentHeight);
-					MapPanelClicked(this,mpe);
-
-					//RmpSquareClicked(clickPoint.Y, clickPoint.X, e.Button);
+					MapPanelClickEventArgs mpe = new MapPanelClickEventArgs(e, tile, map.SelectedTile);
+					MapPanelClicked(this, mpe);
 				}
 			}
 
@@ -87,10 +81,8 @@ namespace MapView.RmpViewForm
 
 		protected override void OnResize(EventArgs e)
 		{
-			if (map != null)
-			{
-				if (Height > Width / 2)
-				{
+			if (map != null) {
+				if (Height > Width / 2) {
 					//use width
 					hWidth = (Width) / (map.MapSize.Rows + map.MapSize.Cols + 1);
 
@@ -98,9 +90,7 @@ namespace MapView.RmpViewForm
 						hWidth--;
 
 					hHeight = hWidth / 2;
-				}
-				else
-				{ //use height
+				} else { //use height
 					hHeight = (Height) / (map.MapSize.Rows + map.MapSize.Cols);
 					hWidth = hHeight * 2;
 				}
@@ -122,31 +112,17 @@ namespace MapView.RmpViewForm
 		}
 	}
 
-	public class MapPanelClickEventArgs:EventArgs
+	public class MapPanelClickEventArgs : EventArgs
 	{
-		private XCom.Interfaces.Base.IMapTile clickTile;
-		private MapLocation clickLocation;
-
-		public MapLocation ClickLocation
+		public MapPanelClickEventArgs(MouseEventArgs e, XCom.Interfaces.Base.IMapTile tile, MapLocation inLoc)
 		{
-			get { return clickLocation; }
-			set { clickLocation = value; }
+			this.MouseEventArgs = e;
+			this.Tile = tile;
+			this.MapLocation = inLoc;
 		}
 
-		public XCom.Interfaces.Base.IMapTile ClickTile
-		{
-		  get { return clickTile; }
-		  set { clickTile = value; }
-		}
-
-		private MouseEventArgs me;
-
-		public MouseEventArgs MouseEventArgs
-		{
-		  get { return me; }
-		  set { me = value; }
-		}
-
-		public MapPanelClickEventArgs(){}
+		public MapLocation MapLocation { get; set; }
+		public XCom.Interfaces.Base.IMapTile Tile { get; set; }
+		public MouseEventArgs MouseEventArgs { get; set; }
 	}
 }
