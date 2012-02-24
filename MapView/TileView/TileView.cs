@@ -429,8 +429,6 @@ namespace MapView
 			MapViewPanel.ImageUpdate+=new EventHandler(tick);
 			SetStyle(ControlStyles.AllPaintingInWmPaint|ControlStyles.DoubleBuffer|ControlStyles.UserPaint,true);			
 			selectedNum=0;
-
-			Globals.LoadExtras();
 		}
 
 		private void valChange(object sender, EventArgs e)

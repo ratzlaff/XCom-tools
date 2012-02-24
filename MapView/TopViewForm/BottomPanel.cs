@@ -78,8 +78,6 @@ namespace MapView.TopViewForm
 			btnDown.Size = btnUp.Size;
 			btnDown.Click += new EventHandler(Up_click);*/
 
-			Globals.LoadExtras();
-
 			//Controls.AddRange(new Control[] { btnCut, btnCopy, btnPaste, btnUp, btnDown });
 		}
 

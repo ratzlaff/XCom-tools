@@ -11,15 +11,18 @@ namespace MapView
 		public static bool UseGray { get { return true; } }
 		public static readonly string RegistryKey = "MapView";
 
-		public static XCom.PckFile ExtraTiles { get; }
-
-		public static void LoadExtras()
+		private static XCom.PckFile extraTiles;
+		public static XCom.PckFile ExtraTiles
 		{
-			if (ExtraTiles == null) {
-				System.IO.Stream sPck = System.Reflection.Assembly.GetExecutingAssembly().GetManifestResourceStream("MapView._Embedded.Extra.PCK");
-				System.IO.Stream sTab = System.Reflection.Assembly.GetExecutingAssembly().GetManifestResourceStream("MapView._Embedded.Extra.TAB");
+			get
+			{
+				if (extraTiles == null) {
+					System.IO.Stream sPck = System.Reflection.Assembly.GetExecutingAssembly().GetManifestResourceStream("MapView._Embedded.Extra.PCK");
+					System.IO.Stream sTab = System.Reflection.Assembly.GetExecutingAssembly().GetManifestResourceStream("MapView._Embedded.Extra.TAB");
 
-				ExtraTiles = new XCom.PckFile(sPck, sTab, 2, XCPalette.TFTDBattle);
+					extraTiles = new XCom.PckFile(sPck, sTab, 2, XCPalette.TFTDBattle);
+				}
+				return extraTiles;
 			}
 		}
 	}
