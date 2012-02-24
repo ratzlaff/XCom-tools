@@ -76,3 +76,4 @@ solution "XCSuite"
 		language "C#"
 		files { "premake4.lua" }
 		location "../build"
+		targetdir "../obj"
