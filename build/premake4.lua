@@ -18,6 +18,7 @@ solution "XCSuite"
 		kind "WindowedApp"
 		language "C#"
 		files { "../MapView/**.cs", "../MapView/**.resx" }
+		excludes { "../MapView/Ignored/**.*" }
 		embedded { "../MapView/_Embedded/**.*" }
 		
 		links { "DSShared", "XCom", "System", "System.Core", "System.Data", "System.Design", "System.Windows.Forms", "System.Drawing", "System.Management" }
@@ -28,6 +29,7 @@ solution "XCSuite"
 		kind "WindowedApp"
 		language "C#"
 		files { "../PckView/**.cs", "../PckView/**.resx" }
+		excludes { "../PckView/Ignored/**.*" }
 		embedded { "../PckView/_Embedded/**.*" }
 		
 		links { "System", "XCom", "DSShared", "System.Core", "System.Data", "System.Design", "System.Drawing", "System.Windows.Forms" }
@@ -49,6 +51,7 @@ solution "XCSuite"
 		kind "SharedLib"
 		language "C#"
 		files { "../DSShared/**.cs", "../DSShared/**.resx" }
+		excludes { "../DSShared/Ignored/**.*" }
 		embedded { "../DSShared/_Embedded/**.*" }
 		
 		links { "System", "System.Core", "System.Data", "System.Design", "System.Drawing", "System.Windows.Forms" }
@@ -59,6 +62,7 @@ solution "XCSuite"
 		kind "SharedLib"
 		language "C#"
 		files { "../XCSuite/**.cs", "../XCSuite/**.resx" }
+		excludes { "../XCSuite/Ignored/**.*" }
 		embedded { "../XCSuite/_Embedded/**.*" }
 		
 		links { "DSShared", "XCom", "System", "System.Core", "System.Data", "System.Design", "System.Drawing", "System.Windows.Forms" }
