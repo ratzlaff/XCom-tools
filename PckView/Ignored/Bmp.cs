@@ -1,3 +1,4 @@
+#if UNUSED
 using System;
 using System.Drawing;
 using System.IO;
@@ -199,7 +200,7 @@ namespace PckView
 				return (xCollection)mi.Invoke(null,new object[]{b});
 		}
 
-		public static ITile LoadSingle(Bitmap src,int num,Palette pal,Type collectionType)
+		public static ITile LoadSingle(Bitmap src, int num, DSShared.Palette pal, Type collectionType)
 		{			
 			MethodInfo mi = collectionType.GetMethod("FromBmpSingle");
 			if(mi==null)
@@ -500,3 +501,4 @@ namespace PckView
 		}
 	}
 }
+#endif

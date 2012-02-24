@@ -1,3 +1,4 @@
+#if UNUSED
 using System;
 using System.Collections;
 using System.IO;
@@ -14,7 +15,7 @@ namespace PckView
 	{
 		private ArrayList images;
 		private string name,path;
-		private Palette pal=Palette.TFTDBattle;
+		private DSShared.Palette pal = Palette.TFTDBattle;
 
 		public event LoadingDelegate LoadingEvent; 
 		public readonly static int imgSpace=1;
@@ -80,7 +81,7 @@ namespace PckView
 			this.images=images;
 		}
 
-		public Palette DefaultPalette
+		public DSShared.Palette DefaultPalette
 		{
 			get{return Palette.TFTDBattle;}
 		}
@@ -122,7 +123,8 @@ namespace PckView
 			tab.Close();
 		}
 
-		public Palette Pal{
+		public DSShared.Palette Pal
+		{
 			get{return pal;}
 			set{
 				foreach(PckImage p in images)
@@ -204,12 +206,12 @@ namespace PckView
 			return new PckFile(list);			
 		}
 
-		public static ITile FromBmpSingle(Bitmap b, int num, Palette p)
+		public static ITile FromBmpSingle(Bitmap b, int num, DSShared.Palette p)
 		{
 			return PckImage.FromBMP(b,num,p,0,0);
 		}
 
-		public void SaveBMP(string file,Palette pal,int bpp,int across)
+		public void SaveBMP(string file, DSShared.Palette pal, int bpp, int across)
 		{
 			int mod=1;
 			if(Size%across==0)
@@ -338,3 +340,4 @@ namespace PckView
 		}
 	}								 
 }
+#endif

@@ -32,12 +32,12 @@ namespace PckView
 		public PckFile Pck
 		{
 			get{return pckFile;}
-			set{pckFile = value;if(pckFile!=null)Height=((pckFile.Size/8)+1)*(height+2*space);}
+			set{pckFile = value;if(pckFile!=null)Height=((pckFile.Count/8)+1)*(height+2*space);}
 		}
 
 		public PckImage Selected
 		{
-			get{if(pckFile!=null)return pckFile[clickY*8+clickX];return null;}
+			get{if(pckFile!=null)return (PckImage)pckFile[clickY*8+clickX];return null;}
 		}
 
 		private void moving(object sender, MouseEventArgs e)
@@ -75,16 +75,16 @@ namespace PckView
 
 				for(int i=0;i<9;i++)
 					g.DrawLine(Pens.Black,new Point(i*(width+2*space)-space,0),new Point(i*(width+2*space)-space,Height));
-				for(int i=0;i<pckFile.Size/8+1;i++)
+				for(int i=0;i<pckFile.Count/8+1;i++)
 					g.DrawLine(Pens.Black,new Point(0,i*(height+2*space)-space),new Point(Width,i*(height+2*space)-space));
 
-				for(int i=0;i<pckFile.Size;i++)
+				foreach(PckImage pck in pckFile)
 				{
-					int x = i%8;
-					int y = i/8;
+					int x = pck.FileNum%8;
+					int y = pck.FileNum/8;
 					try
 					{
-						g.DrawImage(pckFile[i].Image,x*(width+2*space),y*(height+2*space));
+						g.DrawImage(pck.Image,x*(width+2*space),y*(height+2*space));
 					}
 					catch(Exception)
 					{}
