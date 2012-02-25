@@ -23,15 +23,14 @@ namespace XCom
 			SetStyle(ControlStyles.OptimizedDoubleBuffer | ControlStyles.AllPaintingInWmPaint, true);
 		}
 
-		void xConsole_BufferChanged(Node current)
-		{			
-			string buffer = current.str+"\n";
-			Node curr = current.next;
+		void xConsole_BufferChanged(xConsole.Node current)
+		{
+			string buffer = current.Str + "\n";
+			xConsole.Node curr = current.Next;
 
-			while (current != curr)
-			{
-				buffer = buffer + curr.str + "\n";
-				curr = curr.next;
+			while (current != curr) {
+				buffer = buffer + curr.Str + "\n";
+				curr = curr.Next;
 			}
 
 			consoleText.Text = buffer;
