@@ -7,13 +7,16 @@ namespace XCom
 	/// </summary>
 	public struct MapLocation
 	{
-		public int Row, Col, Height;
+		public int Row { get; set; }
+		public int Col { get; set; }
+		public int Height { get; set; }
 
 		public MapLocation(int row, int col, int height)
+			: this()
 		{
-			this.Row=row;
-			this.Col=col;
-			this.Height=height;
+			Row = row;
+			Col = col;
+			Height = height;
 		}
 	}
 }
