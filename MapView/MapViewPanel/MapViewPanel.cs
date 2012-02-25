@@ -120,7 +120,7 @@ namespace MapView
 				if (myInstance == null)
 				{
 					myInstance = new MapViewPanel();
-					LogFile.Instance.WriteLine("Main view panel created");
+					xConsole.AddLine("Main view panel created");
 				}
 				return myInstance;
 			}

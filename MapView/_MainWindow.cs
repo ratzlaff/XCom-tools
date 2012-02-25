@@ -64,14 +64,14 @@ namespace MapView
 
 			GameInfo.ParseLine += new ParseLineDelegate(parseLine);
 			GameInfo.Init(XCPalette.TFTDBattle, pathsFile);
-			LogFile.Instance.WriteLine("GameInfo.Init done");
+			xConsole.AddLine("GameInfo.Init done");
 
 			XCPalette.TFTDBattle.SetTransparent(true);
 			XCPalette.UFOBattle.SetTransparent(true);
 			XCPalette.TFTDBattle.Grayscale.SetTransparent(true);
 			XCPalette.UFOBattle.Grayscale.SetTransparent(true);
 
-			LogFile.Instance.WriteLine("Palette transparencies set");
+			xConsole.AddLine("Palette transparencies set");
 
 			MapViewPanel.ImageUpdate += new EventHandler(update);
 
@@ -90,11 +90,11 @@ namespace MapView
 			MakeToolstrip(toolStrip);
 			toolStrip.Items.Add(new ToolStripSeparator());
 
-			LogFile.Instance.WriteLine("Main view window created");
+			xConsole.AddLine("Main view window created");
 
 			settingsHash = new Dictionary<string, Settings>();
 			loadDefaults();
-			LogFile.Instance.WriteLine("Default settings loaded");
+			xConsole.AddLine("Default settings loaded");
 
 			try
 			{
@@ -109,11 +109,11 @@ namespace MapView
 				catch { mapView.Cursor = null; }
 			}
 
-			LogFile.Instance.WriteLine("Cursor loaded");
+			xConsole.AddLine("Cursor loaded");
 
 			initList();
 
-			LogFile.Instance.WriteLine("Map list created");
+			xConsole.AddLine("Map list created");
 
 			registeredForms = new Dictionary<string, Form>();
 			registerForm(TopView.Instance, "TopView", showMenu);
@@ -129,15 +129,15 @@ namespace MapView
 			registerForm(new HelpScreen(), "Quick Help", miHelp);
 			registerForm(new AboutWindow(), "About", miHelp);
 
-			LogFile.Instance.WriteLine("Quick help and About created");
+			xConsole.AddLine("Quick help and About created");
 
 			if (settingsFile.Exists())
 			{
 				readMapViewSettings(new StreamReader(settingsFile.ToString()));
-				LogFile.Instance.WriteLine("User settings loaded");
+				xConsole.AddLine("User settings loaded");
 			}
 			else
-				LogFile.Instance.WriteLine("User settings NOT loaded - no settings file to load");
+				xConsole.AddLine("User settings NOT loaded - no settings file to load");
 
 			OnResize(null);
 			this.Closing += new CancelEventHandler(closing);
@@ -170,9 +170,8 @@ namespace MapView
 			//}
 			/****************************************/
 
-			LogFile.Instance.WriteLine("About to show window");
+			xConsole.AddLine("About to show window");
 			Show();
-			LogFile.Instance.Close();			
 		}
 
 		private static MainWindow instance;
@@ -231,8 +230,7 @@ namespace MapView
 
 		private void parseLine(XCom.KeyVal line, XCom.VarCollection vars)
 		{
-			switch (line.Keyword.ToLower())
-			{
+			switch (line.Keyword.ToLower()) {
 				case "cursor":
 					if (line.Rest.EndsWith("\\"))
 						SharedSpace.Instance.GetObj("cursorFile", line.Rest + "CURSOR");
@@ -240,12 +238,13 @@ namespace MapView
 						SharedSpace.Instance.GetObj("cursorFile", line.Rest + "\\CURSOR");
 					break;
 				case "logfile":
-					try
-					{
-						LogFile.DebugOn = bool.Parse(line.Rest);
-					}
-					catch
-					{
+					try {
+						bool lineBool = false;
+						if (bool.TryParse(line.Rest, out lineBool))
+							xConsole.LogToFile("console.log");
+						else
+							xConsole.LogToFile(line.Rest);
+					} catch {
 						Console.WriteLine("Could not parse logfile line");
 					}
 					break;

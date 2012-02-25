@@ -4,6 +4,7 @@ using System.Collections;
 using XCom.Interfaces;
 using XCom;
 using System.Windows.Forms;
+using System.IO;
 
 namespace XCom
 {
@@ -12,9 +13,10 @@ namespace XCom
 	public class xConsole
 	{
 		private static Node currLine = null;
-		private static int numNodes;
-
 		public static event BufferChangedDelegate BufferChanged;
+
+		private static int numNodes;
+		private static StreamWriter sw;
 
 		private xConsole()
 		{
@@ -83,6 +85,9 @@ namespace XCom
 
 			if (BufferChanged != null)
 				BufferChanged(currLine);
+
+			if (sw != null)
+				sw.WriteLine(s);
 		}
 
 		public static void SetLine(string s)
@@ -90,6 +95,9 @@ namespace XCom
 			currLine.Str = s;
 			if (BufferChanged != null)
 				BufferChanged(currLine);
+
+			if (sw != null)
+				sw.WriteLine("-+ " + s);
 		}
 
 		public static void AddToLine(string s)
@@ -97,6 +105,19 @@ namespace XCom
 			currLine.Str += s;
 			if (BufferChanged != null)
 				BufferChanged(currLine);
+
+			if (sw != null)
+				sw.Write(s);
+		}
+
+		public static void LogToFile(string filename)
+		{
+			if (sw != null) {
+				sw.Flush();
+				sw.Close();
+			}
+
+			sw = new StreamWriter(File.Open(filename, FileMode.Create));
 		}
 
 		public class Node
