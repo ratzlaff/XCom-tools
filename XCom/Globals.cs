@@ -2,25 +2,16 @@ using System;
 
 namespace XCom
 {
-	//	public enum XcomShips{Triton, Hammerhead, Leviathon};
-	//	public enum ImageType{Bitmap,Surface};
-	public enum SaveMode{MapEdit};
+	public enum SaveMode { MapEdit };
 
 	public static class Globals
 	{
-		private static bool useBlanks=false;
-		public static int HalfWidth = 16, HalfHeight = 8;
-
 		public static string RegistryKey
 		{
-			get{return "ViewSuite";}
+			get { return "ViewSuite"; }
 		}
 
-		public static bool UseBlanks
-		{
-			get{return useBlanks;}
-			set{useBlanks=value;}
-		}
+		public static bool UseBlanks { get; set; }
 
 		/// <summary>
 		/// Method to convert from screen(x,y) coordinates to map(row,col) coordinates
@@ -39,7 +30,6 @@ namespace XCom
 
 			row = (int)Math.Floor(x2);
 			col = (int)Math.Floor(x1);
-			//return new Point((int)Math.Floor(x1), (int)Math.Floor(x2));
 		}
 	}
 }

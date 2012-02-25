@@ -14,8 +14,8 @@ namespace XCom
 	/// 
 	public class XCPalette : Palette
 	{
-		private static readonly char COMMENT='#';
-		private static readonly string embedPath="XCom._Embedded.";
+		private static readonly char COMMENT = '#';
+		private static readonly string embedPath = "XCom._Embedded.";
 
 		private static Palette getEmbeddedPalette(string inName)
 		{
@@ -30,7 +30,7 @@ namespace XCom
 		/// <summary>
 		/// XCom-UFO palettes embedded in this assembly
 		/// </summary>
-		public static Palette UFOBattle	{ get { return getEmbeddedPalette("ufo-battle"); } }
+		public static Palette UFOBattle { get { return getEmbeddedPalette("ufo-battle"); } }
 		public static Palette UFOGeo { get { return getEmbeddedPalette("ufo-geo"); } }
 		public static Palette UFOGraph { get { return getEmbeddedPalette("ufo-graph"); } }
 		public static Palette UFOResearch { get { return getEmbeddedPalette("ufo-research"); } }
@@ -43,23 +43,22 @@ namespace XCom
 		public static Palette TFTDGraph { get { return getEmbeddedPalette("tftd-graph"); } }
 		public static Palette TFTDResearch { get { return getEmbeddedPalette("tftd-research"); } }
 
-        // xcom palettes
-		public XCPalette(Stream s):base("", 0xFE)
+		// xcom palettes
+		public XCPalette(Stream s)
+			: base("", 0xFE)
 		{
 			StreamReader input = new StreamReader(s);
-			string[] line=new string[0];
+			string[] line = new string[0];
 			mName = input.ReadLine();
 
-			for(byte i=0;i<0xFF;i++)
-			{
+			for (byte i = 0; i < 0xFF; i++) {
 				string allLine = input.ReadLine().Trim();
-				if(allLine[0]==COMMENT)
-				{
+				if (allLine[0] == COMMENT) {
 					i--;
 					continue;
 				}
 				line = allLine.Split(',');
-				mPalette.Entries[i] = Color.FromArgb(int.Parse(line[0]),int.Parse(line[1]),int.Parse(line[2]));
+				mPalette.Entries[i] = Color.FromArgb(int.Parse(line[0]), int.Parse(line[1]), int.Parse(line[2]));
 			}
 
 			//checkPalette();
@@ -104,9 +103,10 @@ namespace XCom
 						bc--;
 
 					colorList.Add(Color.FromArgb(rc,gc,bc));
-                    colors.Entries[i]=Color.FromArgb(rc,gc,bc);
+					colors.Entries[i]=Color.FromArgb(rc,gc,bc);
 				}				
 			}
-		}*/
+		}
+*/
 	}
 }

@@ -1,14 +1,16 @@
 using System;
-using System.Collections.Generic;
 using System.Text;
 
 namespace XCom
 {
 	public struct MapSize
 	{
-		public int Rows, Cols, Height;
+		public int Rows { get; set; }
+		public int Cols { get; set; }
+		public int Height { get; set; }
 
 		public MapSize(int rows, int cols, int height)
+			: this()
 		{
 			Rows = rows;
 			Cols = cols;

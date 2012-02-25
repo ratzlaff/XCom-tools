@@ -2,7 +2,7 @@ using System;
 
 namespace XCom
 {
-	public class Updator:DSShared.Interfaces.IUpdater
+	public class Updator : DSShared.Interfaces.IUpdater
 	{
 		public string UpdatePath
 		{
