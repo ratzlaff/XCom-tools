@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
+using ViewLib.MainForms;
 
 namespace MapView
 {
@@ -14,7 +15,8 @@ namespace MapView
 		{
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
-			Application.Run(new MainWindow());
+			//Application.Run(new MainWindow());
+			Application.Run(new MainMapView());
 		}
 	}
 }

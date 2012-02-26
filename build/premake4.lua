@@ -1,4 +1,4 @@
-solution "XCSuite"
+solution "Progs"
 	framework "3.5"
 	location ".."
 
@@ -23,7 +23,7 @@ solution "XCSuite"
 		files { "../MapView/**.cs", "../MapView/**.resx", "../MapView/Properties/Settings.settings" }
 		embedded { "../MapView/_Embedded/**.*" }
 		
-		links { "DSShared", "XCom", "System", "System.Core", "System.Data", "System.Design", "System.Windows.Forms", "System.Drawing", "System.Management" }
+		links { "ViewLib", "DSShared", "XCom", "System", "System.Core", "System.Data", "System.Design", "System.Windows.Forms", "System.Drawing", "System.Management" }
 		prebuildcommands { "SubWCRev $(ProjectDir) $(ProjectDir)Properties\\AssemblyInfo.template $(ProjectDir)Properties\\AssemblyInfo.cs" }
 		
 	-- PckView
@@ -34,7 +34,7 @@ solution "XCSuite"
 		files { "../PckView/**.cs", "../PckView/**.resx", "../PckView/Properties/Settings.settings" }
 		embedded { "../PckView/_Embedded/**.*" }
 		
-		links { "System", "XCom", "DSShared", "System.Core", "System.Data", "System.Design", "System.Drawing", "System.Windows.Forms" }
+		links { "ViewLib", "System", "XCom", "DSShared", "System.Core", "System.Data", "System.Design", "System.Drawing", "System.Windows.Forms" }
 		prebuildcommands { "SubWCRev $(ProjectDir) $(ProjectDir)Properties\\AssemblyInfo.template $(ProjectDir)Properties\\AssemblyInfo.cs" }
 		
 	-- XCom
@@ -68,6 +68,17 @@ solution "XCSuite"
 		embedded { "../XCSuite/_Embedded/**.*" }
 		
 		links { "DSShared", "XCom", "System", "System.Core", "System.Data", "System.Design", "System.Drawing", "System.Windows.Forms" }
+		prebuildcommands { "SubWCRev $(ProjectDir) $(ProjectDir)Properties\\AssemblyInfo.template $(ProjectDir)Properties\\AssemblyInfo.cs" }
+		
+	-- ViewLib
+	project "ViewLib"
+		location "../ViewLib"
+		kind "SharedLib"
+		language "C#"
+		files { "../ViewLib/**.cs", "../ViewLib/**.resx", "../ViewLib/Properties/Settings.settings" }
+		embedded { "../ViewLib/_Embedded/**.*" }
+		
+		links { "../libs/WeifenLuo.WinFormsUI.Docking.dll", "System", "System.Core", "System.Data", "System.Design", "System.Drawing", "System.Management", "System.Windows.Forms" }
 		prebuildcommands { "SubWCRev $(ProjectDir) $(ProjectDir)Properties\\AssemblyInfo.template $(ProjectDir)Properties\\AssemblyInfo.cs" }
 		
 	-- project
