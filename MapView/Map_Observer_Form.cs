@@ -11,7 +11,6 @@ namespace MapView
 	{
 		protected IMap_Base map;
 		private DSShared.Windows.RegistryInfo registryInfo;
-		private MenuItem menuItem;
 		private Settings settings;
 		private Dictionary<string, IMap_Observer> moreObservers;
 
@@ -39,11 +38,7 @@ namespace MapView
 			get { return moreObservers; }
 		}
 
-		public MenuItem MenuItem
-		{
-			get { return menuItem; }
-			set { menuItem = value; }
-		}
+		public MenuItem MenuItem { get; set; }
 
 		public DSShared.Windows.RegistryInfo RegistryInfo
 		{

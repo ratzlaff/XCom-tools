@@ -38,8 +38,6 @@ namespace MapView.TopViewForm
 
 		private TopView()
 		{
-			//LogFile.Instance.WriteLine("Start TopView window creation");		
-
 			InitializeComponent();
 
 			MainWindow.Instance.MakeToolstrip(toolStrip);
@@ -56,8 +54,6 @@ namespace MapView.TopViewForm
 			{
 				topViewPanel.ParentSize(center.Width, center.Height);
 			};
-
-			//bottom.PanelClicked += new EventHandler(bottomClick);
 
 			this.Menu = new MainMenu();
 			MenuItem vis = Menu.MenuItems.Add("Visible");
@@ -83,10 +79,6 @@ namespace MapView.TopViewForm
 			MenuItem edit = Menu.MenuItems.Add("Edit");
 			edit.MenuItems.Add("Options", new EventHandler(options_click));
 			edit.MenuItems.Add("Fill", new EventHandler(fill_click));
-
-			//mapView.BlankChanged += new BoolDelegate(blankMode);
-
-			//Controls.Add(bottom);
 
 			topViewPanel.BottomPanel = bottom;
 
