@@ -26,10 +26,7 @@ namespace XCom.Interfaces.Base
 
 		public virtual string FileFilter
 		{
-			get
-			{
-				return "*" + ext + " - " + expDesc + "|*" + ext;
-			}
+			get { return "*" + ext + " - " + expDesc + "|*" + ext; }
 		}
 
 		/// <summary>
