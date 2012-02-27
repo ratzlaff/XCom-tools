@@ -7,7 +7,7 @@ using System.Data;
 using System.Text;
 using System.Windows.Forms;
 
-namespace DSShared.Windows
+namespace ViewLib.Base
 {
 	public class DoubleBufferControl : UserControl
 	{
@@ -18,16 +18,14 @@ namespace DSShared.Windows
 
 		protected override void OnPaint(PaintEventArgs e)
 		{
-			if (DesignMode)
-			{
+			if (DesignMode) {
 				base.OnPaint(e);
-				e.Graphics.DrawLine(Pens.Black, 0, 0, Width, Height);
-				e.Graphics.DrawLine(Pens.Black, 0, Height, Width, 0);
 				ControlPaint.DrawBorder3D(e.Graphics, ClientRectangle, Border3DStyle.Flat);
-				return;
+				SizeF fontSize = e.Graphics.MeasureString(Name, Font);
+				e.Graphics.DrawString(Name, Font, Brushes.Black, (Width - fontSize.Width) / 2, (Height - fontSize.Height) / 2);
+			} else {
+				Render(e.Graphics);
 			}
-
-			Render(e.Graphics);
 		}
 
 		protected virtual void Render(Graphics backBuffer) { }
@@ -39,7 +37,7 @@ namespace DSShared.Windows
 			// DoubleBufferControl
 			// 
 			this.Name = "DoubleBufferControl";
-			this.Size = new System.Drawing.Size(249, 176);
+			this.Size = new System.Drawing.Size(148, 138);
 			this.ResumeLayout(false);
 
 		}
