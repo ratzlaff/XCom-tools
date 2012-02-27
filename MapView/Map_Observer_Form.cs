@@ -12,11 +12,10 @@ namespace MapView
 		protected IMap_Base map;
 		private DSShared.Windows.RegistryInfo registryInfo;
 		private Settings settings;
-		private Dictionary<string, IMap_Observer> moreObservers;
 
 		public Map_Observer_Form()
 		{
-			moreObservers = new Dictionary<string, IMap_Observer>();
+			MoreObservers = new Dictionary<string, IMap_Observer>();
 			settings = new Settings();
 			Load += new EventHandler(Map_Observer_Form_Load);			
 		}
@@ -33,10 +32,7 @@ namespace MapView
 			get { return settings; }
 		}
 
-		public Dictionary<string, IMap_Observer> MoreObservers
-		{
-			get { return moreObservers; }
-		}
+		public Dictionary<string, IMap_Observer> MoreObservers { get; set; }
 
 		public MenuItem MenuItem { get; set; }
 
@@ -63,7 +59,23 @@ namespace MapView
 		public virtual IMap_Base Map
 		{
 			get { return map; }
-			set { map = value; Refresh(); }
+			set
+			{
+				if (map != null) {
+					map.HeightChanged -= HeightChanged;
+					map.SelectedTileChanged -= SelectedTileChanged;
+				}
+
+				map = value;
+
+				if (map != null) {
+					map.HeightChanged += HeightChanged;
+					map.SelectedTileChanged += SelectedTileChanged;
+				}
+
+				foreach (string key in MoreObservers.Keys)
+					MoreObservers[key].Map = value;
+			}
 		}
 
         protected override void OnMouseWheel(MouseEventArgs e)

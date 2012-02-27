@@ -489,96 +489,13 @@ namespace MapView
 
 					if (f is Map_Observer_Form) {
 						Map_Observer_Form frm = (Map_Observer_Form)f;
-						SetMap(mapView.View.Map, frm);
+						frm.Map = mapView.View.Map;
 					}
 				}
-
-				//if (MapChanged != null)
-				//    MapChanged(this, new SetMapEventArgs(mapView.Map));
 
 				MapViewPanel.Instance.View.Refresh();
 			} else
 				miExport.Enabled = false;
-			#region old
-			/*
-			if (mapList.SelectedNode.Parent != null)
-			{
-				if (mapList.SelectedNode.Parent.Parent != null)
-				{
-					string tileset = mapList.SelectedNode.Parent.Parent.Text;
-					string map = mapList.SelectedNode.Text;
-
-					try
-					{
-						IXCMapData imd = GameInfo.GetTileInfo().Tilesets[tileset][map];
-						((IXCTileset)GameInfo.GetTileInfo().Tilesets[tileset]).Palette.SetTransparent(true);
-
-						miExport.Enabled = true;
-						//if (mapView.View.Map != null)
-						//    mapView.View.Map.HeightChanged -= new HeightChangedDelegate(copyGroupx.HeightChanged);
-						mapView.SetMap(imd);
-						//mapView.View.Map.HeightChanged += new HeightChangedDelegate(copyGroupx.HeightChanged);
-						//copyGroupx.HeightChanged(mapView.Map.CurrentLevel);
-
-						statusMapName.Text = "Map:" + map;
-						tsMapSize.Text = "Size: " + mapView.View.Map.MapSize.ToString();
-
-						if (miDoors.Checked)
-						{
-							miDoors.Checked = false;
-							miDoors_Click(null, null);
-						}
-
-						this.Text = "Map Editor: " + imd.Name + " r:" + imd.GetMapFile().MapSize.Rows + " c:" + imd.GetMapFile().MapSize.Cols + " h:" + imd.GetMapFile().MapSize.Height;
-
-						if (!showMenu.Enabled)
-						{
-							foreach (MenuItem mi in showMenu.MenuItems)
-								mi.PerformClick();
-
-							showMenu.Enabled = true;
-						}
-
-						foreach (string key in registeredForms.Keys)
-						{
-							Form f = registeredForms[key];
-
-							if (f is Map_Observer_Form)
-							{
-								Map_Observer_Form frm = (Map_Observer_Form)f;
-								SetMap(mapView.View.Map, frm);
-							}
-						}
-
-						if (MapChanged != null)
-							MapChanged(this, new SetMapEventArgs(mapView.Map));
-
-						MapViewPanel.Instance.View.Refresh();
-					}
-					catch (FileNotFoundException ex)
-					{
-						xConsole.AddLine(ex.Message);
-						//((MenuItem)windowMI[xConsole.Instance]).PerformClick();
-					}
-				}
-			}
-			else
-				miExport.Enabled = false;*/
-			#endregion
-		}
-
-		public void SetMap(IMap_Base newMap, IMap_Observer observer)
-		{
-			if (observer.Map != null) {
-				observer.Map.HeightChanged -= new HeightChangedDelegate(observer.HeightChanged);
-				observer.Map.SelectedTileChanged -= new SelectedTileChangedDelegate(observer.SelectedTileChanged);
-			}
-
-			observer.Map = newMap;
-			if (newMap != null) {
-				newMap.HeightChanged += new HeightChangedDelegate(observer.HeightChanged);
-				newMap.SelectedTileChanged += new SelectedTileChangedDelegate(observer.SelectedTileChanged);
-			}
 		}
 
 		public DialogResult NotifySave()

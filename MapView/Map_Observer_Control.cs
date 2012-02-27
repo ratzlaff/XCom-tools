@@ -20,14 +20,26 @@ namespace MapView
 
 		[Browsable(false)]
 		[DefaultValue(null)]
-		public virtual XCom.Interfaces.Base.IMap_Base Map
+		public virtual IMap_Base Map
 		{
 			get { return map; }
-			set { map = value; Refresh(); }
+			set
+			{
+				if (map != null) {
+					map.HeightChanged -= HeightChanged;
+					map.SelectedTileChanged -= SelectedTileChanged;
+				}
+
+				map = value;
+
+				if (map != null) {
+					map.HeightChanged += HeightChanged;
+					map.SelectedTileChanged += SelectedTileChanged;
+				}
+			}
 		}
 
 		public virtual void HeightChanged(IMap_Base sender, HeightChangedEventArgs e) { Refresh(); }
-
 		public virtual void SelectedTileChanged(IMap_Base sender, SelectedTileChangedEventArgs e) { Refresh(); }
 
 		[Browsable(false)]

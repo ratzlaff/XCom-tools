@@ -128,17 +128,6 @@ namespace MapView.TopViewForm
 
 		protected override void LoadDefaultSettings(Settings settings)
 		{
-			//RegistryKey swKey = Registry.CurrentUser.CreateSubKey("Software");
-			//RegistryKey mvKey = swKey.CreateSubKey("MapView");
-			//RegistryKey riKey = mvKey.CreateSubKey("TopView");
-
-			//foreach (MenuItem mi in visibleHash.Keys)
-			//    mi.Checked = bool.Parse((string)riKey.GetValue("vis" + visibleHash[mi].ToString(), "true"));
-
-			//riKey.Close();
-			//mvKey.Close();
-			//swKey.Close();
-
 			brushes = new Dictionary<string, SolidBrush>();
 			pens = new Dictionary<string, Pen>();
 

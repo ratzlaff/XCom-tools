@@ -6,11 +6,8 @@ namespace XCom.Interfaces.Base
 {
 	public interface IMap_Observer
 	{
-		//void SetMap(object sender, SetMapEventArgs e);
-		IMap_Base Map { set;get;}
-		void HeightChanged(IMap_Base sender, HeightChangedEventArgs e);
-		void SelectedTileChanged(IMap_Base sender, SelectedTileChangedEventArgs e);
-		DSShared.Windows.RegistryInfo RegistryInfo { get;set;}
+		IMap_Base Map { set; get; }
+		DSShared.Windows.RegistryInfo RegistryInfo { get; set; }
 	}
 
 	/// <summary>
