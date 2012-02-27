@@ -27,7 +27,7 @@ namespace MapView.TopViewForm
 		private Dictionary<string, SolidBrush> brushes;
 		private Dictionary<string, Pen> pens;
 
-		private Point sel1, sel2,sel3,sel4;
+		private Point sel1, sel2, sel3, sel4;
 
 		private int mR, mC;
 
@@ -57,12 +57,10 @@ namespace MapView.TopViewForm
 
 		public void ParentSize(int width, int height)
 		{
-			if (map != null)
-			{
+			if (map != null) {
 				int oldWid = hWidth;
 
-				if (height > width / 2)
-				{
+				if (height > width / 2) {
 					//use width
 					hWidth = width / (map.MapSize.Rows + map.MapSize.Cols);
 
@@ -70,15 +68,12 @@ namespace MapView.TopViewForm
 						hWidth--;
 
 					hHeight = hWidth / 2;
-				}
-				else
-				{ //use height
+				} else { //use height
 					hHeight = height / (map.MapSize.Rows + map.MapSize.Cols);
 					hWidth = hHeight * 2;
 				}
 
-				if (hHeight < minHeight)
-				{
+				if (hHeight < minHeight) {
 					hWidth = minHeight * 2;
 					hHeight = minHeight;
 				}
@@ -86,8 +81,7 @@ namespace MapView.TopViewForm
 				offX = 4 + map.MapSize.Rows * hWidth;
 				offY = 4;
 
-				if (oldWid != hWidth)
-				{
+				if (oldWid != hWidth) {
 					Width = 8 + (map.MapSize.Rows + map.MapSize.Cols) * hWidth;
 					Height = 8 + (map.MapSize.Rows + map.MapSize.Cols) * hHeight;
 					Refresh();
@@ -234,12 +228,9 @@ namespace MapView.TopViewForm
 		{
 			g.FillRectangle(System.Drawing.SystemBrushes.Control, ClientRectangle);
 
-			if (map != null)
-			{
-				for (int row = 0, startX = offX, startY = offY; row < map.MapSize.Rows; row++, startX -= hWidth, startY += hHeight)
-				{
-					for (int col = 0, x = startX, y = startY; col < map.MapSize.Cols; col++, x += hWidth, y += hHeight)
-					{
+			if (map != null) {
+				for (int row = 0, startX = offX, startY = offY; row < map.MapSize.Rows; row++, startX -= hWidth, startY += hHeight) {
+					for (int col = 0, x = startX, y = startY; col < map.MapSize.Cols; col++, x += hWidth, y += hHeight) {
 						IMapTile mapTile = map[row, col];
 
 						if (mapTile != null)
@@ -258,8 +249,7 @@ namespace MapView.TopViewForm
 				//				if(selected!=null) //clicked on
 				//					g.DrawPath(new Pen(Brushes.Blue,2),selected);
 
-				if (mR < map.MapSize.Rows && mC < map.MapSize.Cols && mR >= 0 && mC >= 0)
-				{
+				if (mR < map.MapSize.Rows && mC < map.MapSize.Cols && mR >= 0 && mC >= 0) {
 					int xc = (mC - mR) * hWidth + offX;
 					int yc = (mC + mR) * hHeight + offY;
 
@@ -273,8 +263,8 @@ namespace MapView.TopViewForm
 		{
 			int row, col;
 
-			convertCoordsDiamond(e.X - offX, e.Y - offY,out row, out col);
-			map.SelectedTile = new MapLocation(row,col, map.CurrentHeight);
+			convertCoordsDiamond(e.X - offX, e.Y - offY, out row, out col);
+			map.SelectedTile = new MapLocation(row, col, map.CurrentHeight);
 			mDown = true;
 
 			Point p = new Point(col, row);
@@ -294,15 +284,13 @@ namespace MapView.TopViewForm
 		protected override void OnMouseMove(MouseEventArgs e)
 		{
 			int row, col;
-			convertCoordsDiamond(e.X - offX, e.Y - offY,out row, out col);
-			if (row != mR || col != mC)
-			{
+			convertCoordsDiamond(e.X - offX, e.Y - offY, out row, out col);
+			if (row != mR || col != mC) {
 				mR = row;
 				mC = col;
 
-				if (mDown)
-				{
-					MapViewPanel.Instance.View.EndDrag = new Point(col,row);
+				if (mDown) {
+					MapViewPanel.Instance.View.EndDrag = new Point(col, row);
 					MapViewPanel.Instance.View.Refresh();
 					viewDrag(null, null);
 				}
