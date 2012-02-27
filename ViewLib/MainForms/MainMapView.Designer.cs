@@ -46,10 +46,28 @@ namespace ViewLib.MainForms
 			this.toolStrip1 = new System.Windows.Forms.ToolStrip();
 			this.statusStrip1 = new System.Windows.Forms.StatusStrip();
 			this.dockPanel = new WeifenLuo.WinFormsUI.Docking.DockPanel();
+			this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.viewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.saveImageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.resizeMapToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
+			this.quitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.mapInfoToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+			this.menuStrip1.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// menuStrip1
 			// 
+			this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.fileToolStripMenuItem,
+            this.editToolStripMenuItem,
+            this.viewToolStripMenuItem,
+            this.helpToolStripMenuItem});
 			this.menuStrip1.Location = new System.Drawing.Point(0, 0);
 			this.menuStrip1.Name = "menuStrip1";
 			this.menuStrip1.Size = new System.Drawing.Size(588, 24);
@@ -58,8 +76,10 @@ namespace ViewLib.MainForms
 			// 
 			// toolStrip1
 			// 
+			this.toolStrip1.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
 			this.toolStrip1.Location = new System.Drawing.Point(0, 24);
 			this.toolStrip1.Name = "toolStrip1";
+			this.toolStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
 			this.toolStrip1.Size = new System.Drawing.Size(588, 25);
 			this.toolStrip1.TabIndex = 2;
 			this.toolStrip1.Text = "toolStrip1";
@@ -129,6 +149,88 @@ namespace ViewLib.MainForms
 			this.dockPanel.Skin = dockPanelSkin1;
 			this.dockPanel.TabIndex = 4;
 			// 
+			// fileToolStripMenuItem
+			// 
+			this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.openToolStripMenuItem,
+            this.saveToolStripMenuItem,
+            this.saveImageToolStripMenuItem,
+            this.resizeMapToolStripMenuItem,
+            this.toolStripMenuItem2,
+            this.quitToolStripMenuItem});
+			this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
+			this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
+			this.fileToolStripMenuItem.Text = "File";
+			// 
+			// editToolStripMenuItem
+			// 
+			this.editToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.settingsToolStripMenuItem});
+			this.editToolStripMenuItem.Name = "editToolStripMenuItem";
+			this.editToolStripMenuItem.Size = new System.Drawing.Size(39, 20);
+			this.editToolStripMenuItem.Text = "Edit";
+			// 
+			// viewToolStripMenuItem
+			// 
+			this.viewToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.mapInfoToolStripMenuItem1});
+			this.viewToolStripMenuItem.Name = "viewToolStripMenuItem";
+			this.viewToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
+			this.viewToolStripMenuItem.Text = "View";
+			// 
+			// helpToolStripMenuItem
+			// 
+			this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
+			this.helpToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
+			this.helpToolStripMenuItem.Text = "Help";
+			// 
+			// openToolStripMenuItem
+			// 
+			this.openToolStripMenuItem.Name = "openToolStripMenuItem";
+			this.openToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+			this.openToolStripMenuItem.Text = "Open";
+			// 
+			// saveToolStripMenuItem
+			// 
+			this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
+			this.saveToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+			this.saveToolStripMenuItem.Text = "Save";
+			// 
+			// saveImageToolStripMenuItem
+			// 
+			this.saveImageToolStripMenuItem.Name = "saveImageToolStripMenuItem";
+			this.saveImageToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+			this.saveImageToolStripMenuItem.Text = "Save Image";
+			// 
+			// resizeMapToolStripMenuItem
+			// 
+			this.resizeMapToolStripMenuItem.Name = "resizeMapToolStripMenuItem";
+			this.resizeMapToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+			this.resizeMapToolStripMenuItem.Text = "Resize Map";
+			// 
+			// toolStripMenuItem2
+			// 
+			this.toolStripMenuItem2.Name = "toolStripMenuItem2";
+			this.toolStripMenuItem2.Size = new System.Drawing.Size(149, 6);
+			// 
+			// quitToolStripMenuItem
+			// 
+			this.quitToolStripMenuItem.Name = "quitToolStripMenuItem";
+			this.quitToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+			this.quitToolStripMenuItem.Text = "Quit";
+			// 
+			// settingsToolStripMenuItem
+			// 
+			this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
+			this.settingsToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+			this.settingsToolStripMenuItem.Text = "Settings";
+			// 
+			// mapInfoToolStripMenuItem1
+			// 
+			this.mapInfoToolStripMenuItem1.Name = "mapInfoToolStripMenuItem1";
+			this.mapInfoToolStripMenuItem1.Size = new System.Drawing.Size(152, 22);
+			this.mapInfoToolStripMenuItem1.Text = "Map Info";
+			// 
 			// MainMapView
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -147,6 +249,8 @@ namespace ViewLib.MainForms
 			this.Controls.SetChildIndex(this.toolStrip1, 0);
 			this.Controls.SetChildIndex(this.statusStrip1, 0);
 			this.Controls.SetChildIndex(this.dockPanel, 0);
+			this.menuStrip1.ResumeLayout(false);
+			this.menuStrip1.PerformLayout();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -158,6 +262,18 @@ namespace ViewLib.MainForms
 		private System.Windows.Forms.ToolStrip toolStrip1;
 		private System.Windows.Forms.StatusStrip statusStrip1;
 		private WeifenLuo.WinFormsUI.Docking.DockPanel dockPanel;
+		private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem openToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem saveToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem saveImageToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem resizeMapToolStripMenuItem;
+		private System.Windows.Forms.ToolStripSeparator toolStripMenuItem2;
+		private System.Windows.Forms.ToolStripMenuItem quitToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem editToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem settingsToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem viewToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem mapInfoToolStripMenuItem1;
+		private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;
 
 	}
 }
