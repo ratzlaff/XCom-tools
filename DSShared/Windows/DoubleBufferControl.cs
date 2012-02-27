@@ -9,7 +9,7 @@ using System.Windows.Forms;
 
 namespace DSShared.Windows
 {
-	public class DoubleBufferControl : Control
+	public class DoubleBufferControl : UserControl
 	{
 		public DoubleBufferControl()
 		{
@@ -31,8 +31,20 @@ namespace DSShared.Windows
 		}
 
 		protected virtual void Render(Graphics backBuffer) { }
+
+		private void InitializeComponent()
+		{
+			this.SuspendLayout();
+			// 
+			// DoubleBufferControl
+			// 
+			this.Name = "DoubleBufferControl";
+			this.Size = new System.Drawing.Size(249, 176);
+			this.ResumeLayout(false);
+
+		}
 	}
-	/*
+#if FASTERDRAW
     public class DoubleBufferControl : Control
     {
         private BufferedGraphicsContext context;
@@ -107,5 +119,6 @@ namespace DSShared.Windows
 
             this.Refresh();
         }
-    }*/
+    }
+#endif
 }
