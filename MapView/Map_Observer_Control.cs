@@ -6,7 +6,7 @@ using XCom.Interfaces.Base;
 
 namespace MapView
 {
-	public class Map_Observer_Control : DSShared.Windows.DoubleBufferControl, XCom.Interfaces.Base.IMap_Observer
+	public class Map_Observer_Control : ViewLib.Base.DoubleBufferControl, XCom.Interfaces.Base.IMap_Observer
 	{
 		protected IMap_Base map;
 		private DSShared.Windows.RegistryInfo registryInfo;
