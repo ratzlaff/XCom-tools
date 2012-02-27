@@ -16,17 +16,9 @@ namespace MapView.TopViewForm
 		protected int hWidth = 8, hHeight = 4;
 		protected int minHeight = 4;
 
-		private GraphicsPath upper;
-		private GraphicsPath lower;
-		private GraphicsPath cell;
-		private GraphicsPath copyArea;
-		private GraphicsPath selected;
-
-		private Dictionary<string, SolidBrush> brushes;
-		private Dictionary<string, Pen> pens;
+		private GraphicsPath upper, lower, cell, copyArea, selected;
 
 		private Point sel1, sel2, sel3, sel4;
-
 		private int mR, mC;
 
 		public SimpleMapPanel()
@@ -133,19 +125,11 @@ namespace MapView.TopViewForm
 
 		[Browsable(false)]
 		[DefaultValue(null)]
-		public Dictionary<string, SolidBrush> Brushes
-		{
-			get { return brushes; }
-			set { brushes = value; }
-		}
+		public Dictionary<string, SolidBrush> Brushes { get; set; }
 
 		[Browsable(false)]
 		[DefaultValue(null)]
-		public Dictionary<string, Pen> Pens
-		{
-			get { return pens; }
-			set { pens = value; }
-		}
+		public Dictionary<string, Pen> Pens { get; set; }
 
 		public override void SelectedTileChanged(IMap_Base sender, SelectedTileChangedEventArgs e)
 		{
@@ -208,12 +192,12 @@ namespace MapView.TopViewForm
 			return lower;
 		}
 
-		protected GraphicsPath CellPath(int xc, int yc)
+		protected GraphicsPath CellPath(int x, int y)
 		{
 			cell.Reset();
-			cell.AddLine(xc, yc, xc + hWidth, yc + hHeight);
-			cell.AddLine(xc + hWidth, yc + hHeight, xc, yc + 2 * hHeight);
-			cell.AddLine(xc, yc + 2 * hHeight, xc - hWidth, yc + hHeight);
+			cell.AddLine(x, y, x + hWidth, y + hHeight);
+			cell.AddLine(x + hWidth, y + hHeight, x, y + 2 * hHeight);
+			cell.AddLine(x, y + 2 * hHeight, x - hWidth, y + hHeight);
 			cell.CloseFigure();
 			return cell;
 		}
@@ -233,19 +217,19 @@ namespace MapView.TopViewForm
 				}
 
 				for (int i = 0; i <= map.MapSize.Rows; i++)
-					g.DrawLine(pens["GridColor"], offX - i * hWidth, offY + i * hHeight, ((map.MapSize.Cols - i) * hWidth) + offX, ((i + map.MapSize.Cols) * hHeight) + offY);
+					g.DrawLine(Pens["GridColor"], offX - i * hWidth, offY + i * hHeight, ((map.MapSize.Cols - i) * hWidth) + offX, ((i + map.MapSize.Cols) * hHeight) + offY);
 				for (int i = 0; i <= map.MapSize.Cols; i++)
-					g.DrawLine(pens["GridColor"], offX + i * hWidth, offY + i * hHeight, (i * hWidth) - map.MapSize.Rows * hWidth + offX, (i * hHeight) + map.MapSize.Rows * hHeight + offY);
+					g.DrawLine(Pens["GridColor"], offX + i * hWidth, offY + i * hHeight, (i * hWidth) - map.MapSize.Rows * hWidth + offX, (i * hHeight) + map.MapSize.Rows * hHeight + offY);
 
 				if (copyArea != null)
-					g.DrawPath(pens["SelectColor"], copyArea);
+					g.DrawPath(Pens["SelectColor"], copyArea);
 
 				if (mR < map.MapSize.Rows && mC < map.MapSize.Cols && mR >= 0 && mC >= 0) {
 					int xc = (mC - mR) * hWidth + offX;
 					int yc = (mC + mR) * hHeight + offY;
 
 					GraphicsPath selPath = CellPath(xc, yc);
-					g.DrawPath(pens["MouseColor"], selPath);
+					g.DrawPath(Pens["MouseColor"], selPath);
 				}
 			}
 		}
