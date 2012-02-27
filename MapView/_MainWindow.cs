@@ -19,8 +19,6 @@ using MapView.TopViewForm;
 
 namespace MapView
 {
-	public delegate void MapChangedDelegate(object sender, SetMapEventArgs e);
-
 	public delegate void StringDelegate(object sender, string args);
 
 	public partial class MainWindow : Form

@@ -25,7 +25,7 @@ namespace MapView.RmpViewForm
 
 	public partial class RmpView : Map_Observer_Form
 	{
-		private XCMapFile map;
+		private new XCMapFile map;
 		private RmpPanel rmpPanel;
 		private Label locInfo;
 		private Label links;
@@ -64,11 +64,6 @@ namespace MapView.RmpViewForm
 			links.Left = locInfo.Right;
 
 			links.BorderStyle = BorderStyle.Fixed3D;
-
-			//this.Menu = new MainMenu();
-			//MenuItem f = new MenuItem("Edit");
-			//Menu.MenuItems.Add(f);
-			//f.MenuItems.Add("Options",new EventHandler(options_click));
 
 			object[] uTypeItms = new object[] { UnitType.Any, UnitType.Flying, UnitType.FlyingLarge, UnitType.Large, UnitType.Small };
 			cbType.Items.AddRange(uTypeItms);
@@ -134,11 +129,6 @@ namespace MapView.RmpViewForm
 			rmpPanel.Pens[key].Width = (int)val;
 			Refresh();
 		}
-
-		//public Settings Settings
-		//{
-		//    get { return settings; }
-		//}
 
 		public static RmpView Instance
 		{
@@ -270,11 +260,6 @@ namespace MapView.RmpViewForm
 			gbNodeInfo.ResumeLayout();
 		}
 
-		public void SetMap(object sender, SetMapEventArgs e)
-		{
-			Map = (XCMapFile)e.Map;
-		}
-
 		public override IMap_Base Map
 		{
 			set
@@ -293,48 +278,9 @@ namespace MapView.RmpViewForm
 						cbRank1.Items.AddRange(RmpFile.UnitRankUFO);
 					else
 						cbRank1.Items.AddRange(RmpFile.UnitRankTFTD);
-
-					//Text = string.Format("RmpView: r:{0} c:{1} h:{2}", rmpPanel.Map.MapSize.Rows, rmpPanel.Map.MapSize.Cols, rmpPanel.Map.MapSize.Height);
-					//rmpPanel.Map.HeightChanged += new HeightChangedDelegate(heightChanged);
-					//rmpPanel.Map.SelectedTileChanged += new SelectedTileChangedDelegate(tileChanged);
 				}
 			}
 		}
-
-		/*public IMapFile Map
-		{
-			set
-			{
-				if (map != null)
-				{
-					map.HeightChanged -= new HeightChangedDelegate(heightChanged);
-					map.SelectedTileChanged -= new SelectedTileChangedDelegate(tileChanged);
-				}
-
-				if (value is XCMapFile)
-					map = (XCMapFile)value;
-				else
-					return;
-
-				rmpPanel.Map = map;
-				if (rmpPanel.Map != null)
-				{
-					currEntry = ((XCMapTile)map[clickRow, clickCol]).Rmp;
-					fillGUI();
-					cbRank1.Items.Clear();
-
-					if (map.Tiles[0][0].Palette == Palette.UFOBattle)
-						cbRank1.Items.AddRange(RmpFile.UnitRankUFO);
-					else
-						cbRank1.Items.AddRange(RmpFile.UnitRankTFTD);
-
-					Text = string.Format("RmpView: r:{0} c:{1} h:{2}", rmpPanel.Map.MapSize.Rows, rmpPanel.Map.MapSize.Cols, rmpPanel.Map.MapSize.Height);
-					rmpPanel.Map.HeightChanged += new HeightChangedDelegate(heightChanged);
-					rmpPanel.Map.SelectedTileChanged += new SelectedTileChangedDelegate(tileChanged);
-				}
-				OnResize(null);
-			}
-		}*/
 
 		public override void SelectedTileChanged(IMap_Base sender, SelectedTileChangedEventArgs e)
 		{

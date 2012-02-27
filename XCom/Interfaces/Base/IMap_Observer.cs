@@ -7,27 +7,7 @@ namespace XCom.Interfaces.Base
 	public interface IMap_Observer
 	{
 		IMap_Base Map { set; get; }
-		DSShared.Windows.RegistryInfo RegistryInfo { get; set; }
 	}
-
-	/// <summary>
-	/// EventArgs class that holds a IMap_Base for when a SetMap event fires
-	/// </summary>
-    public class SetMapEventArgs : EventArgs
-    {
-		private IMap_Base map;
-
-		public SetMapEventArgs(IMap_Base map)
-        {
-            this.map = map;
-        }
-
-		public IMap_Base Map
-        {
-            get { return map; }
-        }
-    }
-
 
 	/// <summary>
 	/// EventArgs class that holds a MapLocation and MapTile for when a SelectedTileChanged event fires
