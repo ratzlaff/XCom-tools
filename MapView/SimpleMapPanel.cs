@@ -12,8 +12,6 @@ namespace MapView.TopViewForm
 {
 	public class SimpleMapPanel : Map_Observer_Control
 	{
-		//private DSShared.Windows.RegistryInfo registryInfo;
-
 		private int offX = 0, offY = 0;
 		protected int hWidth = 8, hHeight = 4;
 		protected int minHeight = 4;
@@ -33,8 +31,6 @@ namespace MapView.TopViewForm
 
 		public SimpleMapPanel()
 		{
-			//this.Resize += new EventHandler(SimpleMapPanel_Resize);
-
 			upper = new GraphicsPath();
 			lower = new GraphicsPath();
 			cell = new GraphicsPath();
@@ -153,8 +149,6 @@ namespace MapView.TopViewForm
 
 		public override void SelectedTileChanged(IMap_Base sender, SelectedTileChangedEventArgs e)
 		{
-			//bottom.Tile = (XCMapTile)e.SelectedTile;
-
 			MapLocation pt = e.MapLocation;
 
 			Text = "r: " + pt.Row + " c: " + pt.Col;
@@ -245,9 +239,6 @@ namespace MapView.TopViewForm
 
 				if (copyArea != null)
 					g.DrawPath(pens["SelectColor"], copyArea);
-
-				//				if(selected!=null) //clicked on
-				//					g.DrawPath(new Pen(Brushes.Blue,2),selected);
 
 				if (mR < map.MapSize.Rows && mC < map.MapSize.Cols && mR >= 0 && mC >= 0) {
 					int xc = (mC - mR) * hWidth + offX;
