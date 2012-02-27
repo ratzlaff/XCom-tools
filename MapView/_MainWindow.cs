@@ -54,8 +54,7 @@ namespace MapView
 			sharedSpace.GetObj("MV_ImagesFile", imagesFile);
 			#endregion
 
-			if (!pathsFile.Exists())
-			{
+			if (!pathsFile.Exists()) {
 				InstallWindow iw = new InstallWindow();
 
 				if (iw.ShowDialog(this) != DialogResult.OK)
@@ -96,17 +95,12 @@ namespace MapView
 			loadDefaults();
 			xConsole.AddLine("Default settings loaded");
 
-			try
-			{
+			try {
 				mapView.View.Cursor = new Cursor(GameInfo.CachePck(SharedSpace.Instance.GetString("cursorFile"), "", 4, XCPalette.TFTDBattle));
-			}
-			catch
-			{
-				try
-				{
+			} catch {
+				try {
 					mapView.View.Cursor = new Cursor(GameInfo.CachePck(SharedSpace.Instance.GetString("cursorFile"), "", 2, XCPalette.UFOBattle));
-				}
-				catch { mapView.Cursor = null; }
+				} catch { mapView.Cursor = null; }
 			}
 
 			xConsole.AddLine("Cursor loaded");
@@ -131,12 +125,10 @@ namespace MapView
 
 			xConsole.AddLine("Quick help and About created");
 
-			if (settingsFile.Exists())
-			{
+			if (settingsFile.Exists()) {
 				readMapViewSettings(new StreamReader(settingsFile.ToString()));
 				xConsole.AddLine("User settings loaded");
-			}
-			else
+			} else
 				xConsole.AddLine("User settings NOT loaded - no settings file to load");
 
 			OnResize(null);
@@ -188,8 +180,7 @@ namespace MapView
 			MenuItem mi = new MenuItem(title);
 			mi.Tag = f;
 
-			if (f is Map_Observer_Form)
-			{
+			if (f is Map_Observer_Form) {
 				((Map_Observer_Form)f).MenuItem = mi;
 				((Map_Observer_Form)f).RegistryInfo = new DSShared.Windows.RegistryInfo(f, title);
 				settingsHash.Add(title, ((Map_Observer_Form)f).Settings);
@@ -207,14 +198,11 @@ namespace MapView
 		{
 			MenuItem mi = (MenuItem)sender;
 
-			if (!mi.Checked)
-			{
+			if (!mi.Checked) {
 				((Form)mi.Tag).Show();
 				((Form)mi.Tag).WindowState = FormWindowState.Normal;
 				mi.Checked = true;
-			}
-			else
-			{
+			} else {
 				((Form)mi.Tag).Close();
 				mi.Checked = false;
 			}
@@ -256,13 +244,10 @@ namespace MapView
 			XCom.VarCollection vc = new XCom.VarCollection(sr);
 			XCom.KeyVal kv = null;
 
-			while ((kv = vc.ReadLine()) != null)
-			{
-				try
-				{
+			while ((kv = vc.ReadLine()) != null) {
+				try {
 					Settings.ReadSettings(vc, kv, settingsHash[kv.Keyword]);
-				}
-				catch { }
+				} catch { }
 			}
 
 			sr.Close();
@@ -271,8 +256,7 @@ namespace MapView
 		private void changeSetting(object sender, string key, object val)
 		{
 			settingsHash["MainWindow"][key].Value = val;
-			switch (key)
-			{
+			switch (key) {
 				case "Animation":
 					bool animVal = (bool)val;
 					onItem.Checked = animVal;
@@ -284,29 +268,36 @@ namespace MapView
 						MapViewPanel.Stop();
 					break;
 				case "Doors":
-					if (MapViewPanel.Instance.Map != null)
-					{
+					if (MapViewPanel.Instance.Map != null) {
 						if ((bool)val)
-							foreach (XCTile t in MapViewPanel.Instance.Map.Tiles)
-							{
+							foreach (XCTile t in MapViewPanel.Instance.Map.Tiles) {
 								if (t.Info.UFODoor || t.Info.HumanDoor)
 									t.MakeAnimate();
-							}
-						else
+							} else
 							foreach (XCTile t in MapViewPanel.Instance.Map.Tiles)
 								if (t.Info.UFODoor || t.Info.HumanDoor)
 									t.StopAnimate();
 					}
 					break;
-				case "SaveWindowPositions": PathsEditor.SaveRegistry = (bool)val; break;
-				case "UseGrid": MapViewPanel.Instance.View.UseGrid = (bool)val; break;
-				case "GridColor": MapViewPanel.Instance.View.GridColor = (Color)val; break;
-				case "GridLineColor": MapViewPanel.Instance.View.GridLineColor = (Color)val; break;
-				case "GridLineWidth": MapViewPanel.Instance.View.GridLineWidth = (int)val; break;
+				case "SaveWindowPositions":
+					PathsEditor.SaveRegistry = (bool)val;
+					break;
+				case "UseGrid":
+					MapViewPanel.Instance.View.UseGrid = (bool)val;
+					break;
+				case "GridColor":
+					MapViewPanel.Instance.View.GridColor = (Color)val;
+					break;
+				case "GridLineColor":
+					MapViewPanel.Instance.View.GridLineColor = (Color)val;
+					break;
+				case "GridLineWidth":
+					MapViewPanel.Instance.View.GridLineWidth = (int)val;
+					break;
 			}
 		}
 
-		private class SortableTreeNode : TreeNode,IComparable
+		private class SortableTreeNode : TreeNode, IComparable
 		{
 			public SortableTreeNode(string text) : base(text) { }
 
@@ -320,8 +311,7 @@ namespace MapView
 
 		private void addMaps(TreeNode tn, Dictionary<string, IMapDesc> maps)
 		{
-			foreach (string key in maps.Keys)
-			{
+			foreach (string key in maps.Keys) {
 				SortableTreeNode mapNode = new SortableTreeNode(key);
 				mapNode.Tag = maps[key];
 				tn.Nodes.Add(mapNode);
@@ -334,8 +324,7 @@ namespace MapView
 			tSetNode.Tag = tSet;
 			mapList.Nodes.Add(tSetNode);
 
-			foreach (string tSetMapGroup in tSet.Subsets.Keys)
-			{
+			foreach (string tSetMapGroup in tSet.Subsets.Keys) {
 				SortableTreeNode tsGroup = new SortableTreeNode(tSetMapGroup);
 				tsGroup.Tag = tSet.Subsets[tSetMapGroup];
 				tSetNode.Nodes.Add(tsGroup);
@@ -353,20 +342,17 @@ namespace MapView
 
 		private void closing(object sender, CancelEventArgs e)
 		{
-			if (NotifySave() == DialogResult.Cancel)
-			{
+			if (NotifySave() == DialogResult.Cancel) {
 				e.Cancel = true;
 				return;
 			}
 
-			if (PathsEditor.SaveRegistry)
-			{
+			if (PathsEditor.SaveRegistry) {
 				RegistryKey swKey = Registry.CurrentUser.CreateSubKey("Software");
 				RegistryKey mvKey = swKey.CreateSubKey("MapView");
 				RegistryKey riKey = mvKey.CreateSubKey("MainView");
 
-				foreach (string key in registeredForms.Keys)
-				{
+				foreach (string key in registeredForms.Keys) {
 					Form form = registeredForms[key];
 					form.WindowState = FormWindowState.Normal;
 					form.Close();
@@ -448,8 +434,7 @@ namespace MapView
 
 		private void saveItem_Click(object sender, System.EventArgs e)
 		{
-			if (mapView.Map != null)
-			{
+			if (mapView.Map != null) {
 				mapView.Map.Save();
 				xConsole.AddLine("Saved: " + mapView.Map.Name);
 				Globals.MapChanged = false;
@@ -476,8 +461,7 @@ namespace MapView
 			if (NotifySave() == DialogResult.Cancel)
 				return;
 
-			if (mapList.SelectedNode.Tag is IMapDesc)
-			{
+			if (mapList.SelectedNode.Tag is IMapDesc) {
 				IMapDesc imd = (IMapDesc)mapList.SelectedNode.Tag;
 				miExport.Enabled = true;
 				mapView.SetMap(imd.GetMapFile());
@@ -486,15 +470,13 @@ namespace MapView
 				tsMapSize.Text = "Size: " + mapView.View.Map.MapSize.ToString();
 
 				//turn off door animations
-				if (miDoors.Checked)
-				{
+				if (miDoors.Checked) {
 					miDoors.Checked = false;
 					miDoors_Click(null, null);
 				}
 
 				//open all the forms in the show menu once
-				if (!showMenu.Enabled)
-				{
+				if (!showMenu.Enabled) {
 					foreach (MenuItem mi in showMenu.MenuItems)
 						mi.PerformClick();
 
@@ -502,12 +484,10 @@ namespace MapView
 				}
 
 				//Reset all observer events
-				foreach (string key in registeredForms.Keys)
-				{
+				foreach (string key in registeredForms.Keys) {
 					Form f = registeredForms[key];
 
-					if (f is Map_Observer_Form)
-					{
+					if (f is Map_Observer_Form) {
 						Map_Observer_Form frm = (Map_Observer_Form)f;
 						SetMap(mapView.View.Map, frm);
 					}
@@ -517,8 +497,7 @@ namespace MapView
 				//    MapChanged(this, new SetMapEventArgs(mapView.Map));
 
 				MapViewPanel.Instance.View.Refresh();
-			}
-			else
+			} else
 				miExport.Enabled = false;
 			#region old
 			/*
@@ -590,15 +569,13 @@ namespace MapView
 
 		public void SetMap(IMap_Base newMap, IMap_Observer observer)
 		{
-			if (observer.Map != null)
-			{
+			if (observer.Map != null) {
 				observer.Map.HeightChanged -= new HeightChangedDelegate(observer.HeightChanged);
 				observer.Map.SelectedTileChanged -= new SelectedTileChangedDelegate(observer.SelectedTileChanged);
 			}
 
 			observer.Map = newMap;
-			if (newMap != null)
-			{
+			if (newMap != null) {
 				newMap.HeightChanged += new HeightChangedDelegate(observer.HeightChanged);
 				newMap.SelectedTileChanged += new SelectedTileChangedDelegate(observer.SelectedTileChanged);
 			}
@@ -610,19 +587,18 @@ namespace MapView
 		public DialogResult NotifySave()
 		{
 			if (mapView.Map != null && Globals.MapChanged)
-				switch (MessageBox.Show(this, "Map changed, do you wish to save?", "Save map?", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1))
-				{
+				switch (MessageBox.Show(this, "Map changed, do you wish to save?", "Save map?", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1)) {
 					case DialogResult.No: //dont save 
 						break;
 					case DialogResult.Yes: //save
 						mapView.Map.Save();
-						break;					
+						break;
 					case DialogResult.Cancel://do nothing
 						return DialogResult.Cancel;
 				}
 
 			Globals.MapChanged = false;
-			return DialogResult.OK;			
+			return DialogResult.OK;
 		}
 
 		private void miOptions_Click(object sender, System.EventArgs e)
@@ -634,11 +610,9 @@ namespace MapView
 
 		private void miSaveImage_Click(object sender, System.EventArgs e)
 		{
-			if (mapView.Map != null)
-			{
+			if (mapView.Map != null) {
 				saveFile.FileName = mapView.Map.Name;
-				if (saveFile.ShowDialog() == DialogResult.OK)
-				{
+				if (saveFile.ShowDialog() == DialogResult.OK) {
 					lf.Show();
 					mapView.Map.SaveGif(saveFile.FileName);
 					lf.Hide();
@@ -648,8 +622,7 @@ namespace MapView
 
 		private void miHq_Click(object sender, System.EventArgs e)
 		{
-			if (mapView.Map is XCMapFile)
-			{
+			if (mapView.Map is XCMapFile) {
 				((XCMapFile)mapView.Map).Hq2x();
 				mapView.View.Resize();
 			}
@@ -660,8 +633,7 @@ namespace MapView
 			miDoors.Checked = !miDoors.Checked;
 
 			foreach (XCTile t in mapView.Map.Tiles)
-				if (t.Info.UFODoor || t.Info.HumanDoor)
-				{
+				if (t.Info.UFODoor || t.Info.HumanDoor) {
 					if (miDoors.Checked)
 						t.MakeAnimate();
 					else
@@ -673,8 +645,7 @@ namespace MapView
 		{
 			ChangeMapSizeForm cmf = new ChangeMapSizeForm();
 			cmf.Map = mapView.View.Map;
-			if (cmf.ShowDialog(this) == DialogResult.OK)
-			{
+			if (cmf.ShowDialog(this) == DialogResult.OK) {
 				cmf.Map.ResizeTo(cmf.NewRows, cmf.NewCols, cmf.NewHeight);
 				//mapView.View.Map.ResizeTo(cmf.NewRows, cmf.NewCols, cmf.NewHeight);
 				mapView.ForceResize();
@@ -684,8 +655,7 @@ namespace MapView
 		private bool windowFlag = false;
 		private void MainWindow_Activated(object sender, System.EventArgs e)
 		{
-			if (!windowFlag)
-			{
+			if (!windowFlag) {
 				windowFlag = true;
 				foreach (MenuItem mi in showMenu.MenuItems)
 					if (mi.Checked)
@@ -741,8 +711,7 @@ namespace MapView
 			btnUp.Size = new System.Drawing.Size(25, 25);
 			btnUp.Text = "toolStripButton1";
 			btnUp.ToolTipText = "Level Up";
-			btnUp.Click += delegate(object sender, EventArgs e)
-			{
+			btnUp.Click += delegate(object sender, EventArgs e) {
 				MapViewPanel.Instance.View.Map.Up();
 			};
 			// 
@@ -756,8 +725,7 @@ namespace MapView
 			btnDown.Size = new System.Drawing.Size(25, 25);
 			btnDown.Text = "toolStripButton2";
 			btnDown.ToolTipText = "Level Down";
-			btnDown.Click += delegate(object sender, EventArgs e)
-			{
+			btnDown.Click += delegate(object sender, EventArgs e) {
 				MapViewPanel.Instance.View.Map.Down();
 			};
 			// 
