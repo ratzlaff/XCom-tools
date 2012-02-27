@@ -11,7 +11,6 @@ namespace XCom.Interfaces.Base
 		void HeightChanged(IMap_Base sender, HeightChangedEventArgs e);
 		void SelectedTileChanged(IMap_Base sender, SelectedTileChangedEventArgs e);
 		DSShared.Windows.RegistryInfo RegistryInfo { get;set;}
-		Dictionary<string, IMap_Observer> MoreObservers { get;}
 	}
 
 	/// <summary>

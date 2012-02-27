@@ -579,9 +579,6 @@ namespace MapView
 				newMap.HeightChanged += new HeightChangedDelegate(observer.HeightChanged);
 				newMap.SelectedTileChanged += new SelectedTileChangedDelegate(observer.SelectedTileChanged);
 			}
-
-			foreach (string key in observer.MoreObservers.Keys)
-				SetMap(newMap, observer.MoreObservers[key]);
 		}
 
 		public DialogResult NotifySave()

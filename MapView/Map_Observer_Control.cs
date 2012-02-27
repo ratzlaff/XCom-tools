@@ -10,11 +10,10 @@ namespace MapView
 	{
 		protected IMap_Base map;
 		private DSShared.Windows.RegistryInfo registryInfo;
-		private Dictionary<string, IMap_Observer> moreObservers;
 
 		public Map_Observer_Control()
 		{
-			moreObservers = new Dictionary<string, IMap_Observer>();
+
 		}
 
 		#region IMap_Observer Members
@@ -39,12 +38,10 @@ namespace MapView
 			set
 			{
 				registryInfo = value;
-				value.Loading += delegate(object sender, DSShared.Windows.RegistrySaveLoadEventArgs e)
-				{
+				value.Loading += delegate(object sender, DSShared.Windows.RegistrySaveLoadEventArgs e) {
 					OnRISettingsLoad(e);
 				};
-				value.Saving += delegate(object sender, DSShared.Windows.RegistrySaveLoadEventArgs e)
-				{
+				value.Saving += delegate(object sender, DSShared.Windows.RegistrySaveLoadEventArgs e) {
 					OnRISettingsSave(e);
 				};
 			}
@@ -52,12 +49,6 @@ namespace MapView
 
 		protected virtual void OnRISettingsSave(DSShared.Windows.RegistrySaveLoadEventArgs e) { }
 		protected virtual void OnRISettingsLoad(DSShared.Windows.RegistrySaveLoadEventArgs e) { }
-
-		[Browsable(false)]
-		public Dictionary<string, XCom.Interfaces.Base.IMap_Observer> MoreObservers
-		{
-			get { return moreObservers; }
-		}
 
 		#endregion
 	}
