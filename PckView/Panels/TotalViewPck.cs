@@ -30,7 +30,7 @@ namespace PckView
 
 			statusBar = new StatusBar();
 			statusBar.SizingGrip = false;
-			
+
 			statusOverTile = new StatusBarPanel();
 			statusOverTile.Width = 150;
 			statusOverTile.AutoSize = StatusBarPanelAutoSize.None;
@@ -99,12 +99,10 @@ namespace PckView
 		{
 			base.OnResize(e);
 
-			if (view.PreferredHeight >= Height)
-			{
+			if (view.PreferredHeight >= Height) {
 				scroll.Visible = true;
 				scroll.Maximum = view.PreferredHeight - Height + 50;
-			}
-			else
+			} else
 				scroll.Visible = false;
 		}
 
@@ -119,8 +117,7 @@ namespace PckView
 			get { return view.Collection; }
 			set
 			{
-				try
-				{
+				try {
 					view.Collection = value;
 					if (value is PckFile)
 						statusBPP.Text = "Bpp: " + ((PckFile)view.Collection).Bpp + "  ";
@@ -128,9 +125,7 @@ namespace PckView
 						statusBPP.Text = "";
 					if (XCImageCollectionSet != null)
 						XCImageCollectionSet(this, new XCImageCollectionSetEventArgs(value));
-				}
-				catch(Exception e)
-				{
+				} catch (Exception e) {
 					if (XCImageCollectionSet != null)
 						XCImageCollectionSet(this, new XCImageCollectionSetEventArgs(null));
 
@@ -143,12 +138,10 @@ namespace PckView
 		{
 			scroll.Value = scroll.Minimum;
 			view.StartY = -scroll.Value;
-			if (view.PreferredHeight >= Height)
-			{
+			if (view.PreferredHeight >= Height) {
 				scroll.Visible = true;
 				scroll.Maximum = view.PreferredHeight - Height;
-			}
-			else
+			} else
 				scroll.Visible = false;
 		}
 
@@ -173,7 +166,7 @@ namespace PckView
 			statusOverTile.Text = "Selected: " + click + " Over: " + move;
 
 			if (click < view.Collection.Count)
-				statusClickName.Text = view.Collection[click].ToString()+"  ";
+				statusClickName.Text = view.Collection[click].ToString() + "  ";
 		}
 
 		private void viewMoved(int x)
