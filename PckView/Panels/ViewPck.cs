@@ -11,7 +11,7 @@ namespace PckView
 	public delegate void PckViewMouseClicked(int num);
 	public delegate void PckViewMouseMoved(int moveNum);
 
-	public class ViewPck : Panel
+	public class ViewPck : UserControl
 	{
 		private XCImageCollection myFile;
 

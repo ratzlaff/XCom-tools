@@ -16,6 +16,11 @@ namespace ViewLib.Base
 			SetStyle(ControlStyles.AllPaintingInWmPaint | ControlStyles.UserPaint | ControlStyles.OptimizedDoubleBuffer, true);
 		}
 
+		public static bool IsDesignMode
+		{
+			get { return LicenseManager.UsageMode == LicenseUsageMode.Designtime || AppDomain.CurrentDomain.FriendlyName == "DefaultDomain"; }
+		}
+
 		protected override void OnPaint(PaintEventArgs e)
 		{
 			if (DesignMode) {
@@ -23,12 +28,8 @@ namespace ViewLib.Base
 				ControlPaint.DrawBorder3D(e.Graphics, ClientRectangle, Border3DStyle.Flat);
 				SizeF fontSize = e.Graphics.MeasureString(Name, Font);
 				e.Graphics.DrawString(Name, Font, Brushes.Black, (Width - fontSize.Width) / 2, (Height - fontSize.Height) / 2);
-			} else {
-				Render(e.Graphics);
 			}
 		}
-
-		protected virtual void Render(Graphics backBuffer) { }
 
 		private void InitializeComponent()
 		{

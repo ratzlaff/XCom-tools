@@ -126,16 +126,13 @@ namespace MapView.TopViewForm
 
 		public void SetSelected(MouseButtons btn, int clicks)
 		{
-			if (btn == MouseButtons.Right && mapTile != null)
-			{
+			if (btn == MouseButtons.Right && mapTile != null) {
 				if (clicks == 1)
 					mapTile[selected] = TileView.Instance.SelectedTile;
 				else if (clicks == 2)
 					mapTile[selected] = null;
 				Globals.MapChanged = true;
-			}
-			else if (btn == MouseButtons.Left && mapTile != null)
-			{
+			} else if (btn == MouseButtons.Left && mapTile != null) {
 				if (clicks == 2)
 					TileView.Instance.SelectedTile = mapTile[selected];
 			}
@@ -172,70 +169,66 @@ namespace MapView.TopViewForm
 			Refresh();
 		}
 
-		protected override void Render(Graphics g)
+		protected override void OnPaint(PaintEventArgs e)
 		{
-			if (DesignMode)
-			{
-				g.DrawLine(System.Drawing.Pens.Black, 0, 0, Width, Height);
-				g.DrawLine(System.Drawing.Pens.Black, 0, Height, Width, 0);
+			if (DesignMode) {
+				base.OnPaint(e);
+				e.Graphics.DrawLine(System.Drawing.Pens.Black, 0, 0, Width, Height);
+				e.Graphics.DrawLine(System.Drawing.Pens.Black, 0, Height, Width, 0);
 
-				ControlPaint.DrawBorder3D(g, ClientRectangle, Border3DStyle.Flat);
+				ControlPaint.DrawBorder3D(e.Graphics, ClientRectangle, Border3DStyle.Flat);
 				return;
 			}
 
-			if (mapTile != null)
-			{
-				if (selected == XCMapTile.MapQuadrant.Ground) g.FillRectangle(brush, startX, startY, tileWidth + 1, tileHeight + 2);
-				else if (selected == XCMapTile.MapQuadrant.West) g.FillRectangle(brush, startX + ((tileWidth + 2 * space)), startY, tileWidth + 1, tileHeight + 2);
-				else if (selected == XCMapTile.MapQuadrant.North) g.FillRectangle(brush, startX + (2 * (tileWidth + 2 * space)), startY, tileWidth + 1, tileHeight + 2);
-				else if (selected == XCMapTile.MapQuadrant.Content) g.FillRectangle(brush, startX + (3 * (tileWidth + 2 * space)), startY, tileWidth + 1, tileHeight + 2);
+			if (mapTile != null) {
+				Graphics g = e.Graphics;
+				if (selected == XCMapTile.MapQuadrant.Ground)
+					g.FillRectangle(brush, startX, startY, tileWidth + 1, tileHeight + 2);
+				else if (selected == XCMapTile.MapQuadrant.West)
+					g.FillRectangle(brush, startX + ((tileWidth + 2 * space)), startY, tileWidth + 1, tileHeight + 2);
+				else if (selected == XCMapTile.MapQuadrant.North)
+					g.FillRectangle(brush, startX + (2 * (tileWidth + 2 * space)), startY, tileWidth + 1, tileHeight + 2);
+				else if (selected == XCMapTile.MapQuadrant.Content)
+					g.FillRectangle(brush, startX + (3 * (tileWidth + 2 * space)), startY, tileWidth + 1, tileHeight + 2);
 
 				if (!TopView.Instance.GroundVisible)
 					g.FillRectangle(System.Drawing.Brushes.DarkGray, startX, startY, tileWidth + 1, tileHeight + 2);
 
-				if (mapTile.Ground != null)
-				{
+				if (mapTile.Ground != null) {
 					g.DrawImage(mapTile.Ground[MapViewPanel.Current].Image, startX, startY - mapTile.Ground.Info.TileOffset);
 					if (mapTile.Ground.Info.HumanDoor || mapTile.Ground.Info.UFODoor)
 						g.DrawString("Door", Font, System.Drawing.Brushes.Black, startX, startY + PckImage.Height - Font.Height);
-				}
-				else
+				} else
 					g.DrawImage(Globals.ExtraTiles[3].Image, startX, startY);
 
 				if (!TopView.Instance.WestVisible)
 					g.FillRectangle(System.Drawing.Brushes.DarkGray, startX + ((tileWidth + 2 * space)), startY, tileWidth + 1, tileHeight + 2);
 
-				if (mapTile.West != null)
-				{
+				if (mapTile.West != null) {
 					g.DrawImage(mapTile.West[MapViewPanel.Current].Image, startX + ((tileWidth + 2 * space)), startY - mapTile.West.Info.TileOffset);
 					if (mapTile.West.Info.HumanDoor || mapTile.West.Info.UFODoor)
 						g.DrawString("Door", Font, System.Drawing.Brushes.Black, startX + ((tileWidth + 2 * space)), startY + PckImage.Height - Font.Height);
-				}
-				else
+				} else
 					g.DrawImage(Globals.ExtraTiles[1].Image, startX + ((tileWidth + 2 * space)), startY);
 
 				if (!TopView.Instance.NorthVisible)
 					g.FillRectangle(System.Drawing.Brushes.DarkGray, startX + (2 * (tileWidth + 2 * space)), startY, tileWidth + 1, tileHeight + 2);
 
-				if (mapTile.North != null)
-				{
+				if (mapTile.North != null) {
 					g.DrawImage(mapTile.North[MapViewPanel.Current].Image, startX + (2 * (tileWidth + 2 * space)), startY - mapTile.North.Info.TileOffset);
 					if (mapTile.North.Info.HumanDoor || mapTile.North.Info.UFODoor)
 						g.DrawString("Door", Font, System.Drawing.Brushes.Black, startX + (2 * (tileWidth + 2 * space)), startY + PckImage.Height - Font.Height);
-				}
-				else
+				} else
 					g.DrawImage(Globals.ExtraTiles[2].Image, startX + (2 * (tileWidth + 2 * space)), startY);
 
 				if (!TopView.Instance.ContentVisible)
 					g.FillRectangle(System.Drawing.Brushes.DarkGray, startX + (3 * (tileWidth + 2 * space)), startY, tileWidth + 1, tileHeight + 2);
 
-				if (mapTile.Content != null)
-				{
+				if (mapTile.Content != null) {
 					g.DrawImage(mapTile.Content[MapViewPanel.Current].Image, startX + (3 * (tileWidth + 2 * space)), startY - mapTile.Content.Info.TileOffset);
 					if (mapTile.Content.Info.HumanDoor || mapTile.Content.Info.UFODoor)
 						g.DrawString("Door", Font, System.Drawing.Brushes.Black, startX + (3 * (tileWidth + 2 * space)), startY + PckImage.Height - Font.Height);
-				}
-				else
+				} else
 					g.DrawImage(Globals.ExtraTiles[4].Image, startX + (3 * (tileWidth + 2 * space)), startY);
 
 				g.FillRectangle(Brushes["GroundColor"], new RectangleF(startX, startY + tileHeight + space + font.Height, tileWidth, 3));

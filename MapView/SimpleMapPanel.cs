@@ -202,8 +202,14 @@ namespace MapView.TopViewForm
 			return cell;
 		}
 
-		protected override void Render(System.Drawing.Graphics g)
+		protected override void OnPaint(PaintEventArgs e)
 		{
+			Graphics g = e.Graphics;
+			if (IsDesignMode) {
+				base.OnPaint(e);
+				return;
+			}
+
 			g.FillRectangle(System.Drawing.SystemBrushes.Control, ClientRectangle);
 
 			if (map != null) {
