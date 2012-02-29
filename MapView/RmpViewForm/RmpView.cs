@@ -158,8 +158,7 @@ namespace MapView.RmpViewForm
 
 				if (currEntry == null && e.MouseEventArgs.Button == MouseButtons.Right)
 				{
-					if (map is XCMapFile)
-						currEntry = ((XCMapFile)map).AddRmp(e.MapLocation);
+					currEntry = map.AddRmp(e.MapLocation);
 				}
 			}
 			catch { return; }
@@ -188,7 +187,7 @@ namespace MapView.RmpViewForm
 			cbLink4.Items.Clear();
 			cbLink5.Items.Clear();
 
-			for (byte i = 0; i < ((XCMapFile)map).Rmp.Length; i++)
+			for (byte i = 0; i < map.Rmp.Length; i++)
 			{
 				if (i == currEntry.Index)
 					continue;
