@@ -34,7 +34,7 @@ solution "Progs"
 		files { "../PckView/**.cs", "../PckView/**.resx", "../PckView/Properties/Settings.settings" }
 		embedded { "../PckView/_Embedded/**.*" }
 		
-		links { "ViewLib", "System", "XCom", "DSShared", "System.Core", "System.Data", "System.Design", "System.Drawing", "System.Windows.Forms" }
+		links { "ViewLib", "System", "XCom", "DSShared", "System.Core", "System.Data", "System.Design", "System.Drawing", "System.Windows.Forms", "../libs/WeifenLuo.WinFormsUI.Docking.dll" }
 		prebuildcommands { "SubWCRev $(ProjectDir) $(ProjectDir)Properties\\AssemblyInfo.template $(ProjectDir)Properties\\AssemblyInfo.cs" }
 		
 	-- XCom
@@ -45,7 +45,7 @@ solution "Progs"
 		files { "../XCom/**.cs", "../XCom/**.resx", "../XCom/Properties/Settings.settings" }
 		embedded { "../XCom/_Embedded/**.*" }
 		
-		links { "DSShared", "System", "System.Core", "System.Data", "System.Drawing", "System.Design", "System.Windows.Forms", "../DockPanel_Src/WeifenLuo.WinFormsUI.Docking.dll" }
+		links { "ViewLib", "DSShared", "System", "System.Core", "System.Data", "System.Drawing", "System.Design", "System.Windows.Forms", "../libs/WeifenLuo.WinFormsUI.Docking.dll" }
 		prebuildcommands { "SubWCRev $(ProjectDir) $(ProjectDir)Properties\\AssemblyInfo.template $(ProjectDir)Properties\\AssemblyInfo.cs" }
 		
 	-- Utility library
