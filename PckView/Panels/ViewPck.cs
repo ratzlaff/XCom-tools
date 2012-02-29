@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using XCom.Interfaces;
 using XCom;
+using ViewLib.Base;
 using DSShared;
 
 namespace PckView
@@ -11,7 +12,7 @@ namespace PckView
 	public delegate void PckViewMouseClicked(int num);
 	public delegate void PckViewMouseMoved(int moveNum);
 
-	public class ViewPck : UserControl
+	public class ViewPck : DoubleBufferControl
 	{
 		private XCImageCollection myFile;
 
@@ -26,9 +27,6 @@ namespace PckView
 
 		public ViewPck()
 		{
-			//pckFile=null;
-			this.Paint += new PaintEventHandler(paint);
-			this.SetStyle(ControlStyles.DoubleBuffer | ControlStyles.UserPaint | ControlStyles.AllPaintingInWmPaint, true);
 			this.MouseDown += new MouseEventHandler(click);
 			this.MouseMove += new MouseEventHandler(moving);
 			clickX = clickY = -1;
@@ -124,8 +122,13 @@ namespace PckView
 			}
 		}
 
-		private void paint(object sender, PaintEventArgs e)
+		protected override void OnPaint(PaintEventArgs e)
 		{
+			if (IsDesignMode) {
+				base.OnPaint(e);
+				return;
+			}
+
 			if (myFile != null && myFile.Count > 0) {
 				Graphics g = e.Graphics;
 				if (myFile.IXCFile.FileOptions.BitDepth == 8 && myFile[0].Palette.Transparent.A == 0)
