@@ -21,7 +21,6 @@ namespace PckView
 {
 	public partial class PckViewForm : System.Windows.Forms.Form
 	{
-		private TotalViewPck v;
 		private Palette currPal;
 		private Form bytesFrame;
 		private RichTextBox bytesText;
@@ -84,7 +83,7 @@ namespace PckView
 				}
 			}
 
-			v = TotalViewPck.Instance;
+			TotalViewPck v = TotalViewPck.Instance;
 			v.Dock = DockStyle.Fill;
 			this.Controls.Add(v);
 
@@ -246,7 +245,7 @@ namespace PckView
 
 		void addMany_Click(object sender, EventArgs e)
 		{
-			if (v.Collection != null)
+			if (TotalViewPck.Instance.Collection != null)
 			{
 				openBMP.Title = "Hold shift to select multiple files";
 				openBMP.Multiselect = true;
@@ -255,7 +254,7 @@ namespace PckView
 					foreach (string s in openBMP.FileNames)
 					{
 						Bitmap b = new Bitmap(s);
-						v.Collection.Add(XCom.Bmp.LoadTile(b,0,v.Pal,0,0,v.Collection.IXCFile.ImageSize.Width, v.Collection.IXCFile.ImageSize.Height));
+						TotalViewPck.Instance.Collection.Add(XCom.Bmp.LoadTile(b, 0, TotalViewPck.Instance.Pal, 0, 0, TotalViewPck.Instance.Collection.IXCFile.ImageSize.Width, TotalViewPck.Instance.Collection.IXCFile.ImageSize.Height));
 					}
 
 					Refresh();
@@ -307,26 +306,26 @@ namespace PckView
 			currPal = (Palette)((MenuItem)sender).Tag;
 			palMI[currPal].Checked = true;
 
-			v.Pal = currPal;
+			TotalViewPck.Instance.Pal = currPal;
 
 			if (editor != null)
 				editor.Palette = currPal;
 
-			v.Refresh();
+			TotalViewPck.Instance.Refresh();
 		}
 
 		private void viewClicked(int click)
 		{
 			selected = click;
-			if (v.Selected != null)
+			if (TotalViewPck.Instance.Selected != null)
 			{
 				editImage.Enabled = true;
 				saveImage.Enabled = true;
 				deleteImage.Enabled = true;
 				if (bytesText != null)
 				{
-					bytesText.Text = v.Selected.ToString();
-					bytesFrame.Text = "Length: " + v.Selected.Bytes.Length;
+					bytesText.Text = TotalViewPck.Instance.Selected.ToString();
+					bytesFrame.Text = "Length: " + TotalViewPck.Instance.Selected.Bytes.Length;
 				}
 			}
 			else //selected is null
@@ -423,12 +422,7 @@ namespace PckView
 		{
 			palClick(((MenuItem)palMI[toLoad.IXCFile.DefaultPalette]), null);
 
-			v.Collection = toLoad;
-		}
-
-		public TotalViewPck MainPanel
-		{
-			get { return v; }
+			TotalViewPck.Instance.Collection = toLoad;
 		}
 
 		private void saveAs_Click(object sender, System.EventArgs e)
@@ -442,31 +436,31 @@ namespace PckView
 			if (saveFile.ShowDialog() == DialogResult.OK)
 			{
 				string dir = saveFile.FileName.Substring(0, saveFile.FileName.LastIndexOf("\\"));
-				saveDictionary[saveFile.FilterIndex].SaveCollection(dir, Path.GetFileNameWithoutExtension(saveFile.FileName), v.Collection);
+				saveDictionary[saveFile.FilterIndex].SaveCollection(dir, Path.GetFileNameWithoutExtension(saveFile.FileName), TotalViewPck.Instance.Collection);
 			}
 		}
 
 		private void viewClick(object sender, EventArgs e)
 		{
-			if (v.Collection != null)
+			if (TotalViewPck.Instance.Collection != null)
 			{
-				if (v.Collection.IXCFile.SingleFileName != null)
+				if (TotalViewPck.Instance.Collection.IXCFile.SingleFileName != null)
 				{
-					string fName = v.Collection.Name.Substring(0, v.Collection.Name.IndexOf("."));
-					string ext = v.Collection.Name.Substring(v.Collection.Name.IndexOf(".") + 1);
-					saveBmpSingle.FileName = fName + v.Selected.FileNum;
+					string fName = TotalViewPck.Instance.Collection.Name.Substring(0, TotalViewPck.Instance.Collection.Name.IndexOf("."));
+					string ext = TotalViewPck.Instance.Collection.Name.Substring(TotalViewPck.Instance.Collection.Name.IndexOf(".") + 1);
+					saveBmpSingle.FileName = fName + TotalViewPck.Instance.Selected.FileNum;
 				}
 				else
-					saveBmpSingle.FileName = v.Collection.Name + v.Selected.FileNum;
+					saveBmpSingle.FileName = TotalViewPck.Instance.Collection.Name + TotalViewPck.Instance.Selected.FileNum;
 
 				if (saveBmpSingle.ShowDialog() == DialogResult.OK)
-					DSShared.Bmp.Save(saveBmpSingle.FileName, v.Selected.Image);
+					DSShared.Bmp.Save(saveBmpSingle.FileName, TotalViewPck.Instance.Selected.Image);
 			}
 		}
 
 		private void replaceClick(object sender, EventArgs e)
 		{
-			if (v.Collection != null)
+			if (TotalViewPck.Instance.Collection != null)
 			{
 				openBMP.Title = "Selected number: " + selected;
 				openBMP.Multiselect = false;
@@ -474,7 +468,7 @@ namespace PckView
 				{
 					Bitmap b = new Bitmap(openBMP.FileName);
 
-					v.Selected = XCom.Bmp.Load(b, v.Pal, v.Collection.IXCFile.ImageSize.Width, v.Collection.IXCFile.ImageSize.Height,1)[0];
+					TotalViewPck.Instance.Selected = XCom.Bmp.Load(b, TotalViewPck.Instance.Pal, TotalViewPck.Instance.Collection.IXCFile.ImageSize.Width, TotalViewPck.Instance.Collection.IXCFile.ImageSize.Height, 1)[0];
 					Refresh();
 				}
 
@@ -484,12 +478,12 @@ namespace PckView
 
 		private void UpdateText()
 		{
-			Text = v.Collection.Name + ":" + v.Collection.Count;
+			Text = TotalViewPck.Instance.Collection.Name + ":" + TotalViewPck.Instance.Collection.Count;
 		}
 
 		private void removeClick(object sender, EventArgs e)
 		{
-			v.Collection.Remove(selected);
+			TotalViewPck.Instance.Collection.Remove(selected);
 			UpdateText();
 			Refresh();
 		}
@@ -498,20 +492,20 @@ namespace PckView
 		{
 			if (showBytes.Checked)
 				bytesFrame.BringToFront();
-			else if (v.Selected != null)
+			else if (TotalViewPck.Instance.Selected != null)
 			{
 				bytesFrame = new Form();
 				bytesText = new RichTextBox();
 				bytesText.Dock = DockStyle.Fill;
 				bytesFrame.Controls.Add(bytesText);
 
-				if (v.Selected.Bytes != null)
-					foreach (byte b in v.Selected.Bytes)
+				if (TotalViewPck.Instance.Selected.Bytes != null)
+					foreach (byte b in TotalViewPck.Instance.Selected.Bytes)
 						bytesText.Text += b + " ";
 
 				bytesFrame.Closing += new CancelEventHandler(bClosing);
 				bytesFrame.Location = new Point(this.Right, this.Top);
-				bytesFrame.Text = "Length: " + v.Selected.Bytes.Length;
+				bytesFrame.Text = "Length: " + TotalViewPck.Instance.Selected.Bytes.Length;
 				bytesFrame.Show();
 				showBytes.Checked = true;
 			}
@@ -527,7 +521,7 @@ namespace PckView
 			transOn.Checked = !transOn.Checked;
 
 			currPal.SetTransparent(transOn.Checked);
-			v.Collection.Pal = currPal;
+			TotalViewPck.Instance.Collection.Pal = currPal;
 			Refresh();
 		}
 
@@ -543,9 +537,9 @@ namespace PckView
 
 		private void editClick(object sender, EventArgs e)
 		{
-			if (v.Selected != null)
+			if (TotalViewPck.Instance.Selected != null)
 			{
-				editor.CurrImage = (XCImage)v.Selected.Clone();
+				editor.CurrImage = (XCImage)TotalViewPck.Instance.Selected.Clone();
 
 				if (editor.Visible)
 					editor.BringToFront();
@@ -570,7 +564,7 @@ namespace PckView
 			miPalette.Enabled = false;
 			bytesMenu.Enabled = false;
 
-			v.Hq2x();
+			TotalViewPck.Instance.Hq2x();
 
 			OnResize(null);
 			Refresh();
@@ -578,7 +572,7 @@ namespace PckView
 
 		private void PckView_KeyDown(object sender, System.Windows.Forms.KeyEventArgs e)
 		{
-			if (e.KeyCode == Keys.Delete && deleteImage.Enabled && selected < v.Collection.Count)
+			if (e.KeyCode == Keys.Delete && deleteImage.Enabled && selected < TotalViewPck.Instance.Collection.Count)
 				removeClick(null, null);
 		}
 
@@ -591,15 +585,15 @@ namespace PckView
 
 		private void miSaveDir_Click(object sender, System.EventArgs e)
 		{
-			if (v.Collection != null)
+			if (TotalViewPck.Instance.Collection != null)
 			{
 				string fNameStart = "";
 				string extStart = "";
 
-				if (v.Collection.Name.IndexOf(".") > 0)
+				if (TotalViewPck.Instance.Collection.Name.IndexOf(".") > 0)
 				{
-					fNameStart = v.Collection.Name.Substring(0, v.Collection.Name.IndexOf("."));
-					extStart = v.Collection.Name.Substring(v.Collection.Name.IndexOf(".") + 1);
+					fNameStart = TotalViewPck.Instance.Collection.Name.Substring(0, TotalViewPck.Instance.Collection.Name.IndexOf("."));
+					extStart = TotalViewPck.Instance.Collection.Name.Substring(TotalViewPck.Instance.Collection.Name.IndexOf(".") + 1);
 				}
 
 				saveBmpSingle.FileName = fNameStart;
@@ -625,7 +619,7 @@ namespace PckView
 					//					}
 
 					string zeros = "";
-					int tens = v.Collection.Count;
+					int tens = TotalViewPck.Instance.Collection.Count;
 					while (tens > 0)
 					{
 						zeros += "0";
@@ -635,12 +629,12 @@ namespace PckView
 					ProgressWindow pw = new ProgressWindow();
 					pw.ParentWindow = this;
 					pw.Minimum = 0;
-					pw.Maximum = v.Collection.Count;
+					pw.Maximum = TotalViewPck.Instance.Collection.Count;
 					pw.Width = 300;
 					pw.Height = 50;
 
 					pw.Show();
-					foreach (XCImage xc in v.Collection)
+					foreach (XCImage xc in TotalViewPck.Instance.Collection)
 					{
 						//Console.WriteLine("Save to: "+path+@"\"+fName+(xc.FileNum+countNum)+"."+ext);
 						//Console.WriteLine("Save: " + path + @"\" + fName + string.Format("{0:" + zeros + "}", xc.FileNum) + "." + ext);
@@ -663,10 +657,10 @@ namespace PckView
 
 		private void miCompare_Click(object sender, EventArgs e)
 		{
-			XCImageCollection original = v.Collection;
+			XCImageCollection original = TotalViewPck.Instance.Collection;
 			openItem_Click(null, null);
-			XCImageCollection newCollection = v.Collection;
-			v.Collection = original;
+			XCImageCollection newCollection = TotalViewPck.Instance.Collection;
+			TotalViewPck.Instance.Collection = original;
 
 			if (Controls.Contains(TotalViewPck.Instance))
 			{
