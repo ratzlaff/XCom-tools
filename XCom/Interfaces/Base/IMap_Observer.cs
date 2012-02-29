@@ -4,11 +4,6 @@ using System.Text;
 
 namespace XCom.Interfaces.Base
 {
-	public interface IMap_Observer
-	{
-		IMap_Base Map { set; get; }
-	}
-
 	/// <summary>
 	/// EventArgs class that holds a MapLocation and MapTile for when a SelectedTileChanged event fires
 	/// </summary>

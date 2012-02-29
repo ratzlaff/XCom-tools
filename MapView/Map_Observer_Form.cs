@@ -7,7 +7,7 @@ using XCom;
 
 namespace MapView
 {
-	public class Map_Observer_Form:Form,IMap_Observer
+	public class Map_Observer_Form:Form
 	{
 		protected IMap_Base map;
 		private DSShared.Windows.RegistryInfo registryInfo;
@@ -15,7 +15,7 @@ namespace MapView
 
 		public Map_Observer_Form()
 		{
-			MoreObservers = new Dictionary<string, IMap_Observer>();
+			MoreObservers = new Dictionary<string, Map_Observer_Control>();
 			settings = new Settings();
 			Load += new EventHandler(Map_Observer_Form_Load);			
 		}
@@ -32,7 +32,7 @@ namespace MapView
 			get { return settings; }
 		}
 
-		public Dictionary<string, IMap_Observer> MoreObservers { get; set; }
+		public Dictionary<string, Map_Observer_Control> MoreObservers { get; set; }
 
 		public MenuItem MenuItem { get; set; }
 

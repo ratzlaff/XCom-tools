@@ -6,7 +6,7 @@ using XCom.Interfaces.Base;
 
 namespace MapView
 {
-	public class Map_Observer_Control : ViewLib.Base.DoubleBufferControl, XCom.Interfaces.Base.IMap_Observer
+	public class Map_Observer_Control : ViewLib.Base.DoubleBufferControl
 	{
 		protected IMap_Base map;
 
@@ -14,8 +14,6 @@ namespace MapView
 		{
 
 		}
-
-		#region IMap_Observer Members
 
 		[Browsable(false)]
 		[DefaultValue(null)]
@@ -40,7 +38,5 @@ namespace MapView
 
 		public virtual void HeightChanged(IMap_Base sender, HeightChangedEventArgs e) { Refresh(); }
 		public virtual void SelectedTileChanged(IMap_Base sender, SelectedTileChangedEventArgs e) { Refresh(); }
-
-		#endregion
 	}
 }
