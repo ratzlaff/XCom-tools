@@ -1,8 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using XCom.Interfaces.Base;
 
-namespace XCom.Interfaces.Base
+namespace XCom
 {
 	/// <summary>
 	/// EventArgs class that holds a MapLocation and MapTile for when a SelectedTileChanged event fires
