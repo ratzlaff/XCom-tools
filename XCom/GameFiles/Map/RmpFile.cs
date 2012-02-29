@@ -241,14 +241,14 @@ namespace XCom
 		private UnitType unitType;
 		private byte unitRank1;
 		private UnitRankNum unitRank2;
-		private byte zero1,index;
+		private byte zero1;
 		private SpawnUsage usage;
 		//private byte[] data;
 
 		public RmpEntry(byte idx,byte[] data)
 		{
 			//this.data = data;
-			index=idx;
+			Index=idx;
 			row = data[0];
 			col = data[1];
 			height = data[2];
@@ -271,7 +271,7 @@ namespace XCom
 
 		public RmpEntry(byte idx, byte row, byte col, byte height)
 		{
-			index = idx;
+			Index = idx;
 			this.row=row;
 			this.col=col;
 			this.height=height;
@@ -291,14 +291,14 @@ namespace XCom
 		{
 			if(o is RmpEntry)
 			{
-				return index==((RmpEntry)o).index;
+				return Index==((RmpEntry)o).Index;
 			}
 			return false;
 		}
 
 		public override int GetHashCode()
 		{
-			return index;
+			return Index;
 		}
         
 		public void Save(FileStream fs)
@@ -383,11 +383,7 @@ namespace XCom
 		/// <summary>
 		/// gets the index of this RmpEntry
 		/// </summary>
-		public byte Index
-		{
-			get{return index;}
-			set{index=value;}
-		}
+		public byte Index { get; set; }
 	}
 
 	public class Link
@@ -398,41 +394,26 @@ namespace XCom
 		public const byte ExitSouth=0xFC;
 		public const byte ExitWest=0xFB;
 
-		private byte index, distance;
-		private UnitType unitType;
-
 		public Link(byte index, byte distance, byte type)
 		{
-			this.index=index;
-			this.distance=distance;
-			unitType=(UnitType)type;
+			Index=index;
+			Distance=distance;
+			UType = (UnitType)type;
 		}
 
 		/// <summary>
 		/// Gets or sets the index of the destination node
 		/// </summary>
-		public byte Index
-		{
-			get{return index;}
-			set{index=value;}
-		}
+		public byte Index { get; set; }
 
 		/// <summary>
 		/// gets or sets the distance to the destination node
 		/// </summary>
-		public byte Distance
-		{
-			get{return distance;}
-			set{distance=value;}
-		}
+		public byte Distance { get; set; }
 
 		/// <summary>
 		/// gets or sets the unit type that can use this link
 		/// </summary>
-		public UnitType UType
-		{
-			get{return unitType;}
-			set{unitType=value;}
-		}
+		public UnitType UType { get; set; }
 	}
 }
