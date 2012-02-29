@@ -15,11 +15,6 @@ namespace MapView.RmpViewForm
 
 		public RmpPanel() { }
 
-		public void Calc()
-		{
-			OnResize(null);
-		}
-
 		protected override void OnPaint(PaintEventArgs e)
 		{
 			if (map != null) {
