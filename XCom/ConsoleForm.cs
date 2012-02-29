@@ -6,10 +6,11 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 using DSShared.Windows;
+using ViewLib.Base;
 
 namespace XCom
 {
-	public partial class ConsoleForm : Form
+	public partial class ConsoleForm : ToolWindow
 	{
 		public ConsoleForm()
 		{
