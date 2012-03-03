@@ -93,6 +93,19 @@ namespace MapView
 		/// <param name="desc">property description</param>
 		/// <param name="category">property category</param>
 		/// <param name="eh">event handler to recieve the PropertyValueChanged event</param>
+		public void AddSetting(string name, object val, string desc, string category, ValueChangedDelegate eh)
+		{
+			AddSetting(name, val, desc, category, eh, false, null);
+		}
+
+		/// <summary>
+		/// adds a setting to this settings object
+		/// </summary>
+		/// <param name="name">property name</param>
+		/// <param name="val">start value of the property</param>
+		/// <param name="desc">property description</param>
+		/// <param name="category">property category</param>
+		/// <param name="eh">event handler to recieve the PropertyValueChanged event</param>
 		/// <param name="reflect">if true, an internal event handler will be created - the refObj must not be null and the name must be the name of a property of the type that refObj is</param>
 		/// <param name="refObj">the object that will recieve the changed property values</param>
 		public void AddSetting(string name, object val, string desc, string category, ValueChangedDelegate eh, bool reflect, object refObj)

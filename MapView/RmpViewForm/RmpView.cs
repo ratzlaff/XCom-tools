@@ -26,27 +26,18 @@ namespace MapView.RmpViewForm
 	public partial class RmpView : Map_Observer_Form
 	{
 		private new XCMapFile map;
-		private RmpPanel rmpPanel;
 		private Label locInfo;
 		private Label links;
 		private int clickRow, clickCol;
 
 		private RmpEntry currEntry;
-		//private Settings settings;
-		private Panel contentPane;
-
 		private static RmpView instance;
 
 		private RmpView()
 		{
 			clickRow = clickCol = 0;
 			InitializeComponent();
-
-			rmpPanel = new RmpPanel();
-			contentPane.Controls.Add(rmpPanel);
-			rmpPanel.MapPanelClicked += new MapPanelClickDelegate(panelClick);
-			rmpPanel.MouseMove += new MouseEventHandler(mouseMove);
-			rmpPanel.Dock = DockStyle.Fill;
+			rmpPanel.ScrollPanel=scrollPanel;
 
 			locInfo = new Label();
 			links = new Label();
@@ -100,6 +91,8 @@ namespace MapView.RmpViewForm
 			cbUsage.DropDownStyle = ComboBoxStyle.DropDownList;
 			cbUsage.Items.AddRange(RmpFile.SpawnUsage);
 
+			MoreObservers.Add("RmpPanel", rmpPanel);
+
 			currEntry = null;
 
 			Text = "RmpView";
@@ -110,24 +103,6 @@ namespace MapView.RmpViewForm
 			PropertyForm pf = new PropertyForm("rmpViewOptions", Settings);
 			pf.Text = "RmpView Settings";
 			pf.Show();
-		}
-
-		private void brushChanged(object sender, string key, object val)
-		{
-			rmpPanel.Brushes[key].Color = (Color)val;
-			Refresh();
-		}
-
-		private void penColorChanged(object sender, string key, object val)
-		{
-			rmpPanel.Pens[key].Color = (Color)val;
-			Refresh();
-		}
-
-		private void penWidthChanged(object sender, string key, object val)
-		{
-			rmpPanel.Pens[key].Width = (int)val;
-			Refresh();
 		}
 
 		public static RmpView Instance
@@ -142,28 +117,30 @@ namespace MapView.RmpViewForm
 
 		private void mouseMove(object sender, MouseEventArgs e)
 		{
-			XCMapTile t = rmpPanel.GetTile(e.X, e.Y);
+			XCMapTile t = (XCMapTile)rmpPanel.GetTile(e.X - rmpPanel.Location.X, e.Y - rmpPanel.Location.Y);
 			if (t != null && t.Rmp != null)
 				lblMouseOver.Text = "Mouse Over: " + t.Rmp.Index;
 			else
 				lblMouseOver.Text = "";
 		}
 
-		private void panelClick(object sender, MapPanelClickEventArgs e)
+		public override void SelectedTileChanged(IMap_Base sender, SelectedTileChangedEventArgs e)
 		{
 			idxLabel.Text = this.Text;
 			try
 			{
-				currEntry = ((XCMapTile)e.Tile).Rmp;
+				currEntry = ((XCMapTile)e.SelectedTile).Rmp;
 
-				if (currEntry == null && e.MouseEventArgs.Button == MouseButtons.Right)
-				{
-					currEntry = map.AddRmp(e.MapLocation);
-				}
+//				if (currEntry == null && e.MouseEventArgs.Button == MouseButtons.Right)
+//				{
+//					currEntry = map.AddRmp(e.MapLocation);
+//				}
 			}
 			catch { return; }
 
 			fillGUI();
+
+			this.Text = string.Format("RmpView: r:{0} c:{1} ", e.MapLocation.Row, e.MapLocation.Col);
 		}
 
 		private List<object> byteList = new List<object>();
@@ -171,13 +148,13 @@ namespace MapView.RmpViewForm
 
 		private void fillGUI()
 		{
-			if (currEntry == null)
-			{
+			if (currEntry == null) {
 				gbNodeInfo.Enabled = false;
 				return;
 			}
+
+			SuspendLayout();
 			gbNodeInfo.Enabled = true;
-			gbNodeInfo.SuspendLayout();
 
 			byteList.Clear();
 
@@ -187,8 +164,7 @@ namespace MapView.RmpViewForm
 			cbLink4.Items.Clear();
 			cbLink5.Items.Clear();
 
-			for (byte i = 0; i < map.Rmp.Length; i++)
-			{
+			for (byte i = 0; i < map.Rmp.Length; i++) {
 				if (i == currEntry.Index)
 					continue;
 
@@ -250,40 +226,19 @@ namespace MapView.RmpViewForm
 			cbUse4.SelectedItem = currEntry[3].UType;
 			cbUse5.SelectedItem = currEntry[4].UType;
 
-			txtDist1.Text = currEntry[0].Distance + "";
-			txtDist2.Text = currEntry[1].Distance + "";
-			txtDist3.Text = currEntry[2].Distance + "";
-			txtDist4.Text = currEntry[3].Distance + "";
-			txtDist5.Text = currEntry[4].Distance + "";
+			txtDist1.Text = currEntry[0].Distance.ToString();
+			txtDist2.Text = currEntry[1].Distance.ToString();
+			txtDist3.Text = currEntry[2].Distance.ToString();
+			txtDist4.Text = currEntry[3].Distance.ToString();
+			txtDist5.Text = currEntry[4].Distance.ToString();
 
-			gbNodeInfo.ResumeLayout();
+			ResumeLayout();
 		}
 
-		public override IMap_Base Map
+		protected override void mapChanged(object sender, IMap_Base map)
 		{
-			set
-			{
-				base.Map = value;
-				this.map = (XCMapFile)value;
-
-				rmpPanel.Map = map;
-				if (rmpPanel.Map != null)
-				{
-					currEntry = ((XCMapTile)map[clickRow, clickCol]).Rmp;
-					fillGUI();
-					cbRank1.Items.Clear();
-
-					if (map.Tiles[0][0].Palette == XCPalette.UFOBattle)
-						cbRank1.Items.AddRange(RmpFile.UnitRankUFO);
-					else
-						cbRank1.Items.AddRange(RmpFile.UnitRankTFTD);
-				}
-			}
-		}
-
-		public override void SelectedTileChanged(IMap_Base sender, SelectedTileChangedEventArgs e)
-		{
-			this.Text = string.Format("RmpView: r:{0} c:{1} ", e.MapLocation.Row, e.MapLocation.Col);
+			base.mapChanged(sender, map);
+			this.map = (XCMapFile)map;
 		}
 
 		public override void HeightChanged(IMap_Base sender, HeightChangedEventArgs e)
@@ -616,57 +571,6 @@ namespace MapView.RmpViewForm
 		{
 			currEntry.Usage = (SpawnUsage)((StrEnum)cbUsage.SelectedItem).Enum;
 			Refresh();
-		}
-
-		//private void loadDefaults()
-		protected override void LoadDefaultSettings(Settings settings)
-		{
-			Dictionary<string, SolidBrush> brushes = rmpPanel.Brushes;
-			Dictionary<string, Pen> pens = rmpPanel.Pens;
-
-			ValueChangedDelegate bc = new ValueChangedDelegate(brushChanged);
-			ValueChangedDelegate pc = new ValueChangedDelegate(penColorChanged);
-			ValueChangedDelegate pw = new ValueChangedDelegate(penWidthChanged);
-
-			Pen redPen = new Pen(new SolidBrush(Color.Red), 2);
-			pens["UnselectedLinkColor"] = redPen;
-			pens["UnselectedLinkWidth"] = redPen;
-			settings.AddSetting("UnselectedLinkColor", redPen.Color, "Color of unselected link lines", "Links", pc, false, null);
-			settings.AddSetting("UnselectedLinkWidth", 2, "Width of unselected link lines", "Links", pw, false, null);
-
-			Pen bluePen = new Pen(new SolidBrush(Color.Blue), 2);
-			pens["SelectedLinkColor"] = bluePen;
-			pens["SelectedLinkWidth"] = bluePen;
-			settings.AddSetting("SelectedLinkColor", bluePen.Color, "Color of selected link lines", "Links", pc, false, null);
-			settings.AddSetting("SelectedLinkWidth", 2, "Width of selected link lines", "Links", pw, false, null);
-
-			Pen wallPen = new Pen(new SolidBrush(Color.Black), 4);
-			pens["WallColor"] = wallPen;
-			pens["WallWidth"] = wallPen;
-			settings.AddSetting("WallColor", wallPen.Color, "Color of wall indicators", "View", pc, false, null);
-			settings.AddSetting("WallWidth", 4, "Width of wall indicators", "View", pw, false, null);
-
-			Pen gridPen = new Pen(new SolidBrush(Color.Black), 1);
-			pens["GridLineColor"] = gridPen;
-			pens["GridLineWidth"] = gridPen;
-			settings.AddSetting("GridLineColor", gridPen.Color, "Color of grid lines", "View", pc, false, null);
-			settings.AddSetting("GridLineWidth", 1, "Width of grid lines", "View", pw, false, null);
-
-			SolidBrush selBrush = new SolidBrush(Color.Blue);
-			brushes["SelectedNodeColor"] = selBrush;
-			settings.AddSetting("SelectedNodeColor", selBrush.Color, "Color of selected nodes", "Nodes", bc, false, null);
-
-			SolidBrush spawnBrush = new SolidBrush(Color.GreenYellow);
-			brushes["SpawnNodeColor"] = spawnBrush;
-			settings.AddSetting("SpawnNodeColor", spawnBrush.Color, "Color of spawn nodes", "Nodes", bc, false, null);
-
-			SolidBrush nodeBrush = new SolidBrush(Color.Green);
-			brushes["UnselectedNodeColor"] = nodeBrush;
-			settings.AddSetting("UnselectedNodeColor", nodeBrush.Color, "Color of unselected nodes", "Nodes", bc, false, null);
-
-			SolidBrush contentBrush = new SolidBrush(Color.DarkGray);
-			brushes["ContentTiles"] = contentBrush;
-			settings.AddSetting("ContentTiles", contentBrush.Color, "Color of map tiles with a content tile", "Other", bc, false, null);
 		}
 	}
 }

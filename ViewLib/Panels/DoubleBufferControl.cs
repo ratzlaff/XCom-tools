@@ -16,19 +16,21 @@ namespace ViewLib.Base
 			SetStyle(ControlStyles.AllPaintingInWmPaint | ControlStyles.UserPaint | ControlStyles.OptimizedDoubleBuffer, true);
 		}
 
-		public static bool IsDesignMode
+		[Browsable(false)]
+		public bool IsDesignMode
 		{
-			get { return LicenseManager.UsageMode == LicenseUsageMode.Designtime || AppDomain.CurrentDomain.FriendlyName == "DefaultDomain"; }
+			get { return DesignMode || LicenseManager.UsageMode == LicenseUsageMode.Designtime || AppDomain.CurrentDomain.FriendlyName == "DefaultDomain"; }
 		}
 
 		protected override void OnPaint(PaintEventArgs e)
 		{
-			if (DesignMode) {
+			if (IsDesignMode) {
 				base.OnPaint(e);
-				ControlPaint.DrawBorder3D(e.Graphics, ClientRectangle, Border3DStyle.Flat);
 				SizeF fontSize = e.Graphics.MeasureString(Name, Font);
 				e.Graphics.DrawString(Name, Font, Brushes.Black, (Width - fontSize.Width) / 2, (Height - fontSize.Height) / 2);
 			}
+			else
+				e.Graphics.FillRectangle(System.Drawing.SystemBrushes.Control, ClientRectangle);
 		}
 
 		private void InitializeComponent()

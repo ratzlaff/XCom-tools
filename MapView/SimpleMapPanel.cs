@@ -8,18 +8,24 @@ using System.Drawing;
 using XCom;
 using System.ComponentModel;
 
-namespace MapView.TopViewForm
+namespace MapView
 {
 	public class SimpleMapPanel : Map_Observer_Control
 	{
-		private int offX = 0, offY = 0;
+		protected int offX = 0, offY = 0;
 		protected int hWidth = 8, hHeight = 4;
 		protected int minHeight = 4;
 
-		private GraphicsPath upper, lower, cell, copyArea, selected;
+		protected GraphicsPath upper, lower, cell, copyArea, selected;
 
-		private Point sel1, sel2, sel3, sel4;
-		private int mR, mC;
+		protected Point sel1, sel2, sel3, sel4;
+		protected int mR, mC, selR, selC;
+
+		protected ValueChangedDelegate diamondHeightChanged;
+
+		protected Rectangle borderRect;
+
+		protected Panel scrollPanel;
 
 		public SimpleMapPanel()
 		{
@@ -33,64 +39,100 @@ namespace MapView.TopViewForm
 			sel2 = new Point(0, 0);
 			sel3 = new Point(0, 0);
 			sel4 = new Point(0, 0);
-		}
 
-		[Browsable(false)]
-		[DefaultValue(4)]
-		public int HalfHeight
-		{
-			get { return hHeight; }
-			set { hHeight = value; hWidth = 2 * value; }
-		}
-
-		public void ParentSize(int width, int height)
-		{
-			if (map != null) {
-				int oldWid = hWidth;
-
-				if (height > width / 2) {
-					//use width
-					hWidth = width / (map.MapSize.Rows + map.MapSize.Cols);
-
-					if (hWidth % 2 != 0)
-						hWidth--;
-
-					hHeight = hWidth / 2;
-				} else { //use height
-					hHeight = height / (map.MapSize.Rows + map.MapSize.Cols);
-					hWidth = hHeight * 2;
-				}
-
-				if (hHeight < minHeight) {
-					hWidth = minHeight * 2;
-					hHeight = minHeight;
-				}
-
-				offX = 4 + map.MapSize.Rows * hWidth;
-				offY = 4;
-
-				if (oldWid != hWidth) {
-					Width = 8 + (map.MapSize.Rows + map.MapSize.Cols) * hWidth;
-					Height = 8 + (map.MapSize.Rows + map.MapSize.Cols) * hHeight;
-					Refresh();
-				}
-			}
+			diamondHeightChanged = new ValueChangedDelegate(diamondHeight);
 		}
 
 		[Browsable(false)]
 		[DefaultValue(null)]
-		public override XCom.Interfaces.Base.IMap_Base Map
+		public Panel ScrollPanel
 		{
+			get { return scrollPanel; }
 			set
 			{
-				map = value;
-				hWidth = 7;
-				ParentSize(Parent.Width, Parent.Height);
-				Refresh();
+				scrollPanel = value;
+				scrollPanel.SizeChanged += new EventHandler(scrollPanel_SizeChanged);
 			}
 		}
 
-		protected void viewDrag(object sender, EventArgs ex)
+		private void calcSize(int width, int height)
+		{
+			int rows = 10, cols = 10;
+
+			if (map != null) {
+				rows = map.MapSize.Rows;
+				cols = map.MapSize.Cols;
+			}
+
+			int oldWid = hWidth, oldHei = hHeight;
+
+			if (height > width / 2) {
+				//use width
+				hWidth = width / (rows + cols);
+
+				if (hWidth % 2 != 0)
+					hWidth--;
+
+				hHeight = hWidth / 2;
+			} else { //use height
+				hHeight = height / (rows + cols);
+				hWidth = hHeight * 2;
+			}
+
+			if (hHeight < minHeight) {
+				hWidth = minHeight * 2;
+				hHeight = minHeight;
+			}
+
+			if (!IsDesignMode) {
+				if (oldWid != hWidth || oldHei != hHeight) {
+					Width = 8 + (rows + cols) * hWidth;
+					Height = 8 + (rows + cols) * hHeight;
+					Refresh();
+				}
+
+				offX = 4 + rows * hWidth;
+				offY = 4;
+
+				Location = new Point((width - Width) / 2, (height - Height) / 2);
+			} else {
+				offX = Width / 2;
+				offY = (Height - ((rows + cols) * hHeight)) / 2;
+			}
+		}
+
+		void scrollPanel_SizeChanged(object sender, EventArgs e)
+		{
+			calcSize(scrollPanel.Width, scrollPanel.Height);
+		}
+
+		[DefaultValue(4)]
+		public int MinHeight
+		{
+			get { return minHeight; }
+			set
+			{
+				minHeight = value;
+				OnResize(null);
+			}
+		}
+
+		protected override void OnResize(EventArgs e)
+		{
+			base.OnResize(e);
+			if (scrollPanel != null)
+				calcSize(scrollPanel.Width, scrollPanel.Height);
+
+			sizeSelection();
+
+			if (IsDesignMode) {
+				calcSize(ClientSize.Width, ClientSize.Height);
+				borderRect = ClientRectangle;
+				borderRect.Inflate(-1, -1);
+			}
+		}
+
+		private void sizeSelection()
 		{
 			Point s = new Point(0, 0);
 			Point e = new Point(0, 0);
@@ -119,17 +161,13 @@ namespace MapView.TopViewForm
 			copyArea.AddLine(sel2, sel3);
 			copyArea.AddLine(sel3, sel4);
 			copyArea.CloseFigure();
-
-			Refresh();
 		}
 
-		[Browsable(false)]
-		[DefaultValue(null)]
-		public Dictionary<string, SolidBrush> Brushes { get; set; }
-
-		[Browsable(false)]
-		[DefaultValue(null)]
-		public Dictionary<string, Pen> Pens { get; set; }
+		protected void viewDrag(object sender, EventArgs ex)
+		{
+			sizeSelection();
+			Refresh();
+		}
 
 		public override void SelectedTileChanged(IMap_Base sender, SelectedTileChangedEventArgs e)
 		{
@@ -147,7 +185,6 @@ namespace MapView.TopViewForm
 			selected.CloseFigure();
 
 			viewDrag(null, null);
-			Refresh();
 		}
 
 		protected override void OnMouseWheel(MouseEventArgs e)
@@ -172,7 +209,23 @@ namespace MapView.TopViewForm
 			//return new Point((int)Math.Floor(x1), (int)Math.Floor(x2));
 		}
 
-		protected virtual void RenderCell(IMapTile tile, System.Drawing.Graphics g, int x, int y) { }
+		/// <summary>
+		/// Get the tile contained at (x,y) in local screen coordinates
+		/// </summary>
+		/// <param name="x"></param>
+		/// <param name="y"></param>
+		/// <returns>null if (x,y) is an invalid location for a tile</returns>
+		public IMapTile GetTile(int x, int y)
+		{
+			int row, col;
+			convertCoordsDiamond(x, y, out row, out col);
+			if (row >= 0 && row < map.MapSize.Rows &&
+				col >= 0 && col < map.MapSize.Cols)
+				return map[row, col];
+			return null;
+		}
+
+		protected virtual void RenderCell(System.Drawing.Graphics g, int x, int y, int row, int col) { }
 
 		protected GraphicsPath UpperPath(int x, int y)
 		{
@@ -204,51 +257,51 @@ namespace MapView.TopViewForm
 
 		protected override void OnPaint(PaintEventArgs e)
 		{
+			base.OnPaint(e);
 			Graphics g = e.Graphics;
+
 			if (IsDesignMode) {
-				base.OnPaint(e);
-				return;
-			}
+				for (int i = 0; i <= 10; i++)
+					g.DrawLine(System.Drawing.Pens.Black, offX - i * hWidth, offY + i * hHeight, ((10 - i) * hWidth) + offX, ((i + 10) * hHeight) + offY);
+				for (int i = 0; i <= 10; i++)
+					g.DrawLine(System.Drawing.Pens.Black, offX + i * hWidth, offY + i * hHeight, (i * hWidth) - 10 * hWidth + offX, (i * hHeight) + 10 * hHeight + offY);
 
-			g.FillRectangle(System.Drawing.SystemBrushes.Control, ClientRectangle);
+				//				g.DrawLine(System.Drawing.Pens.Black, offX - (10 * hWidth), offY, offX + (10 * hWidth), offY);
+				//				g.DrawLine(System.Drawing.Pens.Black, offX - (10 * hWidth), offY + (20 * hHeight), offX + (10 * hWidth), offY + (20 * hHeight));
 
-			if (map != null) {
-				for (int row = 0, startX = offX, startY = offY; row < map.MapSize.Rows; row++, startX -= hWidth, startY += hHeight) {
-					for (int col = 0, x = startX, y = startY; col < map.MapSize.Cols; col++, x += hWidth, y += hHeight) {
-						IMapTile mapTile = map[row, col];
+				ControlPaint.DrawBorder3D(g, borderRect, Border3DStyle.Etched);
+			} else {
+				if (map != null) {
+					for (int row = 0, startX = offX, startY = offY; row < map.MapSize.Rows; row++, startX -= hWidth, startY += hHeight)
+						for (int col = 0, x = startX, y = startY; col < map.MapSize.Cols; col++, x += hWidth, y += hHeight)
+							RenderCell(g, x, y, row, col);
 
-						if (mapTile != null)
-							RenderCell(mapTile, g, x, y);
+					for (int i = 0; i <= map.MapSize.Rows; i++)
+						g.DrawLine(pens["GridColor"], offX - i * hWidth, offY + i * hHeight, ((map.MapSize.Cols - i) * hWidth) + offX, ((i + map.MapSize.Cols) * hHeight) + offY);
+					for (int i = 0; i <= map.MapSize.Cols; i++)
+						g.DrawLine(pens["GridColor"], offX + i * hWidth, offY + i * hHeight, (i * hWidth) - map.MapSize.Rows * hWidth + offX, (i * hHeight) + map.MapSize.Rows * hHeight + offY);
+
+					if (copyArea != null)
+						g.DrawPath(pens["SelectColor"], copyArea);
+
+					if (mR < map.MapSize.Rows && mC < map.MapSize.Cols && mR >= 0 && mC >= 0) {
+						int xc = (mC - mR) * hWidth + offX;
+						int yc = (mC + mR) * hHeight + offY;
+
+						GraphicsPath selPath = CellPath(xc, yc);
+						g.DrawPath(pens["MouseColor"], selPath);
 					}
-				}
-
-				for (int i = 0; i <= map.MapSize.Rows; i++)
-					g.DrawLine(Pens["GridColor"], offX - i * hWidth, offY + i * hHeight, ((map.MapSize.Cols - i) * hWidth) + offX, ((i + map.MapSize.Cols) * hHeight) + offY);
-				for (int i = 0; i <= map.MapSize.Cols; i++)
-					g.DrawLine(Pens["GridColor"], offX + i * hWidth, offY + i * hHeight, (i * hWidth) - map.MapSize.Rows * hWidth + offX, (i * hHeight) + map.MapSize.Rows * hHeight + offY);
-
-				if (copyArea != null)
-					g.DrawPath(Pens["SelectColor"], copyArea);
-
-				if (mR < map.MapSize.Rows && mC < map.MapSize.Cols && mR >= 0 && mC >= 0) {
-					int xc = (mC - mR) * hWidth + offX;
-					int yc = (mC + mR) * hHeight + offY;
-
-					GraphicsPath selPath = CellPath(xc, yc);
-					g.DrawPath(Pens["MouseColor"], selPath);
 				}
 			}
 		}
 
 		protected override void OnMouseDown(MouseEventArgs e)
 		{
-			int row, col;
-
-			convertCoordsDiamond(e.X - offX, e.Y - offY, out row, out col);
-			map.SelectedTile = new MapLocation(row, col, map.CurrentHeight);
+			convertCoordsDiamond(e.X - offX, e.Y - offY, out selR, out selC);
+			map.SelectedTile = new MapLocation(selR, selC, map.CurrentHeight);
 			mDown = true;
 
-			Point p = new Point(col, row);
+			Point p = new Point(selC, selR);
 
 			MapViewPanel.Instance.View.StartDrag = p;
 			MapViewPanel.Instance.View.EndDrag = p;
@@ -277,6 +330,37 @@ namespace MapView.TopViewForm
 				}
 				Refresh();
 			}
+		}
+
+		#region Settings control
+		private void diamondHeight(object sender, string keyword, object val)
+		{
+			MinHeight = (int)val;
+		}
+
+		public override void LoadDefaultSettings(Settings settings)
+		{
+			base.LoadDefaultSettings(settings);
+			// GridColor, GridWidth
+			addPenSetting(new Pen(new SolidBrush(Color.Black), 1), "Grid", "Grid", "Color of the grid lines", "Width of the grid lines", settings);
+
+			//SelectColor, SelectWidth
+			addPenSetting(new Pen(new SolidBrush(Color.Black), 2), "Select", "Select", "Color of the selection line", "Width of the selection line in pixels", settings);
+
+			// MouseColor, MouseWidth
+			addPenSetting(new Pen(new SolidBrush(Color.Blue), 2), "Mouse", "Grid", "Color of the mouse-over indicator", "Width of the mouse-over indicatior", settings);
+		}
+		#endregion
+
+		private void InitializeComponent()
+		{
+			this.SuspendLayout();
+			// 
+			// SimpleMapPanel
+			// 
+			this.Name = "SimpleMapPanel";
+			this.ResumeLayout(false);
+
 		}
 	}
 }

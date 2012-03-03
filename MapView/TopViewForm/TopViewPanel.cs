@@ -14,7 +14,8 @@ namespace MapView.TopViewForm
 
 		public TopViewPanel()
 		{
-			MapViewPanel.Instance.View.DragChanged += new EventHandler(viewDrag);
+			if (!IsDesignMode)
+				MapViewPanel.Instance.View.DragChanged += new EventHandler(viewDrag);
 		}
 
 		public MenuItem Ground { get; set; }
@@ -23,40 +24,27 @@ namespace MapView.TopViewForm
 		public MenuItem Content { get; set; }
 		public BottomPanel BottomPanel { get; set; }
 
-		public int MinHeight
+		protected override void RenderCell(System.Drawing.Graphics g, int x, int y, int row, int col)
 		{
-			get { return minHeight; }
-			set { minHeight = value; ParentSize(Width, Height); }
-		}
-
-		protected override void RenderCell(IMapTile tile, System.Drawing.Graphics g, int x, int y)
-		{
-			XCMapTile mapTile = (XCMapTile)tile;
+			XCMapTile mapTile = (XCMapTile)map[row, col];
 			if (!blank) {
 				if (mapTile.Ground != null && Ground.Checked)
-					g.FillPath(Brushes["GroundColor"], UpperPath(x, y));
+					g.FillPath(brushes["GroundColor"], UpperPath(x, y));
 
 				if (mapTile.North != null && North.Checked)
-					g.DrawLine(Pens["NorthColor"], x, y, x + hWidth, y + hHeight);
+					g.DrawLine(pens["NorthColor"], x, y, x + hWidth, y + hHeight);
 
 				if (mapTile.West != null && West.Checked)
-					g.DrawLine(Pens["WestColor"], x, y, x - hWidth, y + hHeight);
+					g.DrawLine(pens["WestColor"], x, y, x - hWidth, y + hHeight);
 
 				if (mapTile.Content != null && Content.Checked)
-					g.FillPath(Brushes["ContentColor"], LowerPath(x, y));
+					g.FillPath(brushes["ContentColor"], LowerPath(x, y));
 			} else {
 				if (!mapTile.DrawAbove) {
 					g.FillPath(System.Drawing.Brushes.DarkGray, UpperPath(x, y));
 					g.FillPath(System.Drawing.Brushes.DarkGray, LowerPath(x, y));
 				}
 			}
-		}
-
-		protected override void OnPaint(PaintEventArgs e)
-		{
-			base.OnPaint(e);
-
-			ControlPaint.DrawBorder3D(e.Graphics, ClientRectangle, Border3DStyle.Etched);
 		}
 
 		protected override void OnMouseDown(MouseEventArgs e)
@@ -67,6 +55,40 @@ namespace MapView.TopViewForm
 				BottomPanel.SetSelected(e.Button, 1);
 			else if (e.Button == MouseButtons.Left)
 				viewDrag(null, null);
+		}
+
+		public override void LoadDefaultSettings(Settings settings)
+		{
+			base.LoadDefaultSettings(settings);
+
+			// NorthColor, NorthWidth
+			addPenSetting(new Pen(new SolidBrush(Color.Red), 4), "North", "Tile", "Color of the north tile indicator", "Width of the north tile indicator in pixels", settings);
+			brushes.Add("NorthColor", new SolidBrush(pens["NorthColor"].Color));
+
+			//WestColor, WestWidth
+			addPenSetting(new Pen(new SolidBrush(Color.Red), 4), "West", "Tile", "Color of the west tile indicator", "Width of the west tile indicator in pixels", settings);
+			brushes.Add("WestColor", new SolidBrush(pens["WestColor"].Color));
+
+			// GroundColor
+			addBrushSetting(new SolidBrush(Color.Orange), "Ground", "Tile", "Color of the ground tile indicator", settings);
+
+			// ContentColor
+			addBrushSetting(new SolidBrush(Color.Green), "Content", "Tile", "Color of the content tile indicator", settings);
+
+			// DiamondMinHeight
+			settings.AddSetting("DiamondMinHeight", MinHeight, "Minimum height of the grid tiles", "Tile", diamondHeightChanged, false, null);
+		}
+
+		private void InitializeComponent()
+		{
+			this.SuspendLayout();
+			// 
+			// TopViewPanel
+			// 
+			this.Name = "TopViewPanel";
+			this.Size = new System.Drawing.Size(383, 209);
+			this.ResumeLayout(false);
+
 		}
 	}
 }

@@ -20,6 +20,7 @@ using MapView.TopViewForm;
 namespace MapView
 {
 	public delegate void StringDelegate(object sender, string args);
+	public delegate void MapChangedDelegate(object sender, IMap_Base map);
 
 	public partial class MainWindow : Form
 	{
@@ -28,8 +29,9 @@ namespace MapView
 		private Dictionary<string, Form> registeredForms;
 		private static Dictionary<string, Settings> settingsHash;
 
-		private LoadOfType<IMapDesc> loadedTypes;
+		public event MapChangedDelegate MapChanged;
 
+//		private LoadOfType<IMapDesc> loadedTypes;
 		//public event StringDelegate SendMessage;
 
 		public MainWindow()
@@ -481,15 +483,8 @@ namespace MapView
 					showMenu.Enabled = true;
 				}
 
-				//Reset all observer events
-				foreach (string key in registeredForms.Keys) {
-					Form f = registeredForms[key];
-
-					if (f is Map_Observer_Form) {
-						Map_Observer_Form frm = (Map_Observer_Form)f;
-						frm.Map = mapView.View.Map;
-					}
-				}
+				if (MapChanged != null)
+					MapChanged(this, mapView.View.Map);
 
 				MapViewPanel.Instance.View.Refresh();
 			} else

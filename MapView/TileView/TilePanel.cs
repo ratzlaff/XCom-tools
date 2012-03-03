@@ -12,7 +12,7 @@ using XCom.Interfaces.Base;
 
 namespace MapView
 {
-	public class TilePanel : UserControl
+	public class TilePanel : ViewLib.Base.DoubleBufferControl
 	{
 		private ITile[] tiles;
 
@@ -32,20 +32,10 @@ namespace MapView
 		private TileType type;
 
 		public event SelectedTileChanged TileChanged;
-		//private static PckFile extraFile;
-		private static Hashtable brushes;
 
-		//public static PckFile ExtraFile
-		//{
-		//    get{return extraFile;}
-		//    set{extraFile=value;}
-		//}
-
-		public static Hashtable Colors
-		{
-			get { return brushes; }
-			set { brushes = value; }
-		}
+		[Browsable(false)]
+		[DefaultValue(null)]
+		public static Dictionary<string, SolidBrush> Colors { get; set; }
 
 		public TilePanel(TileType type)
 		{
@@ -54,8 +44,8 @@ namespace MapView
 			vert.ValueChanged += new EventHandler(valChange);
 			vert.Location = new Point(Width - vert.Width, 0);
 			this.Controls.Add(vert);
+
 			MapViewPanel.ImageUpdate += new EventHandler(tick);
-			SetStyle(ControlStyles.AllPaintingInWmPaint | ControlStyles.DoubleBuffer | ControlStyles.UserPaint, true);
 			selectedNum = 0;
 		}
 
@@ -155,13 +145,15 @@ namespace MapView
 
 		protected override void OnPaint(PaintEventArgs e)
 		{
+			base.OnPaint(e);
+
 			if (tiles != null) {
 				Graphics g = e.Graphics;
 
 				int i = 0, j = 0;
 				foreach (ITile t in tiles) {
 					if (t != null && (type == TileType.All || t.Info.TileType == type)) {
-						g.FillRectangle((SolidBrush)brushes[t.Info.TargetType.ToString()]/*new SolidBrush(tileTypes[(int)t.Info.TargetType])*/, i * (width + 2 * space), startY + j * (height + 2 * space), width + 2 * space, height + 2 * space);
+						g.FillRectangle(Colors[t.Info.TargetType.ToString()], i * (width + 2 * space), startY + j * (height + 2 * space), width + 2 * space, height + 2 * space);
 						g.DrawImage(t[MapViewPanel.Current].Image, i * (width + 2 * space), startY + j * (height + 2 * space) - t.Info.TileOffset);
 
 						if (t.Info.HumanDoor || t.Info.UFODoor)

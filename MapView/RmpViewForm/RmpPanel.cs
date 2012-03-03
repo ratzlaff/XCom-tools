@@ -1,29 +1,38 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Drawing;
 using System.Windows.Forms;
 using System.Drawing.Drawing2D;
 using XCom;
+using XCom.Interfaces.Base;
 
 namespace MapView.RmpViewForm
 {
-	public class RmpPanel : MapPanel
+	public class RmpPanel : SimpleMapPanel
 	{
+		protected new XCMapFile map;
 		private Font myFont = new Font("Arial", 12, FontStyle.Bold);
 
 		public RmpPanel() { }
 
+		protected override void mapChanged(object sender, IMap_Base map)
+		{
+			this.map = (XCMapFile)map;
+			base.mapChanged(sender, map);
+		}
+
 		protected override void OnPaint(PaintEventArgs e)
 		{
+			base.OnPaint(e);
+
 			if (map != null) {
 				Graphics g = e.Graphics;
-				GraphicsPath lower = new GraphicsPath();
-				GraphicsPath upper = new GraphicsPath();
 
-				for (int row = 0, startX = origin.X, startY = origin.Y; row < map.MapSize.Rows; row++, startX -= hWidth, startY += hHeight) {
-					for (int col = 0, x = startX, y = startY; col < map.MapSize.Cols; col++, x += hWidth, y += hHeight) {
+				for (int row = 0, startX = offX, startY = offY; row < map.MapSize.Rows; row++, startX -= hWidth, startY += hHeight)
+					for (int col = 0, x = startX, y = startY; col < map.MapSize.Cols; col++, x += hWidth, y += hHeight)
 						if (map[row, col] != null) {
 							lower.Reset();
 							lower.AddLine(x, y + 2 * hHeight, x + hWidth, y + hHeight);
@@ -32,19 +41,17 @@ namespace MapView.RmpViewForm
 							XCMapTile tile = (XCMapTile)map[row, col];
 
 							if (tile.North != null)
-								g.DrawLine(Pens["WallColor"], x, y, x + hWidth, y + hHeight);
+								g.DrawLine(pens["WallColor"], x, y, x + hWidth, y + hHeight);
 
 							if (tile.West != null)
-								g.DrawLine(Pens["WallColor"], x, y, x - hWidth, y + hHeight);
+								g.DrawLine(pens["WallColor"], x, y, x - hWidth, y + hHeight);
 
 							if (tile.Content != null)
-								g.FillPath(Brushes["ContentTiles"], lower);
+								g.FillPath(brushes["ContentColor"], lower);
 						}
-					}
-				}
 
-				for (int row = 0, startX = origin.X, startY = origin.Y; row < map.MapSize.Rows; row++, startX -= hWidth, startY += hHeight) {
-					for (int col = 0, x = startX, y = startY; col < map.MapSize.Cols; col++, x += hWidth, y += hHeight) {
+				for (int row = 0, startX = offX, startY = offY; row < map.MapSize.Rows; row++, startX -= hWidth, startY += hHeight)
+					for (int col = 0, x = startX, y = startY; col < map.MapSize.Cols; col++, x += hWidth, y += hHeight)
 						if (map[row, col] != null && ((XCMapTile)map[row, col]).Rmp != null) {
 							RmpEntry f = ((XCMapTile)map[row, col]).Rmp;
 							upper.Reset();
@@ -59,16 +66,16 @@ namespace MapView.RmpViewForm
 									case Link.NotUsed:
 										break;
 									case Link.ExitEast:
-										g.DrawLine(Pens["UnselectedLinkColor"], x, y + hHeight, Width, Height);
+										g.DrawLine(pens["UnselectedLinkColor"], x, y + hHeight, Width, Height);
 										break;
 									case Link.ExitNorth:
-										g.DrawLine(Pens["UnselectedLinkColor"], x, y + hHeight, Width, 0);
+										g.DrawLine(pens["UnselectedLinkColor"], x, y + hHeight, Width, 0);
 										break;
 									case Link.ExitSouth:
-										g.DrawLine(Pens["UnselectedLinkColor"], x, y + hHeight, 0, Height);
+										g.DrawLine(pens["UnselectedLinkColor"], x, y + hHeight, 0, Height);
 										break;
 									case Link.ExitWest:
-										g.DrawLine(Pens["UnselectedLinkColor"], x, y + hHeight, 0, 0);
+										g.DrawLine(pens["UnselectedLinkColor"], x, y + hHeight, 0, 0);
 										break;
 									default:
 										if (map.Rmp.Length > l.Index) {
@@ -76,7 +83,7 @@ namespace MapView.RmpViewForm
 												if (map.Rmp[l.Index].Height == map.CurrentHeight) {
 													int toRow = map.Rmp[l.Index].Row;
 													int toCol = map.Rmp[l.Index].Col;
-													g.DrawLine(Pens["UnselectedLinkColor"], x, y + hHeight, origin.X + (toCol - toRow) * hWidth, origin.Y + (toCol + toRow + 1) * hHeight);
+													g.DrawLine(pens["UnselectedLinkColor"], x, y + hHeight, offX + (toCol - toRow) * hWidth, offY + (toCol + toRow + 1) * hHeight);
 												}
 											}
 										}
@@ -84,12 +91,10 @@ namespace MapView.RmpViewForm
 								}
 							}
 						}
-					}
-				}
 
-				if (((XCMapTile)map[clickPoint.Y, clickPoint.X]).Rmp != null) {
-					int r = clickPoint.Y;
-					int c = clickPoint.X;
+				if (((XCMapTile)map[selR, selC]).Rmp != null) {
+					int r = selR;
+					int c = selC;
 					RmpEntry f = ((XCMapTile)map[r, c]).Rmp;
 
 					for (int rr = 0; rr < f.NumLinks; rr++) {
@@ -98,29 +103,29 @@ namespace MapView.RmpViewForm
 							case Link.NotUsed:
 								break;
 							case Link.ExitEast:
-								g.DrawLine(Pens["SelectedLinkColor"], origin.X + (c - r) * hWidth, origin.Y + (c + r + 1) * hHeight, Width, Height);
+								g.DrawLine(pens["SelectedLinkColor"], offX + (c - r) * hWidth, offY + (c + r + 1) * hHeight, Width, Height);
 								break;
 							case Link.ExitNorth:
-								g.DrawLine(Pens["SelectedLinkColor"], origin.X + (c - r) * hWidth, origin.Y + (c + r + 1) * hHeight, Width, 0);
+								g.DrawLine(pens["SelectedLinkColor"], offX + (c - r) * hWidth, offY + (c + r + 1) * hHeight, Width, 0);
 								break;
 							case Link.ExitSouth:
-								g.DrawLine(Pens["SelectedLinkColor"], origin.X + (c - r) * hWidth, origin.Y + (c + r + 1) * hHeight, 0, Height);
+								g.DrawLine(pens["SelectedLinkColor"], offX + (c - r) * hWidth, offY + (c + r + 1) * hHeight, 0, Height);
 								break;
 							case Link.ExitWest:
-								g.DrawLine(Pens["SelectedLinkColor"], origin.X + (c - r) * hWidth, origin.Y + (c + r + 1) * hHeight, 0, 0);
+								g.DrawLine(pens["SelectedLinkColor"], offX + (c - r) * hWidth, offY + (c + r + 1) * hHeight, 0, 0);
 								break;
 							default:
 								if (map.Rmp[l.Index] != null && map.Rmp[l.Index].Height == map.CurrentHeight) {
 									int toRow = map.Rmp[l.Index].Row;
 									int toCol = map.Rmp[l.Index].Col;
-									g.DrawLine(Pens["SelectedLinkColor"], origin.X + (c - r) * hWidth, origin.Y + (c + r + 1) * hHeight, origin.X + (toCol - toRow) * hWidth, origin.Y + (toCol + toRow + 1) * hHeight);
+									g.DrawLine(pens["SelectedLinkColor"], offX + (c - r) * hWidth, offY + (c + r + 1) * hHeight, offX + (toCol - toRow) * hWidth, offY + (toCol + toRow + 1) * hHeight);
 								}
 								break;
 						}
 					}
 				}
 
-				for (int row = 0, startX = origin.X, startY = origin.Y; row < map.MapSize.Rows; row++, startX -= hWidth, startY += hHeight) {
+				for (int row = 0, startX = offX, startY = offY; row < map.MapSize.Rows; row++, startX -= hWidth, startY += hHeight) {
 					for (int col = 0, x = startX, y = startY; col < map.MapSize.Cols; col++, x += hWidth, y += hHeight) {
 						XCMapTile tile = (XCMapTile)map[row, col];
 						if (map[row, col] != null && tile.Rmp != null) {
@@ -131,12 +136,12 @@ namespace MapView.RmpViewForm
 							upper.CloseFigure();
 
 							//if clicked on, draw Blue
-							if (row == clickPoint.Y && col == clickPoint.X)
-								g.FillPath(Brushes["SelectedNodeColor"], upper);
+							if (row == selR && col == selC)
+								g.FillPath(brushes["SelectedNodeColor"], upper);
 							else if (tile.Rmp.Usage != SpawnUsage.NoSpawn)
-								g.FillPath(Brushes["SpawnNodeColor"], upper);
+								g.FillPath(brushes["SpawnNodeColor"], upper);
 							else
-								g.FillPath(Brushes["UnselectedNodeColor"], upper);
+								g.FillPath(brushes["UnselectedNodeColor"], upper);
 
 							for (int rr = 0; rr < tile.Rmp.NumLinks; rr++) {
 								Link l = tile.Rmp[rr];
@@ -154,9 +159,9 @@ namespace MapView.RmpViewForm
 									default:
 										if (map.Rmp.Length > l.Index) {
 											if (map.Rmp[l.Index] != null && map.Rmp[l.Index].Height < map.CurrentHeight) {
-												g.DrawLine(Pens["UnselectedLinkColor"], x, y, x, y + hHeight * 2);
+												g.DrawLine(pens["UnselectedLinkColor"], x, y, x, y + hHeight * 2);
 											} else if (map.Rmp[l.Index] != null && map.Rmp[l.Index].Height > map.CurrentHeight) {
-												g.DrawLine(Pens["UnselectedLinkColor"], x - hWidth, y + hHeight, x + hWidth, y + hHeight);
+												g.DrawLine(pens["UnselectedLinkColor"], x - hWidth, y + hHeight, x + hWidth, y + hHeight);
 											}
 										}
 										break;
@@ -167,15 +172,53 @@ namespace MapView.RmpViewForm
 				}
 
 				for (int i = 0; i <= map.MapSize.Rows; i++)
-					g.DrawLine(Pens["GridLineColor"], origin.X - i * hWidth, origin.Y + i * hHeight, origin.X + ((map.MapSize.Cols - i) * hWidth), origin.Y + ((i + map.MapSize.Cols) * hHeight));
+					g.DrawLine(pens["GridColor"], offX - i * hWidth, offY + i * hHeight, offX + ((map.MapSize.Cols - i) * hWidth), offY + ((i + map.MapSize.Cols) * hHeight));
 				for (int i = 0; i <= map.MapSize.Cols; i++)
-					g.DrawLine(Pens["GridLineColor"], origin.X + i * hWidth, origin.Y + i * hHeight, (origin.X + i * hWidth) - map.MapSize.Rows * hWidth, (origin.Y + i * hHeight) + map.MapSize.Rows * hHeight);
+					g.DrawLine(pens["GridColor"], offX + i * hWidth, offY + i * hHeight, (offX + i * hWidth) - map.MapSize.Rows * hWidth, (offY + i * hHeight) + map.MapSize.Rows * hHeight);
 
 				g.DrawString("W", myFont, System.Drawing.Brushes.Black, 0, 0);
 				g.DrawString("N", myFont, System.Drawing.Brushes.Black, Width - 30, 0);
 				g.DrawString("S", myFont, System.Drawing.Brushes.Black, 0, Height - myFont.Height);
 				g.DrawString("E", myFont, System.Drawing.Brushes.Black, Width - 30, Height - myFont.Height);
 			}
+		}
+
+		public override void LoadDefaultSettings(Settings settings)
+		{
+			base.LoadDefaultSettings(settings);
+
+			// UnselectedLinkColor, UnselectedLinkWidth
+			addPenSetting(new Pen(new SolidBrush(Color.Red), 2), "UnselectedLink", "Links", "Color of unselected link lines", "Width of unselected link lines", settings);
+
+			// SelectedLinkColor, SelectedLinkWidth
+			addPenSetting(new Pen(new SolidBrush(Color.Blue), 2), "SelectedLink", "Links", "Color of selected link lines", "Width of selected link lines", settings);
+
+			// WallColor, WallWidth
+			addPenSetting(new Pen(new SolidBrush(Color.Black), 4), "Wall", "View", "Color of wall indicators", "Width of wall indicators", settings);
+
+			// SelectedNodeColor
+			addBrushSetting(new SolidBrush(Color.Blue), "SelectedNode", "Nodes", "Color of selected nodes", settings);
+
+			// UnselectedNodeColor
+			addBrushSetting(new SolidBrush(Color.Green), "UnselectedNode", "Nodes", "Color of unselected nodes", settings);
+
+			// SpawnNodeColor
+			addBrushSetting(new SolidBrush(Color.GreenYellow), "SpawnNode", "Nodes", "Color of spawn nodes", settings);
+
+			// ContentColor
+			addBrushSetting(new SolidBrush(Color.DarkGray), "Content", "Tile", "Color of map tiles with a content tile", settings);
+		}
+
+		private void InitializeComponent()
+		{
+			this.SuspendLayout();
+			// 
+			// RmpPanel
+			// 
+			this.Name = "RmpPanel";
+			this.Size = new System.Drawing.Size(336, 172);
+			this.ResumeLayout(false);
+
 		}
 	}
 }

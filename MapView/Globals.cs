@@ -21,6 +21,7 @@ namespace MapView
 					System.IO.Stream sTab = System.Reflection.Assembly.GetExecutingAssembly().GetManifestResourceStream("MapView._Embedded.Extra.TAB");
 
 					extraTiles = new XCom.PckFile(sPck, sTab, 2, XCPalette.TFTDBattle);
+					extraTiles.Pal.SetTransparent(false);
 				}
 				return extraTiles;
 			}

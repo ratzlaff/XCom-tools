@@ -22,8 +22,6 @@ namespace MapView
 		private TilePanel[] panels;
 		private Form MCDInfo;
 
-		private Settings settings;
-		private Hashtable brushes;
 
 		private static TileView myInstance;
 		private TileView()
@@ -38,8 +36,6 @@ namespace MapView
 
 			panels = new TilePanel[] { all, ground, wWalls, nWalls, objects };
 
-			settings = new Settings();
-
 			addPanel(all, allTab);
 			addPanel(ground, groundTab);
 			addPanel(wWalls, wWallsTab);
@@ -53,31 +49,29 @@ namespace MapView
 			menu.MenuItems.Add(edit);
 		}
 
+		#region Settings
 		private void options_click(object sender, EventArgs e)
 		{
-			PropertyForm pf = new PropertyForm("tileViewOptions", settings);
+			PropertyForm pf = new PropertyForm("tileViewOptions", Settings);
 			pf.Text = "Tile View Settings";
 			pf.Show();
 		}
 
-		private void brushChanged(object sender, string key, object val)
+		protected virtual void brushChanged(object sender, string key, object val)
 		{
-			((SolidBrush)brushes[key]).Color = (Color)val;
+			brushes[key].Color = (Color)val;
 			Refresh();
 		}
 
 		protected override void LoadDefaultSettings(Settings settings)
 		{
-			brushes = new Hashtable();
-
-			ValueChangedDelegate bc = new ValueChangedDelegate(brushChanged);
-
 			foreach (string s in Enum.GetNames(typeof(SpecialType))) {
 				brushes[s] = new SolidBrush(TilePanel.tileTypes[(int)Enum.Parse(typeof(SpecialType), s)]);
-				settings.AddSetting(s, ((SolidBrush)brushes[s]).Color, "Color of specified tile type", "TileView", bc, false, null);
+				settings.AddSetting(s, ((SolidBrush)brushes[s]).Color, "Color of specified tile type", "TileView", brushChanged);
 			}
 			TilePanel.Colors = brushes;
 		}
+		#endregion
 
 		private void addPanel(TilePanel panel, TabPage page)
 		{
@@ -162,15 +156,13 @@ namespace MapView
 			}
 		}
 
-		public override IMap_Base Map
+		protected override void mapChanged(object sender, IMap_Base map)
 		{
-			set
-			{
-				base.Map = value;
-				Tiles = ((XCMapFile)value).Tiles;
-			}
+			base.map = map;
+			Tiles = map.Tiles;
 		}
 
+		[Browsable(false)]
 		public System.Collections.Generic.List<ITile> Tiles
 		{
 			set
@@ -181,6 +173,7 @@ namespace MapView
 			}
 		}
 
+		[Browsable(false)]
 		public ITile SelectedTile
 		{
 			get

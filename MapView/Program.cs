@@ -15,9 +15,9 @@ namespace MapView
 		{
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
-			//Application.Run(new MainWindow());
-			new MainWindow().Show();
-			Application.Run(new MainMapView());
+			Application.Run(new MainWindow());
+//			new MainWindow().Show();
+//			Application.Run(new MainMapView());
 		}
 	}
 }
