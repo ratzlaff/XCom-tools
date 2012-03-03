@@ -179,12 +179,13 @@ namespace XCom
 			set
 			{
 				rmpFile = value;
-				foreach (RmpEntry re in rmpFile)
-					try
-					{
-						((XCMapTile)this[re.Row, re.Col, re.Height]).Rmp = re;
+				foreach (RmpEntry re in rmpFile) {
+					XCMapTile tile = ((XCMapTile)this[re.Row, re.Col, re.Height]);
+					if (tile != null) {
+						xConsole.AddLine("Could not set rmp entry! [" + re.ToString() + "]");
+						tile.Rmp = re;
 					}
-					catch { }
+				}
 			}
 		}
 
