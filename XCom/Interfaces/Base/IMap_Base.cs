@@ -121,8 +121,20 @@ namespace XCom.Interfaces.Base
 		/// <returns></returns>
 		public IMapTile this[int row, int col, int height]
 		{
-			get { return mapData[(mapSize.Rows * mapSize.Cols * height) + (row * mapSize.Cols) + col]; }
-			set { mapData[(mapSize.Rows * mapSize.Cols * height) + (row * mapSize.Cols) + col] = value; }
+			get
+			{
+				int idx = (mapSize.Rows * mapSize.Cols * height) + (row * mapSize.Cols) + col;
+				IMapTile tile = null;
+				if (idx < mapData.Length)
+					tile = mapData[idx];
+				return tile;
+			}
+			set
+			{
+				int idx = (mapSize.Rows * mapSize.Cols * height) + (row * mapSize.Cols) + col;
+				if (idx < mapData.Length)
+					mapData[idx] = value;
+			}
 		}
 
 		/// <summary>
