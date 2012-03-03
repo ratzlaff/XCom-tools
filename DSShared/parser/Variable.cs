@@ -51,13 +51,11 @@ namespace DSShared
 
 		public void Write(StreamWriter sw, string pref)
 		{
-			if (list.Count > 1)
-			{
+			if (list.Count > 1) {
 				sw.WriteLine(pref + varName + VarCollection.Separator + varValue);
 				foreach (string pre in list)
 					sw.WriteLine(pref + pre + varName);
-			}
-			else
+			} else
 				sw.WriteLine(pref + (string)list[0] + varValue);
 		}
 	}

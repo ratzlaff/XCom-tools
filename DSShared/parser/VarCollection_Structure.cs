@@ -22,34 +22,32 @@ namespace DSShared
 
 			root = new KeyVal("parent", "parent");
 			root.SubHash = new Dictionary<string, KeyVal>();
-			
-			parse_block(vc,root);
+
+			parse_block(vc, root);
 		}
 
 		/// <summary>
 		/// VC structure of the file
 		/// </summary>
-		public Dictionary<string,KeyVal> KeyValList
+		public Dictionary<string, KeyVal> KeyValList
 		{
 			get { return root.SubHash; }
 		}
 
-		private void parse_block(VarCollection vc,KeyVal parent)
+		private void parse_block(VarCollection vc, KeyVal parent)
 		{
 			KeyVal kv;
-			KeyVal lastKV=null;
-			while (vc.ReadLine(out kv))
-			{
-				switch (kv.Keyword)
-				{
+			KeyVal lastKV = null;
+			while (vc.ReadLine(out kv)) {
+				switch (kv.Keyword) {
 					case "{":
 						lastKV.SubHash = new Dictionary<string, KeyVal>();
-						parse_block(vc,lastKV);
+						parse_block(vc, lastKV);
 						break;
 					case "}":
 						return;
 					default:
-						parent.SubHash[kv.Keyword]=kv;
+						parent.SubHash[kv.Keyword] = kv;
 						lastKV = kv;
 						break;
 				}
