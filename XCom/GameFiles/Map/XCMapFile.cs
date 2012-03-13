@@ -6,16 +6,18 @@ using System.Windows.Forms;
 using System.Collections.Generic;
 //using XCom.Interfaces;
 using XCom.Interfaces.Base;
+using MapLib.Base;
+using MapLib;
 
 namespace XCom
 {
-	public class XCMapFile : IMap_Base
+	public class XCMapFile : Map
 	{
 		private string basename, basePath, blankPath;
 		private RmpFile rmpFile;
 		private string[] dependencies;
 
-		public XCMapFile(string basename, string basePath, string blankPath, List<ITile> tiles, string[] depList)
+		public XCMapFile(string basename, string basePath, string blankPath, List<Tile> tiles, string[] depList)
 			: base(basename, tiles)
 		{
 			this.basename = basename;
@@ -189,7 +191,7 @@ namespace XCom
 			}
 		}
 
-		private void readMap(Stream s, List<ITile> tiles)
+		private void readMap(Stream s, List<Tile> tiles)
 		{
 			BufferedStream input = new BufferedStream(s);
 			int rows = input.ReadByte();
@@ -215,7 +217,7 @@ namespace XCom
 			input.Close();
 		}
 
-		private XCMapTile createTile(List<ITile> tiles, int q1, int q2, int q3, int q4)
+		private XCMapTile createTile(List<Tile> tiles, int q1, int q2, int q3, int q4)
 		{
 			try
 			{

@@ -4,6 +4,7 @@ using System.Text;
 using XCom.Interfaces;
 using System.IO;
 using DSShared;
+using MapLib.Base;
 
 namespace XCom.GameFiles.Images.xcFiles
 {

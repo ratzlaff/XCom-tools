@@ -32,7 +32,7 @@ namespace PckView
 				e.Graphics.DrawImage(img.Image,0,0);
 		}
 
-		public Palette Palette
+		public MapLib.Base.Palette Palette
 		{
 			set{if(img!=null){img.Image.Palette = value.Colors;Refresh();}}
 		}

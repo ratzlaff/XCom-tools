@@ -7,12 +7,13 @@ using XCom.Interfaces;
 using System.Collections;
 using XCom.Interfaces.Base;
 using MapView.TopViewForm;
+using MapLib.Base;
+using MapLib;
 
 namespace MapView
 {
-	public class View :Panel
+	public class View :ViewLib.Base.Map_Observer_Control
 	{
-		private IMap_Base map;
 		private Point origin = new Point(100,0);
 		private int currentImage;
 		private Point clickPoint,clickPointx;
@@ -43,7 +44,7 @@ namespace MapView
 		private Brush transBrush;
 		private Color gridColor;
 		private bool useGrid=true;
-		private IMapTile[,] copied;
+		private MapTile[,] copied;
 
 		public event EventHandler DragChanged;
 		//public event HeightChangedDelegate HeightChanged;
@@ -63,6 +64,20 @@ namespace MapView
 
 			//dashPen = new Pen(new HatchBrush(HatchStyle.DarkHorizontal,Color.Black,transGray),1);
 			dashPen = new Pen(Brushes.Black,1);
+
+			MapLib.Base.MapControl.HeightChanged += mapHeight;
+			MapLib.Base.MapControl.SelectedTileChanged += tileChange;
+		}
+
+		public override void LoadDefaultSettings(ViewLib.Base.Map_Observer_Form sender, MVCore.Settings settings)
+		{
+			base.LoadDefaultSettings(sender, settings);
+
+			settings.AddSetting("UseGrid", MapViewPanel.Instance.View.UseGrid, "If true, a grid will show up at the current level of editing", "MapView", null, "UseGrid", this);
+			settings.AddSetting("GridColor", MapViewPanel.Instance.View.GridColor, "Color of the grid in (a,r,g,b) format", "MapView", null, "GridColor", this);
+			settings.AddSetting("GridLineColor", MapViewPanel.Instance.View.GridLineColor, "Color of the lines that make up the grid", "MapView", null, "GridLineColor", this);
+			settings.AddSetting("GridLineWidth", MapViewPanel.Instance.View.GridLineWidth, "Width of the grid lines in pixels", "MapView", null, "GridLineWidth", this);
+			settings.AddSetting("SelectGrayscale", MapViewPanel.Instance.View.SelectGrayscale, "If true, the selection area will show up in gray", "MapView", null, "SelectGrayscale", this);
 		}
 		
 		public void Paste()
@@ -72,8 +87,8 @@ namespace MapView
 				//row  col
 				//y    x
 
-				for (int r = startDrag.Y; r < map.MapSize.Rows && (r - startDrag.Y) < copied.GetLength(0); r++)
-					for (int c = startDrag.X; c < map.MapSize.Cols && (c - startDrag.X) < copied.GetLength(1); c++)
+				for (int r = startDrag.Y; r < map.Size.Rows && (r - startDrag.Y) < copied.GetLength(0); r++)
+					for (int c = startDrag.X; c < map.Size.Cols && (c - startDrag.X) < copied.GetLength(1); c++)
 					{
                         XCMapTile tile = map[r, c] as XCMapTile;
                         XCMapTile copyTile = copied[r - startDrag.Y, c - startDrag.X] as XCMapTile;
@@ -260,13 +275,13 @@ namespace MapView
 				startDrag=value;
 				if(startDrag.Y<0)
 					startDrag.Y=0;
-				else if (startDrag.Y >= map.MapSize.Rows)
-					startDrag.Y = map.MapSize.Rows - 1;
+				else if (startDrag.Y >= map.Size.Rows)
+					startDrag.Y = map.Size.Rows - 1;
 
 				if(startDrag.X<0)
 					startDrag.X=0;
-				else if (startDrag.X >= map.MapSize.Cols)
-					startDrag.X = map.MapSize.Cols - 1;
+				else if (startDrag.X >= map.Size.Cols)
+					startDrag.X = map.Size.Cols - 1;
 			}
 		}
 
@@ -278,36 +293,24 @@ namespace MapView
 				endDrag=value;
 				if(endDrag.Y<0)
 					endDrag.Y=0;
-				else if (endDrag.Y >= map.MapSize.Rows)
-					endDrag.Y = map.MapSize.Rows - 1;
+				else if (endDrag.Y >= map.Size.Rows)
+					endDrag.Y = map.Size.Rows - 1;
 
 				if(endDrag.X<0)
 					endDrag.X=0;
-				else if (endDrag.X >= map.MapSize.Cols)
-					endDrag.X = map.MapSize.Cols - 1;
+				else if (endDrag.X >= map.Size.Cols)
+					endDrag.X = map.Size.Cols - 1;
 			}
 		}
 
-		public IMap_Base Map
+		protected override void mapChanged(MapChangedEventArgs e)
 		{
-			get{return map;}
-			set
-			{
-				if (map != null)
-				{
-					map.HeightChanged -= new HeightChangedDelegate(mapHeight);
-					map.SelectedTileChanged -= new SelectedTileChangedDelegate(tileChange);
-				}
+			base.mapChanged(e);
 
-				map=value;
-				if(map!=null)
-				{
-					origin = new Point((map.MapSize.Rows - 1) * hWid * Globals.PckImageScale, 0);
-					map.HeightChanged+=new HeightChangedDelegate(mapHeight);
-					map.SelectedTileChanged+=new SelectedTileChangedDelegate(tileChange);
-					Width = (map.MapSize.Rows + map.MapSize.Cols) * hWid * Globals.PckImageScale;
-					Height = map.MapSize.Height * 25 * Globals.PckImageScale + (map.MapSize.Rows + map.MapSize.Cols) * hHeight * Globals.PckImageScale;
-				}
+			if (map != null) {
+				origin = new Point((map.Size.Rows - 1) * hWid * Globals.PckImageScale, 0);
+				Width = (map.Size.Rows + map.Size.Cols) * hWid * Globals.PckImageScale;
+				Height = map.Size.Height * 25 * Globals.PckImageScale + (map.Size.Rows + map.Size.Cols) * hHeight * Globals.PckImageScale;
 			}
 		}
 
@@ -327,7 +330,7 @@ namespace MapView
 			set{newLeft=value;}
 		}
 
-		private void tileChange(IMap_Base mapFile,SelectedTileChangedEventArgs e)// MapLocation newCoords)
+		private void tileChange(Map mapFile, MapLib.SelectedTileChangedEventArgs e)// MapLocation newCoords)
 		{
 			MapLocation newCoords = e.MapLocation;
 			clickPointx = new Point(newCoords.Col,newCoords.Row);
@@ -345,7 +348,7 @@ namespace MapView
 			flipLock=false;
 		}
 
-		private void mapHeight(IMap_Base mapFile, HeightChangedEventArgs e)
+		private void mapHeight(Map mapFile, MapLib.HeightChangedEventArgs e)
 		{
 			Refresh();
 			//if(HeightChanged!=null)
@@ -395,7 +398,7 @@ namespace MapView
 							if(x<=-PckImage.Width || y <= -PckImage.Height || bv.map[row,col,h]==null)
 								continue;
 								*/
-				for (int h = map.MapSize.Height - 1; h >= 0; h--)
+				for (int h = map.Size.Height - 1; h >= 0; h--)
 				{
 					bool val=true;
 
@@ -416,9 +419,9 @@ namespace MapView
 					{
 						underGrid=new GraphicsPath();
 						Point pt0 = new Point(origin.X + hWid, origin.Y + (map.CurrentHeight + 1) * 24);
-						Point pt1 = new Point(origin.X + map.MapSize.Cols * hWid + hWid, origin.Y + map.MapSize.Cols * hHeight + (map.CurrentHeight + 1) * 24);
-						Point pt2 = new Point(origin.X + hWid + (map.MapSize.Cols - map.MapSize.Rows) * hWid, origin.Y + (map.MapSize.Rows + map.MapSize.Cols) * hHeight + (map.CurrentHeight + 1) * 24);
-						Point pt3 = new Point(origin.X - map.MapSize.Rows * hWid + hWid, origin.Y + map.MapSize.Rows * hHeight + (map.CurrentHeight + 1) * 24);
+						Point pt1 = new Point(origin.X + map.Size.Cols * hWid + hWid, origin.Y + map.Size.Cols * hHeight + (map.CurrentHeight + 1) * 24);
+						Point pt2 = new Point(origin.X + hWid + (map.Size.Cols - map.Size.Rows) * hWid, origin.Y + (map.Size.Rows + map.Size.Cols) * hHeight + (map.CurrentHeight + 1) * 24);
+						Point pt3 = new Point(origin.X - map.Size.Rows * hWid + hWid, origin.Y + map.Size.Rows * hHeight + (map.CurrentHeight + 1) * 24);
 						underGrid.AddLine(pt0,pt1);
 						underGrid.AddLine(pt1,pt2);
 						underGrid.AddLine(pt2,pt3);
@@ -426,17 +429,17 @@ namespace MapView
 
 						g.FillPath(transBrush,underGrid);
 
-						for (int i = 0; i <= map.MapSize.Rows; i++)
+						for (int i = 0; i <= map.Size.Rows; i++)
 							g.DrawLine(dashPen, origin.X - i * hWid + hWid, origin.Y + i * hHeight + (map.CurrentHeight + 1) * 24,
-								origin.X + ((map.MapSize.Cols - i) * hWid) + hWid, origin.Y + (map.CurrentHeight + 1) * 24 + ((i + map.MapSize.Cols) * hHeight));
-						for (int i = 0; i <= map.MapSize.Cols; i++)
+								origin.X + ((map.Size.Cols - i) * hWid) + hWid, origin.Y + (map.CurrentHeight + 1) * 24 + ((i + map.Size.Cols) * hHeight));
+						for (int i = 0; i <= map.Size.Cols; i++)
 							g.DrawLine(dashPen, origin.X + i * hWid + hWid, origin.Y + i * hHeight + (map.CurrentHeight + 1) * 24,
-								(origin.X + i * hWid + hWid) - map.MapSize.Rows * hWid, (origin.Y + i * hHeight) + map.MapSize.Rows * hHeight + (map.CurrentHeight + 1) * 24);
+								(origin.X + i * hWid + hWid) - map.Size.Rows * hWid, (origin.Y + i * hHeight) + map.Size.Rows * hHeight + (map.CurrentHeight + 1) * 24);
 					}
 
-					for (int row = 0, startX = origin.X, startY = origin.Y + (24 * h * Globals.PckImageScale); row < map.MapSize.Rows; row++, startX -= hWid * Globals.PckImageScale, startY += hHeight * Globals.PckImageScale)
+					for (int row = 0, startX = origin.X, startY = origin.Y + (24 * h * Globals.PckImageScale); row < map.Size.Rows; row++, startX -= hWid * Globals.PckImageScale, startY += hHeight * Globals.PckImageScale)
 					{
-						for (int col = 0, x = startX, y = startY; col < map.MapSize.Cols; col++, x += hWid * Globals.PckImageScale, y += hHeight * Globals.PckImageScale)
+						for (int col = 0, x = startX, y = startY; col < map.Size.Cols; col++, x += hWid * Globals.PckImageScale, y += hHeight * Globals.PckImageScale)
 						{
 							if(x>bottomx || y>bottomy)
 								break;
@@ -508,34 +511,34 @@ namespace MapView
 			get{return origin;}
 		}
 
-		private void drawTile(Graphics g, XCMapTile mt,int x, int y)
+		private void drawTile(Graphics g, XCMapTile mt, int x, int y)
 		{
-			if(mt.Ground != null && TopView.Instance.GroundVisible)
-				g.DrawImage(mt.Ground[MapViewPanel.Current].Image,x,y-mt.Ground.Info.TileOffset);
+			if (mt.Ground != null && TopView.Instance.GroundVisible)
+				g.DrawImage(mt.Ground[MapViewPanel.Current].Image, x, y - mt.Ground.YOffset);
 
-			if(mt.North != null && TopView.Instance.NorthVisible)
-				g.DrawImage(mt.North[MapViewPanel.Current].Image,x,y-mt.North.Info.TileOffset);
+			if (mt.North != null && TopView.Instance.NorthVisible)
+				g.DrawImage(mt.North[MapViewPanel.Current].Image, x, y - mt.North.YOffset);
 
-			if(mt.West != null && TopView.Instance.WestVisible)
-				g.DrawImage(mt.West[MapViewPanel.Current].Image,x,y-mt.West.Info.TileOffset);
+			if (mt.West != null && TopView.Instance.WestVisible)
+				g.DrawImage(mt.West[MapViewPanel.Current].Image, x, y - mt.West.YOffset);
 
-			if(mt.Content != null && TopView.Instance.ContentVisible)
-				g.DrawImage(mt.Content[MapViewPanel.Current].Image,x,y-mt.Content.Info.TileOffset);
+			if (mt.Content != null && TopView.Instance.ContentVisible)
+				g.DrawImage(mt.Content[MapViewPanel.Current].Image, x, y - mt.Content.YOffset);
 		}
 
-		private void drawTileGray(Graphics g, XCMapTile mt,int x, int y)
+		private void drawTileGray(Graphics g, XCMapTile mt, int x, int y)
 		{
-			if(mt.Ground != null && TopView.Instance.GroundVisible)
-				g.DrawImage(mt.Ground[MapViewPanel.Current].Gray,x,y-mt.Ground.Info.TileOffset);
+			if (mt.Ground != null && TopView.Instance.GroundVisible)
+				g.DrawImage(mt.Ground[MapViewPanel.Current].Gray, x, y - mt.Ground.YOffset);
 
-			if(mt.North != null && TopView.Instance.NorthVisible)
-				g.DrawImage(mt.North[MapViewPanel.Current].Gray,x,y-mt.North.Info.TileOffset);
+			if (mt.North != null && TopView.Instance.NorthVisible)
+				g.DrawImage(mt.North[MapViewPanel.Current].Gray, x, y - mt.North.YOffset);
 
-			if(mt.West != null && TopView.Instance.WestVisible)
-				g.DrawImage(mt.West[MapViewPanel.Current].Gray,x,y-mt.West.Info.TileOffset);
+			if (mt.West != null && TopView.Instance.WestVisible)
+				g.DrawImage(mt.West[MapViewPanel.Current].Gray, x, y - mt.West.YOffset);
 
-			if(mt.Content != null && TopView.Instance.ContentVisible)
-				g.DrawImage(mt.Content[MapViewPanel.Current].Gray,x,y-mt.Content.Info.TileOffset);
+			if (mt.Content != null && TopView.Instance.ContentVisible)
+				g.DrawImage(mt.Content[MapViewPanel.Current].Gray, x, y - mt.Content.YOffset);
 		}
 
 		/// <summary>

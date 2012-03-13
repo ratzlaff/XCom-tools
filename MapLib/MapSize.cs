@@ -1,7 +1,6 @@
 using System;
-using System.Text;
 
-namespace XCom
+namespace MapLib
 {
 	public struct MapSize
 	{

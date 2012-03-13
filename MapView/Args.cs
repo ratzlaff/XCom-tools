@@ -8,7 +8,7 @@ namespace MapView
 	public class Args:EventArgs
 	{
 		private ArgType type;
-		private MapLocation location;
+		private MapLib.MapLocation location;
 
 		public Args(ArgType type)
 		{
@@ -20,7 +20,7 @@ namespace MapView
 			get{return type;}
 		}
 		
-		public MapLocation Location
+		public MapLib.MapLocation Location
 		{
 			get{return location;}
 			set{location=value;}

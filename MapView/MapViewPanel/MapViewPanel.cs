@@ -7,7 +7,7 @@ using System.Data;
 using XCom;
 using XCom.Interfaces;
 using XCom.Interfaces.Base;
-
+using MapLib.Base;
 
 namespace MapView
 {
@@ -48,7 +48,7 @@ namespace MapView
 																	 this.horiz});
 			fillBlank();
 
-			SetView(new View());
+			setView(new View());
 
 			allBlank = new GroupBox();
 			allBlank.Text = "Blank info";
@@ -71,14 +71,8 @@ namespace MapView
 			OnResize(null);
 		}
 
-		public void SetView(View v)
+		private void setView(View v)
 		{
-			if (view != null)
-			{
-				v.Map = view.Map;
-				this.Controls.Remove(view);
-			}
-
 			view = v;
 
 			view.Location = new Point(0, 0);
@@ -193,14 +187,14 @@ namespace MapView
 
 		private void runCalcClick(object sender, EventArgs e)
 		{
-			if (view.Map is XCMapFile)
-				((XCMapFile)view.Map).CalcDrawAbove();
+			if (MapLib.Base.MapControl.Current is XCMapFile)
+				((XCMapFile)MapLib.Base.MapControl.Current).CalcDrawAbove();
 		}
 
 		private void saveBlankClick(object sender, EventArgs e)
 		{
-			if (view.Map is XCMapFile)
-				((XCMapFile)view.Map).SaveBlanks();
+			if (MapLib.Base.MapControl.Current is XCMapFile)
+				((XCMapFile)MapLib.Base.MapControl.Current).SaveBlanks();
 		}
 
 		private void setDraw(object sender, EventArgs e)
@@ -232,11 +226,6 @@ namespace MapView
 				BlankChanged(blankCheck.Checked);
 		}
 
-		public IMap_Base Map
-		{
-			get { return view.Map; }
-		}
-
 		private void update(object sender, EventArgs e)
 		{
 			view.Refresh();
@@ -244,13 +233,13 @@ namespace MapView
 
 		private void up_click(object sender, EventArgs e)
 		{
-			view.Map.Up();
+			MapLib.Base.MapControl.Current.Up();
 			view.Focus();
 		}
 
 		private void down_click(object sender, EventArgs e)
 		{
-			view.Map.Down();
+			MapLib.Base.MapControl.Current.Down();
 			view.Focus();
 		}
 
@@ -304,14 +293,14 @@ namespace MapView
 		//    view.Focus();
 		//    OnResize(null);
 		//}
-
-		public void SetMap(IMap_Base map)
+		/*
+		public void SetMap(Map map)
 		{
 			view.Map = map;
 			view.Focus();
 			OnResize(null);
 		}
-
+		*/
 		public void ForceResize()
 		{
 			OnResize(null);

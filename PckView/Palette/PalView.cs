@@ -48,7 +48,7 @@ namespace PckView
 				PaletteIndexChanged(idx);
 		}
 
-		public Palette Palette
+		public MapLib.Base.Palette Palette
 		{
 			get{return palPanel.Palette;}
 			set{palPanel.Palette=value;}

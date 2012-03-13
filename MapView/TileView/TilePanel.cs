@@ -9,12 +9,13 @@ using System.IO;
 using XCom;
 using XCom.Interfaces;
 using XCom.Interfaces.Base;
+using MapLib.Base;
 
 namespace MapView
 {
 	public class TilePanel : ViewLib.Base.DoubleBufferControl
 	{
-		private ITile[] tiles;
+		private Tile[] tiles;
 
 		private int space = 2;
 		private int height = 40, width = 32;
@@ -29,15 +30,15 @@ namespace MapView
 									Color.DarkOrange,Color.DeepPink,Color.LightBlue,Color.Lime,
 									  Color.LightGreen,Color.MediumPurple,Color.LightCoral,Color.LightCyan,
 									  Color.Yellow,Color.Blue};
-		private TileType type;
+		private string type;
 
 		public event SelectedTileChanged TileChanged;
 
 		[Browsable(false)]
 		[DefaultValue(null)]
-		public static Dictionary<string, SolidBrush> Colors { get; set; }
+		public static Dictionary<string, SolidBrush> FillBrushes { get; set; }
 
-		public TilePanel(TileType type)
+		public TilePanel(string type)
 		{
 			this.type = type;
 			vert = new VScrollBar();
@@ -89,20 +90,19 @@ namespace MapView
 			}
 		}
 
-		public System.Collections.Generic.List<ITile> Tiles
+		public System.Collections.Generic.List<Tile> Tiles
 		{
 			set
 			{
-				if (type == TileType.All) {
-					//tiles=value;
-					tiles = new ITile[value.Count + 1];
+				if (type == "All") {
+					tiles = new Tile[value.Count + 1];
 					tiles[0] = null;
 					for (int i = 0; i < value.Count; i++)
 						tiles[i + 1] = value[i];
 				} else {
-					List<ITile> list = new List<ITile>();
+					List<Tile> list = new List<Tile>();
 					for (int i = 0; i < value.Count; i++)
-						if (value[i].Info.TileType == type)
+						if (value[i].Category == type)
 							list.Add(value[i]);
 					tiles = list.ToArray();
 				}
@@ -151,12 +151,12 @@ namespace MapView
 				Graphics g = e.Graphics;
 
 				int i = 0, j = 0;
-				foreach (ITile t in tiles) {
-					if (t != null && (type == TileType.All || t.Info.TileType == type)) {
-						g.FillRectangle(Colors[t.Info.TargetType.ToString()], i * (width + 2 * space), startY + j * (height + 2 * space), width + 2 * space, height + 2 * space);
-						g.DrawImage(t[MapViewPanel.Current].Image, i * (width + 2 * space), startY + j * (height + 2 * space) - t.Info.TileOffset);
+				foreach (Tile t in tiles) {
+					if (t != null && (type == "All" || t.Category == type)) {
+						g.FillRectangle(FillBrushes[t.SpecialType], i * (width + 2 * space), startY + j * (height + 2 * space), width + 2 * space, height + 2 * space);
+						g.DrawImage(t[MapViewPanel.Current].Image, i * (width + 2 * space), startY + j * (height + 2 * space) - t.YOffset);
 
-						if (t.Info.HumanDoor || t.Info.UFODoor)
+						if (t.IsDoor)
 							g.DrawString("Door", this.Font, Brushes.Black, i * (width + 2 * space), startY + j * (height + 2 * space) + PckImage.Height - Font.Height);
 
 						i = (i + 1) % numAcross;
@@ -182,7 +182,7 @@ namespace MapView
 			}
 		}
 
-		public ITile SelectedTile
+		public Tile SelectedTile
 		{
 			get
 			{

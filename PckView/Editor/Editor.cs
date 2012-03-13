@@ -64,7 +64,7 @@ namespace PckView
 			edit.Editor.ScaleVal=size.Value;
 		}
 
-		public Palette Palette
+		public MapLib.Base.Palette Palette
 		{
 			get{return edit.Editor.Palette;}
 			set{edit.Editor.Palette=value;palView.Palette = value;buttons.Palette=value;}

@@ -2,7 +2,7 @@ using System;
 using System.IO;
 using System.Collections.Generic;
 
-namespace DSShared
+namespace MVCore.Parser
 {
 	public class Variable
 	{

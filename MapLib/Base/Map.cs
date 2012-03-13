@@ -3,24 +3,26 @@ using System.Collections.Generic;
 using System.Text;
 using System.Drawing;
 
-namespace XCom.Interfaces.Base
+namespace MapLib.Base
 {
-	public delegate void HeightChangedDelegate(IMap_Base sender, HeightChangedEventArgs e);
-	public delegate void SelectedTileChangedDelegate(IMap_Base sender, SelectedTileChangedEventArgs e);
+	public delegate void MapChangedDelegate(MapChangedEventArgs e);
+	public delegate void HeightChangedDelegate(Map sender, HeightChangedEventArgs e);
+	public delegate void TileSelectionChangedDelegate(Map sender, SelectedTileChangedEventArgs e);
+	public delegate void RefreshDelegate();
 
 	/// <summary>
 	/// Abstract base class definining all common functionality of an editable map
 	/// </summary>
-	public class IMap_Base
+	public class Map
 	{
-		protected byte currentHeight = 0;
+		protected int currentHeight = 0;
 		protected MapLocation selected;
 		protected MapSize mapSize;
-		protected IMapTile[] mapData;
-		protected List<ITile> tiles;
+		protected MapTile[] mapData;
+		protected List<Tile> tiles;
 		protected string name;
 
-		protected IMap_Base(string name, List<ITile> tiles)
+		protected Map(string name, List<Tile> tiles)
 		{
 			this.name = name;
 			this.tiles = tiles;
@@ -31,16 +33,13 @@ namespace XCom.Interfaces.Base
 			get { return name; }
 		}
 
-		public List<ITile> Tiles
+		public List<Tile> Tiles
 		{
 			get { return tiles; }
 		}
 
 		public virtual void Save() { throw new Exception("Save() is not yet implemented"); }
 		public virtual void Save(System.IO.FileStream s) { throw new Exception("Save(Filestream s) is not yet implemented"); }
-
-		public event HeightChangedDelegate HeightChanged;
-		public event SelectedTileChangedDelegate SelectedTileChanged;
 
 		/// <summary>
 		/// Changes the currentHeight property and fires a HeightChanged event
@@ -50,8 +49,7 @@ namespace XCom.Interfaces.Base
 			if (currentHeight > 0) {
 				HeightChangedEventArgs e = new HeightChangedEventArgs(currentHeight, currentHeight - 1);
 				currentHeight--;
-				if (HeightChanged != null)
-					HeightChanged(this, e);
+				MapControl.FireHeightChanged(e);
 			}
 		}
 
@@ -61,10 +59,9 @@ namespace XCom.Interfaces.Base
 		public void Down()
 		{
 			if (currentHeight < mapSize.Height - 1) {
-				currentHeight++;
 				HeightChangedEventArgs e = new HeightChangedEventArgs(currentHeight, currentHeight + 1);
-				if (HeightChanged != null)
-					HeightChanged(this, e);
+				currentHeight++;
+				MapControl.FireHeightChanged(e);
 			}
 		}
 
@@ -72,7 +69,7 @@ namespace XCom.Interfaces.Base
 		/// Gets the current height
 		/// Setting the height will fire a HeightChanged event
 		/// </summary>
-		public byte CurrentHeight
+		public int CurrentHeight
 		{
 			get { return currentHeight; }
 			set
@@ -80,8 +77,7 @@ namespace XCom.Interfaces.Base
 				if (value >= 0 && value < mapSize.Height) {
 					HeightChangedEventArgs e = new HeightChangedEventArgs(currentHeight, value);
 					currentHeight = value;
-					if (HeightChanged != null)
-						HeightChanged(this, e);
+					MapControl.FireHeightChanged(e);
 				}
 			}
 		}
@@ -89,7 +85,7 @@ namespace XCom.Interfaces.Base
 		/// <summary>
 		/// Gets the current size of the map
 		/// </summary>
-		public MapSize MapSize
+		public MapSize Size
 		{
 			get { return mapSize; }
 		}
@@ -106,8 +102,8 @@ namespace XCom.Interfaces.Base
 					value.Col >= 0 && value.Col < this.mapSize.Cols) {
 					selected = value;
 					SelectedTileChangedEventArgs stc = new SelectedTileChangedEventArgs(value, this[selected.Row, selected.Col]);
-					if (SelectedTileChanged != null)
-						SelectedTileChanged(this, stc);
+					MapControl.FireSelectedChanged(stc);
+					MapControl.RequestRefresh();
 				}
 			}
 		}
@@ -119,12 +115,12 @@ namespace XCom.Interfaces.Base
 		/// <param name="col"></param>
 		/// <param name="height"></param>
 		/// <returns></returns>
-		public IMapTile this[int row, int col, int height]
+		public MapTile this[int row, int col, int height]
 		{
 			get
 			{
 				int idx = (mapSize.Rows * mapSize.Cols * height) + (row * mapSize.Cols) + col;
-				IMapTile tile = null;
+				MapTile tile = null;
 				if (idx < mapData.Length)
 					tile = mapData[idx];
 				return tile;
@@ -143,7 +139,7 @@ namespace XCom.Interfaces.Base
 		/// <param name="row"></param>
 		/// <param name="col"></param>
 		/// <returns></returns>
-		public IMapTile this[int row, int col]
+		public MapTile this[int row, int col]
 		{
 			get { return this[row, col, currentHeight]; }
 			set { this[row, col, currentHeight] = value; }
@@ -154,7 +150,7 @@ namespace XCom.Interfaces.Base
 		/// </summary>
 		/// <param name="location"></param>
 		/// <returns></returns>
-		public IMapTile this[MapLocation location]
+		public MapTile this[MapLocation location]
 		{
 			get { return this[location.Row, location.Col, location.Height]; }
 			set { this[location.Row, location.Col, location.Height] = value; }
@@ -162,12 +158,12 @@ namespace XCom.Interfaces.Base
 
 		public void ResizeTo(int r, int c, int h)
 		{
-			IMapTile[] newMap = new IMapTile[r * c * h];
+			MapTile[] newMap = new MapTile[r * c * h];
 
 			for (int hc = 0; hc < h; hc++)
 				for (int rc = 0; rc < r; rc++)
 					for (int cc = 0; cc < c; cc++)
-						newMap[(r * c * hc) + (rc * c) + cc] = XCMapTile.BlankTile;
+						newMap[(r * c * hc) + (rc * c) + cc] = MapTile.BlankTile;
 
 			for (int hc = 0; hc < h && hc < mapSize.Height; hc++)
 				for (int rc = 0; rc < r && rc < mapSize.Rows; rc++)
@@ -179,6 +175,7 @@ namespace XCom.Interfaces.Base
 			currentHeight = (byte)(mapSize.Height - 1);
 		}
 
+#if NO
 //		public static int HalfWidth = 16, HalfHeight = 8;
 		private static int hWid = 16, hHeight = 8;
 		/// <summary>
@@ -220,6 +217,62 @@ namespace XCom.Interfaces.Base
 			} catch {
 				b.Save(file, System.Drawing.Imaging.ImageFormat.Gif);
 			}
+		}
+#endif
+	}
+
+	public static class MapControl
+	{
+		public static event MapChangedDelegate MapChanged;
+		public static event HeightChangedDelegate HeightChanged;
+		public static event TileSelectionChangedDelegate SelectedTileChanged;
+		public static event RefreshDelegate Refresh;
+
+		private static Map current;
+		public static Map Current
+		{
+			get { return current; }
+			set
+			{
+				current = value;
+				if (MapChanged != null) {
+					MapChangedEventArgs e = new MapChangedEventArgs(current);
+					MapChanged(e);
+				}
+			}
+		}
+
+		#region drag endpoints
+		private static Point startDrag, endDrag;
+		public static Point StartDrag
+		{
+			get { return startDrag; }
+			set { startDrag = value; }
+		}
+
+		public static Point EndDrag
+		{
+			get { return endDrag; }
+			set { endDrag = value; }
+		}
+		#endregion
+
+		public static void FireHeightChanged(HeightChangedEventArgs e)
+		{
+			if (HeightChanged != null)
+				HeightChanged(current,e);
+		}
+
+		public static void FireSelectedChanged(SelectedTileChangedEventArgs e)
+		{
+			if (SelectedTileChanged != null)
+				SelectedTileChanged(current, e);
+		}
+
+		public static void RequestRefresh()
+		{
+			if (Refresh != null)
+				Refresh();
 		}
 	}
 }

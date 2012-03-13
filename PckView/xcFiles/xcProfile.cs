@@ -3,6 +3,7 @@ using XCom;
 using XCom.Interfaces;
 using System.Collections.Generic;
 using DSShared;
+using MapLib.Base;
 
 namespace PckView
 {
@@ -62,7 +63,7 @@ namespace PckView
 
 		public IXCImageFile Codec { get { return codec; } set { codec = value; } }
 
-		protected override XCom.XCImageCollection LoadFileOverride(string directory,string file,int imgWid,int imgHei,Palette pal)
+		protected override XCom.XCImageCollection LoadFileOverride(string directory, string file, int imgWid, int imgHei, MapLib.Base.Palette pal)
 		{
 			return codec.LoadFile(directory,file,imgWid,imgHei,pal);
 		}

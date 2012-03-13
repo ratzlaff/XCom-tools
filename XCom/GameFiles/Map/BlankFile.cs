@@ -22,9 +22,9 @@ namespace XCom
 				{
 					for(int i=curr;i<curr+v;i++)
 					{
-						int h = i / (myFile.MapSize.Rows * myFile.MapSize.Cols);
-						int c = i % myFile.MapSize.Cols;
-						int r = (i / myFile.MapSize.Cols) - h * myFile.MapSize.Rows;
+						int h = i / (myFile.Size.Rows * myFile.Size.Cols);
+						int c = i % myFile.Size.Cols;
+						int r = (i / myFile.Size.Cols) - h * myFile.Size.Rows;
 
 						((XCMapTile)myFile[r,c,h]).DrawAbove=false;
 					}						
@@ -47,9 +47,9 @@ namespace XCom
 			UInt16 curr=0;
 			bool flip=true;
 
-			for (int h = 0; h < myFile.MapSize.Height; h++)
-				for (int r = 0; r < myFile.MapSize.Rows; r++)
-					for (int c = 0; c < myFile.MapSize.Cols; c++)
+			for (int h = 0; h < myFile.Size.Height; h++)
+				for (int r = 0; r < myFile.Size.Rows; r++)
+					for (int c = 0; c < myFile.Size.Cols; c++)
 					{
 						if(flip)
 						{

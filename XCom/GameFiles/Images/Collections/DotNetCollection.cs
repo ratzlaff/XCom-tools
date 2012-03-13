@@ -6,6 +6,7 @@ using XCom.Interfaces;
 using System.Windows.Forms;
 using System.Drawing.Imaging;
 using DSShared;
+using MapLib.Base;
 
 namespace XCom
 {

@@ -6,6 +6,7 @@ using System.Windows.Forms;
 using XCom;
 using XCom.Interfaces;
 using DSShared;
+using MapLib.Base;
 
 namespace PckView
 {

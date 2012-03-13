@@ -26,7 +26,7 @@ namespace PckView
 		//    set { base.FilterIndex = value; FIDX = value; }
 		//}
 
-		protected override XCom.XCImageCollection LoadFileOverride(string directory,string file,int imgWid,int imgHei,Palette pal)
+		protected override XCom.XCImageCollection LoadFileOverride(string directory, string file, int imgWid, int imgHei, MapLib.Base.Palette pal)
 		{
 			OpenCustomForm ocf = new OpenCustomForm(directory,file);
 			ocf.TryClick+=new TryDecodeEventHandler(tryIt);

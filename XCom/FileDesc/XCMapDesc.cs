@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using XCom.Interfaces.Base;
 using DSShared;
+using MapLib.Base;
 
 namespace XCom
 {
@@ -32,11 +33,11 @@ namespace XCom
 			isStatic = false;
 		}
 
-		public override IMap_Base GetMapFile() 
+		public override Map GetMapFile() 
 		{
 			ImageInfo images = GameInfo.ImageInfo;
 
-			List<ITile> a = new List<ITile>();
+			List<Tile> a = new List<Tile>();
 			//if (p == null)
 			//    p = GameInfo.DefaultPalette;
 

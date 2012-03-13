@@ -3,7 +3,7 @@ using System.Drawing;
 using System.Collections.Generic;
 using System.Drawing.Imaging;
 
-namespace DSShared
+namespace MapLib.Base
 {
 	public delegate void PaletteLoadedDelegate(Palette newPalette);
 

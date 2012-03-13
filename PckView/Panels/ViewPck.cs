@@ -34,7 +34,7 @@ namespace PckView
 		}
 
 		//saves a bitmap as a 8-bit image
-		public void SaveBMP(string file, Palette pal)
+		public void SaveBMP(string file, MapLib.Base.Palette pal)
 		{
 			XCom.Bmp.SaveBMP(file, myFile, pal, numAcross(), 1);
 		}
@@ -44,7 +44,7 @@ namespace PckView
 			myFile.Hq2x();
 		}
 
-		public Palette Pal
+		public MapLib.Base.Palette Pal
 		{
 			get { return myFile.Pal; }
 			set { if (myFile != null)myFile.Pal = value; }

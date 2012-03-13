@@ -3,22 +3,23 @@ using System.Drawing;
 using System.Collections;
 using XCom.Interfaces;
 using XCom.Interfaces.Base;
+using MapLib.Base;
 
 namespace XCom
 {
-	public class XCMapTile:IMapTile
+	public class XCMapTile:MapTile
 	{
 		public enum MapQuadrant { Ground, West, North, Content };
 		private RmpEntry rmpInfo;
-		private ITile ground, north, west, content;		
+		private Tile ground, north, west, content;		
         private bool blank;
 
 		//private IUnit unit;
 
-		private int maxSub = 0;		
+//		private int maxSub = 0;		
 		private int standOffset = 0;
 
-		internal XCMapTile(ITile ground, ITile west, ITile north, ITile content)
+		internal XCMapTile(Tile ground, Tile west, Tile north, Tile content)
 		{
 			this.ground = ground;
 			this.north = north;
@@ -31,7 +32,7 @@ namespace XCom
 			//unit = null;
 		}
 
-		public static XCMapTile BlankTile
+		public static new XCMapTile BlankTile
 		{
 			get
 			{
@@ -51,6 +52,7 @@ namespace XCom
 
 		private void calcTiles()
 		{
+/*
 			int notNull = 0;
 			maxSub = -255;
 			if (ground != null)
@@ -77,18 +79,15 @@ namespace XCom
 				maxSub = Math.Max(maxSub, content.Info.TileOffset);
 				standOffset = Math.Max(standOffset, content.Info.TileOffset);
 			}
-
-			usedTiles = new XCTile[notNull];
-			int space = 0;
-
+			*/
 			if (ground != null)
-				usedTiles[space++] = ground;
+				usedTiles.Add(ground);
 			if (north != null)
-				usedTiles[space++] = north;
+				usedTiles.Add(north);
 			if (west != null)
-				usedTiles[space++] = west;
+				usedTiles.Add(west);
 			if (content != null)
-				usedTiles[space++] = content;
+				usedTiles.Add(content);
 		}
 
 		public bool Blank
@@ -103,7 +102,7 @@ namespace XCom
 		//    set{mapCoords=value;}
 		//}
 
-		public ITile this[MapQuadrant quad]
+		public Tile this[MapQuadrant quad]
 		{
 			get
 			{
@@ -147,25 +146,25 @@ namespace XCom
 		//	set { unit = value; }
 		//}
 
-		public ITile North
+		public Tile North
 		{
 			get { return north; }
 			set { north = value; calcTiles(); }
 		}
 
-		public ITile Content
+		public Tile Content
 		{
 			get { return content; }
 			set { content = value; calcTiles(); }
 		}
 
-		public ITile Ground
+		public Tile Ground
 		{
 			get { return ground; }
 			set { ground = value; calcTiles(); }
 		}
 
-		public ITile West
+		public Tile West
 		{
 			get { return west; }
 			set { west = value; calcTiles(); }

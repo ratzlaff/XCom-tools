@@ -8,6 +8,9 @@ using System.Windows.Forms;
 using System.Drawing.Drawing2D;
 using XCom;
 using XCom.Interfaces.Base;
+using ViewLib.Base;
+using MVCore;
+using MapLib;
 
 namespace MapView.RmpViewForm
 {
@@ -18,10 +21,10 @@ namespace MapView.RmpViewForm
 
 		public RmpPanel() { }
 
-		protected override void mapChanged(object sender, IMap_Base map)
+		protected override void mapChanged(MapChangedEventArgs e)
 		{
-			this.map = (XCMapFile)map;
-			base.mapChanged(sender, map);
+			this.map = (XCMapFile)e.Map;
+			base.mapChanged(e);
 		}
 
 		protected override void OnPaint(PaintEventArgs e)
@@ -31,8 +34,8 @@ namespace MapView.RmpViewForm
 			if (map != null) {
 				Graphics g = e.Graphics;
 
-				for (int row = 0, startX = offX, startY = offY; row < map.MapSize.Rows; row++, startX -= hWidth, startY += hHeight)
-					for (int col = 0, x = startX, y = startY; col < map.MapSize.Cols; col++, x += hWidth, y += hHeight)
+				for (int row = 0, startX = offX, startY = offY; row < map.Size.Rows; row++, startX -= hWidth, startY += hHeight)
+					for (int col = 0, x = startX, y = startY; col < map.Size.Cols; col++, x += hWidth, y += hHeight)
 						if (map[row, col] != null) {
 							lower.Reset();
 							lower.AddLine(x, y + 2 * hHeight, x + hWidth, y + hHeight);
@@ -50,8 +53,8 @@ namespace MapView.RmpViewForm
 								g.FillPath(brushes["ContentColor"], lower);
 						}
 
-				for (int row = 0, startX = offX, startY = offY; row < map.MapSize.Rows; row++, startX -= hWidth, startY += hHeight)
-					for (int col = 0, x = startX, y = startY; col < map.MapSize.Cols; col++, x += hWidth, y += hHeight)
+				for (int row = 0, startX = offX, startY = offY; row < map.Size.Rows; row++, startX -= hWidth, startY += hHeight)
+					for (int col = 0, x = startX, y = startY; col < map.Size.Cols; col++, x += hWidth, y += hHeight)
 						if (map[row, col] != null && ((XCMapTile)map[row, col]).Rmp != null) {
 							RmpEntry f = ((XCMapTile)map[row, col]).Rmp;
 							upper.Reset();
@@ -125,8 +128,8 @@ namespace MapView.RmpViewForm
 					}
 				}
 
-				for (int row = 0, startX = offX, startY = offY; row < map.MapSize.Rows; row++, startX -= hWidth, startY += hHeight) {
-					for (int col = 0, x = startX, y = startY; col < map.MapSize.Cols; col++, x += hWidth, y += hHeight) {
+				for (int row = 0, startX = offX, startY = offY; row < map.Size.Rows; row++, startX -= hWidth, startY += hHeight) {
+					for (int col = 0, x = startX, y = startY; col < map.Size.Cols; col++, x += hWidth, y += hHeight) {
 						XCMapTile tile = (XCMapTile)map[row, col];
 						if (map[row, col] != null && tile.Rmp != null) {
 							upper.Reset();
@@ -171,10 +174,10 @@ namespace MapView.RmpViewForm
 					}
 				}
 
-				for (int i = 0; i <= map.MapSize.Rows; i++)
-					g.DrawLine(pens["GridColor"], offX - i * hWidth, offY + i * hHeight, offX + ((map.MapSize.Cols - i) * hWidth), offY + ((i + map.MapSize.Cols) * hHeight));
-				for (int i = 0; i <= map.MapSize.Cols; i++)
-					g.DrawLine(pens["GridColor"], offX + i * hWidth, offY + i * hHeight, (offX + i * hWidth) - map.MapSize.Rows * hWidth, (offY + i * hHeight) + map.MapSize.Rows * hHeight);
+				for (int i = 0; i <= map.Size.Rows; i++)
+					g.DrawLine(pens["GridColor"], offX - i * hWidth, offY + i * hHeight, offX + ((map.Size.Cols - i) * hWidth), offY + ((i + map.Size.Cols) * hHeight));
+				for (int i = 0; i <= map.Size.Cols; i++)
+					g.DrawLine(pens["GridColor"], offX + i * hWidth, offY + i * hHeight, (offX + i * hWidth) - map.Size.Rows * hWidth, (offY + i * hHeight) + map.Size.Rows * hHeight);
 
 				g.DrawString("W", myFont, System.Drawing.Brushes.Black, 0, 0);
 				g.DrawString("N", myFont, System.Drawing.Brushes.Black, Width - 30, 0);
@@ -183,9 +186,9 @@ namespace MapView.RmpViewForm
 			}
 		}
 
-		public override void LoadDefaultSettings(Settings settings)
+		public override void LoadDefaultSettings(Map_Observer_Form sender, Settings settings)
 		{
-			base.LoadDefaultSettings(settings);
+			base.LoadDefaultSettings(sender, settings);
 
 			// UnselectedLinkColor, UnselectedLinkWidth
 			addPenSetting(new Pen(new SolidBrush(Color.Red), 2), "UnselectedLink", "Links", "Color of unselected link lines", "Width of unselected link lines", settings);
@@ -207,18 +210,6 @@ namespace MapView.RmpViewForm
 
 			// ContentColor
 			addBrushSetting(new SolidBrush(Color.DarkGray), "Content", "Tile", "Color of map tiles with a content tile", settings);
-		}
-
-		private void InitializeComponent()
-		{
-			this.SuspendLayout();
-			// 
-			// RmpPanel
-			// 
-			this.Name = "RmpPanel";
-			this.Size = new System.Drawing.Size(336, 172);
-			this.ResumeLayout(false);
-
 		}
 	}
 }

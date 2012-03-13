@@ -2,6 +2,7 @@ using System;
 using XCom.Interfaces;
 using System.Windows.Forms;
 using DSShared;
+using MapLib.Base;
 
 namespace XCom.GameFiles.Images.xcFiles
 {

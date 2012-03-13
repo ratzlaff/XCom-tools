@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.IO;
 
-namespace DSShared
+namespace MVCore.Parser
 {
 	/// <summary>
 	/// Class to automatically parse out a VC file into a tree structure

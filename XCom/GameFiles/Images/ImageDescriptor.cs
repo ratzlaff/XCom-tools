@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.IO;
 using DSShared;
+using MapLib.Base;
 
 namespace XCom
 {

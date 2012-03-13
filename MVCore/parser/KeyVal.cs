@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace DSShared
+namespace MVCore.Parser
 {
 	public class KeyVal
 	{

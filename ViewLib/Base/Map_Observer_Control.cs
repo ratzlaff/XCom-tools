@@ -3,51 +3,46 @@ using System.ComponentModel;
 using System.Collections.Generic;
 using System.Text;
 using System.Drawing;
-using XCom;
-using XCom.Interfaces.Base;
+using MapLib.Base;
+using MVCore;
+using MapLib;
 
-namespace MapView
+namespace ViewLib.Base
 {
-	public class Map_Observer_Control : ViewLib.Base.DoubleBufferControl
+	public class Map_Observer_Control : DoubleBufferControl
 	{
-		protected IMap_Base map;
+		protected Map map;
 		protected Settings settings;
 		protected Dictionary<string, SolidBrush> brushes;
 		protected Dictionary<string, Pen> pens;
 
 		public Map_Observer_Control()
 		{
-			if (!IsDesignMode)
-				MainWindow.Instance.MapChanged += mapChanged;
+			if (!IsDesignMode) {
+				MapControl.MapChanged += mapChanged;
+				MapControl.HeightChanged += HeightChanged;
+				MapControl.SelectedTileChanged += SelectedTileChanged;
+				MapControl.Refresh += Refresh;
+			}
 		}
 
-		protected virtual void mapChanged(object sender, IMap_Base map)
+		protected virtual void mapChanged(MapChangedEventArgs e)
 		{
-			if (map != null) {
-				map.HeightChanged -= HeightChanged;
-				map.SelectedTileChanged -= SelectedTileChanged;
-			}
-
-			this.map = map;
-
-			if (map != null) {
-				map.HeightChanged += HeightChanged;
-				map.SelectedTileChanged += SelectedTileChanged;
-			}
-
+			this.map = e.Map;
 			OnResize(null);
 		}
 
-		public virtual void HeightChanged(IMap_Base sender, HeightChangedEventArgs e) { Refresh(); }
-		public virtual void SelectedTileChanged(IMap_Base sender, SelectedTileChangedEventArgs e) { Refresh(); }
+		public virtual void HeightChanged(Map sender, HeightChangedEventArgs e) { Refresh(); }
+		public virtual void SelectedTileChanged(Map sender, SelectedTileChangedEventArgs e) { Refresh(); }
 
-		public virtual void SetDrawingTools(Dictionary<string, SolidBrush> brushes, Dictionary<string, Pen> pens)
+		public virtual void LoadDefaultSettings(Map_Observer_Form sender, Settings settings)
 		{
-			this.brushes = brushes;
-			this.pens = pens;
+			this.settings = settings;
+			if (sender != null) {
+				brushes = sender.FillBrushes;
+				pens = sender.DrawPens;
+			}
 		}
-
-		public virtual void LoadDefaultSettings(Settings settings) { this.settings = settings; }
 
 		protected void addPenSetting(Pen pen, string name, string category, string colorTxt, string widthTxt, Settings settings)
 		{
@@ -78,7 +73,7 @@ namespace MapView
 
 		protected virtual void penWidthChanged(object sender, string key, object val)
 		{
-			pens[key].Width = (int)val;
+			pens[key].Width = (float)val;
 			Refresh();
 		}
 	}

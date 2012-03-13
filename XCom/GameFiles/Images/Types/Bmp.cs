@@ -8,6 +8,7 @@ using System.Drawing.Imaging;
 using System.Reflection;
 using XCom.Interfaces;
 using DSShared;
+using MapLib.Base;
 
 #if hq2xWorks
 using hq2x;

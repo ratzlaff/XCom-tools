@@ -5,10 +5,12 @@ using System.Drawing;
 using XCom.Interfaces.Base;
 using XCom;
 using System.Windows.Forms;
+using ViewLib.Base;
+using MVCore;
 
 namespace MapView.TopViewForm
 {
-	public class TopViewPanel : SimpleMapPanel
+	public class TopViewPanel : ViewLib.Base.SimpleMapPanel
 	{
 		private bool blank = false;
 
@@ -18,10 +20,10 @@ namespace MapView.TopViewForm
 				MapViewPanel.Instance.View.DragChanged += new EventHandler(viewDrag);
 		}
 
-		public MenuItem Ground { get; set; }
-		public MenuItem North { get; set; }
-		public MenuItem West { get; set; }
-		public MenuItem Content { get; set; }
+		public ToolStripMenuItem Ground { get; set; }
+		public ToolStripMenuItem North { get; set; }
+		public ToolStripMenuItem West { get; set; }
+		public ToolStripMenuItem Content { get; set; }
 		public BottomPanel BottomPanel { get; set; }
 
 		protected override void RenderCell(System.Drawing.Graphics g, int x, int y, int row, int col)
@@ -57,9 +59,9 @@ namespace MapView.TopViewForm
 				viewDrag(null, null);
 		}
 
-		public override void LoadDefaultSettings(Settings settings)
+		public override void LoadDefaultSettings(Map_Observer_Form sender, Settings settings)
 		{
-			base.LoadDefaultSettings(settings);
+			base.LoadDefaultSettings(sender, settings);
 
 			// NorthColor, NorthWidth
 			addPenSetting(new Pen(new SolidBrush(Color.Red), 4), "North", "Tile", "Color of the north tile indicator", "Width of the north tile indicator in pixels", settings);
@@ -76,19 +78,7 @@ namespace MapView.TopViewForm
 			addBrushSetting(new SolidBrush(Color.Green), "Content", "Tile", "Color of the content tile indicator", settings);
 
 			// DiamondMinHeight
-			settings.AddSetting("DiamondMinHeight", MinHeight, "Minimum height of the grid tiles", "Tile", diamondHeightChanged, false, null);
-		}
-
-		private void InitializeComponent()
-		{
-			this.SuspendLayout();
-			// 
-			// TopViewPanel
-			// 
-			this.Name = "TopViewPanel";
-			this.Size = new System.Drawing.Size(383, 209);
-			this.ResumeLayout(false);
-
+			settings.AddSetting("DiamondMinHeight", MinHeight, "Minimum height of the grid tiles", "Tile", diamondHeightChanged);
 		}
 	}
 }

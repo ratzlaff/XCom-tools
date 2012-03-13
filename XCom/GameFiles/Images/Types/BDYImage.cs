@@ -13,7 +13,7 @@ namespace XCom
 	/// </summary>
 	public class BDYImage:XCImage
 	{
-		public BDYImage(Palette p,Stream s,int width, int height)
+		public BDYImage(MapLib.Base.Palette p, Stream s, int width, int height)
 		{
 			BinaryReader data = new BinaryReader(s);
 

@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Collections;
 using XCom.Interfaces;
 using DSShared;
+using MapLib.Base;
 
 namespace XCom
 {

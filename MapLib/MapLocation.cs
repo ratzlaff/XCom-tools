@@ -1,6 +1,6 @@
 using System;
 
-namespace XCom
+namespace MapLib
 {
 	/// <summary>
 	/// Struct for defining map locations

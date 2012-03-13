@@ -31,7 +31,7 @@ namespace PckView
 			return true;
 		}
 
-		protected override XCImageCollection LoadFileOverride(string directory, string file, int imgWid, int imgHei, Palette pal)
+		protected override XCImageCollection LoadFileOverride(string directory, string file, int imgWid, int imgHei, MapLib.Base.Palette pal)
 		{
 			Image img = Image.FromFile(directory + "\\" + file);
 			System.Drawing.Bitmap bmp = new System.Drawing.Bitmap(img);

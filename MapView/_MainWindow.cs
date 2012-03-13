@@ -16,11 +16,12 @@ using XCom.Interfaces.Base;
 using System.Collections.Generic;
 using MapView.RmpViewForm;
 using MapView.TopViewForm;
+using MVCore;
+using ViewLib.Base;
 
 namespace MapView
 {
 	public delegate void StringDelegate(object sender, string args);
-	public delegate void MapChangedDelegate(object sender, IMap_Base map);
 
 	public partial class MainWindow : Form
 	{
@@ -28,8 +29,6 @@ namespace MapView
 		private LoadingForm lf;
 		private Dictionary<string, Form> registeredForms;
 		private static Dictionary<string, Settings> settingsHash;
-
-		public event MapChangedDelegate MapChanged;
 
 //		private LoadOfType<IMapDesc> loadedTypes;
 		//public event StringDelegate SendMessage;
@@ -181,9 +180,13 @@ namespace MapView
 			mi.Tag = f;
 
 			if (f is Map_Observer_Form) {
-				((Map_Observer_Form)f).MenuItem = mi;
-				((Map_Observer_Form)f).RegistryInfo = new DSShared.Windows.RegistryInfo(f, title);
-				settingsHash.Add(title, ((Map_Observer_Form)f).Settings);
+				Map_Observer_Form mof = (Map_Observer_Form)f;
+				mof.MenuItem = mi;
+
+				settingsHash.Add(title, new Settings());
+				mof.SetupDefaultSettings(settingsHash[title]);
+				
+//				((Map_Observer_Form)f).RegistryInfo = new DSShared.Windows.RegistryInfo(f, title);
 			}
 
 			f.ShowInTaskbar = false;
@@ -241,8 +244,8 @@ namespace MapView
 
 		private void readMapViewSettings(StreamReader sr)
 		{
-			XCom.VarCollection vc = new XCom.VarCollection(sr);
-			XCom.KeyVal kv = null;
+			MVCore.Parser.VarCollection vc = new MVCore.Parser.VarCollection(sr);
+			MVCore.Parser.KeyVal kv = null;
 
 			while ((kv = vc.ReadLine()) != null) {
 				try {
@@ -268,16 +271,9 @@ namespace MapView
 						MapViewPanel.Stop();
 					break;
 				case "Doors":
-					if (MapViewPanel.Instance.Map != null) {
-						if ((bool)val)
-							foreach (XCTile t in MapViewPanel.Instance.Map.Tiles) {
-								if (t.Info.UFODoor || t.Info.HumanDoor)
-									t.MakeAnimate();
-							} else
-							foreach (XCTile t in MapViewPanel.Instance.Map.Tiles)
-								if (t.Info.UFODoor || t.Info.HumanDoor)
-									t.StopAnimate();
-					}
+					if (MapLib.Base.MapControl.Current != null)
+						foreach (MapLib.Base.Tile t in MapLib.Base.MapControl.Current.Tiles)
+							t.Animate((bool)val);					
 					break;
 				case "SaveWindowPositions":
 					PathsEditor.SaveRegistry = (bool)val;
@@ -378,7 +374,6 @@ namespace MapView
 					settingsHash[s].Save(s, sw);
 			sw.Flush();
 			sw.Close();
-
 		}
 
 		private void loadDefaults()
@@ -398,15 +393,10 @@ namespace MapView
 
 			Settings settings = new Settings();
 			//Color.FromArgb(175,69,100,129)
-			ValueChangedDelegate eh = new ValueChangedDelegate(changeSetting);
-			settings.AddSetting("Animation", MapViewPanel.Updating, "If true, the map will animate itself", "Main", eh, false, null);
-			settings.AddSetting("Doors", false, "If true, the door tiles will animate themselves", "Main", eh, false, null);
-			settings.AddSetting("SaveWindowPositions", PathsEditor.SaveRegistry, "If true, the window positions and sizes will be saved in the windows registry", "Main", eh, false, null);
-			settings.AddSetting("UseGrid", MapViewPanel.Instance.View.UseGrid, "If true, a grid will show up at the current level of editing", "MapView", null, true, MapViewPanel.Instance.View);
-			settings.AddSetting("GridColor", MapViewPanel.Instance.View.GridColor, "Color of the grid in (a,r,g,b) format", "MapView", null, true, MapViewPanel.Instance.View);
-			settings.AddSetting("GridLineColor", MapViewPanel.Instance.View.GridLineColor, "Color of the lines that make up the grid", "MapView", null, true, MapViewPanel.Instance.View);
-			settings.AddSetting("GridLineWidth", MapViewPanel.Instance.View.GridLineWidth, "Width of the grid lines in pixels", "MapView", null, true, MapViewPanel.Instance.View);
-			settings.AddSetting("SelectGrayscale", MapViewPanel.Instance.View.SelectGrayscale, "If true, the selection area will show up in gray", "MapView", null, true, MapViewPanel.Instance.View);
+			settings.AddSetting("Animation", MapViewPanel.Updating, "If true, the map will animate itself", "Main", changeSetting);
+			settings.AddSetting("Doors", false, "If true, the door tiles will animate themselves", "Main", changeSetting);
+			settings.AddSetting("SaveWindowPositions", PathsEditor.SaveRegistry, "If true, the window positions and sizes will be saved in the windows registry", "Main", changeSetting);
+			MapViewPanel.Instance.View.LoadDefaultSettings(null, settings);
 			//settings.AddSetting("SaveOnExit",true,"If true, these settings will be saved on program exit","Main",null,false,null);
 			settingsHash["MainWindow"] = settings;
 		}
@@ -434,9 +424,9 @@ namespace MapView
 
 		private void saveItem_Click(object sender, System.EventArgs e)
 		{
-			if (mapView.Map != null) {
-				mapView.Map.Save();
-				xConsole.AddLine("Saved: " + mapView.Map.Name);
+			if (MapLib.Base.MapControl.Current != null) {
+				MapLib.Base.MapControl.Current.Save();
+				xConsole.AddLine("Saved: " + MapLib.Base.MapControl.Current.Name);
 				Globals.MapChanged = false;
 			}
 		}
@@ -464,10 +454,10 @@ namespace MapView
 			if (mapList.SelectedNode.Tag is IMapDesc) {
 				IMapDesc imd = (IMapDesc)mapList.SelectedNode.Tag;
 				miExport.Enabled = true;
-				mapView.SetMap(imd.GetMapFile());
+				MapLib.Base.MapControl.Current = imd.GetMapFile();
 
 				statusMapName.Text = "Map:" + imd.Name;
-				tsMapSize.Text = "Size: " + mapView.View.Map.MapSize.ToString();
+				tsMapSize.Text = "Size: " + MapLib.Base.MapControl.Current.Size.ToString();
 
 				//turn off door animations
 				if (miDoors.Checked) {
@@ -483,9 +473,7 @@ namespace MapView
 					showMenu.Enabled = true;
 				}
 
-				if (MapChanged != null)
-					MapChanged(this, mapView.View.Map);
-
+				// notify everyone that there is a new map
 				MapViewPanel.Instance.View.Refresh();
 			} else
 				miExport.Enabled = false;
@@ -493,12 +481,12 @@ namespace MapView
 
 		public DialogResult NotifySave()
 		{
-			if (mapView.Map != null && Globals.MapChanged)
+			if (MapLib.Base.MapControl.Current != null && Globals.MapChanged)
 				switch (MessageBox.Show(this, "Map changed, do you wish to save?", "Save map?", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1)) {
 					case DialogResult.No: //dont save 
 						break;
 					case DialogResult.Yes: //save
-						mapView.Map.Save();
+						MapLib.Base.MapControl.Current.Save();
 						break;
 					case DialogResult.Cancel://do nothing
 						return DialogResult.Cancel;
@@ -517,6 +505,8 @@ namespace MapView
 
 		private void miSaveImage_Click(object sender, System.EventArgs e)
 		{
+			throw new NotImplementedException();
+/*
 			if (mapView.Map != null) {
 				saveFile.FileName = mapView.Map.Name;
 				if (saveFile.ShowDialog() == DialogResult.OK) {
@@ -525,12 +515,13 @@ namespace MapView
 					lf.Hide();
 				}
 			}
+*/
 		}
 
 		private void miHq_Click(object sender, System.EventArgs e)
 		{
-			if (mapView.Map is XCMapFile) {
-				((XCMapFile)mapView.Map).Hq2x();
+			if (MapLib.Base.MapControl.Current is XCMapFile) {
+				((XCMapFile)MapLib.Base.MapControl.Current).Hq2x();
 				mapView.View.Resize();
 			}
 		}
@@ -539,19 +530,14 @@ namespace MapView
 		{
 			miDoors.Checked = !miDoors.Checked;
 
-			foreach (XCTile t in mapView.Map.Tiles)
-				if (t.Info.UFODoor || t.Info.HumanDoor) {
-					if (miDoors.Checked)
-						t.MakeAnimate();
-					else
-						t.StopAnimate();
-				}
+			foreach (MapLib.Base.Tile t in MapLib.Base.MapControl.Current.Tiles)
+				t.Animate(miDoors.Checked);
 		}
 
 		private void miResize_Click(object sender, System.EventArgs e)
 		{
 			ChangeMapSizeForm cmf = new ChangeMapSizeForm();
-			cmf.Map = mapView.View.Map;
+			cmf.Map = MapLib.Base.MapControl.Current;
 			if (cmf.ShowDialog(this) == DialogResult.OK) {
 				cmf.Map.ResizeTo(cmf.NewRows, cmf.NewCols, cmf.NewHeight);
 				//mapView.View.Map.ResizeTo(cmf.NewRows, cmf.NewCols, cmf.NewHeight);
@@ -577,7 +563,7 @@ namespace MapView
 		{
 			MapInfoForm mif = new MapInfoForm();
 			mif.Show();
-			mif.Map = mapView.Map;
+			mif.Map = MapLib.Base.MapControl.Current;
 		}
 
 		/// <summary>
@@ -619,7 +605,7 @@ namespace MapView
 			btnUp.Text = "toolStripButton1";
 			btnUp.ToolTipText = "Level Up";
 			btnUp.Click += delegate(object sender, EventArgs e) {
-				MapViewPanel.Instance.View.Map.Up();
+				MapLib.Base.MapControl.Current.Up();
 			};
 			// 
 			// btnDown
@@ -633,7 +619,7 @@ namespace MapView
 			btnDown.Text = "toolStripButton2";
 			btnDown.ToolTipText = "Level Down";
 			btnDown.Click += delegate(object sender, EventArgs e) {
-				MapViewPanel.Instance.View.Map.Down();
+				MapLib.Base.MapControl.Current.Down();
 			};
 			// 
 			// btnCut

@@ -89,7 +89,7 @@ namespace PckView
 				ViewClicked(idx);
 		}
 
-		public Palette Pal
+		public MapLib.Base.Palette Pal
 		{
 			get { return view != null ? view.Pal : null; }
 			set { if (view != null) view.Pal = value; }

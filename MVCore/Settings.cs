@@ -2,12 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Drawing;
-using XCom;
+using MVCore.Parser;
 
-namespace MapView
+namespace MVCore
 {
 	public delegate string ConvertObject(object o);
-	public delegate void ValueChangedDelegate(object sender, string keyword, object val);
+	public delegate void ValueChangedDelegate(Setting sender, string keyword, object val);
 	/// <summary>
 	/// A wrapper around a Hashtable for Setting objects. Setting objects are intended to use with the CustomPropertyGrid
 	/// </summary>
@@ -85,17 +85,9 @@ namespace MapView
 			}
 		}
 
-		/// <summary>
-		/// adds a setting to this settings object
-		/// </summary>
-		/// <param name="name">property name</param>
-		/// <param name="val">start value of the property</param>
-		/// <param name="desc">property description</param>
-		/// <param name="category">property category</param>
-		/// <param name="eh">event handler to recieve the PropertyValueChanged event</param>
-		public void AddSetting(string name, object val, string desc, string category, ValueChangedDelegate eh)
+		public void AddSetting(string name, Setting s)
 		{
-			AddSetting(name, val, desc, category, eh, false, null);
+			settings[s.Name] = s;
 		}
 
 		/// <summary>
@@ -106,18 +98,31 @@ namespace MapView
 		/// <param name="desc">property description</param>
 		/// <param name="category">property category</param>
 		/// <param name="eh">event handler to recieve the PropertyValueChanged event</param>
-		/// <param name="reflect">if true, an internal event handler will be created - the refObj must not be null and the name must be the name of a property of the type that refObj is</param>
+		public Setting AddSetting(string name, object val, string desc, string category, ValueChangedDelegate eh)
+		{
+			return AddSetting(name, val, desc, category, eh, "", null);
+		}
+
+		/// <summary>
+		/// adds a setting to this settings object
+		/// </summary>
+		/// <param name="name">property name</param>
+		/// <param name="val">start value of the property</param>
+		/// <param name="desc">property description</param>
+		/// <param name="category">property category</param>
+		/// <param name="eh">event handler to recieve the PropertyValueChanged event</param>
 		/// <param name="refObj">the object that will recieve the changed property values</param>
-		public void AddSetting(string name, object val, string desc, string category, ValueChangedDelegate eh, bool reflect, object refObj)
+		public Setting AddSetting(string name, object val, string desc, string category, ValueChangedDelegate eh, string propertyName, object refObj)
 		{
 			//take out all spaces
 			name = name.Replace(" ", "");
 
-			settings[name] = new Setting(val, desc, category, eh);
-			if (reflect && refObj != null) {
-				propObj[name] = new PropObj(refObj, name);
+			settings[name] = new Setting(name, val, desc, category, eh);
+			if (refObj != null) {
+				propObj[name] = new PropObj(refObj, propertyName);
 				this[name].ValueChanged += new ValueChangedDelegate(reflectEvent);
 			}
+			return settings[name];
 		}
 
 		/// <summary>
@@ -147,8 +152,17 @@ namespace MapView
 			sw.WriteLine(name);
 			sw.WriteLine("{");
 
-			foreach (string s in settings.Keys)
-				sw.WriteLine("\t" + s + ":" + convert(this[s].Value));
+			foreach (string s in settings.Keys) {
+				object o = null;
+
+				if (propObj.ContainsKey(s))
+					o = propObj[s].GetValue();
+				else
+					o = settings[s].Value;
+
+				sw.WriteLine("\t" + s + ":" + convert(o));	
+			}
+				
 			sw.WriteLine("}");
 		}
 
@@ -174,7 +188,6 @@ namespace MapView
 	public class Setting
 	{
 		private object val;
-		private string desc, category, name;
 
 		private static Dictionary<Type, parseString> converters;
 
@@ -182,20 +195,35 @@ namespace MapView
 
 		private delegate object parseString(string s);
 
-		public Setting(object val, string desc, string category, ValueChangedDelegate update)
+		public Setting(string name, object val, string desc, string category, ValueChangedDelegate update)
 		{
 			this.val = val;
-			this.desc = desc;
-			this.category = category;
+			this.Name = name;
+			this.Description = desc;
+			this.Category = category;
 			if (update != null)
 				ValueChanged += update;
 
+			IsVisible = true;
+
 			if (converters == null) {
 				converters = new Dictionary<Type, parseString>();
-				converters[typeof(int)] = new parseString(parseIntString);
-				converters[typeof(System.Drawing.Color)] = new parseString(parseColorString);
-				converters[typeof(bool)] = new parseString(parseBoolString);
+				converters[typeof(float)] = parseFloatString;
+				converters[typeof(double)] = parseDoubleString;
+				converters[typeof(int)] = parseIntString;
+				converters[typeof(System.Drawing.Color)] = parseColorString;
+				converters[typeof(bool)] = parseBoolString;
 			}
+		}
+
+		private static object parseFloatString(string s)
+		{
+			return float.Parse(s);
+		}
+
+		private static object parseDoubleString(string s)
+		{
+			return double.Parse(s);
 		}
 
 		private static object parseBoolString(string s)
@@ -218,7 +246,7 @@ namespace MapView
 			return Color.FromArgb(int.Parse(vals[0]), int.Parse(vals[1]), int.Parse(vals[2]), int.Parse(vals[3]));
 		}
 
-		public Setting(object val, string desc, string category) : this(val, desc, category, null) { }
+		public Setting(object val, string desc, string category) : this(null, val, desc, category, null) { }
 		public Setting(object val, string desc) : this(val, desc, null) { }
 		public Setting(object val) : this(null, null) { }
 
@@ -227,30 +255,17 @@ namespace MapView
 			get { return val; }
 			set
 			{
-				if (val != null && converters[val.GetType()] != null && value.GetType() == typeof(string))
+				if (val != null && converters.ContainsKey(val.GetType()) && value.GetType() == typeof(string))
 					val = converters[val.GetType()]((string)value);
 				else
 					val = value;
 			}
 		}
 
-		public string Description
-		{
-			get { return desc; }
-			set { desc = value; }
-		}
-
-		public string Category
-		{
-			get { return category; }
-			set { category = value; }
-		}
-
-		public string Name
-		{
-			get { return name; }
-			set { name = value; }
-		}
+		public string Description { get; set; }
+		public string Category { get; set; }
+		public string Name { get; set; }
+		public bool IsVisible { get; set; }
 
 		public void FireUpdate(string key, object val)
 		{
@@ -274,6 +289,11 @@ namespace MapView
 		{
 			this.obj = obj;
 			pi = obj.GetType().GetProperty(property);
+		}
+
+		public object GetValue()
+		{
+			return pi.GetValue(obj, new object[] { });
 		}
 
 		public void SetValue(object o)

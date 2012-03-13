@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.IO;
 using XCom.Interfaces;
 using DSShared;
+using MapLib.Base;
 
 namespace XCom
 {
@@ -77,7 +78,7 @@ namespace XCom
 			this.idx=expanded;
 
             image = DSShared.Bmp.MakeBitmap8(Width, Height, expanded, pal.Colors);
-            gray = DSShared.Bmp.MakeBitmap8(Width, Height, expanded, pal.Grayscale.Colors);
+			gray = DSShared.Bmp.MakeBitmap8(Width, Height, expanded, pal.Grayscale.Colors);
 		}
 
 		public static int EncodePck(System.IO.BinaryWriter output, XCImage tile)

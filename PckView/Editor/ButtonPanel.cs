@@ -43,7 +43,7 @@ namespace PckView
 			}
 		}
 
-		public Palette Palette
+		public MapLib.Base.Palette Palette
 		{
 			set{top.Palette=value;}
 		}

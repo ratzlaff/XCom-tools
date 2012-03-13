@@ -4,6 +4,7 @@ using System.IO;
 using XCom.Interfaces;
 using System.Reflection;
 using XCom.Interfaces.Base;
+using MapLib;
 
 namespace XCom
 {

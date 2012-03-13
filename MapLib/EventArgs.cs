@@ -1,9 +1,7 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
-using XCom.Interfaces.Base;
+using MapLib.Base;
 
-namespace XCom
+namespace MapLib
 {
 	/// <summary>
 	/// EventArgs class that holds a MapLocation and MapTile for when a SelectedTileChanged event fires
@@ -11,9 +9,9 @@ namespace XCom
 	public class SelectedTileChangedEventArgs : EventArgs
 	{
 		private MapLocation newSelected;
-		private IMapTile selectedTile;
+		private MapTile selectedTile;
 
-		public SelectedTileChangedEventArgs(MapLocation newSelected, IMapTile selectedTile)
+		public SelectedTileChangedEventArgs(MapLocation newSelected, MapTile selectedTile)
 		{
 			this.newSelected = newSelected;
 			this.selectedTile = selectedTile;
@@ -24,7 +22,7 @@ namespace XCom
 			get { return newSelected; }
 		}
 
-		public IMapTile SelectedTile
+		public MapTile SelectedTile
 		{
 			get { return selectedTile; }
 		}
@@ -52,6 +50,21 @@ namespace XCom
 		public int OldHeight
 		{
 			get { return oldHeight; }
+		}
+	}
+
+	public class MapChangedEventArgs : EventArgs
+	{
+		private Map map;
+
+		public MapChangedEventArgs(Map map)
+		{
+			this.map = map;
+		}
+
+		public Map Map
+		{
+			get { return map; }
 		}
 	}
 }

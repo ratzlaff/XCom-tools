@@ -1,19 +1,25 @@
 using System;
+using System.Collections.Generic;
 
-namespace XCom.Interfaces.Base
+namespace MapLib.Base
 {
 	/// <summary>
 	/// Objects of this class are drawn to the screen with the MapViewPanel
 	/// </summary>
-	public class IMapTile
+	public class MapTile
 	{
-		protected ITile[] usedTiles;
+		protected List<Tile> usedTiles;
+
+		public MapTile()
+		{
+			usedTiles = new List<Tile>();
+		}
 
 		/// <summary>
-		/// A list of ITiles in the correct draw order. You should iterate over this array when drawing to the screen
+		/// A list of Tiles in the correct draw order. You should iterate over this array when drawing to the screen
 		/// This list does not include IUnits
 		/// </summary>
-		public ITile[] UsedTiles
+		public List<Tile> UsedTiles
 		{
 			get { return usedTiles; }
 		}
@@ -28,5 +34,11 @@ namespace XCom.Interfaces.Base
             get { return drawAbove; }
             set { drawAbove = value; }
         }
+
+		private static MapTile blankTile = new MapTile();
+		public static MapTile BlankTile
+		{
+			get { return blankTile; }
+		}
 	}
 }

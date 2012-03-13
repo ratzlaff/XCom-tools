@@ -20,7 +20,7 @@ namespace PckView
 			fileOptions.Init(true, false, true, false);
 		}
 
-		protected override XCom.XCImageCollection LoadFileOverride(string directory, string file, int imgWid, int imgHei, Palette pal)
+		protected override XCom.XCImageCollection LoadFileOverride(string directory, string file, int imgWid, int imgHei, MapLib.Base.Palette pal)
 		{
 			SpecCollection sc = new SpecCollection(File.OpenRead(directory + "\\" + file));
 			

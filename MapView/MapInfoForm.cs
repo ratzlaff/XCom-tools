@@ -7,6 +7,7 @@ using System.Windows.Forms;
 using XCom;
 using XCom.Interfaces;
 using XCom.Interfaces.Base;
+using MapLib.Base;
 
 namespace MapView
 {
@@ -27,7 +28,7 @@ namespace MapView
 		private System.Windows.Forms.GroupBox groupAnalyze;
 		private System.Windows.Forms.GroupBox groupInfo;
 
-		private IMap_Base map;
+		private Map map;
 		private int slotsUsed=0;
 
 		public MapInfoForm()
@@ -35,7 +36,7 @@ namespace MapView
 			InitializeComponent();
 		}
 
-		public IMap_Base Map
+		public Map Map
 		{
 			set
 			{
@@ -50,7 +51,7 @@ namespace MapView
 			Hashtable imgHash=new Hashtable();
 			Hashtable mcdHash=new Hashtable();
 			groupInfo.Text="Map: "+map.Name;
-			lblDimensions.Text = map.MapSize.Rows + "," + map.MapSize.Cols + "," + map.MapSize.Height;
+			lblDimensions.Text = map.Size.Rows + "," + map.Size.Cols + "," + map.Size.Height;
 
 			lblPckFiles.Text="";
 			bool one=true;
@@ -69,12 +70,12 @@ namespace MapView
 					lblPckFiles.Text+=s;
 				}
 
-			pBar.Maximum = map.MapSize.Rows * map.MapSize.Cols * map.MapSize.Height;
+			pBar.Maximum = map.Size.Rows * map.Size.Cols * map.Size.Height;
 			pBar.Value=0;
 
-			for (int h = 0; h < map.MapSize.Height; h++)
-				for (int r = 0; r < map.MapSize.Rows; r++)
-					for (int c = 0; c < map.MapSize.Cols; c++)
+			for (int h = 0; h < map.Size.Height; h++)
+				for (int r = 0; r < map.Size.Rows; r++)
+					for (int c = 0; c < map.Size.Cols; c++)
 					{
                         XCMapTile tile = (XCMapTile)map[r, c, h];
                         if (!tile.Blank)
@@ -120,14 +121,16 @@ namespace MapView
 			groupAnalyze.Visible=false;
 		}
 
-		private void count(Hashtable img, Hashtable mcd, ITile tile)
+		private void count(Hashtable img, Hashtable mcd, Tile tile)
 		{
+/*
 			if(tile!=null)
 			{
 				foreach(PckImage pi in tile.Images)
 					img[pi.StaticID]=true;
-				mcd[tile.Info.ID]=true;
+				mcd[tile.ID]=true;
 			}
+*/
 		}
 
 		#region Windows Form Designer generated code

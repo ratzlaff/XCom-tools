@@ -2,6 +2,8 @@ using System;
 using System.IO;
 using XCom.Interfaces.Base;
 using DSShared;
+using MapLib;
+using MapLib.Base;
 
 namespace XCom.Interfaces
 {

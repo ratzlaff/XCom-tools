@@ -1,35 +1,34 @@
 using System;
 using System.Drawing;
 using DSShared;
+using MapLib.Base;
 
 namespace XCom.Interfaces
 {
-	public class XCImage:ICloneable
+	public class XCImage : TileImage, ICloneable
 	{
 		protected byte[] idx;
 		protected int fileNum;
-		protected Bitmap image;
-		protected Bitmap gray;
 		protected string mName = "";
 
-		private Palette palette;
-		private byte transparent=0xFE;
+		private byte transparent = 0xFE;
 
 		//entries must not be compressed
-		public XCImage(byte[] entries,int width, int height, Palette pal,int idx)
+		public XCImage(byte[] entries, int width, int height, Palette pal, int idx)
 		{
-			fileNum=idx;
-			this.idx=entries;
-			palette=pal;
+			fileNum = idx;
+			this.idx = entries;
+			palette = pal;
 
-			if(pal!=null)
-				image = DSShared.Bmp.MakeBitmap8(width,height,entries,pal.Colors);
+			if (pal != null)
+				image = DSShared.Bmp.MakeBitmap8(width, height, entries, pal.Colors);
 		}
 
-		public XCImage():this(new byte[]{},0,0,null,-1)
+		public XCImage()
+			: this(new byte[] { }, 0, 0, null, -1)
 		{ }
 
-		public XCImage(Bitmap b,int idx)
+		public XCImage(Bitmap b, int idx)
 		{
 			fileNum = idx;
 			image = b;
@@ -37,22 +36,9 @@ namespace XCom.Interfaces
 			palette = null;
 		}
 
-		public byte[] Bytes{get{return idx;}}
-		public int FileNum{get{return fileNum;}set{fileNum=value;}}
-		public Bitmap Image{get{return image;}}
-		public Palette Palette
-		{
-			get{return palette;}
-			set
-			{
-				palette=value;
-
-				if(image!=null)
-					image.Palette=palette.Colors;				
-			}
-		}
-		public virtual byte TransparentIndex{get{return transparent;}}
-		public Bitmap Gray { get { return gray; } }
+		public byte[] Bytes { get { return idx; } }
+		public int FileNum { get { return fileNum; } set { fileNum = value; } }
+		public virtual byte TransparentIndex { get { return transparent; } }
 
 		public Color GetColor(int x, int y)
 		{
@@ -63,15 +49,13 @@ namespace XCom.Interfaces
 
 		public object Clone()
 		{
-			if (idx != null)
-			{
+			if (idx != null) {
 				byte[] b = new byte[idx.Length];
 				for (int i = 0; i < b.Length; i++)
 					b[i] = idx[i];
 
 				return new XCImage(b, image.Width, image.Height, palette, fileNum);
-			}
-			else if (image != null)
+			} else if (image != null)
 				return new XCImage((Bitmap)image.Clone(), fileNum);
 			else
 				return null;

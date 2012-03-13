@@ -6,6 +6,7 @@ using System.Windows.Forms;
 using XCom;
 using XCom.Interfaces;
 using XCom.Interfaces.Base;
+using MapLib.Base;
 
 namespace MapView
 {
@@ -26,7 +27,7 @@ namespace MapView
 		private System.Windows.Forms.TextBox oldR;
 		private System.Windows.Forms.TextBox oldH;
 
-		private IMap_Base map;
+		private Map map;
 
 		public ChangeMapSizeForm()
 		{
@@ -35,10 +36,10 @@ namespace MapView
 			DialogResult=DialogResult.Cancel;
 		}
 
-		public IMap_Base Map
+		public Map Map
 		{
 			get{return map;}
-			set { map = value; txtR.Text = oldR.Text = map.MapSize.Rows.ToString(); txtC.Text = oldC.Text = map.MapSize.Cols.ToString(); txtH.Text = oldH.Text = map.MapSize.Height.ToString(); }
+			set { map = value; txtR.Text = oldR.Text = map.Size.Rows.ToString(); txtC.Text = oldC.Text = map.Size.Cols.ToString(); txtH.Text = oldH.Text = map.Size.Height.ToString(); }
 		}
 
 		public int NewRows

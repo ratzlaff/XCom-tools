@@ -6,6 +6,10 @@ using System.Drawing;
 using System.Reflection;
 using XCom;
 using XCom.Interfaces.Base;
+using ViewLib.Base;
+using MVCore;
+using MapLib;
+using MapLib.Base;
 
 namespace MapView.TopViewForm
 {
@@ -27,7 +31,7 @@ namespace MapView.TopViewForm
 		{
 			mapTile = null;
 			font = new Font("Arial", 8);
-			SetStyle(ControlStyles.AllPaintingInWmPaint | ControlStyles.DoubleBuffer | ControlStyles.UserPaint, true);
+			SetStyle(ControlStyles.AllPaintingInWmPaint | ControlStyles.DoubleBuffer | ControlStyles.UserPaint | ControlStyles.ResizeRedraw, true);
 			selected = XCMapTile.MapQuadrant.Ground;
 
 			if (IsDesignMode) {
@@ -65,14 +69,14 @@ namespace MapView.TopViewForm
 			}
 		}
 
-		public override void HeightChanged(IMap_Base sender, HeightChangedEventArgs e)
+		public override void HeightChanged(Map sender, HeightChangedEventArgs e)
 		{
 			lastLoc.Height = e.NewHeight;
 			mapTile = (XCMapTile)map[lastLoc.Row, lastLoc.Col];
 			Refresh();
 		}
 
-		public override void SelectedTileChanged(IMap_Base sender, SelectedTileChangedEventArgs e)
+		public override void SelectedTileChanged(Map sender, SelectedTileChangedEventArgs e)
 		{
 			mapTile = (XCMapTile)e.SelectedTile;
 			lastLoc = e.MapLocation;
@@ -123,29 +127,29 @@ namespace MapView.TopViewForm
 			}
 
 			if (mapTile != null && mapTile.Ground != null) {
-				g.DrawImage(mapTile.Ground[MapViewPanel.Current].Image, startX, startY - mapTile.Ground.Info.TileOffset);
-				if (mapTile.Ground.Info.HumanDoor || mapTile.Ground.Info.UFODoor)
+				g.DrawImage(mapTile.Ground[MapViewPanel.Current].Image, startX, startY - mapTile.Ground.YOffset);
+				if (mapTile.Ground.IsDoor)
 					g.DrawString("Door", Font, System.Drawing.Brushes.Black, startX, startY + PckImage.Height - Font.Height);
 			} else
 				g.DrawImage(Globals.ExtraTiles[3].Image, startX, startY);
 
 			if (mapTile != null && mapTile.West != null) {
-				g.DrawImage(mapTile.West[MapViewPanel.Current].Image, startX + ((tileWidth + 2 * space)), startY - mapTile.West.Info.TileOffset);
-				if (mapTile.West.Info.HumanDoor || mapTile.West.Info.UFODoor)
+				g.DrawImage(mapTile.West[MapViewPanel.Current].Image, startX + ((tileWidth + 2 * space)), startY - mapTile.West.YOffset);
+				if (mapTile.West.IsDoor)
 					g.DrawString("Door", Font, System.Drawing.Brushes.Black, startX + ((tileWidth + 2 * space)), startY + PckImage.Height - Font.Height);
 			} else
 				g.DrawImage(Globals.ExtraTiles[1].Image, startX + ((tileWidth + 2 * space)), startY);
 
 			if (mapTile != null && mapTile.North != null) {
-				g.DrawImage(mapTile.North[MapViewPanel.Current].Image, startX + (2 * (tileWidth + 2 * space)), startY - mapTile.North.Info.TileOffset);
-				if (mapTile.North.Info.HumanDoor || mapTile.North.Info.UFODoor)
+				g.DrawImage(mapTile.North[MapViewPanel.Current].Image, startX + (2 * (tileWidth + 2 * space)), startY - mapTile.North.YOffset);
+				if (mapTile.North.IsDoor)
 					g.DrawString("Door", Font, System.Drawing.Brushes.Black, startX + (2 * (tileWidth + 2 * space)), startY + PckImage.Height - Font.Height);
 			} else
 				g.DrawImage(Globals.ExtraTiles[2].Image, startX + (2 * (tileWidth + 2 * space)), startY);
 
 			if (mapTile != null && mapTile.Content != null) {
-				g.DrawImage(mapTile.Content[MapViewPanel.Current].Image, startX + (3 * (tileWidth + 2 * space)), startY - mapTile.Content.Info.TileOffset);
-				if (mapTile.Content.Info.HumanDoor || mapTile.Content.Info.UFODoor)
+				g.DrawImage(mapTile.Content[MapViewPanel.Current].Image, startX + (3 * (tileWidth + 2 * space)), startY - mapTile.Content.YOffset);
+				if (mapTile.Content.IsDoor)
 					g.DrawString("Door", Font, System.Drawing.Brushes.Black, startX + (3 * (tileWidth + 2 * space)), startY + PckImage.Height - Font.Height);
 			} else
 				g.DrawImage(Globals.ExtraTiles[4].Image, startX + (3 * (tileWidth + 2 * space)), startY);
@@ -174,9 +178,9 @@ namespace MapView.TopViewForm
 			base.penColorChanged(sender, key, val);
 		}
 
-		public override void LoadDefaultSettings(Settings settings)
+		public override void LoadDefaultSettings(Map_Observer_Form sender, Settings settings)
 		{
-			base.LoadDefaultSettings(settings);
+			base.LoadDefaultSettings(sender, settings);
 			// SelectTileColor
 			addBrushSetting(new SolidBrush(Color.FromArgb(204, 204, 255)), "SelectTile", "Other", "Background color of the selected tile piece", settings);
 		}

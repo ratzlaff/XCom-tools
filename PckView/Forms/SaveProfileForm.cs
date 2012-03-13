@@ -3,9 +3,10 @@ using System.Drawing;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows.Forms;
+using System.IO;
 using XCom.Interfaces;
 using XCom;
-using System.IO;
+using MapLib.Base;
 
 namespace PckView
 {
@@ -29,7 +30,7 @@ namespace PckView
 
 			saveFile.Filter = "Image Profiles|*" + xcProfile.PROFILE_EXT;			
 
-			foreach (string key in DSShared.Palette.LoadedPalettes.Keys)
+			foreach (string key in Palette.LoadedPalettes.Keys)
 				cbPalette.Items.Add(key);
 
 			if (cbPalette.Items.Count > 0)

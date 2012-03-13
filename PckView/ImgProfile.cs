@@ -6,6 +6,7 @@ using DSShared;
 using System.IO;
 using XCom;
 using System.Windows.Forms;
+using MVCore.Parser;
 
 namespace PckView
 {
@@ -30,7 +31,7 @@ namespace PckView
 
 			foreach (string s in vs.KeyValList.Keys) {
 				ImgProfile profile = new ImgProfile();
-				Dictionary<string, DSShared.KeyVal> info = vs.KeyValList[s].SubHash;
+				Dictionary<string, MVCore.Parser.KeyVal> info = vs.KeyValList[s].SubHash;
 				profile.ext = info["open"].Rest;
 				profile.imgHei = int.Parse(info["height"].Rest);
 				profile.imgWid = int.Parse(info["width"].Rest);

@@ -7,6 +7,8 @@ using XCom;
 using XCom.Interfaces;
 using System.Drawing.Drawing2D;
 using XCom.Interfaces.Base;
+using MapLib;
+using MapLib.Base;
 
 namespace MapView.RmpViewForm
 {
@@ -23,7 +25,7 @@ namespace MapView.RmpViewForm
 
 	//public delegate void RmpClick(int row,int col,MouseButtons button);
 
-	public partial class RmpView : Map_Observer_Form
+	public partial class RmpView : ViewLib.Base.Map_Observer_Form
 	{
 		private new XCMapFile map;
 		private Label locInfo;
@@ -91,11 +93,15 @@ namespace MapView.RmpViewForm
 			cbUsage.DropDownStyle = ComboBoxStyle.DropDownList;
 			cbUsage.Items.AddRange(RmpFile.SpawnUsage);
 
-			MoreObservers.Add("RmpPanel", rmpPanel);
-
 			currEntry = null;
 
 			Text = "RmpView";
+		}
+
+		public override void SetupDefaultSettings(MVCore.Settings settings)
+		{
+			base.SetupDefaultSettings(settings);
+			rmpPanel.LoadDefaultSettings(this, settings);
 		}
 
 		private void options_click(object sender, EventArgs e)
@@ -124,7 +130,7 @@ namespace MapView.RmpViewForm
 				lblMouseOver.Text = "";
 		}
 
-		public override void SelectedTileChanged(IMap_Base sender, SelectedTileChangedEventArgs e)
+		public override void SelectedTileChanged(Map sender, MapLib.SelectedTileChangedEventArgs e)
 		{
 			idxLabel.Text = this.Text;
 			try
@@ -235,13 +241,13 @@ namespace MapView.RmpViewForm
 			ResumeLayout();
 		}
 
-		protected override void mapChanged(object sender, IMap_Base map)
+		protected override void mapChanged(MapChangedEventArgs e)
 		{
-			base.mapChanged(sender, map);
-			this.map = (XCMapFile)map;
+			base.mapChanged(e);
+			this.map = (XCMapFile)e.Map;
 		}
 
-		public override void HeightChanged(IMap_Base sender, HeightChangedEventArgs e)
+		public override void HeightChanged(Map sender, MapLib.HeightChangedEventArgs e)
 		{
 			currEntry = ((XCMapTile)map[clickRow, clickCol]).Rmp;
 			fillGUI();

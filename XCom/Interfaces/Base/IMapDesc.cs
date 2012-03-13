@@ -3,6 +3,7 @@ using System.IO;
 using System.Collections.Generic;
 using DSShared.Loadable;
 using DSShared.Interfaces;
+using MapLib.Base;
 
 namespace XCom.Interfaces.Base
 {
@@ -17,7 +18,7 @@ namespace XCom.Interfaces.Base
 
 		public override string ToString() { return name; }
 		public string Name { get { return name; } }
-		public virtual IMap_Base GetMapFile()
+		public virtual Map GetMapFile()
 		{
 			throw new Exception("GetMapFile() is not overridden");
 		}

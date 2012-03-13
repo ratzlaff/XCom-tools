@@ -7,7 +7,7 @@ using XCom.Interfaces;
 using System.Reflection;
 using XCom.Interfaces.Base;
 using DSShared;
-
+using MapLib.Base;
 namespace XCom 
 {
 	public delegate void ParseLineDelegate(KeyVal kv,VarCollection vars);

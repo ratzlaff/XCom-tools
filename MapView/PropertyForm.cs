@@ -8,6 +8,7 @@ using System.Reflection;
 using System.Reflection.Emit;
 using System.Threading;
 using DSShared.Windows;
+using MVCore;
 
 namespace MapView
 {
@@ -141,7 +142,8 @@ namespace MapView
 						newType,hashField);  
           
 					foreach(string key in settings.Keys)
-						emitProperty(newType,hashField,settings[key],key);			
+						if (settings[key].IsVisible)
+							emitProperty(newType,hashField,settings[key],key);			
 
 					hashTypes[typeName] = newType.CreateType();
 				}

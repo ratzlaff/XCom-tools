@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using DSShared;
 using DSShared.Interfaces;
 using DSShared.Loadable;
+using MapLib.Base;
 
 namespace XCom.Interfaces
 {
@@ -13,7 +14,7 @@ namespace XCom.Interfaces
 	/// </summary>
 	public class IXCImageFile : IAssemblyLoadable, IOpenSave
 	{
-		protected Palette defPal = XCPalette.TFTDBattle;
+		protected MapLib.Base.Palette defPal = XCPalette.TFTDBattle;
 		protected System.Drawing.Size imageSize;
 		protected xcFileOptions fileOptions = new xcFileOptions();
 		protected string ext = ".bad";
@@ -101,7 +102,7 @@ namespace XCom.Interfaces
 		/// <param name="imgWid"></param>
 		/// <param name="imgHei"></param>
 		/// <returns></returns>
-		protected virtual XCImageCollection LoadFileOverride(string directory, string file, int imgWid, int imgHei, Palette pal)
+		protected virtual XCImageCollection LoadFileOverride(string directory, string file, int imgWid, int imgHei, MapLib.Base.Palette pal)
 		{
 			throw new Exception("Override not yet implemented: IXCFile::LoadFileOverride(...)");
 		}
@@ -170,7 +171,7 @@ namespace XCom.Interfaces
 		/// <summary>
 		/// Defines the initial coloring of the sprites when loaded
 		/// </summary>
-		public virtual Palette DefaultPalette { get { return defPal; } }
+		public virtual MapLib.Base.Palette DefaultPalette { get { return defPal; } }
 
 		/// <summary>
 		/// Image size that will be loaded

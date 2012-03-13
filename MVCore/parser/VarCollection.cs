@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 
-namespace DSShared
+namespace MVCore.Parser
 {
 	public class VarCollection
 	{

@@ -12,9 +12,9 @@ using System.Reflection;
 
 namespace MapView.TopViewForm
 {
-	public partial class TopView : Map_Observer_Form
+	public partial class TopView : ViewLib.Base.Map_Observer_Form
 	{
-		private Dictionary<MenuItem, int> visibleHash;
+		private Dictionary<ToolStripMenuItem, MVCore.Setting> visibleHash;
 		public event EventHandler VisibleTileChanged;
 
 		#region Singleton access
@@ -39,38 +39,45 @@ namespace MapView.TopViewForm
 
 			MainWindow.Instance.MakeToolstrip(toolStrip);
 
-			SuspendLayout();
-			this.Menu = new MainMenu();
-			MenuItem vis = Menu.MenuItems.Add("Visible");
+			visibleHash = new Dictionary<ToolStripMenuItem, MVCore.Setting>();
 
-			visibleHash = new Dictionary<MenuItem, int>();
-
-			topViewPanel.Ground = vis.MenuItems.Add("Ground", new EventHandler(visibleClick));
-			visibleHash[topViewPanel.Ground] = 0;
-			topViewPanel.Ground.Shortcut = Shortcut.F1;
-
-			topViewPanel.West = vis.MenuItems.Add("West", new EventHandler(visibleClick));
-			visibleHash[topViewPanel.West] = 1;
-			topViewPanel.West.Shortcut = Shortcut.F2;
-
-			topViewPanel.North = vis.MenuItems.Add("North", new EventHandler(visibleClick));
-			visibleHash[topViewPanel.North] = 2;
-			topViewPanel.North.Shortcut = Shortcut.F3;
-
-			topViewPanel.Content = vis.MenuItems.Add("Content", new EventHandler(visibleClick));
-			visibleHash[topViewPanel.Content] = 3;
-			topViewPanel.Content.Shortcut = Shortcut.F4;
-
-			MenuItem edit = Menu.MenuItems.Add("Edit");
-			edit.MenuItems.Add("Options", new EventHandler(options_click));
-			edit.MenuItems.Add("Fill", new EventHandler(fill_click));
+			topViewPanel.Ground = miGround;
+			topViewPanel.West = miWest;
+			topViewPanel.North = miNorth;
+			topViewPanel.Content = miContent;
 
 			topViewPanel.BottomPanel = bottom;
+		}
 
-			MoreObservers.Add("BottomPanel", bottom);
-			MoreObservers.Add("TopViewPanel", topViewPanel);
+		public override void SetupDefaultSettings(MVCore.Settings settings)
+		{
+			base.SetupDefaultSettings(settings);
 
-			ResumeLayout();
+			bottom.LoadDefaultSettings(this, settings);
+			topViewPanel.LoadDefaultSettings(this, settings);
+
+			visibleHash[topViewPanel.Ground] = settings.AddSetting("GroundVisible", true, "Show ground portion", "Tile", visibleSetting);
+			visibleHash[topViewPanel.West] = settings.AddSetting("WestVisible", true, "Show west portion", "Tile", visibleSetting);
+			visibleHash[topViewPanel.North] = settings.AddSetting("NorthVisible", true, "Show north portion", "Tile", visibleSetting);
+			visibleHash[topViewPanel.Content] = settings.AddSetting("ContentVisible", true, "Show content portion", "Tile", visibleSetting);
+		}
+
+		private void visibleSetting(object sender, string key, object inValue)
+		{
+			switch (key) {
+				case "GroundVisible":
+					miGround.Checked = (bool)inValue;
+					break;
+				case "WestVisible":
+					miWest.Checked = (bool)inValue;
+					break;
+				case "NorthVisible":
+					miNorth.Checked = (bool)inValue;
+					break;
+				case "ContentVisible":
+					miContent.Checked = (bool)inValue;
+					break;
+			}
 		}
 
 		public BottomPanel BottomPanel
@@ -80,7 +87,9 @@ namespace MapView.TopViewForm
 
 		private void visibleClick(object sender, EventArgs e)
 		{
-			((MenuItem)sender).Checked = !((MenuItem)sender).Checked;
+			ToolStripMenuItem itm = (ToolStripMenuItem)sender;
+			itm.Checked = !itm.Checked;
+			visibleHash[itm].Value = itm.Checked;
 
 			if (VisibleTileChanged != null)
 				VisibleTileChanged(this, new EventArgs());
@@ -88,22 +97,6 @@ namespace MapView.TopViewForm
 			MapViewPanel.Instance.Refresh();
 
 			Refresh();
-		}
-
-		protected override void OnRISettingsLoad(DSShared.Windows.RegistrySaveLoadEventArgs e)
-		{
-			bottom.Height = 74;
-			RegistryKey riKey = e.OpenKey;
-
-			foreach (MenuItem mi in visibleHash.Keys)
-				mi.Checked = bool.Parse((string)riKey.GetValue("vis" + visibleHash[mi].ToString(), "true"));
-		}
-
-		protected override void OnRISettingsSave(DSShared.Windows.RegistrySaveLoadEventArgs e)
-		{
-			RegistryKey riKey = e.OpenKey;
-			foreach (MenuItem mi in visibleHash.Keys)
-				riKey.SetValue("vis" + visibleHash[mi].ToString(), mi.Checked);
 		}
 
 		private void fill_click(object sender, EventArgs evt)
@@ -122,7 +115,7 @@ namespace MapView.TopViewForm
 
 			for (int c = s.X; c <= e.X; c++)
 				for (int r = s.Y; r <= e.Y; r++)
-					((XCMapTile)MapViewPanel.Instance.View.Map[r, c])[bottom.SelectedQuadrant] = TileView.Instance.SelectedTile;
+					((XCMapTile)MapLib.Base.MapControl.Current[r, c])[bottom.SelectedQuadrant] = TileView.Instance.SelectedTile;
 			Globals.MapChanged = true;
 			MapViewPanel.Instance.Refresh();
 			Refresh();
