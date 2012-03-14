@@ -22,7 +22,6 @@ namespace MapView
 	{
 		private RichTextBox rtb;
 
-		private TilePanel all, ground, wWalls, nWalls, objects;
 		private TilePanel[] panels;
 		private Form MCDInfo;
 
@@ -30,26 +29,15 @@ namespace MapView
 		private TileView()
 		{
 			InitializeComponent();
+			LoadedVisible = true;
+			panels = new TilePanel[] { all, ground, wWalls, nWalls, objs };
 
-			all = new TilePanel("All");
-			ground = new TilePanel("Ground");
-			wWalls = new TilePanel("WestWall");
-			nWalls = new TilePanel("NorthWall");
-			objects = new TilePanel("Object");
+			SizeChanged += new EventHandler(TileView_SizeChanged);
+		}
 
-			panels = new TilePanel[] { all, ground, wWalls, nWalls, objects };
-
-			addPanel(all, allTab);
-			addPanel(ground, groundTab);
-			addPanel(wWalls, wWallsTab);
-			addPanel(nWalls, nWallsTab);
-			addPanel(objects, objectsTab);
-
-			OnResize(null);
-
-			MenuItem edit = new MenuItem("Edit");
-			edit.MenuItems.Add("Options", new EventHandler(options_click));
-			menu.MenuItems.Add(edit);
+		void TileView_SizeChanged(object sender, EventArgs e)
+		{
+			Console.WriteLine("New size is: " + Size);
 		}
 
 		#region Settings
@@ -77,19 +65,13 @@ namespace MapView
 		}
 		#endregion
 
-		private void addPanel(TilePanel panel, TabPage page)
-		{
-			panel.Dock = DockStyle.Fill;
-			page.Controls.Add(panel);
-			panel.TileChanged += new SelectedTileChanged(tileChanged);
-		}
-
 		public static TileView Instance
 		{
 			get
 			{
-				if (myInstance == null)
+				if (myInstance == null) {
 					myInstance = new TileView();
+				}
 				return myInstance;
 			}
 		}
@@ -114,8 +96,8 @@ namespace MapView
 		{
 			set
 			{
-				for (int i = 0; i < panels.Length; i++)
-					panels[i].Tiles = value;
+				foreach (TilePanel tp in panels)
+					tp.Tiles = value;
 				OnResize(null);
 			}
 		}

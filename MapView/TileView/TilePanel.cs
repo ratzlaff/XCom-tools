@@ -25,12 +25,12 @@ namespace MapView
 		private int selectedNum;
 		private VScrollBar vert;
 		private int numAcross = 1;
+		private Rectangle borderRect;
 
 		public static readonly Color[] tileTypes ={Color.Cornsilk,Color.Lavender,Color.DarkRed,Color.Fuchsia,Color.Aqua,
 									Color.DarkOrange,Color.DeepPink,Color.LightBlue,Color.Lime,
 									  Color.LightGreen,Color.MediumPurple,Color.LightCoral,Color.LightCyan,
 									  Color.Yellow,Color.Blue};
-		private string type;
 
 		public event SelectedTileChanged TileChanged;
 
@@ -38,9 +38,8 @@ namespace MapView
 		[DefaultValue(null)]
 		public static Dictionary<string, SolidBrush> FillBrushes { get; set; }
 
-		public TilePanel(string type)
+		public TilePanel()
 		{
-			this.type = type;
 			vert = new VScrollBar();
 			vert.ValueChanged += new EventHandler(valChange);
 			vert.Location = new Point(Width - vert.Width, 0);
@@ -48,6 +47,15 @@ namespace MapView
 
 			MapViewPanel.ImageUpdate += new EventHandler(tick);
 			selectedNum = 0;
+			borderRect = ClientRectangle;
+			TileCategory = "All";
+		}
+
+		[DefaultValue("All")]
+		public string TileCategory
+		{
+			get;
+			set;
 		}
 
 		private void valChange(object sender, EventArgs e)
@@ -68,14 +76,19 @@ namespace MapView
 			else
 				vert.Visible = true;
 			Refresh();
+
+			borderRect = ClientRectangle;
+			borderRect.Inflate(-1, -1);
 		}
 
+		[Browsable(false)]
 		public int StartY
 		{
 			get { return startY; }
 			set { startY = value; Refresh(); }
 		}
 
+		[Browsable(false)]
 		public int PreferredHeight
 		{
 			get
@@ -90,11 +103,12 @@ namespace MapView
 			}
 		}
 
+		[Browsable(false)]
 		public System.Collections.Generic.List<Tile> Tiles
 		{
 			set
 			{
-				if (type == "All") {
+				if (TileCategory == "All") {
 					tiles = new Tile[value.Count + 1];
 					tiles[0] = null;
 					for (int i = 0; i < value.Count; i++)
@@ -102,7 +116,7 @@ namespace MapView
 				} else {
 					List<Tile> list = new List<Tile>();
 					for (int i = 0; i < value.Count; i++)
-						if (value[i].Category == type)
+						if (value[i].Category == TileCategory)
 							list.Add(value[i]);
 					tiles = list.ToArray();
 				}
@@ -147,46 +161,53 @@ namespace MapView
 		{
 			base.OnPaint(e);
 
-			if (tiles != null) {
-				Graphics g = e.Graphics;
+			if (IsDesignMode) {
+				ControlPaint.DrawBorder3D(e.Graphics, borderRect, Border3DStyle.Etched);
+			} else {
+				if (tiles != null) {
+					Graphics g = e.Graphics;
 
-				int i = 0, j = 0;
-				foreach (Tile t in tiles) {
-					if (t != null && (type == "All" || t.Category == type)) {
-						g.FillRectangle(FillBrushes[t.SpecialType], i * (width + 2 * space), startY + j * (height + 2 * space), width + 2 * space, height + 2 * space);
-						g.DrawImage(t[MapViewPanel.Current].Image, i * (width + 2 * space), startY + j * (height + 2 * space) - t.YOffset);
+					int i = 0, j = 0;
+					foreach (Tile t in tiles) {
+						if (t != null && (TileCategory == "All" || t.Category == TileCategory)) {
+							g.FillRectangle(FillBrushes[t.SpecialType], i * (width + 2 * space), startY + j * (height + 2 * space), width + 2 * space, height + 2 * space);
+							g.DrawImage(t[MapViewPanel.Current].Image, i * (width + 2 * space), startY + j * (height + 2 * space) - t.YOffset);
 
-						if (t.IsDoor)
-							g.DrawString("Door", this.Font, Brushes.Black, i * (width + 2 * space), startY + j * (height + 2 * space) + PckImage.Height - Font.Height);
+							if (t.IsDoor)
+								g.DrawString("Door", this.Font, Brushes.Black, i * (width + 2 * space), startY + j * (height + 2 * space) + PckImage.Height - Font.Height);
 
-						i = (i + 1) % numAcross;
-						if (i == 0)
-							j++;
-					} else if (t == null) {
-						if (Globals.ExtraTiles != null)
-							g.DrawImage(Globals.ExtraTiles[0].Image, i * (width + 2 * space), startY + j * (height + 2 * space));
-						i = (i + 1) % numAcross;
-						if (i == 0)
-							j++;
+							i = (i + 1) % numAcross;
+							if (i == 0)
+								j++;
+						} else if (t == null) {
+							if (Globals.ExtraTiles != null)
+								g.DrawImage(Globals.ExtraTiles[0].Image, i * (width + 2 * space), startY + j * (height + 2 * space));
+							i = (i + 1) % numAcross;
+							if (i == 0)
+								j++;
+						}
 					}
+
+					//g.DrawRectangle(brush,(selectedNum%numAcross)*(width+2*space),startY+(selectedNum/numAcross)*(height+2*space),width+2*space,height+2*space)				
+
+					for (int k = 0; k <= numAcross + 1; k++)
+						g.DrawLine(Pens.Black, k * (width + 2 * space), startY, k * (width + 2 * space), startY + PreferredHeight);
+					for (int k = 0; k <= PreferredHeight; k += (height + 2 * space))
+						g.DrawLine(Pens.Black, 0, startY + k, numAcross * (width + 2 * space), startY + k);
+
+					g.DrawRectangle(pen, (selectedNum % numAcross) * (width + 2 * space), startY + (selectedNum / numAcross) * (height + 2 * space), width + 2 * space, height + 2 * space);
 				}
-
-				//g.DrawRectangle(brush,(selectedNum%numAcross)*(width+2*space),startY+(selectedNum/numAcross)*(height+2*space),width+2*space,height+2*space)				
-
-				for (int k = 0; k <= numAcross + 1; k++)
-					g.DrawLine(Pens.Black, k * (width + 2 * space), startY, k * (width + 2 * space), startY + PreferredHeight);
-				for (int k = 0; k <= PreferredHeight; k += (height + 2 * space))
-					g.DrawLine(Pens.Black, 0, startY + k, numAcross * (width + 2 * space), startY + k);
-
-				g.DrawRectangle(pen, (selectedNum % numAcross) * (width + 2 * space), startY + (selectedNum / numAcross) * (height + 2 * space), width + 2 * space, height + 2 * space);
 			}
 		}
 
-		public Tile SelectedTile
+		[Browsable(false)]
+ 		public Tile SelectedTile
 		{
 			get
 			{
-				return tiles[selectedNum];
+				if (tiles != null)
+					return tiles[selectedNum];
+				return null;
 			}
 			set
 			{

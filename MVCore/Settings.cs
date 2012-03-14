@@ -48,7 +48,6 @@ namespace MVCore
 					default:
 						if (currSettings[kv.Keyword] != null) {
 							currSettings[kv.Keyword].Value = kv.Rest;
-//							currSettings[kv.Keyword].FireUpdate(kv.Keyword);
 						}
 						break;
 				}
@@ -298,12 +297,15 @@ namespace MVCore
 	public class PropObj
 	{
 		public PropertyInfo pi;
+		public MethodInfo delayCheck, delayCache;
+		public string propertyName;
 		public object obj;
 
 		public PropObj(object obj, string property)
 		{
 			this.obj = obj;
 			pi = obj.GetType().GetProperty(property);
+			delayCache = obj.GetType().GetMethod("CacheProperty");
 		}
 
 		public object GetValue()
@@ -313,7 +315,12 @@ namespace MVCore
 
 		public void SetValue(object o)
 		{
-			pi.SetValue(obj, o, new object[] { });
+			bool delay = false;
+			if (delayCache != null)
+				delay = (bool)delayCache.Invoke(obj, new object[] { pi, o });
+
+			if (!delay)
+				pi.SetValue(obj, o, new object[] { });
 		}
 	}
 }

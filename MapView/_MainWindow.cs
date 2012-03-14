@@ -117,8 +117,11 @@ namespace MapView
 			registerForm(new AboutWindow(), miHelp);
 			xConsole.AddLine("Quick help and About created");
 
-			OnResize(null);
-			this.Closing += new CancelEventHandler(closing);
+			if (settingsFile.Exists()) {
+				readMapViewSettings(new StreamReader(settingsFile.ToString()));
+				xConsole.AddLine("User settings loaded");
+			} else
+				xConsole.AddLine("User settings NOT loaded - no settings file to load");
 
 			lf = new LoadingForm();
 			XCom.Bmp.LoadingEvent += new LoadingDelegate(lf.Update);
@@ -161,33 +164,9 @@ namespace MapView
 		private void registerForm(Map_Observer_Form f, MenuItem parent)
 		{
 			parent.MenuItems.Add(f.MenuItem);
-			f.MenuItem.Click += formMIClick;
-			f.Closing += formClosing;
 			f.SetupDefaultSettings();
 
 			registeredForms.Add(f.Text, f);
-		}
-
-		private void formMIClick(object sender, EventArgs e)
-		{
-			MenuItem mi = (MenuItem)sender;
-
-			if (!mi.Checked) {
-				((Form)mi.Tag).Show();
-				((Form)mi.Tag).WindowState = FormWindowState.Normal;
-				mi.Checked = true;
-			} else {
-				((Form)mi.Tag).Close();
-				mi.Checked = false;
-			}
-		}
-
-		private void formClosing(object sender, CancelEventArgs e)
-		{
-			e.Cancel = true;
-			if (sender is Map_Observer_Form)
-				((Map_Observer_Form)sender).MenuItem.Checked = false;
-			((Form)sender).Hide();
 		}
 
 		private void parseLine(XCom.KeyVal line, XCom.VarCollection vars)
@@ -307,8 +286,8 @@ namespace MapView
 				AddTileset(GameInfo.TilesetInfo.Tilesets[key]);
 			xConsole.AddLine("Map list created");
 		}
-
-		private void closing(object sender, CancelEventArgs e)
+		
+		protected override void formClosing(object sender, CancelEventArgs e)
 		{
 			if (NotifySave() == DialogResult.Cancel) {
 				e.Cancel = true;
@@ -320,6 +299,12 @@ namespace MapView
 				sw.Flush();
 				sw.Close();
 			}
+		}
+
+		private void quititem_Click(object sender, System.EventArgs e)
+		{
+			formClosing(null, new CancelEventArgs(true));
+			Environment.Exit(0);
 		}
 
 		public override void SetupDefaultSettings()
@@ -339,13 +324,7 @@ namespace MapView
 		{
 			TopView.Instance.BottomPanel.Refresh();
 		}
-
-		private static void myQuit(object sender, string command)
-		{
-			if (command == "OK")
-				Environment.Exit(0);
-		}
-
+		
 		private void onItem_Click(object sender, System.EventArgs e)
 		{
 			changeSetting(this, "Animation", true);
@@ -365,12 +344,6 @@ namespace MapView
 			}
 		}
 
-		private void quititem_Click(object sender, System.EventArgs e)
-		{
-			closing(null, new CancelEventArgs(true));
-			Environment.Exit(0);
-		}
-
 		private void miPaths_Click(object sender, System.EventArgs e)
 		{
 			PathsEditor p = new PathsEditor(SharedSpace.Instance["MV_PathsFile"].ToString());
@@ -387,7 +360,6 @@ namespace MapView
 
 			if (mapList.SelectedNode.Tag is IMapDesc) {
 				IMapDesc imd = (IMapDesc)mapList.SelectedNode.Tag;
-				miExport.Enabled = true;
 				MapLib.Base.MapControl.Current = imd.GetMapFile();
 
 				statusMapName.Text = "Map:" + imd.Name;
@@ -399,13 +371,8 @@ namespace MapView
 					miDoors_Click(null, null);
 				}
 
-				//open all the forms in the show menu once
-				if (!showMenu.Enabled) {
-					foreach (MenuItem mi in showMenu.MenuItems)
-						mi.PerformClick();
-
-					showMenu.Enabled = true;
-				}
+				miExport.Enabled = true;
+				showMenu.Enabled = true;
 
 				// notify everyone that there is a new map
 				MapViewPanel.Instance.View.Refresh();
@@ -621,17 +588,6 @@ namespace MapView
 		private void miOpen_Click(object sender, EventArgs e)
 		{
 
-		}
-
-		private void MainWindow_Load(object sender, EventArgs e)
-		{
-			PathInfo settingsFile = (PathInfo)SharedSpace.Instance.GetObj("MV_SettingsFile");
-
-			if (settingsFile.Exists()) {
-				readMapViewSettings(new StreamReader(settingsFile.ToString()));
-				xConsole.AddLine("User settings loaded");
-			} else
-				xConsole.AddLine("User settings NOT loaded - no settings file to load");
 		}
 	}
 }

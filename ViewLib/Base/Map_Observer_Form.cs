@@ -21,6 +21,34 @@ namespace ViewLib.Base
 		[Browsable(false)]
 		public Dictionary<string, Pen> DrawPens { get; set; }
 
+		public Map_Observer_Form()
+		{
+			settings = new Settings();
+			FillBrushes = new Dictionary<string, SolidBrush>();
+			DrawPens = new Dictionary<string, Pen>();
+
+			this.StartPosition = FormStartPosition.Manual;
+			this.ShowInTaskbar = false;
+			this.FormBorderStyle = FormBorderStyle.SizableToolWindow;
+
+			LoadedVisible = true;
+			cachedProperties = new Dictionary<System.Reflection.PropertyInfo, object>();
+			this.Load += formLoad;
+
+			if (!IsDesignMode) {
+				MapControl.MapChanged += mapChanged;
+				MapControl.HeightChanged += HeightChanged;
+				MapControl.SelectedTileChanged += SelectedTileChanged;
+				Closing += formClosing;
+			}
+		}
+
+		protected virtual void formLoad(object sender, EventArgs e)
+		{
+			foreach (System.Reflection.PropertyInfo pi in cachedProperties.Keys)
+				pi.SetValue(this, cachedProperties[pi], new object[] { });
+		}
+
 		// this is the menu item to show in a View menu
 		// it gets set by the Form that owns the menu bar
 		[Browsable(false)]
@@ -31,9 +59,46 @@ namespace ViewLib.Base
 				if (menuItem == null) {
 					menuItem = new MenuItem(Text);
 					menuItem.Tag = this;
+					menuItem.Click += formMIClick;
 				}
 
 				return menuItem;
+			}
+		}
+
+		private Dictionary<System.Reflection.PropertyInfo, object> cachedProperties;
+
+		public bool CacheProperty(System.Reflection.PropertyInfo inProp, object val)
+		{
+			if (inProp.Name == "Width") {
+				cachedProperties.Add(inProp, val);
+				return true;
+			}
+
+			if (inProp.Name == "Height") {
+				cachedProperties.Add(inProp, val);
+				return true;
+			}
+
+			return false;
+		}
+
+		protected virtual void formClosing(object sender, CancelEventArgs e)
+		{
+			e.Cancel = true;
+			MenuItem.Checked = false;
+			Hide();
+		}
+
+		protected virtual void formMIClick(object sender, EventArgs e)
+		{
+			if (!MenuItem.Checked) {
+				Show();
+				WindowState = FormWindowState.Normal;
+				MenuItem.Checked = true;
+			} else {
+				Close();
+				MenuItem.Checked = false;
 			}
 		}
 
@@ -45,23 +110,6 @@ namespace ViewLib.Base
 			get { return DesignMode || LicenseManager.UsageMode == LicenseUsageMode.Designtime || AppDomain.CurrentDomain.FriendlyName == "DefaultDomain"; }
 		}
 
-		public Map_Observer_Form()
-		{
-			settings = new Settings();
-			FillBrushes = new Dictionary<string, SolidBrush>();
-			DrawPens = new Dictionary<string, Pen>();
-
-			this.StartPosition = FormStartPosition.Manual;
-			this.ShowInTaskbar = false;
-			this.FormBorderStyle = FormBorderStyle.SizableToolWindow;
-
-			if (!IsDesignMode) {
-				MapControl.MapChanged += mapChanged;
-				MapControl.HeightChanged += HeightChanged;
-				MapControl.SelectedTileChanged += SelectedTileChanged;
-			}
-		}
-
 		public Settings Settings
 		{
 			get { return settings; }
@@ -69,30 +117,17 @@ namespace ViewLib.Base
 
 		protected virtual void mapChanged(MapChangedEventArgs e)
 		{
+			if (map == null) {
+				if (loadedVisible)
+					MenuItem.PerformClick();
+			}
+
 			this.map = e.Map;
 			Refresh();
 		}
 
 		public virtual void HeightChanged(Map sender, HeightChangedEventArgs e) { Refresh(); }
 		public virtual void SelectedTileChanged(Map sender, SelectedTileChangedEventArgs e) { Refresh(); }
-
-		private void settingChanged(Setting sender, string keyword, object val)
-		{
-			switch (keyword) {
-				case "Left":
-					this.Left = (int)val;
-					break;
-				case "Top":
-					this.Top = (int)val;
-					break;
-				case "Width":
-					this.Width = (int)val;
-					break;
-				case "Height":
-					this.Height = (int)val;
-					break;
-			}
-		}
 
 		public virtual void SetupDefaultSettings()
 		{
@@ -107,6 +142,17 @@ namespace ViewLib.Base
 
 			s = settings.AddSetting("Height", "Starting Height of the window", "Window", "Height", this);
 			s.IsVisible = false;
+
+			s = settings.AddSetting("LoadedVisible", "Whether or not the window starts out shown", "Window", "LoadedVisible", this);
+			s.IsVisible = false;
+		}
+
+		private bool loadedVisible = false;
+		[Browsable(false)]
+		public bool LoadedVisible
+		{
+			get { return Visible; }
+			set { loadedVisible = value; }
 		}
 
 		protected override void OnMouseWheel(MouseEventArgs e)
