@@ -98,10 +98,10 @@ namespace MapView.RmpViewForm
 			Text = "RmpView";
 		}
 
-		public override void SetupDefaultSettings(MVCore.Settings settings)
+		public override void SetupDefaultSettings()
 		{
-			base.SetupDefaultSettings(settings);
-			rmpPanel.LoadDefaultSettings(this, settings);
+			base.SetupDefaultSettings();
+			rmpPanel.SetupDefaultSettings(this);
 		}
 
 		private void options_click(object sender, EventArgs e)

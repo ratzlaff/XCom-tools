@@ -178,11 +178,11 @@ namespace MapView.TopViewForm
 			base.penColorChanged(sender, key, val);
 		}
 
-		public override void LoadDefaultSettings(Map_Observer_Form sender, Settings settings)
+		public override void SetupDefaultSettings(Map_Observer_Form sender)
 		{
-			base.LoadDefaultSettings(sender, settings);
+			base.SetupDefaultSettings(sender);
 			// SelectTileColor
-			addBrushSetting(new SolidBrush(Color.FromArgb(204, 204, 255)), "SelectTile", "Other", "Background color of the selected tile piece", settings);
+			addBrushSetting(new SolidBrush(Color.FromArgb(204, 204, 255)), "SelectTile", "Other", "Background color of the selected tile piece", sender.Settings);
 		}
 
 		protected override void OnResize(EventArgs e)

@@ -337,29 +337,18 @@ namespace ViewLib.Base
 			MinHeight = (int)val;
 		}
 
-		public override void LoadDefaultSettings(Map_Observer_Form sender, Settings settings)
+		public override void SetupDefaultSettings(Map_Observer_Form sender)
 		{
-			base.LoadDefaultSettings(sender, settings);
+			base.SetupDefaultSettings(sender);
 			// GridColor, GridWidth
-			addPenSetting(new Pen(new SolidBrush(Color.Black), 1), "Grid", "Grid", "Color of the grid lines", "Width of the grid lines", settings);
+			addPenSetting(new Pen(new SolidBrush(Color.Black), 1), "Grid", "Grid", "Color of the grid lines", "Width of the grid lines", sender.Settings);
 
 			//SelectColor, SelectWidth
-			addPenSetting(new Pen(new SolidBrush(Color.Black), 2), "Select", "Select", "Color of the selection line", "Width of the selection line in pixels", settings);
+			addPenSetting(new Pen(new SolidBrush(Color.Black), 2), "Select", "Select", "Color of the selection line", "Width of the selection line in pixels", sender.Settings);
 
 			// MouseColor, MouseWidth
-			addPenSetting(new Pen(new SolidBrush(Color.Blue), 2), "Mouse", "Grid", "Color of the mouse-over indicator", "Width of the mouse-over indicatior", settings);
+			addPenSetting(new Pen(new SolidBrush(Color.Blue), 2), "Mouse", "Grid", "Color of the mouse-over indicator", "Width of the mouse-over indicatior", sender.Settings);
 		}
 		#endregion
-
-		private void InitializeComponent()
-		{
-			this.SuspendLayout();
-			// 
-			// SimpleMapPanel
-			// 
-			this.Name = "SimpleMapPanel";
-			this.ResumeLayout(false);
-
-		}
 	}
 }

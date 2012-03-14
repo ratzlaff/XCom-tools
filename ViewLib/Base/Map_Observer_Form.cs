@@ -13,6 +13,7 @@ namespace ViewLib.Base
 	public class Map_Observer_Form : Form
 	{
 		protected Settings settings;
+		protected MenuItem menuItem;
 
 		[Browsable(false)]
 		public Dictionary<string, SolidBrush> FillBrushes { get; set; }
@@ -23,7 +24,18 @@ namespace ViewLib.Base
 		// this is the menu item to show in a View menu
 		// it gets set by the Form that owns the menu bar
 		[Browsable(false)]
-		public MenuItem MenuItem { get; set; }
+		public MenuItem MenuItem
+		{
+			get
+			{
+				if (menuItem == null) {
+					menuItem = new MenuItem(Text);
+					menuItem.Tag = this;
+				}
+
+				return menuItem;
+			}
+		}
 
 		protected Map map;
 
@@ -38,9 +50,10 @@ namespace ViewLib.Base
 			settings = new Settings();
 			FillBrushes = new Dictionary<string, SolidBrush>();
 			DrawPens = new Dictionary<string, Pen>();
-			MenuItem = new MenuItem();
 
 			this.StartPosition = FormStartPosition.Manual;
+			this.ShowInTaskbar = false;
+			this.FormBorderStyle = FormBorderStyle.SizableToolWindow;
 
 			if (!IsDesignMode) {
 				MapControl.MapChanged += mapChanged;
@@ -81,20 +94,18 @@ namespace ViewLib.Base
 			}
 		}
 
-		public virtual void SetupDefaultSettings(Settings settings)
+		public virtual void SetupDefaultSettings()
 		{
-			this.settings = settings;
-
-			Setting s = settings.AddSetting("X", Left, "Starting X-coordinate of the window", "Window", settingChanged, "Left", this);
+			Setting s = settings.AddSetting("X", "Starting X-coordinate of the window", "Window", "Left", this);
 			s.IsVisible = false;
 
-			s = settings.AddSetting("Y", Top, "Starting Y-coordinate of the window", "Window", settingChanged, "Top", this);
+			s = settings.AddSetting("Y", "Starting Y-coordinate of the window", "Window", "Top", this);
 			s.IsVisible = false;
 
-			s = settings.AddSetting("Width", Width, "Starting Width of the window", "Window", settingChanged, "Width", this);
+			s = settings.AddSetting("Width", "Starting Width of the window", "Window", "Width", this);
 			s.IsVisible = false;
 
-			s = settings.AddSetting("Height", Height, "Starting Height of the window", "Window", settingChanged, "Height", this);
+			s = settings.AddSetting("Height", "Starting Height of the window", "Window", "Height", this);
 			s.IsVisible = false;
 		}
 

@@ -9,7 +9,7 @@ namespace MapView
 	/// <summary>
 	/// Displays the About box 
 	/// </summary>
-	public partial class AboutWindow : System.Windows.Forms.Form
+	public partial class AboutWindow : ViewLib.Base.Map_Observer_Form
 	{
 		public AboutWindow()
 		{

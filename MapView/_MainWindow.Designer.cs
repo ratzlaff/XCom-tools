@@ -308,8 +308,8 @@ namespace MapView
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.Menu = this.mainMenu;
 			this.Name = "MainWindow";
-			this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
 			this.Text = "Map Editor";
+			this.Load += new System.EventHandler(this.MainWindow_Load);
 			this.Activated += new System.EventHandler(this.MainWindow_Activated);
 			this.statusStrip1.ResumeLayout(false);
 			this.statusStrip1.PerformLayout();

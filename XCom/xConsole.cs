@@ -15,7 +15,7 @@ namespace XCom
 		private static Node currLine = null;
 		public static event BufferChangedDelegate BufferChanged;
 
-		private static int numNodes;
+		private static int numNodes=0;
 		private static StreamWriter sw;
 
 		private xConsole()
@@ -80,6 +80,9 @@ namespace XCom
 
 		public static void AddLine(string s)
 		{
+			if (numNodes == 0)
+				Init(20);
+
 			currLine = currLine.Last;
 			currLine.Str = s;
 

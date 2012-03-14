@@ -69,15 +69,15 @@ namespace MapView
 			MapLib.Base.MapControl.SelectedTileChanged += tileChange;
 		}
 
-		public override void LoadDefaultSettings(ViewLib.Base.Map_Observer_Form sender, MVCore.Settings settings)
+		public override void SetupDefaultSettings(ViewLib.Base.Map_Observer_Form sender)
 		{
-			base.LoadDefaultSettings(sender, settings);
+			base.SetupDefaultSettings(sender);
 
-			settings.AddSetting("UseGrid", MapViewPanel.Instance.View.UseGrid, "If true, a grid will show up at the current level of editing", "MapView", null, "UseGrid", this);
-			settings.AddSetting("GridColor", MapViewPanel.Instance.View.GridColor, "Color of the grid in (a,r,g,b) format", "MapView", null, "GridColor", this);
-			settings.AddSetting("GridLineColor", MapViewPanel.Instance.View.GridLineColor, "Color of the lines that make up the grid", "MapView", null, "GridLineColor", this);
-			settings.AddSetting("GridLineWidth", MapViewPanel.Instance.View.GridLineWidth, "Width of the grid lines in pixels", "MapView", null, "GridLineWidth", this);
-			settings.AddSetting("SelectGrayscale", MapViewPanel.Instance.View.SelectGrayscale, "If true, the selection area will show up in gray", "MapView", null, "SelectGrayscale", this);
+			sender.Settings.AddSetting("UseGrid", "If true, a grid will show up at the current level of editing", "MapView", "UseGrid", this);
+			sender.Settings.AddSetting("GridColor", "Color of the grid in (a,r,g,b) format", "MapView", "GridColor", this);
+			sender.Settings.AddSetting("GridLineColor", "Color of the lines that make up the grid", "MapView", "GridLineColor", this);
+			sender.Settings.AddSetting("GridLineWidth", "Width of the grid lines in pixels", "MapView", "GridLineWidth", this);
+			sender.Settings.AddSetting("SelectGrayscale", "If true, the selection area will show up in gray", "MapView", "SelectGrayscale", this);
 		}
 		
 		public void Paste()

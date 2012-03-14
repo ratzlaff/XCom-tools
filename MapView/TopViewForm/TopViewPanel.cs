@@ -59,26 +59,26 @@ namespace MapView.TopViewForm
 				viewDrag(null, null);
 		}
 
-		public override void LoadDefaultSettings(Map_Observer_Form sender, Settings settings)
+		public override void SetupDefaultSettings(Map_Observer_Form sender)
 		{
-			base.LoadDefaultSettings(sender, settings);
+			base.SetupDefaultSettings(sender);
 
 			// NorthColor, NorthWidth
-			addPenSetting(new Pen(new SolidBrush(Color.Red), 4), "North", "Tile", "Color of the north tile indicator", "Width of the north tile indicator in pixels", settings);
+			addPenSetting(new Pen(new SolidBrush(Color.Red), 4), "North", "Tile", "Color of the north tile indicator", "Width of the north tile indicator in pixels", sender.Settings);
 			brushes.Add("NorthColor", new SolidBrush(pens["NorthColor"].Color));
 
 			//WestColor, WestWidth
-			addPenSetting(new Pen(new SolidBrush(Color.Red), 4), "West", "Tile", "Color of the west tile indicator", "Width of the west tile indicator in pixels", settings);
+			addPenSetting(new Pen(new SolidBrush(Color.Red), 4), "West", "Tile", "Color of the west tile indicator", "Width of the west tile indicator in pixels", sender.Settings);
 			brushes.Add("WestColor", new SolidBrush(pens["WestColor"].Color));
 
 			// GroundColor
-			addBrushSetting(new SolidBrush(Color.Orange), "Ground", "Tile", "Color of the ground tile indicator", settings);
+			addBrushSetting(new SolidBrush(Color.Orange), "Ground", "Tile", "Color of the ground tile indicator", sender.Settings);
 
 			// ContentColor
-			addBrushSetting(new SolidBrush(Color.Green), "Content", "Tile", "Color of the content tile indicator", settings);
+			addBrushSetting(new SolidBrush(Color.Green), "Content", "Tile", "Color of the content tile indicator", sender.Settings);
 
 			// DiamondMinHeight
-			settings.AddSetting("DiamondMinHeight", MinHeight, "Minimum height of the grid tiles", "Tile", diamondHeightChanged);
+			sender.Settings.AddSetting("DiamondMinHeight", MinHeight, "Minimum height of the grid tiles", "Tile", diamondHeightChanged);
 		}
 	}
 }

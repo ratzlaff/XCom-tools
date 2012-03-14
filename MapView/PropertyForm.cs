@@ -102,11 +102,10 @@ namespace MapView
 		protected override void OnPropertyValueChanged(PropertyValueChangedEventArgs e)
 		{
 			base.OnPropertyValueChanged(e);
+			settings[e.ChangedItem.Label].Value=e.ChangedItem.Value;
 
-			((Setting)settings[e.ChangedItem.Label]).Value=e.ChangedItem.Value;
-
-			if(instantUpdate)
-				((Setting)settings[e.ChangedItem.Label]).FireUpdate(e.ChangedItem.Label,e.ChangedItem.Value);
+//			if(instantUpdate)
+//				((Setting)settings[e.ChangedItem.Label]).FireUpdate(e.ChangedItem.Label,e.ChangedItem.Value);
 		}
 
 		[Browsable(false)]

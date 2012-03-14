@@ -12,7 +12,6 @@ namespace ViewLib.Base
 	public class Map_Observer_Control : DoubleBufferControl
 	{
 		protected Map map;
-		protected Settings settings;
 		protected Dictionary<string, SolidBrush> brushes;
 		protected Dictionary<string, Pen> pens;
 
@@ -35,9 +34,8 @@ namespace ViewLib.Base
 		public virtual void HeightChanged(Map sender, HeightChangedEventArgs e) { Refresh(); }
 		public virtual void SelectedTileChanged(Map sender, SelectedTileChangedEventArgs e) { Refresh(); }
 
-		public virtual void LoadDefaultSettings(Map_Observer_Form sender, Settings settings)
+		public virtual void SetupDefaultSettings(Map_Observer_Form sender)
 		{
-			this.settings = settings;
 			if (sender != null) {
 				brushes = sender.FillBrushes;
 				pens = sender.DrawPens;

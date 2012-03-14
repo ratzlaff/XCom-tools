@@ -186,30 +186,30 @@ namespace MapView.RmpViewForm
 			}
 		}
 
-		public override void LoadDefaultSettings(Map_Observer_Form sender, Settings settings)
+		public override void SetupDefaultSettings(Map_Observer_Form sender)
 		{
-			base.LoadDefaultSettings(sender, settings);
+			base.SetupDefaultSettings(sender);
 
 			// UnselectedLinkColor, UnselectedLinkWidth
-			addPenSetting(new Pen(new SolidBrush(Color.Red), 2), "UnselectedLink", "Links", "Color of unselected link lines", "Width of unselected link lines", settings);
+			addPenSetting(new Pen(new SolidBrush(Color.Red), 2), "UnselectedLink", "Links", "Color of unselected link lines", "Width of unselected link lines", sender.Settings);
 
 			// SelectedLinkColor, SelectedLinkWidth
-			addPenSetting(new Pen(new SolidBrush(Color.Blue), 2), "SelectedLink", "Links", "Color of selected link lines", "Width of selected link lines", settings);
+			addPenSetting(new Pen(new SolidBrush(Color.Blue), 2), "SelectedLink", "Links", "Color of selected link lines", "Width of selected link lines", sender.Settings);
 
 			// WallColor, WallWidth
-			addPenSetting(new Pen(new SolidBrush(Color.Black), 4), "Wall", "View", "Color of wall indicators", "Width of wall indicators", settings);
+			addPenSetting(new Pen(new SolidBrush(Color.Black), 4), "Wall", "View", "Color of wall indicators", "Width of wall indicators", sender.Settings);
 
 			// SelectedNodeColor
-			addBrushSetting(new SolidBrush(Color.Blue), "SelectedNode", "Nodes", "Color of selected nodes", settings);
+			addBrushSetting(new SolidBrush(Color.Blue), "SelectedNode", "Nodes", "Color of selected nodes", sender.Settings);
 
 			// UnselectedNodeColor
-			addBrushSetting(new SolidBrush(Color.Green), "UnselectedNode", "Nodes", "Color of unselected nodes", settings);
+			addBrushSetting(new SolidBrush(Color.Green), "UnselectedNode", "Nodes", "Color of unselected nodes", sender.Settings);
 
 			// SpawnNodeColor
-			addBrushSetting(new SolidBrush(Color.GreenYellow), "SpawnNode", "Nodes", "Color of spawn nodes", settings);
+			addBrushSetting(new SolidBrush(Color.GreenYellow), "SpawnNode", "Nodes", "Color of spawn nodes", sender.Settings);
 
 			// ContentColor
-			addBrushSetting(new SolidBrush(Color.DarkGray), "Content", "Tile", "Color of map tiles with a content tile", settings);
+			addBrushSetting(new SolidBrush(Color.DarkGray), "Content", "Tile", "Color of map tiles with a content tile", sender.Settings);
 		}
 	}
 }

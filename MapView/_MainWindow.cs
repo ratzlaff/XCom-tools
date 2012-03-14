@@ -23,15 +23,11 @@ namespace MapView
 {
 	public delegate void StringDelegate(object sender, string args);
 
-	public partial class MainWindow : Form
+	public partial class MainWindow : ViewLib.Base.Map_Observer_Form
 	{
 		private MapView.MapViewPanel mapView;
 		private LoadingForm lf;
-		private Dictionary<string, Form> registeredForms;
-		private static Dictionary<string, Settings> settingsHash;
-
-//		private LoadOfType<IMapDesc> loadedTypes;
-		//public event StringDelegate SendMessage;
+		private Dictionary<string, Map_Observer_Form> registeredForms;
 
 		public MainWindow()
 		{
@@ -90,10 +86,6 @@ namespace MapView
 
 			xConsole.AddLine("Main view window created");
 
-			settingsHash = new Dictionary<string, Settings>();
-			loadDefaults();
-			xConsole.AddLine("Default settings loaded");
-
 			try {
 				mapView.View.Cursor = new Cursor(GameInfo.CachePck(SharedSpace.Instance.GetString("cursorFile"), "", 4, XCPalette.TFTDBattle));
 			} catch {
@@ -106,29 +98,24 @@ namespace MapView
 
 			initList();
 
-			xConsole.AddLine("Map list created");
+			SetupDefaultSettings();
 
-			registeredForms = new Dictionary<string, Form>();
-			registerForm(TopView.Instance, "TopView", showMenu);
-			registerForm(TileView.Instance, "TileView", showMenu);
-			registerForm(RmpView.Instance, "RmpView", showMenu);
+			registeredForms = new Dictionary<string, Map_Observer_Form>();
+			registeredForms["MainWindow"] = this;
 
-			if (XCom.Globals.UseBlanks)
-				registerForm(mapView.BlankForm, "Blank Info", showMenu);
+			registerForm(TopView.Instance, showMenu);
+			registerForm(TileView.Instance, showMenu);
+			registerForm(RmpView.Instance, showMenu);
 
-			//			addWindow(xConsole.Instance,"Console",showMenu);
-			//			((MenuItem)windowMI[xConsole.Instance]).PerformClick();
+//			if (XCom.Globals.UseBlanks)
+//				registerForm(mapView.BlankForm, showMenu);
 
-			registerForm(new HelpScreen(), "Quick Help", miHelp);
-			registerForm(new AboutWindow(), "About", miHelp);
+//			addWindow(xConsole.Instance,showMenu);
+//			((MenuItem)windowMI[xConsole.Instance]).PerformClick();
 
+			registerForm(new HelpScreen(), miHelp);
+			registerForm(new AboutWindow(), miHelp);
 			xConsole.AddLine("Quick help and About created");
-
-			if (settingsFile.Exists()) {
-				readMapViewSettings(new StreamReader(settingsFile.ToString()));
-				xConsole.AddLine("User settings loaded");
-			} else
-				xConsole.AddLine("User settings NOT loaded - no settings file to load");
 
 			OnResize(null);
 			this.Closing += new CancelEventHandler(closing);
@@ -171,30 +158,14 @@ namespace MapView
 			get { return instance; }
 		}
 
-		private void registerForm(Form f, string title, MenuItem parent)
+		private void registerForm(Map_Observer_Form f, MenuItem parent)
 		{
-			f.Closing += new CancelEventHandler(formClosing);
+			parent.MenuItems.Add(f.MenuItem);
+			f.MenuItem.Click += formMIClick;
+			f.Closing += formClosing;
+			f.SetupDefaultSettings();
 
-			f.Text = title;
-			MenuItem mi = new MenuItem(title);
-			mi.Tag = f;
-
-			if (f is Map_Observer_Form) {
-				Map_Observer_Form mof = (Map_Observer_Form)f;
-				mof.MenuItem = mi;
-
-				settingsHash.Add(title, new Settings());
-				mof.SetupDefaultSettings(settingsHash[title]);
-				
-//				((Map_Observer_Form)f).RegistryInfo = new DSShared.Windows.RegistryInfo(f, title);
-			}
-
-			f.ShowInTaskbar = false;
-			f.FormBorderStyle = FormBorderStyle.SizableToolWindow;
-
-			parent.MenuItems.Add(mi);
-			mi.Click += new EventHandler(formMIClick);
-			registeredForms.Add(title, f);
+			registeredForms.Add(f.Text, f);
 		}
 
 		private void formMIClick(object sender, EventArgs e)
@@ -249,7 +220,7 @@ namespace MapView
 
 			while ((kv = vc.ReadLine()) != null) {
 				try {
-					Settings.ReadSettings(vc, kv, settingsHash[kv.Keyword]);
+					Settings.ReadSettings(vc, kv, registeredForms[kv.Keyword].Settings);
 				} catch { }
 			}
 
@@ -258,7 +229,7 @@ namespace MapView
 
 		private void changeSetting(object sender, string key, object val)
 		{
-			settingsHash["MainWindow"][key].Value = val;
+			Settings[key].Value = val;
 			switch (key) {
 				case "Animation":
 					bool animVal = (bool)val;
@@ -334,71 +305,34 @@ namespace MapView
 			mapList.Nodes.Clear();
 			foreach (string key in GameInfo.TilesetInfo.Tilesets.Keys)
 				AddTileset(GameInfo.TilesetInfo.Tilesets[key]);
+			xConsole.AddLine("Map list created");
 		}
 
 		private void closing(object sender, CancelEventArgs e)
 		{
 			if (NotifySave() == DialogResult.Cancel) {
 				e.Cancel = true;
-				return;
+			} else {
+				StreamWriter sw = new StreamWriter(SharedSpace.Instance["MV_SettingsFile"].ToString());
+				foreach (string s in registeredForms.Keys)
+					registeredForms[s].Settings.Save(s, sw);
+
+				sw.Flush();
+				sw.Close();
 			}
-
-			if (PathsEditor.SaveRegistry) {
-				RegistryKey swKey = Registry.CurrentUser.CreateSubKey("Software");
-				RegistryKey mvKey = swKey.CreateSubKey("MapView");
-				RegistryKey riKey = mvKey.CreateSubKey("MainView");
-
-				foreach (string key in registeredForms.Keys) {
-					Form form = registeredForms[key];
-					form.WindowState = FormWindowState.Normal;
-					form.Close();
-				}
-
-				WindowState = FormWindowState.Normal;
-				riKey.SetValue("Left", Left);
-				riKey.SetValue("Top", Top);
-				riKey.SetValue("Width", Width);
-				riKey.SetValue("Height", Height - 19);
-
-				//				riKey.SetValue("Animation",onItem.Checked.ToString());
-				//				riKey.SetValue("Doors",miDoors.Checked.ToString());
-
-				riKey.Close();
-				mvKey.Close();
-				swKey.Close();
-			}
-
-			StreamWriter sw = new StreamWriter(SharedSpace.Instance["MV_SettingsFile"].ToString());
-			foreach (string s in settingsHash.Keys)
-				if (settingsHash[s] != null)
-					settingsHash[s].Save(s, sw);
-			sw.Flush();
-			sw.Close();
 		}
 
-		private void loadDefaults()
+		public override void SetupDefaultSettings()
 		{
-			RegistryKey swKey = Registry.CurrentUser.CreateSubKey("Software");
-			RegistryKey mvKey = swKey.CreateSubKey("MapView");
-			RegistryKey riKey = mvKey.CreateSubKey("MainView");
+			base.SetupDefaultSettings();
 
-			Left = (int)riKey.GetValue("Left", Left);
-			Top = (int)riKey.GetValue("Top", Top);
-			Width = (int)riKey.GetValue("Width", Width);
-			Height = (int)riKey.GetValue("Height", Height);
+			MapViewPanel.Instance.View.SetupDefaultSettings(this);
 
-			riKey.Close();
-			mvKey.Close();
-			swKey.Close();
-
-			Settings settings = new Settings();
-			//Color.FromArgb(175,69,100,129)
 			settings.AddSetting("Animation", MapViewPanel.Updating, "If true, the map will animate itself", "Main", changeSetting);
 			settings.AddSetting("Doors", false, "If true, the door tiles will animate themselves", "Main", changeSetting);
 			settings.AddSetting("SaveWindowPositions", PathsEditor.SaveRegistry, "If true, the window positions and sizes will be saved in the windows registry", "Main", changeSetting);
-			MapViewPanel.Instance.View.LoadDefaultSettings(null, settings);
-			//settings.AddSetting("SaveOnExit",true,"If true, these settings will be saved on program exit","Main",null,false,null);
-			settingsHash["MainWindow"] = settings;
+
+			xConsole.AddLine("Default settings loaded");
 		}
 
 		private void update(object sender, EventArgs e)
@@ -498,7 +432,7 @@ namespace MapView
 
 		private void miOptions_Click(object sender, System.EventArgs e)
 		{
-			PropertyForm pf = new PropertyForm("MainViewSettings", settingsHash["MainWindow"]);
+			PropertyForm pf = new PropertyForm("MainViewSettings", Settings);
 			pf.Text = "MainWindow Options";
 			pf.Show();
 		}
@@ -687,6 +621,17 @@ namespace MapView
 		private void miOpen_Click(object sender, EventArgs e)
 		{
 
+		}
+
+		private void MainWindow_Load(object sender, EventArgs e)
+		{
+			PathInfo settingsFile = (PathInfo)SharedSpace.Instance.GetObj("MV_SettingsFile");
+
+			if (settingsFile.Exists()) {
+				readMapViewSettings(new StreamReader(settingsFile.ToString()));
+				xConsole.AddLine("User settings loaded");
+			} else
+				xConsole.AddLine("User settings NOT loaded - no settings file to load");
 		}
 	}
 }

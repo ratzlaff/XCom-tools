@@ -28,7 +28,7 @@ namespace MapView
 		public event BoolDelegate BlankChanged;
 
 		private static MapViewPanel myInstance;
-		private static Form blankForm;
+//		private static ViewLib.Base.Map_Observer_Form blankForm;
 
 		private MapViewPanel()
 		{
@@ -58,7 +58,7 @@ namespace MapView
 			blankGroup.Size = new Size(140, 65);
 			saveBlank.Location = new Point(0, blankGroup.Bottom);
 			runCalc.Location = new Point(0, saveBlank.Bottom);
-
+/*
 			blankForm = new Form();
 			blankForm.Text = "Blank Controls";
 			blankForm.Size = new Size(150, 170);
@@ -68,6 +68,7 @@ namespace MapView
 			allBlank.Dock = DockStyle.Fill;
 
 			blankCheck.Checked = false;
+*/
 			OnResize(null);
 		}
 
@@ -102,10 +103,10 @@ namespace MapView
 			view.Paste();
 		}
 
-		public Form BlankForm
-		{
-			get { return blankForm; }
-		}
+//		public ViewLib.Base.Map_Observer_Form BlankForm
+//		{
+//			get { return blankForm; }
+//		}
 
 		public static MapViewPanel Instance
 		{

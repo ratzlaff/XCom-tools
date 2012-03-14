@@ -48,7 +48,7 @@ namespace MVCore
 					default:
 						if (currSettings[kv.Keyword] != null) {
 							currSettings[kv.Keyword].Value = kv.Rest;
-							currSettings[kv.Keyword].FireUpdate(kv.Keyword);
+//							currSettings[kv.Keyword].FireUpdate(kv.Keyword);
 						}
 						break;
 				}
@@ -103,6 +103,11 @@ namespace MVCore
 			return AddSetting(name, val, desc, category, eh, "", null);
 		}
 
+		public Setting AddSetting(string name, string desc, string category, string propertyName, object refObj)
+		{
+			return AddSetting(name, null, desc, category, null, propertyName, refObj);
+		}
+
 		/// <summary>
 		/// adds a setting to this settings object
 		/// </summary>
@@ -116,13 +121,24 @@ namespace MVCore
 		{
 			//take out all spaces
 			name = name.Replace(" ", "");
-
-			settings[name] = new Setting(name, val, desc, category, eh);
+			PropObj p = null;
+			object v = val;
 			if (refObj != null) {
-				propObj[name] = new PropObj(refObj, propertyName);
-				this[name].ValueChanged += new ValueChangedDelegate(reflectEvent);
+				p = new PropObj(refObj, propertyName);
+				v = p.GetValue();
 			}
+
+			settings[name] = new Setting(name, v, desc, category, p);
+		
+			if (eh != null)
+				settings[name].ValueChanged += eh;
+
 			return settings[name];
+		}
+
+		private void refProperty(Setting sender, string key, object val)
+		{
+			propObj[key].SetValue(val);
 		}
 
 		/// <summary>
@@ -139,12 +155,6 @@ namespace MVCore
 			}
 
 			return settings[key];
-		}
-
-		private void reflectEvent(object sender, string key, object val)
-		{
-			//System.Windows.Forms.PropertyValueChangedEventArgs pe = (System.Windows.Forms.PropertyValueChangedEventArgs)e;
-			propObj[key].SetValue(val);
 		}
 
 		public void Save(string name, System.IO.StreamWriter sw)
@@ -187,22 +197,22 @@ namespace MVCore
 	/// </summary>
 	public class Setting
 	{
+		private bool changingValue=false;
 		private object val;
+		private PropObj propVal;
 
 		private static Dictionary<Type, parseString> converters;
-
 		public event ValueChangedDelegate ValueChanged;
 
 		private delegate object parseString(string s);
 
-		public Setting(string name, object val, string desc, string category, ValueChangedDelegate update)
+		public Setting(string name, object val, string desc, string category, PropObj pObj)
 		{
 			this.val = val;
 			this.Name = name;
 			this.Description = desc;
 			this.Category = category;
-			if (update != null)
-				ValueChanged += update;
+			this.propVal = pObj;
 
 			IsVisible = true;
 
@@ -246,19 +256,36 @@ namespace MVCore
 			return Color.FromArgb(int.Parse(vals[0]), int.Parse(vals[1]), int.Parse(vals[2]), int.Parse(vals[3]));
 		}
 
-		public Setting(object val, string desc, string category) : this(null, val, desc, category, null) { }
+		public Setting(string name, object val, string desc, string category) : this(name, val, desc, category, null) { }
+		public Setting(object val, string desc, string category) : this(null, val, desc, category) { }
 		public Setting(object val, string desc) : this(val, desc, null) { }
-		public Setting(object val) : this(null, null) { }
+		public Setting(object val) : this(val, null) { }
 
 		public object Value
 		{
-			get { return val; }
+			get
+			{
+				if (propVal != null)
+					return propVal.GetValue();
+				return val;
+			}
 			set
 			{
-				if (val != null && converters.ContainsKey(val.GetType()) && value.GetType() == typeof(string))
-					val = converters[val.GetType()]((string)value);
-				else
-					val = value;
+				if (!changingValue) {
+					changingValue = true;
+
+					if (val != null && converters.ContainsKey(val.GetType()) && value.GetType() == typeof(string))
+						val = converters[val.GetType()]((string)value);
+					else
+						val = value;
+
+					if (propVal != null)
+						propVal.SetValue(val);
+
+					if (ValueChanged != null)
+						ValueChanged(this, Name, val);
+					changingValue = false;
+				}
 			}
 		}
 
@@ -266,21 +293,9 @@ namespace MVCore
 		public string Category { get; set; }
 		public string Name { get; set; }
 		public bool IsVisible { get; set; }
-
-		public void FireUpdate(string key, object val)
-		{
-			if (ValueChanged != null)
-				ValueChanged(this, key, val);
-		}
-
-		public void FireUpdate(string key)
-		{
-			if (ValueChanged != null)
-				ValueChanged(this, key, val);
-		}
 	}
 
-	internal struct PropObj
+	public class PropObj
 	{
 		public PropertyInfo pi;
 		public object obj;

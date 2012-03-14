@@ -66,9 +66,9 @@ namespace MapView
 			Refresh();
 		}
 
-		public override void SetupDefaultSettings(Settings settings)
+		public override void SetupDefaultSettings()
 		{
-			base.SetupDefaultSettings(settings);
+			base.SetupDefaultSettings();
 			foreach (string s in Enum.GetNames(typeof(SpecialType))) {
 				FillBrushes[s] = new SolidBrush(TilePanel.tileTypes[(int)Enum.Parse(typeof(SpecialType), s)]);
 				settings.AddSetting(s, FillBrushes[s].Color, "Color of specified tile type", "TileView", brushChanged);

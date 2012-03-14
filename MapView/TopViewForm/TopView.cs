@@ -49,12 +49,12 @@ namespace MapView.TopViewForm
 			topViewPanel.BottomPanel = bottom;
 		}
 
-		public override void SetupDefaultSettings(MVCore.Settings settings)
+		public override void SetupDefaultSettings()
 		{
-			base.SetupDefaultSettings(settings);
+			base.SetupDefaultSettings();
 
-			bottom.LoadDefaultSettings(this, settings);
-			topViewPanel.LoadDefaultSettings(this, settings);
+			bottom.SetupDefaultSettings(this);
+			topViewPanel.SetupDefaultSettings(this);
 
 			visibleHash[topViewPanel.Ground] = settings.AddSetting("GroundVisible", true, "Show ground portion", "Tile", visibleSetting);
 			visibleHash[topViewPanel.West] = settings.AddSetting("WestVisible", true, "Show west portion", "Tile", visibleSetting);
