@@ -62,8 +62,8 @@ namespace MapView
 
 			dashPen = new Pen(Brushes.Black, 1);
 
-			MapLib.Base.MapControl.HeightChanged += mapHeight;
-			MapLib.Base.MapControl.SelectedTileChanged += tileChange;
+			MapControl.HeightChanged += mapHeight;
+			MapControl.SelectedTileChanged += tileChange;
 		}
 
 		public void Paste()

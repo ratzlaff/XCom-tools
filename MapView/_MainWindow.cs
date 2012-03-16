@@ -17,6 +17,7 @@ using System.Collections.Generic;
 using MapView.RmpViewForm;
 using MapView.TopViewForm;
 using MVCore;
+using MapLib;
 using ViewLib.Base;
 
 namespace MapView
@@ -221,8 +222,8 @@ namespace MapView
 						MapViewPanel.Stop();
 					break;
 				case "Doors":
-					if (MapLib.Base.MapControl.Current != null)
-						foreach (MapLib.Base.Tile t in MapLib.Base.MapControl.Current.Tiles)
+					if (MapControl.Current != null)
+						foreach (MapLib.Base.Tile t in MapControl.Current.Tiles)
 							t.Animate((bool)val);					
 					break;
 				case "SaveWindowPositions":
@@ -337,9 +338,9 @@ namespace MapView
 
 		private void saveItem_Click(object sender, System.EventArgs e)
 		{
-			if (MapLib.Base.MapControl.Current != null) {
-				MapLib.Base.MapControl.Current.Save();
-				xConsole.AddLine("Saved: " + MapLib.Base.MapControl.Current.Name);
+			if (MapControl.Current != null) {
+				MapControl.Current.Save();
+				xConsole.AddLine("Saved: " + MapControl.Current.Name);
 				Globals.MapChanged = false;
 			}
 		}
@@ -360,10 +361,10 @@ namespace MapView
 
 			if (mapList.SelectedNode.Tag is IMapDesc) {
 				IMapDesc imd = (IMapDesc)mapList.SelectedNode.Tag;
-				MapLib.Base.MapControl.Current = imd.GetMapFile();
+				MapControl.Current = imd.GetMapFile();
 
 				statusMapName.Text = "Map:" + imd.Name;
-				tsMapSize.Text = "Size: " + MapLib.Base.MapControl.Current.Size.ToString();
+				tsMapSize.Text = "Size: " + MapControl.Current.Size.ToString();
 
 				//turn off door animations
 				if (miDoors.Checked) {
@@ -382,12 +383,12 @@ namespace MapView
 
 		public DialogResult NotifySave()
 		{
-			if (MapLib.Base.MapControl.Current != null && Globals.MapChanged)
+			if (MapControl.Current != null && Globals.MapChanged)
 				switch (MessageBox.Show(this, "Map changed, do you wish to save?", "Save map?", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1)) {
 					case DialogResult.No: //dont save 
 						break;
 					case DialogResult.Yes: //save
-						MapLib.Base.MapControl.Current.Save();
+						MapControl.Current.Save();
 						break;
 					case DialogResult.Cancel://do nothing
 						return DialogResult.Cancel;
@@ -421,8 +422,8 @@ namespace MapView
 
 		private void miHq_Click(object sender, System.EventArgs e)
 		{
-			if (MapLib.Base.MapControl.Current is XCMapFile) {
-				((XCMapFile)MapLib.Base.MapControl.Current).Hq2x();
+			if (MapControl.Current is XCMapFile) {
+				((XCMapFile)MapControl.Current).Hq2x();
 				mapView.View.Resize();
 			}
 		}
@@ -431,14 +432,14 @@ namespace MapView
 		{
 			miDoors.Checked = !miDoors.Checked;
 
-			foreach (MapLib.Base.Tile t in MapLib.Base.MapControl.Current.Tiles)
+			foreach (MapLib.Base.Tile t in MapControl.Current.Tiles)
 				t.Animate(miDoors.Checked);
 		}
 
 		private void miResize_Click(object sender, System.EventArgs e)
 		{
 			ChangeMapSizeForm cmf = new ChangeMapSizeForm();
-			cmf.Map = MapLib.Base.MapControl.Current;
+			cmf.Map = MapControl.Current;
 			if (cmf.ShowDialog(this) == DialogResult.OK) {
 				cmf.Map.ResizeTo(cmf.NewRows, cmf.NewCols, cmf.NewHeight);
 				//mapView.View.Map.ResizeTo(cmf.NewRows, cmf.NewCols, cmf.NewHeight);
@@ -464,7 +465,7 @@ namespace MapView
 		{
 			MapInfoForm mif = new MapInfoForm();
 			mif.Show();
-			mif.Map = MapLib.Base.MapControl.Current;
+			mif.Map = MapControl.Current;
 		}
 
 		/// <summary>
@@ -506,7 +507,7 @@ namespace MapView
 			btnUp.Text = "toolStripButton1";
 			btnUp.ToolTipText = "Level Up";
 			btnUp.Click += delegate(object sender, EventArgs e) {
-				MapLib.Base.MapControl.Current.Up();
+				MapControl.Current.Up();
 			};
 			// 
 			// btnDown
@@ -520,7 +521,7 @@ namespace MapView
 			btnDown.Text = "toolStripButton2";
 			btnDown.ToolTipText = "Level Down";
 			btnDown.Click += delegate(object sender, EventArgs e) {
-				MapLib.Base.MapControl.Current.Down();
+				MapControl.Current.Down();
 			};
 			// 
 			// btnCut

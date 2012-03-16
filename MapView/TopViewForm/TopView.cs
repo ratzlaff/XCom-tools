@@ -120,7 +120,7 @@ namespace MapView.TopViewForm
 
 			for (int c = s.Row; c <= e.Row; c++)
 				for (int r = s.Col; r <= e.Col; r++)
-					((XCMapTile)MapLib.Base.MapControl.Current[r, c])[bottom.SelectedQuadrant] = TileView.Instance.SelectedTile;
+					((XCMapTile)MapControl.Current[r, c])[bottom.SelectedQuadrant] = TileView.Instance.SelectedTile;
 			Globals.MapChanged = true;
 			MapViewPanel.Instance.Refresh();
 			Refresh();

@@ -7,6 +7,8 @@ using System.Data;
 using XCom;
 using XCom.Interfaces;
 using XCom.Interfaces.Base;
+
+using MapLib;
 using MapLib.Base;
 
 namespace MapView
@@ -188,14 +190,14 @@ namespace MapView
 
 		private void runCalcClick(object sender, EventArgs e)
 		{
-			if (MapLib.Base.MapControl.Current is XCMapFile)
-				((XCMapFile)MapLib.Base.MapControl.Current).CalcDrawAbove();
+			if (MapControl.Current is XCMapFile)
+				((XCMapFile)MapControl.Current).CalcDrawAbove();
 		}
 
 		private void saveBlankClick(object sender, EventArgs e)
 		{
-			if (MapLib.Base.MapControl.Current is XCMapFile)
-				((XCMapFile)MapLib.Base.MapControl.Current).SaveBlanks();
+			if (MapControl.Current is XCMapFile)
+				((XCMapFile)MapControl.Current).SaveBlanks();
 		}
 
 		private void setDraw(object sender, EventArgs e)
@@ -234,13 +236,13 @@ namespace MapView
 
 		private void up_click(object sender, EventArgs e)
 		{
-			MapLib.Base.MapControl.Current.Up();
+			MapControl.Current.Up();
 			view.Focus();
 		}
 
 		private void down_click(object sender, EventArgs e)
 		{
-			MapLib.Base.MapControl.Current.Down();
+			MapControl.Current.Down();
 			view.Focus();
 		}
 
