@@ -16,7 +16,6 @@ namespace MapView
 	{
 		private Point origin = new Point(100, 0);
 		private int currentImage;
-		private Point clickPoint, clickPointx;
 
 		private MapView.Cursor cursor;
 		private int offX = 0, offY = 0;
@@ -33,7 +32,8 @@ namespace MapView
 		private bool flipLock = false, flipLock2 = false;
 
 		private bool mDown;
-		private Point startDrag, endDrag;
+		private MapLocation selected, mouseOver;
+		private MapLocation startDrag, endDrag;
 		private Pen dashPen;
 		private bool selectGrayscale = true;
 
@@ -43,16 +43,18 @@ namespace MapView
 		private bool useGrid = true;
 		private MapTile[,] copied;
 
-		public event EventHandler DragChanged;
+//		public event EventHandler DragChanged;
 
 		public View()
 		{
 			map = null;
 			currentImage = 0;
-			clickPoint = startDrag = endDrag = clickPointx = new Point(-1, -1);
+			mouseOver = new MapLocation(-1, -1);
+			startDrag = new MapLocation(-1, -1);
+			endDrag = new MapLocation(-1, -1);
+			selected = new MapLocation(-1, -1);
 			topLeft = new Point(0, 0);
 
-			this.SetStyle(ControlStyles.DoubleBuffer | ControlStyles.UserPaint | ControlStyles.AllPaintingInWmPaint, true);
 			newLeft = true;
 
 			gridColor = Color.FromArgb(175, 69, 100, 129);
@@ -64,27 +66,16 @@ namespace MapView
 			MapLib.Base.MapControl.SelectedTileChanged += tileChange;
 		}
 
-		public override void SetupDefaultSettings(ViewLib.Base.Map_Observer_Form sender)
-		{
-			base.SetupDefaultSettings(sender);
-
-			sender.Settings.AddSetting("UseGrid", "If true, a grid will show up at the current level of editing", "MapView", "UseGrid", this);
-			sender.Settings.AddSetting("GridColor", "Color of the grid in (a,r,g,b) format", "MapView", "GridColor", this);
-			sender.Settings.AddSetting("GridLineColor", "Color of the lines that make up the grid", "MapView", "GridLineColor", this);
-			sender.Settings.AddSetting("GridLineWidth", "Width of the grid lines in pixels", "MapView", "GridLineWidth", this);
-			sender.Settings.AddSetting("SelectGrayscale", "If true, the selection area will show up in gray", "MapView", "SelectGrayscale", this);
-		}
-
 		public void Paste()
 		{
 			if (copied != null) {
 				//row  col
 				//y    x
 
-				for (int r = startDrag.Y; r < map.Size.Rows && (r - startDrag.Y) < copied.GetLength(0); r++)
-					for (int c = startDrag.X; c < map.Size.Cols && (c - startDrag.X) < copied.GetLength(1); c++) {
+				for (int r = startDrag.Row; r < map.Size.Rows && (r - startDrag.Row) < copied.GetLength(0); r++)
+					for (int c = startDrag.Col; c < map.Size.Cols && (c - startDrag.Col) < copied.GetLength(1); c++) {
 						XCMapTile tile = map[r, c] as XCMapTile;
-						XCMapTile copyTile = copied[r - startDrag.Y, c - startDrag.X] as XCMapTile;
+						XCMapTile copyTile = copied[r - startDrag.Row, c - startDrag.Col] as XCMapTile;
 						tile.Ground = copyTile.Ground;
 						tile.Content = copyTile.Content;
 						tile.West = copyTile.West;
@@ -96,25 +87,19 @@ namespace MapView
 			}
 		}
 
-		public bool SelectGrayscale
-		{
-			get { return selectGrayscale; }
-			set { selectGrayscale = value; Refresh(); }
-		}
-
 		public void ClearSelection()
 		{
-			Point s = new Point(0, 0);
-			Point e = new Point(0, 0);
+			MapLocation s = new MapLocation(0, 0);
+			MapLocation e = new MapLocation(0, 0);
 
-			s.X = Math.Min(startDrag.X, endDrag.X);
-			s.Y = Math.Min(startDrag.Y, endDrag.Y);
+			s.Row = Math.Min(startDrag.Row, endDrag.Row);
+			s.Col = Math.Min(startDrag.Col, endDrag.Col);
 
-			e.X = Math.Max(startDrag.X, endDrag.X);
-			e.Y = Math.Max(startDrag.Y, endDrag.Y);
+			e.Row = Math.Max(startDrag.Row, endDrag.Row);
+			e.Col = Math.Max(startDrag.Col, endDrag.Col);
 
-			for (int c = s.X; c <= e.X; c++)
-				for (int r = s.Y; r <= e.Y; r++)
+			for (int c = s.Col; c <= e.Col; c++)
+				for (int r = s.Row; r <= e.Row; r++)
 					map[r, c] = XCMapTile.BlankTile;
 			Globals.MapChanged = true;
 			Refresh();
@@ -122,22 +107,29 @@ namespace MapView
 
 		public void Copy()
 		{
-			Point s = new Point(0, 0);
-			Point e = new Point(0, 0);
+			MapLocation s = new MapLocation(0, 0);
+			MapLocation e = new MapLocation(0, 0);
 
-			s.X = Math.Min(startDrag.X, endDrag.X);
-			s.Y = Math.Min(startDrag.Y, endDrag.Y);
+			s.Row = Math.Min(startDrag.Row, endDrag.Row);
+			s.Col = Math.Min(startDrag.Col, endDrag.Col);
 
-			e.X = Math.Max(startDrag.X, endDrag.X);
-			e.Y = Math.Max(startDrag.Y, endDrag.Y);
+			e.Row = Math.Max(startDrag.Row, endDrag.Row);
+			e.Col = Math.Max(startDrag.Col, endDrag.Col);
 
 			//row  col
 			//y    x
-			copied = new XCMapTile[e.Y - s.Y + 1, e.X - s.X + 1];
+			copied = new XCMapTile[e.Row - s.Row + 1, e.Col - s.Col + 1];
 
-			for (int c = s.X; c <= e.X; c++)
-				for (int r = s.Y; r <= e.Y; r++)
-					copied[r - s.Y, c - s.X] = map[r, c];
+			for (int c = s.Col; c <= e.Col; c++)
+				for (int r = s.Row; r <= e.Row; r++)
+					copied[r - s.Row, c - s.Col] = map[r, c];
+		}
+
+		#region Settings
+		public bool SelectGrayscale
+		{
+			get { return selectGrayscale; }
+			set { selectGrayscale = value; Refresh(); }
 		}
 
 		public Color GridColor
@@ -163,6 +155,18 @@ namespace MapView
 			get { return useGrid; }
 			set { useGrid = value; Refresh(); }
 		}
+
+		public override void SetupDefaultSettings(ViewLib.Base.Map_Observer_Form sender)
+		{
+			base.SetupDefaultSettings(sender);
+
+			sender.Settings.AddSetting("UseGrid", "If true, a grid will show up at the current level of editing", "MapView", "UseGrid", this);
+			sender.Settings.AddSetting("GridColor", "Color of the grid in (a,r,g,b) format", "MapView", "GridColor", this);
+			sender.Settings.AddSetting("GridLineColor", "Color of the lines that make up the grid", "MapView", "GridLineColor", this);
+			sender.Settings.AddSetting("GridLineWidth", "Width of the grid lines in pixels", "MapView", "GridLineWidth", this);
+			sender.Settings.AddSetting("SelectGrayscale", "If true, the selection area will show up in gray", "MapView", "SelectGrayscale", this);
+		}
+		#endregion
 
 		public new MapView.Cursor Cursor
 		{
@@ -195,29 +199,18 @@ namespace MapView
 		{
 			if (map != null) {
 				mDown = true;
-				clickPointx = convertCoordsDiamond(e.X, e.Y, map.CurrentHeight);
-				StartDrag = EndDrag = clickPointx;
+				selected = convertCoordsDiamond(e.X, e.Y, map.CurrentHeight);
+				StartDrag = EndDrag = selected;
 				flipLock2 = true;
 				if (!drawAll && !flipLock)
-					map[clickPoint.Y, clickPoint.X].DrawAbove = !map[clickPoint.Y, clickPoint.X].DrawAbove;
+					map[mouseOver.Row, mouseOver.Col].DrawAbove = !map[mouseOver.Row, mouseOver.Col].DrawAbove;
 
-				if (DragChanged != null)
-					DragChanged(null, null);
-
-				map.SelectedTile = new MapLocation(clickPoint.Y, clickPoint.X, map.CurrentHeight);
+				map.SelectedTile = new MapLocation(mouseOver.Row, mouseOver.Col, map.CurrentHeight);
 
 				Focus();
 				Refresh();
 				flipLock2 = false;
 			}
-		}
-
-		protected override void OnMouseWheel(MouseEventArgs e)
-		{
-			if (e.Delta > 0)
-				map.Up();
-			else if (e.Delta < 0)
-				map.Down();
 		}
 
 		protected override void OnMouseUp(MouseEventArgs e)
@@ -229,55 +222,52 @@ namespace MapView
 		protected override void OnMouseMove(MouseEventArgs e)
 		{
 			if (map != null) {
-				Point temp = convertCoordsDiamond(e.X, e.Y, map.CurrentHeight);
+				MapLocation temp = convertCoordsDiamond(e.X, e.Y, map.CurrentHeight);
 
-				if (temp.X != clickPoint.X || temp.Y != clickPoint.Y) {
-					clickPoint = temp;
+				if (temp.Row != mouseOver.Row || temp.Col != mouseOver.Col) {
+					mouseOver = temp;
 
-					if (mDown) {
-						EndDrag = temp;
-						if (DragChanged != null)
-							DragChanged(null, null);
-					}
+					if (mDown)
+						MapControl.EndDrag = mouseOver;
 
 					Refresh();
 				}
 			}
 		}
 
-		public Point StartDrag
+		public MapLocation StartDrag
 		{
 			get { return startDrag; }
 			set
 			{
 				startDrag = value;
-				if (startDrag.Y < 0)
-					startDrag.Y = 0;
-				else if (startDrag.Y >= map.Size.Rows)
-					startDrag.Y = map.Size.Rows - 1;
+				if (startDrag.Row < 0)
+					startDrag.Row = 0;
+				else if (startDrag.Row >= map.Size.Rows)
+					startDrag.Row = map.Size.Rows - 1;
 
-				if (startDrag.X < 0)
-					startDrag.X = 0;
-				else if (startDrag.X >= map.Size.Cols)
-					startDrag.X = map.Size.Cols - 1;
+				if (startDrag.Col < 0)
+					startDrag.Col = 0;
+				else if (startDrag.Col >= map.Size.Cols)
+					startDrag.Col = map.Size.Cols - 1;
 			}
 		}
 
-		public Point EndDrag
+		public MapLocation EndDrag
 		{
 			get { return endDrag; }
 			set
 			{
 				endDrag = value;
-				if (endDrag.Y < 0)
-					endDrag.Y = 0;
-				else if (endDrag.Y >= map.Size.Rows)
-					endDrag.Y = map.Size.Rows - 1;
+				if (endDrag.Row < 0)
+					endDrag.Row = 0;
+				else if (endDrag.Row >= map.Size.Rows)
+					endDrag.Row = map.Size.Rows - 1;
 
-				if (endDrag.X < 0)
-					endDrag.X = 0;
-				else if (endDrag.X >= map.Size.Cols)
-					endDrag.X = map.Size.Cols - 1;
+				if (endDrag.Col < 0)
+					endDrag.Col = 0;
+				else if (endDrag.Col >= map.Size.Cols)
+					endDrag.Col = map.Size.Cols - 1;
 			}
 		}
 
@@ -310,12 +300,14 @@ namespace MapView
 
 		private void tileChange(Map mapFile, MapLib.SelectedTileChangedEventArgs e)// MapLocation newCoords)
 		{
-			MapLocation newCoords = e.MapLocation;
-			clickPointx = new Point(newCoords.Col, newCoords.Row);
+			selected = e.MapLocation;
+
+			StartDrag = MapControl.StartDrag;
+			EndDrag = MapControl.EndDrag;
 
 			flipLock = true;
 			if (!drawAll && !flipLock2)
-				map[newCoords.Row, newCoords.Col, map.CurrentHeight].DrawAbove = !map[newCoords.Row, newCoords.Col, map.CurrentHeight].DrawAbove;
+				map[selected.Row, selected.Col, map.CurrentHeight].DrawAbove = !map[selected.Row, selected.Col, map.CurrentHeight].DrawAbove;
 
 			flipLock = false;
 		}
@@ -386,7 +378,7 @@ namespace MapView
 								break;
 
 							bool here = false;
-							if (row == clickPoint.Y && col == clickPoint.X || row == clickPointx.Y && col == clickPointx.X) {
+							if (row == mouseOver.Row && col == mouseOver.Col || row == selected.Row && col == selected.Col) {
 								if (cursor != null)
 									cursor.DrawHigh(g, x, y, MapViewPanel.Current, false, map.CurrentHeight == h);
 								here = true;
@@ -397,8 +389,8 @@ namespace MapView
 									if (map[row, col, h].DrawAbove) {
 										if (!selectGrayscale)
 											drawTile(g, (XCMapTile)map[row, col, h], x, y);
-										else if ((here && Globals.UseGray) || (/*mDown && */((row >= startDrag.Y && row <= endDrag.Y) || (row >= startDrag.Y && row <= endDrag.Y)) &&
-											((col >= startDrag.X && col <= endDrag.X) || (col >= startDrag.X && col <= endDrag.X))))
+										else if ((here && Globals.UseGray) || (((row >= startDrag.Row && row <= endDrag.Row) || (row >= startDrag.Row && row <= endDrag.Row)) &&
+											((col >= startDrag.Col && col <= endDrag.Col) || (col >= startDrag.Col && col <= endDrag.Col))))
 											drawTileGray(g, (XCMapTile)map[row, col, h], x, y);
 										else
 											drawTile(g, (XCMapTile)map[row, col, h], x, y);
@@ -408,18 +400,18 @@ namespace MapView
 										drawTile(g, (XCMapTile)map[row, col, h], x, y);
 									else if ((here && Globals.UseGray))
 										drawTileGray(g, (XCMapTile)map[row, col, h], x, y);
-									else if (startDrag.X >= endDrag.X && col <= startDrag.X && col >= endDrag.X) {
-										if (startDrag.Y >= endDrag.Y && row <= startDrag.Y && row >= endDrag.Y)
+									else if (startDrag.Col >= endDrag.Col && col <= startDrag.Col && col >= endDrag.Col) {
+										if (startDrag.Row >= endDrag.Row && row <= startDrag.Row && row >= endDrag.Row)
 											drawTileGray(g, (XCMapTile)map[row, col, h], x, y);
-										else if (startDrag.Y <= endDrag.Y && row >= startDrag.Y && row <= endDrag.Y)
+										else if (startDrag.Row <= endDrag.Row && row >= startDrag.Row && row <= endDrag.Row)
 											drawTileGray(g, (XCMapTile)map[row, col, h], x, y);
 										else
 											drawTile(g, (XCMapTile)map[row, col, h], x, y);
 
-									} else if (startDrag.X <= endDrag.X && col >= startDrag.X && col <= endDrag.X) {
-										if (startDrag.Y >= endDrag.Y && row <= startDrag.Y && row >= endDrag.Y)
+									} else if (startDrag.Col <= endDrag.Col && col >= startDrag.Col && col <= endDrag.Col) {
+										if (startDrag.Row >= endDrag.Row && row <= startDrag.Row && row >= endDrag.Row)
 											drawTileGray(g, (XCMapTile)map[row, col, h], x, y);
-										else if (startDrag.Y <= endDrag.Y && row >= startDrag.Y && row <= endDrag.Y)
+										else if (startDrag.Row <= endDrag.Row && row >= startDrag.Row && row <= endDrag.Row)
 											drawTileGray(g, (XCMapTile)map[row, col, h], x, y);
 										else
 											drawTile(g, (XCMapTile)map[row, col, h], x, y);
@@ -479,7 +471,7 @@ namespace MapView
 		/// <param name="yp"></param>
 		/// <param name="level"></param>
 		/// <returns></returns>
-		private Point convertCoordsDiamond(int xp, int yp, int level)
+		private MapLocation convertCoordsDiamond(int xp, int yp, int level)
 		{
 			int x = xp - (origin.X + offX) - (hWid * Globals.PckImageScale); //16 is half the width of the diamond
 			int y = yp - (origin.Y + offY) - (24 * Globals.PckImageScale) * (level + 1); //24 is the distance from the top of the diamond to the very top of the image
@@ -487,7 +479,7 @@ namespace MapView
 			double x1 = (x * 1.0 / (2 * (hWid * Globals.PckImageScale))) + (y * 1.0 / (2 * (hHeight * Globals.PckImageScale)));
 			double x2 = -(x * 1.0 - 2 * y * 1.0) / (2 * (hWid * Globals.PckImageScale));
 
-			return new Point((int)Math.Floor(x1), (int)Math.Floor(x2));
+			return new MapLocation((int)Math.Floor(x2), (int)Math.Floor(x1));
 		}
 
 		/// <summary>

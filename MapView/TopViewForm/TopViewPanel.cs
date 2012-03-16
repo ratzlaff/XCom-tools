@@ -16,8 +16,6 @@ namespace MapView.TopViewForm
 
 		public TopViewPanel()
 		{
-			if (!IsDesignMode)
-				MapViewPanel.Instance.View.DragChanged += new EventHandler(viewDrag);
 		}
 
 		public ToolStripMenuItem Ground { get; set; }

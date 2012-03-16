@@ -10,6 +10,9 @@ using Microsoft.Win32;
 using XCom.Interfaces.Base;
 using System.Reflection;
 
+using MapLib;
+using MapLib.Base;
+
 namespace MapView.TopViewForm
 {
 	public partial class TopView : ViewLib.Base.Map_Observer_Form
@@ -103,20 +106,20 @@ namespace MapView.TopViewForm
 
 		private void fill_click(object sender, EventArgs evt)
 		{
-			Point s = new Point(0, 0);
-			Point e = new Point(0, 0);
+			MapLocation s = new MapLocation(0, 0);
+			MapLocation e = new MapLocation(0, 0);
 
-			s.X = Math.Min(MapViewPanel.Instance.View.StartDrag.X, MapViewPanel.Instance.View.EndDrag.X);
-			s.Y = Math.Min(MapViewPanel.Instance.View.StartDrag.Y, MapViewPanel.Instance.View.EndDrag.Y);
+			s.Row = Math.Min(MapControl.StartDrag.Row, MapControl.EndDrag.Row);
+			s.Col = Math.Min(MapControl.StartDrag.Col, MapControl.EndDrag.Col);
 
-			e.X = Math.Max(MapViewPanel.Instance.View.StartDrag.X, MapViewPanel.Instance.View.EndDrag.X);
-			e.Y = Math.Max(MapViewPanel.Instance.View.StartDrag.Y, MapViewPanel.Instance.View.EndDrag.Y);
+			e.Row = Math.Max(MapControl.StartDrag.Row, MapControl.EndDrag.Row);
+			e.Col = Math.Max(MapControl.StartDrag.Col, MapControl.EndDrag.Col);
 
 			//row   col
 			//y     x
 
-			for (int c = s.X; c <= e.X; c++)
-				for (int r = s.Y; r <= e.Y; r++)
+			for (int c = s.Row; c <= e.Row; c++)
+				for (int r = s.Col; r <= e.Col; r++)
 					((XCMapTile)MapLib.Base.MapControl.Current[r, c])[bottom.SelectedQuadrant] = TileView.Instance.SelectedTile;
 			Globals.MapChanged = true;
 			MapViewPanel.Instance.Refresh();

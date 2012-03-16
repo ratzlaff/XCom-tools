@@ -11,6 +11,11 @@ namespace MapLib
 		public int Col { get; set; }
 		public int Height { get; set; }
 
+		public MapLocation(int row, int col)
+			:	this(row, col, 0)
+		{
+		}
+
 		public MapLocation(int row, int col, int height)
 			: this()
 		{
