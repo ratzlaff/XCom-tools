@@ -2,11 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using XCom.Interfaces;
-using DSShared;
+using UtilLib;
 using System.IO;
 using XCom;
 using System.Windows.Forms;
-using MVCore.Parser;
+using UtilLib.Parser;
 
 namespace PckView
 {
@@ -31,7 +31,7 @@ namespace PckView
 
 			foreach (string s in vs.KeyValList.Keys) {
 				ImgProfile profile = new ImgProfile();
-				Dictionary<string, MVCore.Parser.KeyVal> info = vs.KeyValList[s].SubHash;
+				Dictionary<string, UtilLib.Parser.KeyVal> info = vs.KeyValList[s].SubHash;
 				profile.ext = info["open"].Rest;
 				profile.imgHei = int.Parse(info["height"].Rest);
 				profile.imgWid = int.Parse(info["width"].Rest);

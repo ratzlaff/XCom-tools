@@ -9,7 +9,7 @@ using XCom;
 using XCom.Interfaces;
 using Microsoft.Win32;
 using XCom.Interfaces.Base;
-using DSShared;
+using UtilLib;
 using MapLib.Base;
 
 namespace MapView

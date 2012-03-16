@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using XCom.Interfaces;
 using System.IO;
-using DSShared;
+using UtilLib;
 using MapLib.Base;
 
 namespace XCom.GameFiles.Images.xcFiles

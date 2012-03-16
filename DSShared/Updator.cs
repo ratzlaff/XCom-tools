@@ -5,12 +5,12 @@ using System.Text;
 //about the documentation tags
 //http://msdn.microsoft.com/library/default.asp?url=/library/en-us/csref/html/vclrftagsfordocumentationcomments.asp
 
-namespace DSShared
+namespace UtilLib
 {
 	/// <summary>
 	/// Class that implements the IUpdater interface
 	/// </summary>
-	public class Updator : DSShared.Interfaces.IUpdater
+	public class Updator : UtilLib.Interfaces.IUpdater
 	{
 		/// <summary>
 		/// See: IUpdater.UpdatePath

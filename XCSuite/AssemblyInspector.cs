@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading;
 using System.Reflection;
-using DSShared.Interfaces;
+using UtilLib.Interfaces;
 using System.Drawing;
 
 namespace XCSuite

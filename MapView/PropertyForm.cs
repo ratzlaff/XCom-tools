@@ -7,8 +7,8 @@ using System.Windows.Forms;
 using System.Reflection;
 using System.Reflection.Emit;
 using System.Threading;
-using DSShared.Windows;
-using MVCore;
+using UtilLib.Windows;
+using UtilLib;
 
 namespace MapView
 {

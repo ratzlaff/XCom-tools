@@ -4,7 +4,7 @@ using System.Collections;
 using System.ComponentModel;
 using System.Windows.Forms;
 
-namespace DSShared.Windows
+namespace UtilLib.Windows
 {
 	public class ProgressWindow : System.Windows.Forms.Form
 	{

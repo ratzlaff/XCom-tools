@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using Microsoft.Win32;
 
-namespace DSShared.Windows
+namespace UtilLib.Windows
 {
 	/// <summary>
 	/// Delegate for use in the saving and loading events raised in the RegistryInfo class

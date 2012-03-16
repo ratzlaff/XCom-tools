@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace DSShared
+namespace UtilLib
 {
 	public interface IFilter<T>
 	{

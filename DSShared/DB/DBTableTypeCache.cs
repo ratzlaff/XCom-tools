@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
 
-namespace DSShared.DB
+namespace UtilLib.DB
 {
 	/// <summary>
 	/// Singleton class to keep track of open database tables. This is done as an optimization for when we

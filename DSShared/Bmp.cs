@@ -11,7 +11,7 @@ using System.Reflection;
 using hq2x;
 #endif
 
-namespace DSShared
+namespace UtilLib
 {
 	public class Bmp
 	{

@@ -4,7 +4,7 @@ using System.Drawing;
 using System.Windows.Forms;
 using System.ComponentModel;
 
-namespace DSShared.Lists
+namespace UtilLib.Lists
 {
 	/// <summary>
 	/// Delegate for when the control wants to be refreshed

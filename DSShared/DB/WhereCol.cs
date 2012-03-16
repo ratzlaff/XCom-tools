@@ -1,6 +1,6 @@
 using System;
 
-namespace DSShared.DB
+namespace UtilLib.DB
 {
 	/// <summary>
 	/// Class to specify columns in a WHERE clause of a sql query

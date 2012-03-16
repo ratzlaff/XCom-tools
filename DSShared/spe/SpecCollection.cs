@@ -4,7 +4,7 @@ using System.IO;
 using System.Drawing;
 using System.Drawing.Imaging;
 
-namespace DSShared
+namespace UtilLib
 {
 	public enum SpecType
 	{

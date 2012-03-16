@@ -9,14 +9,13 @@ using System.Drawing.Drawing2D;
 using System.IO;
 using Microsoft.Win32;
 using System.Reflection;
-using DSShared;
-using DSShared.Windows;
-using DSShared.Loadable;
+using UtilLib;
+using UtilLib.Windows;
+using UtilLib.Loadable;
 using XCom.Interfaces.Base;
 using System.Collections.Generic;
 using MapView.RmpViewForm;
 using MapView.TopViewForm;
-using MVCore;
 using MapLib;
 using ViewLib.Base;
 
@@ -195,8 +194,8 @@ namespace MapView
 
 		private void readMapViewSettings(StreamReader sr)
 		{
-			MVCore.Parser.VarCollection vc = new MVCore.Parser.VarCollection(sr);
-			MVCore.Parser.KeyVal kv = null;
+			UtilLib.Parser.VarCollection vc = new UtilLib.Parser.VarCollection(sr);
+			UtilLib.Parser.KeyVal kv = null;
 
 			while ((kv = vc.ReadLine()) != null) {
 				try {

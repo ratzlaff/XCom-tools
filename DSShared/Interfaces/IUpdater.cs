@@ -1,6 +1,6 @@
 using System;
 
-namespace DSShared.Interfaces
+namespace UtilLib.Interfaces
 {
 	/// <summary>
 	/// XCSuite uses this interface to populate its list of items for version control

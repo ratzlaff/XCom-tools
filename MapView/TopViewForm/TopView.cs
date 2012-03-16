@@ -17,7 +17,7 @@ namespace MapView.TopViewForm
 {
 	public partial class TopView : ViewLib.Base.Map_Observer_Form
 	{
-		private Dictionary<ToolStripMenuItem, MVCore.Setting> visibleHash;
+		private Dictionary<ToolStripMenuItem, UtilLib.Setting> visibleHash;
 		public event EventHandler VisibleTileChanged;
 
 		#region Singleton access
@@ -44,7 +44,7 @@ namespace MapView.TopViewForm
 
 			MainWindow.Instance.MakeToolstrip(toolStrip);
 
-			visibleHash = new Dictionary<ToolStripMenuItem, MVCore.Setting>();
+			visibleHash = new Dictionary<ToolStripMenuItem, UtilLib.Setting>();
 
 			topViewPanel.Ground = miGround;
 			topViewPanel.West = miWest;

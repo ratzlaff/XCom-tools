@@ -1,7 +1,7 @@
 using System;
 using XCom.Interfaces;
 using System.Windows.Forms;
-using DSShared;
+using UtilLib;
 using MapLib.Base;
 
 namespace XCom.GameFiles.Images.xcFiles
@@ -136,7 +136,7 @@ namespace XCom.GameFiles.Images.xcFiles
 		//Method to save a collection in its original format
 		public override void SaveCollection(string directory, string file,XCImageCollection images)
 		{
-			DSShared.Windows.InputBox ib = new DSShared.Windows.InputBox("Enter Pck Options", SavingOptions);
+			UtilLib.Windows.InputBox ib = new UtilLib.Windows.InputBox("Enter Pck Options", SavingOptions);
 
 			if (ib.ShowDialog() == DialogResult.OK)
 			{

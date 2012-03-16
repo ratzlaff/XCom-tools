@@ -3,7 +3,7 @@ using System.IO;
 using System.Drawing;
 using System.Collections;
 using XCom.Interfaces;
-using DSShared;
+using UtilLib;
 using MapLib.Base;
 
 namespace XCom
@@ -45,7 +45,7 @@ namespace XCom
 						}
 						case 0xFFFD:
 						{
-                            image = DSShared.Bmp.MakeBitmap8(width, height, idx, p.Colors);
+                            image = UtilLib.Bmp.MakeBitmap8(width, height, idx, p.Colors);
 							Palette=p;
 							data.Close();
 							return;
@@ -55,7 +55,7 @@ namespace XCom
 			}
 			catch{}
 
-            image = DSShared.Bmp.MakeBitmap8(width, height, idx, p.Colors);
+            image = UtilLib.Bmp.MakeBitmap8(width, height, idx, p.Colors);
 			Palette=p;
 			data.Close();
 		}

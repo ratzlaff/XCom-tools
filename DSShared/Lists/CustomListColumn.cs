@@ -4,7 +4,7 @@ using System.Windows.Forms;
 using System.Drawing;
 using System.ComponentModel;
 
-namespace DSShared.Lists
+namespace UtilLib.Lists
 {
 	/// <summary>
 	/// Delegate for use in the CustomListColumn.WidthChanged and LeftChanged events

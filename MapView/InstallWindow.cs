@@ -6,7 +6,7 @@ using System.Windows.Forms;
 using System.IO;
 using System.Reflection;
 using XCom;
-using DSShared;
+using UtilLib;
 
 namespace MapView
 {

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Reflection;
 
-namespace DSShared.DB
+namespace UtilLib.DB
 {
 	/// <summary>
 	/// Class that wraps around a Type object that automates the retrieval and updating of rows in a database

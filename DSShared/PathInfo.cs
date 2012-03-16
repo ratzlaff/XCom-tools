@@ -1,6 +1,6 @@
 using System;
 
-namespace DSShared
+namespace UtilLib
 {
 	/// <summary>
 	/// Class to help pass around file paths

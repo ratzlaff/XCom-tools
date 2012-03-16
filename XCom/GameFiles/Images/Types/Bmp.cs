@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Drawing.Imaging;
 using System.Reflection;
 using XCom.Interfaces;
-using DSShared;
+using UtilLib;
 using MapLib.Base;
 
 #if hq2xWorks
@@ -42,15 +42,15 @@ namespace XCom
             if (collection.Count % across == 0)
                 mod = 0;
 
-            Bitmap b = DSShared.Bmp.MakeBitmap(across * (collection.IXCFile.ImageSize.Width + space) - space, (collection.Count / across + mod) * (collection.IXCFile.ImageSize.Height + space) - space, pal.Colors);
+            Bitmap b = UtilLib.Bmp.MakeBitmap(across * (collection.IXCFile.ImageSize.Width + space) - space, (collection.Count / across + mod) * (collection.IXCFile.ImageSize.Height + space) - space, pal.Colors);
 
             for (int i = 0; i < collection.Count; i++)
             {
                 int x = i % across * (collection.IXCFile.ImageSize.Width + space);
                 int y = i / across * (collection.IXCFile.ImageSize.Height + space);
-                DSShared.Bmp.Draw(collection[i].Image, b, x, y);
+                UtilLib.Bmp.Draw(collection[i].Image, b, x, y);
             }
-            DSShared.Bmp.Save(file, b);
+            UtilLib.Bmp.Save(file, b);
         }
 
         /// <summary>

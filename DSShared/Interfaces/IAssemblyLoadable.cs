@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace DSShared.Loadable
+namespace UtilLib.Loadable
 {
 	/// <summary>
 	/// Top-level interface for user-created addons. The classes that will be actively searched 

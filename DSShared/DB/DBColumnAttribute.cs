@@ -1,6 +1,6 @@
 using System;
 
-namespace DSShared.DB
+namespace UtilLib.DB
 {
 	/// <summary>
 	/// Tag properties with this attribute to enable the automatic retrieval and updating of information 

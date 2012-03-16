@@ -2,9 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Reflection;
-using DSShared.Interfaces;
+using UtilLib.Interfaces;
 
-namespace DSShared.Loadable
+namespace UtilLib.Loadable
 {
 	/// <summary>
 	/// This class will scan an assembly for a specific type and manage a singleton list of those objects.

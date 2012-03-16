@@ -2,7 +2,7 @@ using System;
 
 namespace MapView
 {
-	public class Updator:DSShared.Interfaces.IUpdater
+	public class Updator:UtilLib.Interfaces.IUpdater
 	{
 		public string UpdatePath
 		{

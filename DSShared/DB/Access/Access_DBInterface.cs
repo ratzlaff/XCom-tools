@@ -1,7 +1,7 @@
 using System;
 using System.Data.OleDb;
 
-namespace DSShared.DB_Access
+namespace UtilLib.DB_Access
 {
 	/// <summary>
 	/// Singleton object providing a central location to the connection object for an Access database

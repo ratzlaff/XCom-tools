@@ -2,9 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Drawing;
-using MVCore.Parser;
+using UtilLib.Parser;
 
-namespace MVCore
+namespace UtilLib
 {
 	public delegate string ConvertObject(object o);
 	public delegate void ValueChangedDelegate(Setting sender, string keyword, object val);

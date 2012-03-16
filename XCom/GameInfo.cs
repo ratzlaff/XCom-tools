@@ -6,7 +6,7 @@ using System.Drawing;
 using XCom.Interfaces;
 using System.Reflection;
 using XCom.Interfaces.Base;
-using DSShared;
+using UtilLib;
 using MapLib.Base;
 namespace XCom 
 {
@@ -23,7 +23,7 @@ namespace XCom
 
 		public static event ParseLineDelegate ParseLine;
 
-		public static void Init(Palette p, DSShared.PathInfo paths)
+		public static void Init(Palette p, UtilLib.PathInfo paths)
 		{
 			currentPalette = p;
 			pckHash = new Dictionary<Palette, Dictionary<string, PckFile>>();		

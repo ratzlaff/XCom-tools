@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using XCom.Interfaces;
-using DSShared;
+using UtilLib;
 
 namespace XCom
 {

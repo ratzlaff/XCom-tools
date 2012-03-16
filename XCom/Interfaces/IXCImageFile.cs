@@ -1,9 +1,9 @@
 using System;
 using System.Windows.Forms;
 using System.Collections.Generic;
-using DSShared;
-using DSShared.Interfaces;
-using DSShared.Loadable;
+using UtilLib;
+using UtilLib.Interfaces;
+using UtilLib.Loadable;
 using MapLib.Base;
 
 namespace XCom.Interfaces

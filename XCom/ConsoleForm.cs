@@ -5,7 +5,7 @@ using System.Data;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
-using DSShared.Windows;
+using UtilLib.Windows;
 using ViewLib.Base;
 
 namespace XCom

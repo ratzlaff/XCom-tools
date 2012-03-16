@@ -2,7 +2,7 @@ using System;
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace DSShared.Lists
+namespace UtilLib.Lists
 {
 	/// <summary>
 	/// Class that represents a row in a CustomList

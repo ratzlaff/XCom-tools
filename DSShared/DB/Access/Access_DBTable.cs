@@ -2,9 +2,9 @@ using System;
 using System.Reflection;
 using System.Collections;
 using System.Data.OleDb;
-using DSShared.DB;
+using UtilLib.DB;
 
-namespace DSShared.DB_Access
+namespace UtilLib.DB_Access
 {
 	/// <summary>
 	/// Delegate for the Access_DBTable.FinishGetAll event
@@ -26,7 +26,7 @@ namespace DSShared.DB_Access
 		/// <summary>
 		/// The DBTableType that was setup upon initial table registration
 		/// </summary>
-		protected DSShared.DB.DBTableType myType;
+		protected UtilLib.DB.DBTableType myType;
 		private static string paramPrefix="@DSS";
 
 		/// <summary>
@@ -42,7 +42,7 @@ namespace DSShared.DB_Access
 		/// <param name="tableName">Name of the table in the database this object represents</param>
 		public Access_DBTable(string tableName)
 		{
-			myType = DSShared.DB.DBTableTypeCache.Instance.CacheTable(tableName);
+			myType = UtilLib.DB.DBTableTypeCache.Instance.CacheTable(tableName);
 		}
 
 		/// <summary>
@@ -55,8 +55,8 @@ namespace DSShared.DB_Access
 		/// <returns></returns>
 		public static Hashtable GetAllHash(string table, bool cache, params WhereCol[] whereQuery)
 		{
-			if(cache && DSShared.DB.DBTableTypeCache.Instance.GetHash(table)!=null)
-				return DSShared.DB.DBTableTypeCache.Instance.GetHash(table);
+			if(cache && UtilLib.DB.DBTableTypeCache.Instance.GetHash(table)!=null)
+				return UtilLib.DB.DBTableTypeCache.Instance.GetHash(table);
 
 			Access_DBInterface.Instance.Connection.Open();
 			OleDbTransaction trans = Access_DBInterface.Instance.Connection.BeginTransaction();
@@ -91,12 +91,12 @@ namespace DSShared.DB_Access
 		/// <returns>A table of [key:int] [value:Access_DBTable] objects. The key is based on autonumber columns</returns>
 		public static Hashtable GetAllHash(OleDbConnection conn,OleDbTransaction trans,string table,bool cache,params WhereCol[] whereQuery)
 		{
-			if(cache && DSShared.DB.DBTableTypeCache.Instance.GetHash(table)!=null)
-				return DSShared.DB.DBTableTypeCache.Instance.GetHash(table);
+			if(cache && UtilLib.DB.DBTableTypeCache.Instance.GetHash(table)!=null)
+				return UtilLib.DB.DBTableTypeCache.Instance.GetHash(table);
 
 			ArrayList list = GetAll(conn,trans,table,cache,whereQuery);
 
-			DSShared.DB.DBTableType thisType = DSShared.DB.DBTableTypeCache.Instance.GetType(table);
+			UtilLib.DB.DBTableType thisType = UtilLib.DB.DBTableTypeCache.Instance.GetType(table);
 
 			if(thisType.AutoNumber!=null)
 			{
@@ -106,7 +106,7 @@ namespace DSShared.DB_Access
 					hash[pi.GetGetMethod().Invoke(dt,null)]=dt;
 
 				if(cache)
-					DSShared.DB.DBTableTypeCache.Instance.CacheHash(table,hash);
+					UtilLib.DB.DBTableTypeCache.Instance.CacheHash(table,hash);
 
 				return hash;
 			}
@@ -135,8 +135,8 @@ namespace DSShared.DB_Access
 		/// <returns>A list of Access_DBTable in the order returned by the query</returns>
 		public static ArrayList GetAll(string table, bool cache,params WhereCol[] whereQuery)
 		{
-			if(cache && DSShared.DB.DBTableTypeCache.Instance.GetList(table)!=null)
-				return DSShared.DB.DBTableTypeCache.Instance.GetList(table);
+			if(cache && UtilLib.DB.DBTableTypeCache.Instance.GetList(table)!=null)
+				return UtilLib.DB.DBTableTypeCache.Instance.GetList(table);
 
 			Access_DBInterface.Instance.Connection.Open();
 			OleDbTransaction trans = Access_DBInterface.Instance.Connection.BeginTransaction();
@@ -160,7 +160,7 @@ namespace DSShared.DB_Access
 		/// <returns>A list of Access_DBTable in the order returned by the query</returns>
 		public static ArrayList GetAll(OleDbConnection conn,OleDbTransaction trans,string table,bool cache,params WhereCol[] whereQuery)
 		{
-			DSShared.DB.DBTableType thisTable = DSShared.DB.DBTableTypeCache.Instance.CacheTable(table);
+			UtilLib.DB.DBTableType thisTable = UtilLib.DB.DBTableTypeCache.Instance.CacheTable(table);
 
 			OleDbCommand comm = new OleDbCommand("SELECT * FROM "+thisTable.TableName,conn,trans);
 
@@ -186,7 +186,7 @@ namespace DSShared.DB_Access
 
 			OleDbDataReader res = comm.ExecuteReader();
 			ArrayList list = new ArrayList();
-			Type myType = DSShared.DB.DBTableTypeCache.Instance.GetTableType(thisTable.TableName);
+			Type myType = UtilLib.DB.DBTableTypeCache.Instance.GetTableType(thisTable.TableName);
 			while(res.Read())
 			{
 				//if null object here, then the type does not have a default constructor defined
@@ -208,7 +208,7 @@ namespace DSShared.DB_Access
 				dbt.FinishGet(conn,trans);
 
 			if(cache)
-				DSShared.DB.DBTableTypeCache.Instance.CacheList(table,list);
+				UtilLib.DB.DBTableTypeCache.Instance.CacheList(table,list);
 
 			if(FinishGetAll!=null)
 				FinishGetAll(table,list);
@@ -225,7 +225,7 @@ namespace DSShared.DB_Access
 		/// <param name="whereQuery">Columns to base the delete query on</param>
 		public static void Delete(OleDbConnection conn,OleDbTransaction trans,string table, params WhereCol[]whereQuery)
 		{
-			DSShared.DB.DBTableType thisTable = DSShared.DB.DBTableTypeCache.Instance.CacheTable(table);
+			UtilLib.DB.DBTableType thisTable = UtilLib.DB.DBTableTypeCache.Instance.CacheTable(table);
 
 			OleDbCommand comm = new OleDbCommand("DELETE FROM "+thisTable.TableName+" WHERE ",conn,trans);
 
@@ -371,7 +371,7 @@ namespace DSShared.DB_Access
 			{
 				foreach(PropertyInfo pi in myType.Columns)
 				{
-					DSShared.DB.DBColumnAttribute attr = myType[pi];
+					UtilLib.DB.DBColumnAttribute attr = myType[pi];
 					if(uc==attr.ColumnName)
 					{
 						updateHash[pi]=true;
@@ -395,7 +395,7 @@ namespace DSShared.DB_Access
 					continue;
 
 				object val = pi.GetValue(this,null);
-				DSShared.DB.DBColumnAttribute attr = myType[pi];
+				UtilLib.DB.DBColumnAttribute attr = myType[pi];
 
 				if(!attr.IsAutoNumber && val!=null)
 				{
@@ -423,7 +423,7 @@ namespace DSShared.DB_Access
 			foreach(PropertyInfo pi in updateHash.Keys)
 			{
 				object val = pi.GetValue(this,null);
-				DSShared.DB.DBColumnAttribute attr = myType[pi];
+				UtilLib.DB.DBColumnAttribute attr = myType[pi];
 
 				if(val!=null)
 				{
@@ -470,7 +470,7 @@ namespace DSShared.DB_Access
 			foreach(PropertyInfo pi in myType.Columns)
 			{
 				object val = pi.GetValue(this,null);
-				DSShared.DB.DBColumnAttribute attr = myType[pi];
+				UtilLib.DB.DBColumnAttribute attr = myType[pi];
 
 				if(!attr.IsAutoNumber && val!=null)
 				{

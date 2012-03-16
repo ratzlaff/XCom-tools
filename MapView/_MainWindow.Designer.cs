@@ -56,7 +56,7 @@ namespace MapView
 			this.tsMapSize = new System.Windows.Forms.ToolStripStatusLabel();
 			this.toolStripContainer1 = new System.Windows.Forms.ToolStripContainer();
 			this.toolStrip = new System.Windows.Forms.ToolStrip();
-			this.cSplitList = new DSShared.Windows.CollapsibleSplitter();
+			this.cSplitList = new UtilLib.Windows.CollapsibleSplitter();
 			this.statusStrip1.SuspendLayout();
 			this.toolStripContainer1.TopToolStripPanel.SuspendLayout();
 			this.toolStripContainer1.SuspendLayout();
@@ -343,7 +343,7 @@ namespace MapView
 		private System.Windows.Forms.MenuItem miResize;
 		private System.Windows.Forms.MenuItem miInfo;
 		private System.Windows.Forms.MenuItem miExport;
-		private DSShared.Windows.CollapsibleSplitter cSplitList;
+		private UtilLib.Windows.CollapsibleSplitter cSplitList;
 		private System.Windows.Forms.StatusStrip statusStrip1;
 		private System.Windows.Forms.ToolStripStatusLabel statusMapName;
 		private System.Windows.Forms.ToolStripStatusLabel tsMapSize;

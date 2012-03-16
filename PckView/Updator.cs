@@ -5,7 +5,7 @@ using System.Reflection;
 
 namespace PckView
 {
-	public class Updator : DSShared.Interfaces.IUpdater
+	public class Updator : UtilLib.Interfaces.IUpdater
 	{
 		public string UpdatePath
 		{

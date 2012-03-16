@@ -5,7 +5,7 @@ using System.Drawing;
 using XCom.Interfaces;
 using System.Windows.Forms;
 using System.Drawing.Imaging;
-using DSShared;
+using UtilLib;
 using MapLib.Base;
 
 namespace XCom
@@ -23,7 +23,7 @@ namespace XCom
 			int across = (src.Width + space) / (width + space);
 			int down = (src.Height + space) / (height + space);
 
-			DSShared.Windows.ProgressWindow pw = new DSShared.Windows.ProgressWindow();
+			UtilLib.Windows.ProgressWindow pw = new UtilLib.Windows.ProgressWindow();
 			pw.ParentWindow = pvf;
 			pw.Minimum = 0;
 			pw.Maximum = across * down;

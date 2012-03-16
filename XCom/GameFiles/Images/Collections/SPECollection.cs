@@ -3,7 +3,7 @@ using XCom.Interfaces;
 using System.Collections.Generic;
 using System.IO;
 using System.Drawing;
-using DSShared;
+using UtilLib;
 using MapLib.Base;
 
 namespace XCom

@@ -18,7 +18,7 @@ namespace PckView
 			InitializeComponent();
 			profileInfo = new ImgProfile();
 			DialogResult = DialogResult.Cancel;
-			DSShared.Windows.RegistryInfo ri = new DSShared.Windows.RegistryInfo(this);
+			UtilLib.Windows.RegistryInfo ri = new UtilLib.Windows.RegistryInfo(this);
 
 			if (!Directory.Exists(XCom.SharedSpace.Instance["CustomDir"].ToString()))
 				Directory.CreateDirectory(XCom.SharedSpace.Instance["CustomDir"].ToString());

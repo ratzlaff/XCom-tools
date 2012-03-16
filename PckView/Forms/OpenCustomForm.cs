@@ -23,7 +23,7 @@ namespace PckView
 
 			//Console.WriteLine("File: "+file);
 
-			DSShared.Windows.RegistryInfo ri = new DSShared.Windows.RegistryInfo(this);
+			UtilLib.Windows.RegistryInfo ri = new UtilLib.Windows.RegistryInfo(this);
 			ri.AddProperty("WidVal");
 			ri.AddProperty("HeiVal");
 

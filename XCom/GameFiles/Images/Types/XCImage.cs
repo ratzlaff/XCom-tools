@@ -1,6 +1,6 @@
 using System;
 using System.Drawing;
-using DSShared;
+using UtilLib;
 using MapLib.Base;
 
 namespace XCom.Interfaces
@@ -21,7 +21,7 @@ namespace XCom.Interfaces
 			palette = pal;
 
 			if (pal != null)
-				image = DSShared.Bmp.MakeBitmap8(width, height, entries, pal.Colors);
+				image = UtilLib.Bmp.MakeBitmap8(width, height, entries, pal.Colors);
 		}
 
 		public XCImage()
@@ -63,7 +63,7 @@ namespace XCom.Interfaces
 
 		public virtual void Hq2x()
 		{
-			image = DSShared.Bmp.Hq2x(image);
+			image = UtilLib.Bmp.Hq2x(image);
 		}
 
 		public override string ToString()

@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace DSShared.Interfaces
+namespace UtilLib.Interfaces
 {
 	/// <summary>
 	/// Interface to define methods to property display information in open/save dialog boxes

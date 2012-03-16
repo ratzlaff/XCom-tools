@@ -4,7 +4,7 @@ using System.Drawing;
 using System.Collections;
 using XCom.Interfaces;
 using System.Collections.Generic;
-using DSShared;
+using UtilLib;
 
 namespace XCom
 {
@@ -44,7 +44,7 @@ namespace XCom
 					}
 				}
 			}
-            image = DSShared.Bmp.MakeBitmap8(320, 200, idx, p.Colors);
+            image = UtilLib.Bmp.MakeBitmap8(320, 200, idx, p.Colors);
 			Palette=p;
 
 			data.Close();

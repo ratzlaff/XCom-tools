@@ -7,7 +7,7 @@ using System.Drawing;
 using System.ComponentModel;
 using MapLib.Base;
 using MapLib;
-using MVCore;
+using UtilLib;
 
 namespace ViewLib.Base
 {
@@ -22,7 +22,7 @@ namespace ViewLib.Base
 		protected Point sel1, sel2, sel3, sel4;
 		protected int mR, mC, selR, selC;
 
-		protected MVCore.ValueChangedDelegate diamondHeightChanged;
+		protected UtilLib.ValueChangedDelegate diamondHeightChanged;
 
 		protected Rectangle borderRect;
 

@@ -5,8 +5,8 @@ using System.ComponentModel;
 using System.Windows.Forms;
 using XCom;
 using XCom.Interfaces;
-using DSShared;
-using DSShared.Windows;
+using UtilLib;
+using UtilLib.Windows;
 
 namespace PckView
 {

@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 
-namespace MVCore.Parser
+namespace UtilLib.Parser
 {
 	public class VarCollection
 	{

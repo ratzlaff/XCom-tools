@@ -2,7 +2,7 @@ using System;
 using System.Reflection;
 //using DSShared.Exceptions;
 
-namespace DSShared.Lists
+namespace UtilLib.Lists
 {
 	/// <summary>
 	/// Class that a CustomList uses to figure out the value of a particular row+column

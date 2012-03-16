@@ -53,7 +53,7 @@ using System.Drawing;
 using System.Windows.Forms;
 using System.Drawing.Drawing2D;
 
-namespace DSShared.Windows
+namespace UtilLib.Windows
 {   
 	/// <summary>
 	/// Specifies how the outline of the collapsible splitter is drawn

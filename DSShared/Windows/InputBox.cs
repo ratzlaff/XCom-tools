@@ -4,7 +4,7 @@ using System.Collections;
 using System.ComponentModel;
 using System.Windows.Forms;
 
-namespace DSShared.Windows
+namespace UtilLib.Windows
 {
 	/// <summary>
 	/// Delegate used for pressing the Okay button on an InputBox

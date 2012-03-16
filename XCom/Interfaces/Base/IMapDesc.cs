@@ -1,8 +1,8 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
-using DSShared.Loadable;
-using DSShared.Interfaces;
+using UtilLib.Loadable;
+using UtilLib.Interfaces;
 using MapLib.Base;
 
 namespace XCom.Interfaces.Base

@@ -4,10 +4,10 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.ComponentModel;
 using Microsoft.Win32;
-using DSShared.Windows;
+using UtilLib.Windows;
 using System.Reflection;
 
-namespace DSShared.Lists
+namespace UtilLib.Lists
 {
 	/// <summary>
 	/// Delegate for the CustomList.RowClick event
@@ -46,7 +46,7 @@ namespace DSShared.Lists
 		private int selRow=-1;
 		private VScrollBar vert;
 		private CustomListColumn overCol=null;
-		private DSShared.Windows.RegistryInfo ri;
+		private UtilLib.Windows.RegistryInfo ri;
 		private Type rowType;
 		private string name="";
 
@@ -122,7 +122,7 @@ namespace DSShared.Lists
 		/// <value>The registry info.</value>
 		[Browsable(false)]
 		[DefaultValue(null)]
-		public DSShared.Windows.RegistryInfo RegistryInfo
+		public UtilLib.Windows.RegistryInfo RegistryInfo
 		{
 			get{return ri;}
 			set

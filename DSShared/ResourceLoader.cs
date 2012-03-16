@@ -5,7 +5,7 @@ using System.Text;
 using System.Reflection;
 using System.IO;
 
-namespace DSShared
+namespace UtilLib
 {
 	public class ResourceLoader
 	{

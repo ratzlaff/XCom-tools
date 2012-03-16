@@ -10,9 +10,9 @@ using System.Drawing.Imaging;
 using System.Reflection;
 using XCom;
 using XCom.Interfaces;
-using DSShared;
-using DSShared.Windows;
-using DSShared.Loadable;
+using UtilLib;
+using UtilLib.Windows;
+using UtilLib.Loadable;
 using MapLib.Base;
 //.net file security
 //http://www.c-sharpcorner.com/Code/2002/April/DotNetSecurity.asp
@@ -454,7 +454,7 @@ namespace PckView
 					saveBmpSingle.FileName = TotalViewPck.Instance.Collection.Name + TotalViewPck.Instance.Selected.FileNum;
 
 				if (saveBmpSingle.ShowDialog() == DialogResult.OK)
-					DSShared.Bmp.Save(saveBmpSingle.FileName, TotalViewPck.Instance.Selected.Image);
+					UtilLib.Bmp.Save(saveBmpSingle.FileName, TotalViewPck.Instance.Selected.Image);
 			}
 		}
 
@@ -638,7 +638,7 @@ namespace PckView
 					{
 						//Console.WriteLine("Save to: "+path+@"\"+fName+(xc.FileNum+countNum)+"."+ext);
 						//Console.WriteLine("Save: " + path + @"\" + fName + string.Format("{0:" + zeros + "}", xc.FileNum) + "." + ext);
-						DSShared.Bmp.Save(path + @"\" + fName + string.Format("{0:" + zeros + "}", xc.FileNum) + "." + ext, xc.Image);
+						UtilLib.Bmp.Save(path + @"\" + fName + string.Format("{0:" + zeros + "}", xc.FileNum) + "." + ext, xc.Image);
 						//Console.WriteLine("---");
 						pw.Value = xc.FileNum;
 					}

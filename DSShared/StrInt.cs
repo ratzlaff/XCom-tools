@@ -1,6 +1,6 @@
 using System;
 
-namespace DSShared
+namespace UtilLib
 {
 	/// <summary>
 	/// A Lazy Class for storing a string and an int. CompareTo operates on the string held

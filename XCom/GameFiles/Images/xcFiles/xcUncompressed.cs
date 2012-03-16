@@ -1,6 +1,6 @@
 using System;
 using XCom.Interfaces;
-using DSShared;
+using UtilLib;
 using MapLib.Base;
 
 namespace XCom.GameFiles.Images.xcFiles

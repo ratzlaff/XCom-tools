@@ -6,7 +6,7 @@ using XCom.Interfaces.Base;
 using XCom;
 using System.Windows.Forms;
 using ViewLib.Base;
-using MVCore;
+using UtilLib;
 
 namespace MapView.TopViewForm
 {

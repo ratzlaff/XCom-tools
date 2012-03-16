@@ -1,6 +1,6 @@
 using System;
 
-namespace DSShared.Lists
+namespace UtilLib.Lists
 {
 	/// <summary>
 	/// Specifies the kind of editing that a property is able to have
