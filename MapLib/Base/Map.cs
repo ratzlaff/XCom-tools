@@ -246,7 +246,6 @@ namespace MapLib.Base
 			}
 		}
 
-		#region drag endpoints
 		private static MapLocation startDrag, endDrag;
 		public static MapLocation StartDrag
 		{
@@ -263,7 +262,6 @@ namespace MapLib.Base
 				FireSelectedChanged(stc);
 			}
 		}
-		#endregion
 
 		public static void FireHeightChanged(HeightChangedEventArgs e)
 		{
