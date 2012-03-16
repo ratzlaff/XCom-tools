@@ -257,7 +257,11 @@ namespace MapLib.Base
 		public static MapLocation EndDrag
 		{
 			get { return endDrag; }
-			set { endDrag = value; }
+			set { 
+				endDrag = value;
+				SelectedTileChangedEventArgs stc = new SelectedTileChangedEventArgs(value, current[endDrag.Row, endDrag.Col]);
+				FireSelectedChanged(stc);
+			}
 		}
 		#endregion
 
