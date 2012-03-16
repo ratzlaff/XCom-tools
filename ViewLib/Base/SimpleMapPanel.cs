@@ -41,7 +41,7 @@ namespace ViewLib.Base
 			sel3 = new Point(0, 0);
 			sel4 = new Point(0, 0);
 
-			diamondHeightChanged = new ValueChangedDelegate(diamondHeight);
+			diamondHeightChanged = diamondHeight;
 		}
 
 		[Browsable(false)]
@@ -138,11 +138,11 @@ namespace ViewLib.Base
 			Point s = new Point(0, 0);
 			Point e = new Point(0, 0);
 
-			s.X = Math.Min(MapControl.StartDrag.X, MapControl.EndDrag.X);
-			s.Y = Math.Min(MapControl.StartDrag.Y, MapControl.EndDrag.Y);
+			s.X = Math.Min(MapControl.StartDrag.Col, MapControl.EndDrag.Col);
+			s.Y = Math.Min(MapControl.StartDrag.Row, MapControl.EndDrag.Row);
 
-			e.X = Math.Max(MapControl.StartDrag.X, MapControl.EndDrag.X);
-			e.Y = Math.Max(MapControl.StartDrag.Y, MapControl.EndDrag.Y);
+			e.X = Math.Max(MapControl.StartDrag.Col, MapControl.EndDrag.Col);
+			e.Y = Math.Max(MapControl.StartDrag.Row, MapControl.EndDrag.Row);
 
 			//                 col hei
 			sel1.X = offX + (s.X - s.Y) * hWidth;
@@ -301,11 +301,6 @@ namespace ViewLib.Base
 			convertCoordsDiamond(e.X - offX, e.Y - offY, out selR, out selC);
 			map.SelectedTile = new MapLocation(selR, selC, map.CurrentHeight);
 			mDown = true;
-
-			Point p = new Point(selC, selR);
-
-			MapControl.StartDrag = p;
-			MapControl.EndDrag = p;
 		}
 
 		private bool mDown = false;
@@ -324,10 +319,11 @@ namespace ViewLib.Base
 				mC = col;
 
 				if (mDown) {
-					MapControl.EndDrag = new Point(col, row);
+					MapControl.EndDrag = new MapLocation(row, col, map.CurrentHeight);
 					viewDrag(null, null);
 					MapControl.RequestRefresh();
-				}
+				} else
+					Refresh();
 			}
 		}
 

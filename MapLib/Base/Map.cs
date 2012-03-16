@@ -101,6 +101,10 @@ namespace MapLib.Base
 				if (value.Row >= 0 && value.Row < this.mapSize.Rows &&
 					value.Col >= 0 && value.Col < this.mapSize.Cols) {
 					selected = value;
+
+					MapControl.StartDrag = selected;
+					MapControl.EndDrag = selected;
+
 					SelectedTileChangedEventArgs stc = new SelectedTileChangedEventArgs(value, this[selected.Row, selected.Col]);
 					MapControl.FireSelectedChanged(stc);
 					MapControl.RequestRefresh();
@@ -243,14 +247,14 @@ namespace MapLib.Base
 		}
 
 		#region drag endpoints
-		private static Point startDrag, endDrag;
-		public static Point StartDrag
+		private static MapLocation startDrag, endDrag;
+		public static MapLocation StartDrag
 		{
 			get { return startDrag; }
 			set { startDrag = value; }
 		}
 
-		public static Point EndDrag
+		public static MapLocation EndDrag
 		{
 			get { return endDrag; }
 			set { endDrag = value; }
