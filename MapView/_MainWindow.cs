@@ -149,8 +149,8 @@ namespace MapView
 			parent.MenuItems.Add(f.MenuItem);
 			f.SetupDefaultSettings();
 
-			registeredSettings.Add(f.Text, f.Settings);
-			registeredForms.Add(f.Text, f);
+			registeredSettings.Add(f.Name, f.Settings);
+			registeredForms.Add(f.Name, f);
 			RegisterDockForm(f, initialState);
 		}
 
