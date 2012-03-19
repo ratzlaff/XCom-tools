@@ -9,7 +9,7 @@ using MapLib.Base;
 using MapLib;
 using UtilLib;
 
-namespace ViewLib.Base
+namespace ViewLib
 {
 	public class SimpleMapPanel : Map_Observer_Control
 	{
@@ -218,11 +218,12 @@ namespace ViewLib.Base
 		/// <returns>null if (x,y) is an invalid location for a tile</returns>
 		public MapTile GetTile(int x, int y)
 		{
-			int row, col;
-			convertCoordsDiamond(x, y, out row, out col);
-			if (row >= 0 && row < map.Size.Rows &&
-				col >= 0 && col < map.Size.Cols)
-				return map[row, col];
+			if (map != null) {
+				int row, col;
+				convertCoordsDiamond(x, y, out row, out col);
+				if (row >= 0 && row < map.Size.Rows && col >= 0 && col < map.Size.Cols)
+					return map[row, col];
+			}
 			return null;
 		}
 
@@ -277,13 +278,27 @@ namespace ViewLib.Base
 						for (int col = 0, x = startX, y = startY; col < map.Size.Cols; col++, x += hWidth, y += hHeight)
 							RenderCell(g, x, y, row, col);
 
+					if (pens == null)
+						pens = new Dictionary<string, Pen>();
+
+					if (!pens.ContainsKey("GridColor"))
+						pens["GridColor"] = Pens.Black;
+
 					for (int i = 0; i <= map.Size.Rows; i++)
 						g.DrawLine(pens["GridColor"], offX - i * hWidth, offY + i * hHeight, ((map.Size.Cols - i) * hWidth) + offX, ((i + map.Size.Cols) * hHeight) + offY);
 					for (int i = 0; i <= map.Size.Cols; i++)
 						g.DrawLine(pens["GridColor"], offX + i * hWidth, offY + i * hHeight, (i * hWidth) - map.Size.Rows * hWidth + offX, (i * hHeight) + map.Size.Rows * hHeight + offY);
 
+
+					if (!pens.ContainsKey("SelectColor"))
+						pens["SelectColor"] = Pens.Green;
+
 					if (copyArea != null)
 						g.DrawPath(pens["SelectColor"], copyArea);
+
+
+					if (!pens.ContainsKey("MouseColor"))
+						pens["MouseColor"] = Pens.Blue;
 
 					if (mR < map.Size.Rows && mC < map.Size.Cols && mR >= 0 && mC >= 0) {
 						int xc = (mC - mR) * hWidth + offX;
@@ -292,15 +307,18 @@ namespace ViewLib.Base
 						GraphicsPath selPath = CellPath(xc, yc);
 						g.DrawPath(pens["MouseColor"], selPath);
 					}
+
 				}
 			}
 		}
 
 		protected override void OnMouseDown(MouseEventArgs e)
 		{
-			convertCoordsDiamond(e.X - offX, e.Y - offY, out selR, out selC);
-			map.SelectedTile = new MapLocation(selR, selC, map.CurrentHeight);
-			mDown = true;
+			if (map != null) {
+				convertCoordsDiamond(e.X - offX, e.Y - offY, out selR, out selC);
+				map.SelectedTile = new MapLocation(selR, selC, map.CurrentHeight);
+				mDown = true;
+			}
 		}
 
 		private bool mDown = false;

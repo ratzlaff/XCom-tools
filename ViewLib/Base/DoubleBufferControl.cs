@@ -7,7 +7,7 @@ using System.Data;
 using System.Text;
 using System.Windows.Forms;
 
-namespace ViewLib.Base
+namespace ViewLib
 {
 	public class DoubleBufferControl : UserControl
 	{

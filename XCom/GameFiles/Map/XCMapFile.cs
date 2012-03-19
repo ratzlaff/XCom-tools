@@ -69,6 +69,11 @@ namespace XCom
 			return re;
 		}
 
+		public override MapTile BlankTile()
+		{
+			return XCMapTile.BlankTile;
+		}
+
 		public string[] Dependencies
 		{
 			get { return dependencies; }

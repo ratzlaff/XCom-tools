@@ -6,7 +6,7 @@ namespace MapLib.Base
 	/// <summary>
 	/// Objects of this class are drawn to the screen with the MapViewPanel
 	/// </summary>
-	public class MapTile
+	public abstract class MapTile
 	{
 		protected List<Tile> usedTiles;
 
@@ -34,11 +34,13 @@ namespace MapLib.Base
             get { return drawAbove; }
             set { drawAbove = value; }
         }
-
+		/*
 		private static MapTile blankTile = new MapTile();
 		public static MapTile BlankTile
 		{
 			get { return blankTile; }
-		}
+		}*/
+
+		public abstract void Paste(MapTile mapTile);
 	}
 }

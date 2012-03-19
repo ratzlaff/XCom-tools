@@ -11,14 +11,14 @@ using System.IO;
 
 namespace ViewLib.MainForms
 {
-	public partial class MainMapView : Base.MainDockWindow
+	public partial class MainMapView : MainDockWindow
 	{
 		public MainMapView()
 		{
 			InitializeComponent();
 
-			RegisterForm(new ToolForms.MapList(), DockState.DockLeft);
-			RegisterForm(new ToolForms.MapView(), DockState.Document);
+//			RegisterForm(new ToolForms.MapList(), DockState.DockLeft);
+//			RegisterForm(new ToolForms.MapView(), DockState.Document);
 
 			LayoutFile = Path.Combine(Path.GetDirectoryName(Application.UserAppDataPath), "layout.xml");
 			DockPanel = dockPanel;

@@ -30,6 +30,8 @@ namespace MapView
 			this.menu = new System.Windows.Forms.MainMenu(this.components);
 			this.menuItem1 = new System.Windows.Forms.MenuItem();
 			this.mcdInfoTab = new System.Windows.Forms.MenuItem();
+			this.menuItem2 = new System.Windows.Forms.MenuItem();
+			this.menuItem3 = new System.Windows.Forms.MenuItem();
 			this.tabs = new System.Windows.Forms.TabControl();
 			this.allTab = new System.Windows.Forms.TabPage();
 			this.all = new MapView.TilePanel();
@@ -41,8 +43,6 @@ namespace MapView
 			this.nWalls = new MapView.TilePanel();
 			this.objectsTab = new System.Windows.Forms.TabPage();
 			this.objs = new MapView.TilePanel();
-			this.menuItem2 = new System.Windows.Forms.MenuItem();
-			this.menuItem3 = new System.Windows.Forms.MenuItem();
 			this.tabs.SuspendLayout();
 			this.allTab.SuspendLayout();
 			this.groundTab.SuspendLayout();
@@ -70,6 +70,19 @@ namespace MapView
 			this.mcdInfoTab.Text = "MCD Info";
 			this.mcdInfoTab.Click += new System.EventHandler(this.mcdInfoTab_Click);
 			// 
+			// menuItem2
+			// 
+			this.menuItem2.Index = 1;
+			this.menuItem2.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
+            this.menuItem3});
+			this.menuItem2.Text = "Edit";
+			// 
+			// menuItem3
+			// 
+			this.menuItem3.Index = 0;
+			this.menuItem3.Text = "Options";
+			this.menuItem3.Click += new System.EventHandler(this.options_click);
+			// 
 			// tabs
 			// 
 			this.tabs.Controls.Add(this.allTab);
@@ -81,7 +94,7 @@ namespace MapView
 			this.tabs.Location = new System.Drawing.Point(0, 0);
 			this.tabs.Name = "tabs";
 			this.tabs.SelectedIndex = 0;
-			this.tabs.Size = new System.Drawing.Size(323, 156);
+			this.tabs.Size = new System.Drawing.Size(542, 310);
 			this.tabs.TabIndex = 0;
 			// 
 			// allTab
@@ -89,7 +102,7 @@ namespace MapView
 			this.allTab.Controls.Add(this.all);
 			this.allTab.Location = new System.Drawing.Point(4, 22);
 			this.allTab.Name = "allTab";
-			this.allTab.Size = new System.Drawing.Size(315, 130);
+			this.allTab.Size = new System.Drawing.Size(534, 284);
 			this.allTab.TabIndex = 0;
 			this.allTab.Text = "All";
 			// 
@@ -99,7 +112,7 @@ namespace MapView
 			this.all.Location = new System.Drawing.Point(0, 0);
 			this.all.Name = "all";
 			this.all.SelectedTile = null;
-			this.all.Size = new System.Drawing.Size(315, 130);
+			this.all.Size = new System.Drawing.Size(534, 284);
 			this.all.StartY = 0;
 			this.all.TabIndex = 0;
 			this.all.TileChanged += new MapView.SelectedTileChanged(this.tileChanged);
@@ -188,24 +201,12 @@ namespace MapView
 			this.objs.TileCategory = "Object";
 			this.objs.TileChanged += new MapView.SelectedTileChanged(this.tileChanged);
 			// 
-			// menuItem2
-			// 
-			this.menuItem2.Index = 1;
-			this.menuItem2.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
-            this.menuItem3});
-			this.menuItem2.Text = "Edit";
-			// 
-			// menuItem3
-			// 
-			this.menuItem3.Index = 0;
-			this.menuItem3.Text = "Options";
-			this.menuItem3.Click += new System.EventHandler(this.options_click);
-			// 
 			// TileView
 			// 
 			this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
-			this.ClientSize = new System.Drawing.Size(323, 156);
+			this.ClientSize = new System.Drawing.Size(542, 310);
 			this.Controls.Add(this.tabs);
+			this.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.LoadedVisible = true;
 			this.Menu = this.menu;
 			this.Name = "TileView";

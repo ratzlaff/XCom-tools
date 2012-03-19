@@ -67,4 +67,30 @@ namespace MapLib
 			get { return map; }
 		}
 	}
+
+	public enum ModifiedType {
+		kTileChanged
+	,	kNewMap
+	};
+
+	public class MapModifiedArgs : EventArgs
+	{
+		public MapModifiedArgs(object who, ModifiedType inType) 
+		{
+			ModifiedType = inType;
+			Initiator = who;
+		}
+
+		public ModifiedType ModifiedType
+		{
+			get;
+			set;
+		}
+
+		public object Initiator
+		{
+			get;
+			set;
+		}
+	}
 }

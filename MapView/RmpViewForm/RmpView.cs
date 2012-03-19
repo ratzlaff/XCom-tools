@@ -9,6 +9,7 @@ using System.Drawing.Drawing2D;
 using XCom.Interfaces.Base;
 using MapLib;
 using MapLib.Base;
+using ViewLib;
 
 namespace MapView.RmpViewForm
 {
@@ -25,7 +26,7 @@ namespace MapView.RmpViewForm
 
 	//public delegate void RmpClick(int row,int col,MouseButtons button);
 
-	public partial class RmpView : ViewLib.Base.Map_Observer_Form
+	public partial class RmpView : Map_Observer_Form
 	{
 		private new XCMapFile map;
 		private Label locInfo;
@@ -135,7 +136,10 @@ namespace MapView.RmpViewForm
 			idxLabel.Text = this.Text;
 			try
 			{
-				currEntry = ((XCMapTile)e.SelectedTile).Rmp;
+				if (e.SelectedTile != null)
+					currEntry = ((XCMapTile)e.SelectedTile).Rmp;
+				else
+					currEntry = null;
 
 //				if (currEntry == null && e.MouseEventArgs.Button == MouseButtons.Right)
 //				{
@@ -243,8 +247,8 @@ namespace MapView.RmpViewForm
 
 		protected override void mapChanged(MapChangedEventArgs e)
 		{
-			base.mapChanged(e);
 			this.map = (XCMapFile)e.Map;
+			base.mapChanged(e);
 		}
 
 		public override void HeightChanged(Map sender, MapLib.HeightChangedEventArgs e)

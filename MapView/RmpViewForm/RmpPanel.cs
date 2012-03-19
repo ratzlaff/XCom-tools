@@ -8,7 +8,7 @@ using System.Windows.Forms;
 using System.Drawing.Drawing2D;
 using XCom;
 using XCom.Interfaces.Base;
-using ViewLib.Base;
+using ViewLib;
 using UtilLib;
 using MapLib;
 

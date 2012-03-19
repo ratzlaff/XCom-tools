@@ -6,7 +6,7 @@ using System.Drawing;
 using System.Reflection;
 using XCom;
 using XCom.Interfaces.Base;
-using ViewLib.Base;
+using ViewLib;
 using UtilLib;
 using MapLib;
 using MapLib.Base;
@@ -127,28 +127,28 @@ namespace MapView.TopViewForm
 			}
 
 			if (mapTile != null && mapTile.Ground != null) {
-				g.DrawImage(mapTile.Ground[MapViewPanel.Current].Image, startX, startY - mapTile.Ground.YOffset);
+				g.DrawImage(mapTile.Ground[MapViewScrollPanel.Current].Image, startX, startY - mapTile.Ground.YOffset);
 				if (mapTile.Ground.IsDoor)
 					g.DrawString("Door", Font, System.Drawing.Brushes.Black, startX, startY + PckImage.Height - Font.Height);
 			} else
 				g.DrawImage(Globals.ExtraTiles[3].Image, startX, startY);
 
 			if (mapTile != null && mapTile.West != null) {
-				g.DrawImage(mapTile.West[MapViewPanel.Current].Image, startX + ((tileWidth + 2 * space)), startY - mapTile.West.YOffset);
+				g.DrawImage(mapTile.West[MapViewScrollPanel.Current].Image, startX + ((tileWidth + 2 * space)), startY - mapTile.West.YOffset);
 				if (mapTile.West.IsDoor)
 					g.DrawString("Door", Font, System.Drawing.Brushes.Black, startX + ((tileWidth + 2 * space)), startY + PckImage.Height - Font.Height);
 			} else
 				g.DrawImage(Globals.ExtraTiles[1].Image, startX + ((tileWidth + 2 * space)), startY);
 
 			if (mapTile != null && mapTile.North != null) {
-				g.DrawImage(mapTile.North[MapViewPanel.Current].Image, startX + (2 * (tileWidth + 2 * space)), startY - mapTile.North.YOffset);
+				g.DrawImage(mapTile.North[MapViewScrollPanel.Current].Image, startX + (2 * (tileWidth + 2 * space)), startY - mapTile.North.YOffset);
 				if (mapTile.North.IsDoor)
 					g.DrawString("Door", Font, System.Drawing.Brushes.Black, startX + (2 * (tileWidth + 2 * space)), startY + PckImage.Height - Font.Height);
 			} else
 				g.DrawImage(Globals.ExtraTiles[2].Image, startX + (2 * (tileWidth + 2 * space)), startY);
 
 			if (mapTile != null && mapTile.Content != null) {
-				g.DrawImage(mapTile.Content[MapViewPanel.Current].Image, startX + (3 * (tileWidth + 2 * space)), startY - mapTile.Content.YOffset);
+				g.DrawImage(mapTile.Content[MapViewScrollPanel.Current].Image, startX + (3 * (tileWidth + 2 * space)), startY - mapTile.Content.YOffset);
 				if (mapTile.Content.IsDoor)
 					g.DrawString("Door", Font, System.Drawing.Brushes.Black, startX + (3 * (tileWidth + 2 * space)), startY + PckImage.Height - Font.Height);
 			} else

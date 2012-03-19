@@ -4,7 +4,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using XCom.Interfaces;
 using XCom;
-using ViewLib.Base;
+using ViewLib;
 using UtilLib;
 
 namespace PckView

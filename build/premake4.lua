@@ -23,7 +23,7 @@ solution "Progs"
 		files { "../MapView/**.cs", "../MapView/**.resx", "../MapView/Properties/Settings.settings" }
 		embedded { "../MapView/_Embedded/**.*" }
 		
-		links { "UtilLib", "MapLib", "ViewLib", "XCom", "System", "System.Core", "System.Data", "System.Design", "System.Windows.Forms", "System.Drawing", "System.Management" }
+		links { "UtilLib", "MapLib", "ViewLib", "../libs/WeifenLuo.WinFormsUI.Docking.dll", "XCom", "System", "System.Core", "System.Data", "System.Design", "System.Windows.Forms", "System.Drawing", "System.Management" }
 		prebuildcommands { "SubWCRev $(ProjectDir) $(ProjectDir)Properties\\AssemblyInfo.template $(ProjectDir)Properties\\AssemblyInfo.cs" }
 		
 	-- PckView
@@ -45,7 +45,7 @@ solution "Progs"
 		files { "../XCom/**.cs", "../XCom/**.resx", "../XCom/Properties/Settings.settings" }
 		embedded { "../XCom/_Embedded/**.*" }
 		
-		links { "UtilLib", "MapLib", "ViewLib", "System", "System.Core", "System.Data", "System.Drawing", "System.Design", "System.Windows.Forms", "../libs/WeifenLuo.WinFormsUI.Docking.dll" }
+		links { "UtilLib", "MapLib", "System", "System.Core", "System.Data", "System.Drawing", "System.Design", "System.Windows.Forms", "../libs/WeifenLuo.WinFormsUI.Docking.dll" }
 		prebuildcommands { "SubWCRev $(ProjectDir) $(ProjectDir)Properties\\AssemblyInfo.template $(ProjectDir)Properties\\AssemblyInfo.cs" }
 		
 	-- Utility library
@@ -77,7 +77,7 @@ solution "Progs"
 		language "C#"
 		files { "../ViewLib/**.cs", "../ViewLib/**.resx", "../ViewLib/Properties/Settings.settings" }
 		embedded { "../ViewLib/_Embedded/**.*" }
-		
+
 		links { "UtilLib", "MapLib", "../libs/WeifenLuo.WinFormsUI.Docking.dll", "System", "System.Core", "System.Data", "System.Design", "System.Drawing", "System.Management", "System.Windows.Forms" }
 		prebuildcommands { "SubWCRev $(ProjectDir) $(ProjectDir)Properties\\AssemblyInfo.template $(ProjectDir)Properties\\AssemblyInfo.cs" }
 		

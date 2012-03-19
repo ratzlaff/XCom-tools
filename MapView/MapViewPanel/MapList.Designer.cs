@@ -1,4 +1,4 @@
-namespace ViewLib.ToolForms
+namespace MapView
 {
 	partial class MapList
 	{
@@ -27,32 +27,34 @@ namespace ViewLib.ToolForms
 		/// </summary>
 		private void InitializeComponent()
 		{
-			this.tvMaps = new System.Windows.Forms.TreeView();
+			this.tvMapList = new System.Windows.Forms.TreeView();
 			this.SuspendLayout();
 			// 
-			// tvMaps
+			// tvMapList
 			// 
-			this.tvMaps.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.tvMaps.Location = new System.Drawing.Point(0, 0);
-			this.tvMaps.Name = "tvMaps";
-			this.tvMaps.Size = new System.Drawing.Size(284, 262);
-			this.tvMaps.TabIndex = 0;
+			this.tvMapList.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.tvMapList.Location = new System.Drawing.Point(0, 0);
+			this.tvMapList.Name = "tvMapList";
+			this.tvMapList.Size = new System.Drawing.Size(284, 262);
+			this.tvMapList.TabIndex = 0;
+			this.tvMapList.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.mapList_AfterSelect);
 			// 
 			// MapList
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(284, 262);
-			this.Controls.Add(this.tvMaps);
+			this.Controls.Add(this.tvMapList);
 			this.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.LoadedVisible = true;
 			this.Name = "MapList";
-			this.Text = "Maps";
+			this.Text = "Map List";
 			this.ResumeLayout(false);
 
 		}
 
 		#endregion
 
-		private System.Windows.Forms.TreeView tvMaps;
+		private System.Windows.Forms.TreeView tvMapList;
 	}
 }

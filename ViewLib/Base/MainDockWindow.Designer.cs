@@ -1,4 +1,4 @@
-namespace ViewLib.Base
+namespace ViewLib
 {
 	partial class MainDockWindow
 	{
@@ -37,8 +37,6 @@ namespace ViewLib.Base
 			this.IsMdiContainer = true;
 			this.Name = "MainDockWindow";
 			this.Text = "MainDockWindow";
-			this.Load += new System.EventHandler(this.MainDockWindow_Load);
-			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainDockWindow_FormClosing);
 			this.ResumeLayout(false);
 
 		}

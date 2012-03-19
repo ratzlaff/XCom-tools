@@ -7,7 +7,7 @@ using MapLib.Base;
 using UtilLib;
 using MapLib;
 
-namespace ViewLib.Base
+namespace ViewLib
 {
 	public class Map_Observer_Control : DoubleBufferControl
 	{
@@ -28,6 +28,7 @@ namespace ViewLib.Base
 		protected virtual void mapChanged(MapChangedEventArgs e)
 		{
 			this.map = e.Map;
+			Refresh();
 			OnResize(null);
 		}
 

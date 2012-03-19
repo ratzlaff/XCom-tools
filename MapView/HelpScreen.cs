@@ -10,7 +10,7 @@ namespace MapView
 	/// <summary>
 	/// Summary description for HelpScreen.
 	/// </summary>
-	public class HelpScreen : ViewLib.Base.Map_Observer_Form
+	public class HelpScreen : ViewLib.Map_Observer_Form
 	{
 		private System.Windows.Forms.TabControl tabMain;
 		private System.Windows.Forms.TabPage tabPage1;

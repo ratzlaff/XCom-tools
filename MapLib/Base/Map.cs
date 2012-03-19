@@ -5,6 +5,7 @@ using System.Drawing;
 
 namespace MapLib.Base
 {
+	public delegate void MapModifiedDelegate(MapModifiedArgs e);
 	public delegate void MapChangedDelegate(MapChangedEventArgs e);
 	public delegate void HeightChangedDelegate(Map sender, HeightChangedEventArgs e);
 	public delegate void TileSelectionChangedDelegate(Map sender, SelectedTileChangedEventArgs e);
@@ -13,7 +14,7 @@ namespace MapLib.Base
 	/// <summary>
 	/// Abstract base class definining all common functionality of an editable map
 	/// </summary>
-	public class Map
+	public abstract class Map
 	{
 		protected int currentHeight = 0;
 		protected MapLocation selected;
@@ -167,7 +168,7 @@ namespace MapLib.Base
 			for (int hc = 0; hc < h; hc++)
 				for (int rc = 0; rc < r; rc++)
 					for (int cc = 0; cc < c; cc++)
-						newMap[(r * c * hc) + (rc * c) + cc] = MapTile.BlankTile;
+						newMap[(r * c * hc) + (rc * c) + cc] = BlankTile();
 
 			for (int hc = 0; hc < h && hc < mapSize.Height; hc++)
 				for (int rc = 0; rc < r && rc < mapSize.Rows; rc++)
@@ -177,6 +178,64 @@ namespace MapLib.Base
 			mapData = newMap;
 			mapSize = new MapSize(r, c, h);
 			currentHeight = (byte)(mapSize.Height - 1);
+		}
+
+		public abstract MapTile BlankTile();
+
+		private MapTile[,] copied;
+		public void Paste(MapLocation startDrag, MapLocation endDrag)
+		{
+			if (copied != null) {
+				//row  col
+				//y    x
+
+				for (int r = startDrag.Row; r < Size.Rows && (r - startDrag.Row) < copied.GetLength(0); r++)
+					for (int c = startDrag.Col; c < Size.Cols && (c - startDrag.Col) < copied.GetLength(1); c++) {
+						this[r, c].Paste(copied[r - startDrag.Row, c - startDrag.Col]);
+					}
+
+				MapControl.FireMapModified(new MapModifiedArgs(this, ModifiedType.kTileChanged));
+				MapControl.RequestRefresh();
+			}
+		}
+
+		public void ClearSelection(MapLocation startDrag, MapLocation endDrag)
+		{
+			MapLocation s = new MapLocation(0, 0);
+			MapLocation e = new MapLocation(0, 0);
+
+			s.Row = Math.Min(startDrag.Row, endDrag.Row);
+			s.Col = Math.Min(startDrag.Col, endDrag.Col);
+
+			e.Row = Math.Max(startDrag.Row, endDrag.Row);
+			e.Col = Math.Max(startDrag.Col, endDrag.Col);
+
+			for (int c = s.Col; c <= e.Col; c++)
+				for (int r = s.Row; r <= e.Row; r++)
+					this[r, c] = BlankTile();
+
+			MapControl.FireMapModified(new MapModifiedArgs(this, ModifiedType.kTileChanged));
+			MapControl.RequestRefresh();
+		}
+
+		public void Copy(MapLocation startDrag, MapLocation endDrag)
+		{
+			MapLocation s = new MapLocation(0, 0);
+			MapLocation e = new MapLocation(0, 0);
+
+			s.Row = Math.Min(startDrag.Row, endDrag.Row);
+			s.Col = Math.Min(startDrag.Col, endDrag.Col);
+
+			e.Row = Math.Max(startDrag.Row, endDrag.Row);
+			e.Col = Math.Max(startDrag.Col, endDrag.Col);
+
+			//row  col
+			//y    x
+			copied = new MapTile[e.Row - s.Row + 1, e.Col - s.Col + 1];
+
+			for (int c = s.Col; c <= e.Col; c++)
+				for (int r = s.Row; r <= e.Row; r++)
+					copied[r - s.Row, c - s.Col] = this[r, c];
 		}
 
 #if NO

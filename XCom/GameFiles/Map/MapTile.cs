@@ -140,6 +140,19 @@ namespace XCom
 			}
 		}
 
+		public override void Paste(MapTile mapTile)
+		{
+			if (mapTile is XCMapTile) {
+				XCMapTile copyTile = (XCMapTile)mapTile;
+				Ground = copyTile.Ground;
+				Content = copyTile.Content;
+				West = copyTile.West;
+				North = copyTile.North;
+			} else {
+				throw new InvalidCastException("Incoming tile is not a XCMapTile");
+			}
+		}
+
 		//public IUnit Unit
 		//{
 		//	get { return unit; }

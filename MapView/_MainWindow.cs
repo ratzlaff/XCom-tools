@@ -17,17 +17,19 @@ using System.Collections.Generic;
 using MapView.RmpViewForm;
 using MapView.TopViewForm;
 using MapLib;
-using ViewLib.Base;
+using WeifenLuo.WinFormsUI.Docking;
+using ViewLib;
 
 namespace MapView
 {
 	public delegate void StringDelegate(object sender, string args);
 
-	public partial class MainWindow : ViewLib.Base.Map_Observer_Form
+	public partial class MainWindow : MainDockWindow
 	{
-		private MapView.MapViewPanel mapView;
+//		private MapView.MapViewPanel mapView;
 		private LoadingForm lf;
 		private Dictionary<string, Map_Observer_Form> registeredForms;
+		private Settings settings;
 
 		public MainWindow()
 		{
@@ -42,11 +44,13 @@ namespace MapView
 			PathInfo settingsFile = new PathInfo(SharedSpace.Instance.GetString("SettingsDir"), "MVSettings", "dat");
 			PathInfo mapeditFile = new PathInfo(SharedSpace.Instance.GetString("SettingsDir"), "MapEdit", "dat");
 			PathInfo imagesFile = new PathInfo(SharedSpace.Instance.GetString("SettingsDir"), "Images", "dat");
+			PathInfo layoutFile = new PathInfo(SharedSpace.Instance.GetString("SettingsDir"), "Layout", "xml");
 
 			sharedSpace.GetObj("MV_PathsFile", pathsFile);
 			sharedSpace.GetObj("MV_SettingsFile", settingsFile);
 			sharedSpace.GetObj("MV_MapEditFile", mapeditFile);
 			sharedSpace.GetObj("MV_ImagesFile", imagesFile);
+			sharedSpace.GetObj("MV_LayoutFile", layoutFile);
 			#endregion
 
 			if (!pathsFile.Exists()) {
@@ -67,45 +71,28 @@ namespace MapView
 
 			xConsole.AddLine("Palette transparencies set");
 
-			MapViewPanel.ImageUpdate += new EventHandler(update);
-
-			mapView = MapViewPanel.Instance;
-			mapView.Dock = DockStyle.Fill;
-
-			instance = this;
-
 			/***********************/
 			InitializeComponent();
 			/***********************/
 
-			mapList.TreeViewNodeSorter = new System.Collections.CaseInsensitiveComparer();
+			DockPanel = dockPanel;
+			LayoutFile = SharedSpace.Instance["MV_LayoutFile"].ToString();
 
-			toolStripContainer1.ContentPanel.Controls.Add(mapView);
-			MakeToolstrip(toolStrip);
-			toolStrip.Items.Add(new ToolStripSeparator());
+			MakeToolstrip(tools);
+			tools.Items.Add(new ToolStripSeparator());
 
 			xConsole.AddLine("Main view window created");
-
-			try {
-				mapView.View.Cursor = new Cursor(GameInfo.CachePck(SharedSpace.Instance.GetString("cursorFile"), "", 4, XCPalette.TFTDBattle));
-			} catch {
-				try {
-					mapView.View.Cursor = new Cursor(GameInfo.CachePck(SharedSpace.Instance.GetString("cursorFile"), "", 2, XCPalette.UFOBattle));
-				} catch { mapView.Cursor = null; }
-			}
-
-			xConsole.AddLine("Cursor loaded");
-
-			initList();
 
 			SetupDefaultSettings();
 
 			registeredForms = new Dictionary<string, Map_Observer_Form>();
-			registeredForms["MainWindow"] = this;
+//			registeredForms["MainWindow"] = this;
 
-			registerForm(TopView.Instance, showMenu);
-			registerForm(TileView.Instance, showMenu);
-			registerForm(RmpView.Instance, showMenu);
+			registerForm(MapList.Instance, showMenu, DockState.DockLeft);
+			registerForm(TopView.Instance, showMenu, DockState.Float);
+			registerForm(TileView.Instance, showMenu, DockState.DockRight);
+			registerForm(RmpView.Instance, showMenu, DockState.Float);
+			registerForm(MapViewTool.Instance, showMenu, DockState.Document);
 
 //			if (XCom.Globals.UseBlanks)
 //				registerForm(mapView.BlankForm, showMenu);
@@ -113,8 +100,8 @@ namespace MapView
 //			addWindow(xConsole.Instance,showMenu);
 //			((MenuItem)windowMI[xConsole.Instance]).PerformClick();
 
-			registerForm(new HelpScreen(), miHelp);
-			registerForm(new AboutWindow(), miHelp);
+			registerForm(new HelpScreen(), miHelp, DockState.Float);
+			registerForm(new AboutWindow(), miHelp, DockState.Float);
 			xConsole.AddLine("Quick help and About created");
 
 			if (settingsFile.Exists()) {
@@ -155,18 +142,13 @@ namespace MapView
 			Show();
 		}
 
-		private static MainWindow instance;
-		public static MainWindow Instance
-		{
-			get { return instance; }
-		}
-
-		private void registerForm(Map_Observer_Form f, MenuItem parent)
+		private void registerForm(Map_Observer_Form f, MenuItem parent, DockState initialState)
 		{
 			parent.MenuItems.Add(f.MenuItem);
 			f.SetupDefaultSettings();
 
 			registeredForms.Add(f.Text, f);
+			RegisterDockForm(f, initialState);
 		}
 
 		private void parseLine(XCom.KeyVal line, XCom.VarCollection vars)
@@ -208,7 +190,7 @@ namespace MapView
 
 		private void changeSetting(object sender, string key, object val)
 		{
-			Settings[key].Value = val;
+			settings[key].Value = val;
 			switch (key) {
 				case "Animation":
 					bool animVal = (bool)val;
@@ -216,9 +198,9 @@ namespace MapView
 					offItem.Checked = !animVal;
 
 					if ((bool)val)
-						MapViewPanel.Start();
+						MapViewScrollPanel.Start();
 					else
-						MapViewPanel.Stop();
+						MapViewScrollPanel.Stop();
 					break;
 				case "Doors":
 					if (MapControl.Current != null)
@@ -228,6 +210,7 @@ namespace MapView
 				case "SaveWindowPositions":
 					PathsEditor.SaveRegistry = (bool)val;
 					break;
+/*
 				case "UseGrid":
 					MapViewPanel.Instance.View.UseGrid = (bool)val;
 					break;
@@ -240,55 +223,14 @@ namespace MapView
 				case "GridLineWidth":
 					MapViewPanel.Instance.View.GridLineWidth = (int)val;
 					break;
+*/
 			}
 		}
 
-		private class SortableTreeNode : TreeNode, IComparable
+		protected override void OnFormClosing(FormClosingEventArgs e)
 		{
-			public SortableTreeNode(string text) : base(text) { }
+			base.OnFormClosing(e);
 
-			public int CompareTo(object other)
-			{
-				if (other is SortableTreeNode)
-					return Text.CompareTo(((SortableTreeNode)other).Text);
-				return -1;
-			}
-		}
-
-		private void addMaps(TreeNode tn, Dictionary<string, IMapDesc> maps)
-		{
-			foreach (string key in maps.Keys) {
-				SortableTreeNode mapNode = new SortableTreeNode(key);
-				mapNode.Tag = maps[key];
-				tn.Nodes.Add(mapNode);
-			}
-		}
-
-		public void AddTileset(ITileset tSet)
-		{
-			SortableTreeNode tSetNode = new SortableTreeNode(tSet.Name);
-			tSetNode.Tag = tSet;
-			mapList.Nodes.Add(tSetNode);
-
-			foreach (string tSetMapGroup in tSet.Subsets.Keys) {
-				SortableTreeNode tsGroup = new SortableTreeNode(tSetMapGroup);
-				tsGroup.Tag = tSet.Subsets[tSetMapGroup];
-				tSetNode.Nodes.Add(tsGroup);
-
-				addMaps(tsGroup, tSet.Subsets[tSetMapGroup]);
-			}
-		}
-
-		private void initList()
-		{
-			mapList.Nodes.Clear();
-			foreach (string key in GameInfo.TilesetInfo.Tilesets.Keys)
-				AddTileset(GameInfo.TilesetInfo.Tilesets[key]);
-			xConsole.AddLine("Map list created");
-		}
-		
-		protected override void formClosing(object sender, CancelEventArgs e)
-		{
 			if (NotifySave() == DialogResult.Cancel) {
 				e.Cancel = true;
 			} else {
@@ -303,26 +245,19 @@ namespace MapView
 
 		private void quititem_Click(object sender, System.EventArgs e)
 		{
-			formClosing(null, new CancelEventArgs(true));
+			OnFormClosing(new FormClosingEventArgs(CloseReason.ApplicationExitCall, false));
 			Environment.Exit(0);
 		}
 
-		public override void SetupDefaultSettings()
+		public void SetupDefaultSettings()
 		{
-			base.SetupDefaultSettings();
+			settings = new Settings();
 
-			MapViewPanel.Instance.View.SetupDefaultSettings(this);
-
-			settings.AddSetting("Animation", MapViewPanel.Updating, "If true, the map will animate itself", "Main", changeSetting);
+			settings.AddSetting("Animation", MapViewScrollPanel.Updating, "If true, the map will animate itself", "Main", changeSetting);
 			settings.AddSetting("Doors", false, "If true, the door tiles will animate themselves", "Main", changeSetting);
 			settings.AddSetting("SaveWindowPositions", PathsEditor.SaveRegistry, "If true, the window positions and sizes will be saved in the windows registry", "Main", changeSetting);
 
 			xConsole.AddLine("Default settings loaded");
-		}
-
-		private void update(object sender, EventArgs e)
-		{
-			TopView.Instance.BottomPanel.Refresh();
 		}
 		
 		private void onItem_Click(object sender, System.EventArgs e)
@@ -349,35 +284,8 @@ namespace MapView
 			PathsEditor p = new PathsEditor(SharedSpace.Instance["MV_PathsFile"].ToString());
 			p.ShowDialog();
 
-			GameInfo.Init(XCPalette.TFTDBattle, (PathInfo)SharedSpace.Instance["MV_PathsFile"]);
-			initList();
-		}
-
-		private void mapList_AfterSelect(object sender, System.Windows.Forms.TreeViewEventArgs e)
-		{
-			if (NotifySave() == DialogResult.Cancel)
-				return;
-
-			if (mapList.SelectedNode.Tag is IMapDesc) {
-				IMapDesc imd = (IMapDesc)mapList.SelectedNode.Tag;
-				MapControl.Current = imd.GetMapFile();
-
-				statusMapName.Text = "Map:" + imd.Name;
-				tsMapSize.Text = "Size: " + MapControl.Current.Size.ToString();
-
-				//turn off door animations
-				if (miDoors.Checked) {
-					miDoors.Checked = false;
-					miDoors_Click(null, null);
-				}
-
-				miExport.Enabled = true;
-				showMenu.Enabled = true;
-
-				// notify everyone that there is a new map
-				MapViewPanel.Instance.View.Refresh();
-			} else
-				miExport.Enabled = false;
+//			GameInfo.Init(XCPalette.TFTDBattle, (PathInfo)SharedSpace.Instance["MV_PathsFile"]);
+//			initList();
 		}
 
 		public DialogResult NotifySave()
@@ -399,7 +307,7 @@ namespace MapView
 
 		private void miOptions_Click(object sender, System.EventArgs e)
 		{
-			PropertyForm pf = new PropertyForm("MainViewSettings", Settings);
+			PropertyForm pf = new PropertyForm("MainViewSettings", settings);
 			pf.Text = "MainWindow Options";
 			pf.Show();
 		}
@@ -422,8 +330,8 @@ namespace MapView
 		private void miHq_Click(object sender, System.EventArgs e)
 		{
 			if (MapControl.Current is XCMapFile) {
-				((XCMapFile)MapControl.Current).Hq2x();
-				mapView.View.Resize();
+//				((XCMapFile)MapControl.Current).Hq2x();
+//				mapView.View.Resize();
 			}
 		}
 
@@ -441,8 +349,7 @@ namespace MapView
 			cmf.Map = MapControl.Current;
 			if (cmf.ShowDialog(this) == DialogResult.OK) {
 				cmf.Map.ResizeTo(cmf.NewRows, cmf.NewCols, cmf.NewHeight);
-				//mapView.View.Map.ResizeTo(cmf.NewRows, cmf.NewCols, cmf.NewHeight);
-				mapView.ForceResize();
+//				mapView.ForceResize();
 			}
 		}
 
@@ -467,30 +374,42 @@ namespace MapView
 			mif.Map = MapControl.Current;
 		}
 
+		public static void Cut_click(object sender, EventArgs e)
+		{
+			MapControl.Copy();
+			MapControl.ClearSelection();
+		}
+
+		public static void Copy_click(object sender, EventArgs e)
+		{
+			MapControl.Copy();
+		}
+
+		public static void Paste_click(object sender, EventArgs e)
+		{
+			MapControl.Paste();
+		}
+
 		/// <summary>
 		/// Adds buttons for Up,Down,Cut,Copy and Paste to a toolstrip as well as sets some properties for the toolstrip
 		/// </summary>
 		/// <param name="toolStrip"></param>
-		public void MakeToolstrip(ToolStrip toolStrip)
+		public static void MakeToolstrip(ToolStrip toolStrip)
 		{
-			System.Windows.Forms.ToolStripButton btnUp = new System.Windows.Forms.ToolStripButton();
-			System.Windows.Forms.ToolStripButton btnDown = new System.Windows.Forms.ToolStripButton();
-			System.Windows.Forms.ToolStripButton btnCut = new System.Windows.Forms.ToolStripButton();
-			System.Windows.Forms.ToolStripButton btnCopy = new System.Windows.Forms.ToolStripButton();
-			System.Windows.Forms.ToolStripButton btnPaste = new System.Windows.Forms.ToolStripButton();
+			ToolStripButton btnUp = new System.Windows.Forms.ToolStripButton();
+			ToolStripButton btnDown = new System.Windows.Forms.ToolStripButton();
+			ToolStripButton btnCut = new System.Windows.Forms.ToolStripButton();
+			ToolStripButton btnCopy = new System.Windows.Forms.ToolStripButton();
+			ToolStripButton btnPaste = new System.Windows.Forms.ToolStripButton();
 			// 
 			// toolStrip1
 			// 
-			//toolStrip.Dock = System.Windows.Forms.DockStyle.None;
-			//toolStrip.GripMargin = new System.Windows.Forms.Padding(0);
-			//toolStrip.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
-			toolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            btnUp,
-            btnDown,
-            btnCut,
-            btnCopy,
-            btnPaste});
-			//toolStrip1.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.VerticalStackWithOverflow;
+			toolStrip.Items.AddRange(new ToolStripItem[] {
+				btnUp,
+				btnDown,
+				btnCut,
+				btnCopy,
+				btnPaste});
 			toolStrip.Padding = new System.Windows.Forms.Padding(0);
 			toolStrip.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
 			toolStrip.TabIndex = 1;
@@ -533,7 +452,7 @@ namespace MapView
 			btnCut.Size = new System.Drawing.Size(25, 25);
 			btnCut.Text = "toolStripButton3";
 			btnCut.ToolTipText = "Cut";
-			btnCut.Click += new EventHandler(MapViewPanel.Instance.Cut_click);
+			btnCut.Click += new EventHandler(Cut_click);
 			// 
 			// btnCopy
 			// 
@@ -545,7 +464,7 @@ namespace MapView
 			btnCopy.Size = new System.Drawing.Size(25, 25);
 			btnCopy.Text = "toolStripButton4";
 			btnCopy.ToolTipText = "Copy";
-			btnCopy.Click += new EventHandler(MapViewPanel.Instance.Copy_click);
+			btnCopy.Click += new EventHandler(Copy_click);
 			// 
 			// btnPaste
 			// 
@@ -557,7 +476,7 @@ namespace MapView
 			btnPaste.Size = new System.Drawing.Size(25, 25);
 			btnPaste.Text = "toolStripButton5";
 			btnPaste.ToolTipText = "Paste";
-			btnPaste.Click += new EventHandler(MapViewPanel.Instance.Paste_click);
+			btnPaste.Click += new EventHandler(Paste_click);
 
 			Assembly a = Assembly.GetExecutingAssembly();
 			btnCut.Image = Bitmap.FromStream(a.GetManifestResourceStream("MapView._Embedded.cut.gif"));

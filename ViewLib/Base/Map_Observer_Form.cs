@@ -7,13 +7,15 @@ using System.ComponentModel;
 using UtilLib;
 using MapLib;
 using MapLib.Base;
+using WeifenLuo.WinFormsUI.Docking;
 
-namespace ViewLib.Base
+namespace ViewLib
 {
-	public class Map_Observer_Form : Form
+	public class Map_Observer_Form : DockContent
 	{
 		protected Settings settings;
 		protected MenuItem menuItem;
+		protected Map map;
 
 		[Browsable(false)]
 		public Dictionary<string, SolidBrush> FillBrushes { get; set; }
@@ -102,8 +104,6 @@ namespace ViewLib.Base
 			}
 		}
 
-		protected Map map;
-
 		[Browsable(false)]
 		public bool IsDesignMode
 		{
@@ -131,6 +131,7 @@ namespace ViewLib.Base
 
 		public virtual void SetupDefaultSettings()
 		{
+/*
 			Setting s = settings.AddSetting("X", "Starting X-coordinate of the window", "Window", "Left", this);
 			s.IsVisible = false;
 
@@ -145,6 +146,7 @@ namespace ViewLib.Base
 
 			s = settings.AddSetting("LoadedVisible", "Whether or not the window starts out shown", "Window", "LoadedVisible", this);
 			s.IsVisible = false;
+*/
 		}
 
 		private bool loadedVisible = false;

@@ -14,9 +14,9 @@ using MapLib.Base;
 namespace MapView
 {
 	public delegate void BoolDelegate(bool val);
-	public class MapViewPanel : Panel
+	public class MapViewScrollPanel : UserControl
 	{
-		private View view;
+		private MapViewPanel view;
 		private HScrollBar horiz;
 		private VScrollBar vert;
 		private Button saveBlank, runCalc;
@@ -29,10 +29,7 @@ namespace MapView
 
 		public event BoolDelegate BlankChanged;
 
-		private static MapViewPanel myInstance;
-//		private static ViewLib.Base.Map_Observer_Form blankForm;
-
-		private MapViewPanel()
+		public MapViewScrollPanel()
 		{
 			ImageUpdate += new EventHandler(update);
 
@@ -50,7 +47,16 @@ namespace MapView
 																	 this.horiz});
 			fillBlank();
 
-			setView(new View());
+			view = new MapViewPanel();
+			view.Location = new Point(0, 0);
+			view.BorderStyle = BorderStyle.Fixed3D;
+
+			vert.Minimum = 0;
+			vert.Value = vert.Minimum;
+
+			view.Width = ClientSize.Width - vert.Width - 1;
+
+			this.Controls.Add(view);
 
 			allBlank = new GroupBox();
 			allBlank.Text = "Blank info";
@@ -74,42 +80,11 @@ namespace MapView
 			OnResize(null);
 		}
 
-		private void setView(View v)
-		{
-			view = v;
-
-			view.Location = new Point(0, 0);
-			view.BorderStyle = BorderStyle.Fixed3D;
-
-			vert.Minimum = 0;
-			vert.Value = vert.Minimum;
-
-			view.Width = ClientSize.Width - vert.Width - 1;
-
-			this.Controls.Add(view);
-		}
-
-		public void Cut_click(object sender, EventArgs e)
-		{
-			view.Copy();
-			view.ClearSelection();
-		}
-
-		public void Copy_click(object sender, EventArgs e)
-		{
-			view.Copy();
-		}
-
-		public void Paste_click(object sender, EventArgs e)
-		{
-			view.Paste();
-		}
-
 //		public ViewLib.Base.Map_Observer_Form BlankForm
 //		{
 //			get { return blankForm; }
 //		}
-
+		/*
 		public static MapViewPanel Instance
 		{
 			get
@@ -121,7 +96,7 @@ namespace MapView
 				}
 				return myInstance;
 			}
-		}
+		}*/
 
 		private void fillBlank()
 		{
@@ -304,15 +279,6 @@ namespace MapView
 			OnResize(null);
 		}
 		*/
-		public void ForceResize()
-		{
-			OnResize(null);
-		}
-
-		public View View
-		{
-			get { return view; }
-		}
 
 		/*** Timer stuff ***/
 		private static int current;

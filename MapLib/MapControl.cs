@@ -9,6 +9,7 @@ namespace MapLib
 		public static event HeightChangedDelegate HeightChanged;
 		public static event TileSelectionChangedDelegate SelectedTileChanged;
 		public static event RefreshDelegate Refresh;
+		public static event MapModifiedDelegate MapModified;
 
 		private static Map current;
 		public static Map Current
@@ -18,9 +19,11 @@ namespace MapLib
 			{
 				current = value;
 				if (MapChanged != null) {
-					MapChangedEventArgs e = new MapChangedEventArgs(current);
-					MapChanged(e);
+					MapChanged(new MapChangedEventArgs(current));
 				}
+
+				if (MapModified != null)
+					MapModified(new MapModifiedArgs(null, ModifiedType.kNewMap));
 			}
 		}
 
@@ -54,10 +57,31 @@ namespace MapLib
 				SelectedTileChanged(current, e);
 		}
 
+		public static void FireMapModified(MapModifiedArgs args)
+		{
+			if (MapModified != null)
+				MapModified(args);
+		}
+
 		public static void RequestRefresh()
 		{
 			if (Refresh != null)
 				Refresh();
+		}
+
+		public static void ClearSelection()
+		{
+
+		}
+
+		public static void Copy()
+		{
+
+		}
+
+		public static void Paste()
+		{
+
 		}
 	}
 }

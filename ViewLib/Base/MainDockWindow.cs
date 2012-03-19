@@ -9,12 +9,12 @@ using System.Windows.Forms;
 using WeifenLuo.WinFormsUI.Docking;
 using System.IO;
 
-namespace ViewLib.Base
+namespace ViewLib
 {
 	public partial class MainDockWindow : Form
 	{
-		private List<Base.ToolWindow> toolsToLoad;
-		private Dictionary<Base.ToolWindow, WeifenLuo.WinFormsUI.Docking.DockState> toolState;
+		private List<DockContent> toolsToLoad;
+		private Dictionary<DockContent, DockState> initialState;
 
 		public string LayoutFile { get; set; }
 		public DockPanel DockPanel { get; set; }
@@ -22,21 +22,20 @@ namespace ViewLib.Base
 		public MainDockWindow()
 		{
 			InitializeComponent();
-
-			toolsToLoad = new List<ViewLib.Base.ToolWindow>();
-			toolState = new Dictionary<ViewLib.Base.ToolWindow, DockState>();
+			toolsToLoad = new List<DockContent>();
+			initialState = new Dictionary<DockContent, DockState>();
 		}
 
-		public void RegisterForm(Base.ToolWindow window, DockState state)
+		public void RegisterDockForm(DockContent window, DockState state)
 		{
 			toolsToLoad.Add(window);
-			toolState.Add(window, state);
+			initialState[window] = state;
 		}
 
 		private IDockContent getWindow(string window)
 		{
-			Base.ToolWindow rval = null;
-			foreach (Base.ToolWindow tWin in toolsToLoad) {
+			DockContent rval = null;
+			foreach (DockContent tWin in toolsToLoad) {
 				if (tWin.GetType().ToString() == window)
 					rval = tWin;
 			}
@@ -47,18 +46,24 @@ namespace ViewLib.Base
 			return rval;
 		}
 
-		private void MainDockWindow_Load(object sender, EventArgs e)
+		protected override void OnLoad(EventArgs e)
 		{
-			if (File.Exists(LayoutFile))
-				DockPanel.LoadFromXml(LayoutFile, new WeifenLuo.WinFormsUI.Docking.DeserializeDockContent(getWindow));
+			base.OnLoad(e);
 
-			foreach (Base.ToolWindow tw in toolsToLoad)
-				tw.Show(DockPanel, toolState[tw]);
+			if (File.Exists(LayoutFile))
+				DockPanel.LoadFromXml(LayoutFile, getWindow);
+
+			// show new forms that dont exist in the LayoutFile
+			foreach (DockContent tw in toolsToLoad)
+				tw.Show(DockPanel, initialState[tw]);
 		}
 
-		private void MainDockWindow_FormClosing(object sender, FormClosingEventArgs e)
+		protected override void OnClosing(CancelEventArgs e)
 		{
-			DockPanel.SaveAsXml(LayoutFile);
+			base.OnClosing(e);
+
+			if (DockPanel != null)
+				DockPanel.SaveAsXml(LayoutFile);
 		}
 	}
 }

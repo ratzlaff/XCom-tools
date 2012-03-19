@@ -12,10 +12,11 @@ using System.Reflection;
 
 using MapLib;
 using MapLib.Base;
+using ViewLib;
 
 namespace MapView.TopViewForm
 {
-	public partial class TopView : ViewLib.Base.Map_Observer_Form
+	public partial class TopView : Map_Observer_Form
 	{
 		private Dictionary<ToolStripMenuItem, UtilLib.Setting> visibleHash;
 		public event EventHandler VisibleTileChanged;
@@ -42,7 +43,7 @@ namespace MapView.TopViewForm
 
 			topViewPanel.ScrollPanel = center;
 
-			MainWindow.Instance.MakeToolstrip(toolStrip);
+			MainWindow.MakeToolstrip(toolStrip);
 
 			visibleHash = new Dictionary<ToolStripMenuItem, UtilLib.Setting>();
 
@@ -99,7 +100,7 @@ namespace MapView.TopViewForm
 			if (VisibleTileChanged != null)
 				VisibleTileChanged(this, new EventArgs());
 
-			MapViewPanel.Instance.Refresh();
+			MapControl.RequestRefresh();
 
 			Refresh();
 		}
@@ -122,7 +123,7 @@ namespace MapView.TopViewForm
 				for (int r = s.Col; r <= e.Col; r++)
 					((XCMapTile)MapControl.Current[r, c])[bottom.SelectedQuadrant] = TileView.Instance.SelectedTile;
 			Globals.MapChanged = true;
-			MapViewPanel.Instance.Refresh();
+			MapControl.RequestRefresh();
 			Refresh();
 		}
 

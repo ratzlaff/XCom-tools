@@ -3,13 +3,14 @@ using System.Drawing;
 using System.Collections;
 using System.ComponentModel;
 using System.Windows.Forms;
+using ViewLib;
 
 namespace MapView
 {
 	/// <summary>
 	/// Displays the About box 
 	/// </summary>
-	public partial class AboutWindow : ViewLib.Base.Map_Observer_Form
+	public partial class AboutWindow : Map_Observer_Form
 	{
 		public AboutWindow()
 		{

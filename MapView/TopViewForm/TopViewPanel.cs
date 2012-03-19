@@ -5,12 +5,12 @@ using System.Drawing;
 using XCom.Interfaces.Base;
 using XCom;
 using System.Windows.Forms;
-using ViewLib.Base;
+using ViewLib;
 using UtilLib;
 
 namespace MapView.TopViewForm
 {
-	public class TopViewPanel : ViewLib.Base.SimpleMapPanel
+	public class TopViewPanel : SimpleMapPanel
 	{
 		private bool blank = false;
 

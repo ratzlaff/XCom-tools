@@ -1,7 +1,8 @@
+#define ORIGINAL
+
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
-using ViewLib.MainForms;
 
 namespace MapView
 {
@@ -15,9 +16,16 @@ namespace MapView
 		{
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
+#if ORIGINAL
 			Application.Run(new MainWindow());
-//			new MainWindow().Show();
-//			Application.Run(new MainMapView());
+#else
+			new MainWindow().Show();
+			MainMapView mmv = new MainMapView();
+			mmv.RegisterForm(TopViewForm.TopView.Instance, DockState.DockRight);
+			mmv.RegisterForm(TileView.Instance, DockState.DockBottom);
+//			mmv.RegisterForm(new MainWindow(), DockState.DockLeft);
+			Application.Run(mmv);
+#endif
 		}
 	}
 }

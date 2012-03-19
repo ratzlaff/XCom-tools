@@ -6,11 +6,11 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 using UtilLib.Windows;
-using ViewLib.Base;
+using WeifenLuo.WinFormsUI.Docking;
 
 namespace XCom
 {
-	public partial class ConsoleForm : ToolWindow
+	public partial class ConsoleForm : DockContent
 	{
 		public ConsoleForm()
 		{
