@@ -33,22 +33,12 @@ namespace ViewLib
 			this.ShowInTaskbar = false;
 			this.FormBorderStyle = FormBorderStyle.SizableToolWindow;
 
-			LoadedVisible = true;
-			cachedProperties = new Dictionary<System.Reflection.PropertyInfo, object>();
-			this.Load += formLoad;
-
 			if (!IsDesignMode) {
 				MapControl.MapChanged += mapChanged;
 				MapControl.HeightChanged += HeightChanged;
 				MapControl.SelectedTileChanged += SelectedTileChanged;
 				Closing += formClosing;
 			}
-		}
-
-		protected virtual void formLoad(object sender, EventArgs e)
-		{
-			foreach (System.Reflection.PropertyInfo pi in cachedProperties.Keys)
-				pi.SetValue(this, cachedProperties[pi], new object[] { });
 		}
 
 		// this is the menu item to show in a View menu
@@ -66,23 +56,6 @@ namespace ViewLib
 
 				return menuItem;
 			}
-		}
-
-		private Dictionary<System.Reflection.PropertyInfo, object> cachedProperties;
-
-		public bool CacheProperty(System.Reflection.PropertyInfo inProp, object val)
-		{
-			if (inProp.Name == "Width") {
-				cachedProperties.Add(inProp, val);
-				return true;
-			}
-
-			if (inProp.Name == "Height") {
-				cachedProperties.Add(inProp, val);
-				return true;
-			}
-
-			return false;
 		}
 
 		protected virtual void formClosing(object sender, CancelEventArgs e)
@@ -117,45 +90,17 @@ namespace ViewLib
 
 		protected virtual void mapChanged(MapChangedEventArgs e)
 		{
-			if (map == null) {
-				if (loadedVisible)
-					MenuItem.PerformClick();
-			}
+			if (map == null)
+				MenuItem.PerformClick();
 
 			this.map = e.Map;
 			Refresh();
+			OnResize(e);
 		}
 
 		public virtual void HeightChanged(Map sender, HeightChangedEventArgs e) { Refresh(); }
 		public virtual void SelectedTileChanged(Map sender, SelectedTileChangedEventArgs e) { Refresh(); }
-
-		public virtual void SetupDefaultSettings()
-		{
-/*
-			Setting s = settings.AddSetting("X", "Starting X-coordinate of the window", "Window", "Left", this);
-			s.IsVisible = false;
-
-			s = settings.AddSetting("Y", "Starting Y-coordinate of the window", "Window", "Top", this);
-			s.IsVisible = false;
-
-			s = settings.AddSetting("Width", "Starting Width of the window", "Window", "Width", this);
-			s.IsVisible = false;
-
-			s = settings.AddSetting("Height", "Starting Height of the window", "Window", "Height", this);
-			s.IsVisible = false;
-
-			s = settings.AddSetting("LoadedVisible", "Whether or not the window starts out shown", "Window", "LoadedVisible", this);
-			s.IsVisible = false;
-*/
-		}
-
-		private bool loadedVisible = false;
-		[Browsable(false)]
-		public bool LoadedVisible
-		{
-			get { return Visible; }
-			set { loadedVisible = value; }
-		}
+		public virtual void SetupDefaultSettings() { }
 
 		protected override void OnMouseWheel(MouseEventArgs e)
 		{

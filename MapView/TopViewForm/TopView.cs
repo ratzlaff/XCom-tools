@@ -39,8 +39,6 @@ namespace MapView.TopViewForm
 		{
 			InitializeComponent();
 
-			LoadedVisible = true;
-
 			topViewPanel.ScrollPanel = center;
 
 			MainWindow.MakeToolstrip(toolStrip);

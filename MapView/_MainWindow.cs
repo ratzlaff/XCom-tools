@@ -29,6 +29,7 @@ namespace MapView
 //		private MapView.MapViewPanel mapView;
 		private LoadingForm lf;
 		private Dictionary<string, Map_Observer_Form> registeredForms;
+		private Dictionary<string, Settings> registeredSettings;
 		private Settings settings;
 
 		public MainWindow()
@@ -86,7 +87,8 @@ namespace MapView
 			SetupDefaultSettings();
 
 			registeredForms = new Dictionary<string, Map_Observer_Form>();
-//			registeredForms["MainWindow"] = this;
+			registeredSettings = new Dictionary<string, Settings>();
+			registeredSettings["MainWindow"] = settings;
 
 			registerForm(MapList.Instance, showMenu, DockState.DockLeft);
 			registerForm(TopView.Instance, showMenu, DockState.Float);
@@ -147,6 +149,7 @@ namespace MapView
 			parent.MenuItems.Add(f.MenuItem);
 			f.SetupDefaultSettings();
 
+			registeredSettings.Add(f.Text, f.Settings);
 			registeredForms.Add(f.Text, f);
 			RegisterDockForm(f, initialState);
 		}
@@ -181,11 +184,31 @@ namespace MapView
 
 			while ((kv = vc.ReadLine()) != null) {
 				try {
-					Settings.ReadSettings(vc, kv, registeredForms[kv.Keyword].Settings);
+					Settings.ReadSettings(vc, kv, registeredSettings[kv.Keyword]);
 				} catch { }
 			}
 
 			sr.Close();
+		}
+
+		private Dictionary<System.Reflection.PropertyInfo, object> cachedProperties;
+
+		public bool CacheProperty(System.Reflection.PropertyInfo inProp, object val)
+		{
+			if (cachedProperties == null)
+				cachedProperties = new Dictionary<PropertyInfo, object>();
+
+			if (inProp.Name == "Width") {
+				cachedProperties.Add(inProp, val);
+				return true;
+			}
+
+			if (inProp.Name == "Height") {
+				cachedProperties.Add(inProp, val);
+				return true;
+			}
+
+			return false;
 		}
 
 		private void changeSetting(object sender, string key, object val)
@@ -227,6 +250,14 @@ namespace MapView
 			}
 		}
 
+		protected override void OnLoad(EventArgs e)
+		{
+			base.OnLoad(e);
+
+			foreach (System.Reflection.PropertyInfo pi in cachedProperties.Keys)
+				pi.SetValue(this, cachedProperties[pi], new object[] { });
+		}
+
 		protected override void OnFormClosing(FormClosingEventArgs e)
 		{
 			base.OnFormClosing(e);
@@ -235,8 +266,8 @@ namespace MapView
 				e.Cancel = true;
 			} else {
 				StreamWriter sw = new StreamWriter(SharedSpace.Instance["MV_SettingsFile"].ToString());
-				foreach (string s in registeredForms.Keys)
-					registeredForms[s].Settings.Save(s, sw);
+				foreach (string s in registeredSettings.Keys)
+					registeredSettings[s].Save(s, sw);
 
 				sw.Flush();
 				sw.Close();
@@ -255,7 +286,18 @@ namespace MapView
 
 			settings.AddSetting("Animation", MapViewScroller.Updating, "If true, the map will animate itself", "Main", changeSetting);
 			settings.AddSetting("Doors", false, "If true, the door tiles will animate themselves", "Main", changeSetting);
-			settings.AddSetting("SaveWindowPositions", PathsEditor.SaveRegistry, "If true, the window positions and sizes will be saved in the windows registry", "Main", changeSetting);
+			//settings.AddSetting("SaveWindowPositions", PathsEditor.SaveRegistry, "If true, the window positions and sizes will be saved in the windows registry", "Main", changeSetting);
+			Setting s = settings.AddSetting("X", "Starting X-coordinate of the window", "Window", "Left", this);
+			s.IsVisible = false;
+
+			s = settings.AddSetting("Y", "Starting Y-coordinate of the window", "Window", "Top", this);
+			s.IsVisible = false;
+
+			s = settings.AddSetting("Width", "Starting Width of the window", "Window", "Width", this);
+			s.IsVisible = false;
+
+			s = settings.AddSetting("Height", "Starting Height of the window", "Window", "Height", this);
+			s.IsVisible = false;
 
 			xConsole.AddLine("Default settings loaded");
 		}

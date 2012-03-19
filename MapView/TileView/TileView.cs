@@ -29,7 +29,6 @@ namespace MapView
 		private TileView()
 		{
 			InitializeComponent();
-			LoadedVisible = true;
 			panels = new TilePanel[] { all, ground, wWalls, nWalls, objs };
 
 			SizeChanged += new EventHandler(TileView_SizeChanged);

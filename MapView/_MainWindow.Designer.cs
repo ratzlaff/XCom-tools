@@ -350,6 +350,7 @@ namespace MapView
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.Menu = this.mainMenu;
 			this.Name = "MainWindow";
+			this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
 			this.Text = "Map Editor";
 			this.Activated += new System.EventHandler(this.MainWindow_Activated);
 			this.Controls.SetChildIndex(this.statusStrip1, 0);
