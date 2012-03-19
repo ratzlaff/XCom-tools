@@ -101,16 +101,16 @@ namespace ViewLib
 		public virtual void HeightChanged(Map sender, HeightChangedEventArgs e) { Refresh(); }
 		public virtual void SelectedTileChanged(Map sender, SelectedTileChangedEventArgs e) { Refresh(); }
 		public virtual void SetupDefaultSettings() { }
-
+		/*
 		protected override void OnMouseWheel(MouseEventArgs e)
 		{
-			base.OnMouseWheel(e);
+//			base.OnMouseWheel(e);
 			if (map != null) {
 				if (e.Delta > 0)
 					map.Up();
 				else
 					map.Down();
 			}
-		}
+		}*/
 	}
 }

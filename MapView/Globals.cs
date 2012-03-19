@@ -9,7 +9,6 @@ namespace MapView
 
 		public static bool MapChanged = false;
 		public static bool UseGray { get { return true; } }
-//		public static readonly string RegistryKey = "MapView";
 
 		private static XCom.PckFile extraTiles;
 		public static XCom.PckFile ExtraTiles

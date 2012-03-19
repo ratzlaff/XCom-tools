@@ -58,17 +58,6 @@ solution "Progs"
 		
 		links { "System", "System.Core", "System.Data", "System.Design", "System.Drawing", "System.Windows.Forms" }
 		prebuildcommands { "SubWCRev $(ProjectDir) $(ProjectDir)Properties\\AssemblyInfo.template $(ProjectDir)Properties\\AssemblyInfo.cs" }
-			
-	-- Launcher/Updator
-	project "XCSuite"
-		location "../XCSuite"
-		kind "SharedLib"
-		language "C#"
-		files { "../XCSuite/**.cs", "../XCSuite/**.resx", "../XCSuite/Properties/Settings.settings" }
-		embedded { "../XCSuite/_Embedded/**.*" }
-		
-		links { "UtilLib", "XCom", "System", "System.Core", "System.Data", "System.Design", "System.Drawing", "System.Windows.Forms" }
-		prebuildcommands { "SubWCRev $(ProjectDir) $(ProjectDir)Properties\\AssemblyInfo.template $(ProjectDir)Properties\\AssemblyInfo.cs" }
 		
 	-- ViewLib
 	project "ViewLib"
