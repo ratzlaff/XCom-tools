@@ -198,9 +198,9 @@ namespace MapView
 					offItem.Checked = !animVal;
 
 					if ((bool)val)
-						MapViewScrollPanel.Start();
+						MapViewScroller.Start();
 					else
-						MapViewScrollPanel.Stop();
+						MapViewScroller.Stop();
 					break;
 				case "Doors":
 					if (MapControl.Current != null)
@@ -253,7 +253,7 @@ namespace MapView
 		{
 			settings = new Settings();
 
-			settings.AddSetting("Animation", MapViewScrollPanel.Updating, "If true, the map will animate itself", "Main", changeSetting);
+			settings.AddSetting("Animation", MapViewScroller.Updating, "If true, the map will animate itself", "Main", changeSetting);
 			settings.AddSetting("Doors", false, "If true, the door tiles will animate themselves", "Main", changeSetting);
 			settings.AddSetting("SaveWindowPositions", PathsEditor.SaveRegistry, "If true, the window positions and sizes will be saved in the windows registry", "Main", changeSetting);
 

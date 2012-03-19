@@ -1,349 +1,445 @@
 using System;
-using System.Drawing;
-using System.Collections;
-using System.ComponentModel;
 using System.Windows.Forms;
-using System.Data;
+using System.Drawing;
+using System.Drawing.Drawing2D;
 using XCom;
 using XCom.Interfaces;
+using System.Collections;
 using XCom.Interfaces.Base;
-
-using MapLib;
+using MapView.TopViewForm;
 using MapLib.Base;
+using MapLib;
+using ViewLib;
 
 namespace MapView
 {
-	public delegate void BoolDelegate(bool val);
-	public class MapViewScrollPanel : UserControl
+	public class MapViewPanel : SimpleMapPanel
 	{
-		private MapViewPanel view;
-		private HScrollBar horiz;
-		private VScrollBar vert;
-		private Button saveBlank, runCalc;
+		private Point origin = new Point(100, 0);
+		private int currentImage;
 
-		private CheckBox blankCheck, l0, l1, l2, l3;
-		private CheckBox s0, s1, s2, s3;
+		private MapView.Cursor cursor;
 
-		private GroupBox blankGroup;
-		private GroupBox allBlank;
+		private Size viewable;
+		private bool newLeft;
+		private Point topLeft;
 
-		public event BoolDelegate BlankChanged;
+		private static int hdWid = 16, hdHeight = 8;
 
-		public MapViewScrollPanel()
+		private bool drawAll = true;
+		private bool[] draw = { false, false, false, false };
+		private bool[] vis = { false, false, false, false };
+		private bool flipLock = false, flipLock2 = false;
+
+		private bool mDown;
+		private MapLocation selectedLoc, mouseOver;
+		private MapLocation startDrag, endDrag;
+		private Pen dashPen;
+		private bool selectGrayscale = true;
+
+		private GraphicsPath underGrid;
+		private Brush transBrush;
+		private Color gridColor;
+		private bool useGrid = true;
+
+		public MapViewPanel()
 		{
-			ImageUpdate += new EventHandler(update);
+			map = null;
+			currentImage = 0;
+			mouseOver = new MapLocation(-1, -1);
+			startDrag = new MapLocation(-1, -1);
+			endDrag = new MapLocation(-1, -1);
+			selectedLoc = new MapLocation(-1, -1);
+			topLeft = new Point(0, 0);
 
-			horiz = new HScrollBar();
-			vert = new VScrollBar();
+			newLeft = true;
 
-			horiz.Scroll += new System.Windows.Forms.ScrollEventHandler(this.horiz_Scroll);
-			horiz.Dock = DockStyle.Bottom;
+			gridColor = Color.FromArgb(175, 69, 100, 129);
+			transBrush = new SolidBrush(gridColor);
 
-			vert.Scroll += new System.Windows.Forms.ScrollEventHandler(this.vert_Scroll);
-			vert.Dock = DockStyle.Right;
+			dashPen = new Pen(Brushes.Black, 1);
 
-			Controls.AddRange(new System.Windows.Forms.Control[] {
-																	 this.vert,
-																	 this.horiz});
-			fillBlank();
+			try {
+				cursor = new Cursor(GameInfo.CachePck(SharedSpace.Instance.GetString("cursorFile"), "", 4, XCPalette.TFTDBattle));
+			} catch {
+				try {
+					cursor = new Cursor(GameInfo.CachePck(SharedSpace.Instance.GetString("cursorFile"), "", 2, XCPalette.UFOBattle));
+				} catch { cursor = null; }
+			}
+			xConsole.AddLine("Cursor loaded");
 
-			view = new MapViewPanel();
-			view.Location = new Point(0, 0);
-			view.BorderStyle = BorderStyle.Fixed3D;
-
-			vert.Minimum = 0;
-			vert.Value = vert.Minimum;
-
-			view.Width = ClientSize.Width - vert.Width - 1;
-
-			this.Controls.Add(view);
-
-			allBlank = new GroupBox();
-			allBlank.Text = "Blank info";
-
-			blankCheck.Location = new Point(0, 0);
-			blankGroup.Location = new Point(0, blankCheck.Bottom);
-			blankGroup.Size = new Size(140, 65);
-			saveBlank.Location = new Point(0, blankGroup.Bottom);
-			runCalc.Location = new Point(0, saveBlank.Bottom);
-/*
-			blankForm = new Form();
-			blankForm.Text = "Blank Controls";
-			blankForm.Size = new Size(150, 170);
-			blankForm.MaximizeBox = false;
-			blankForm.FormBorderStyle = FormBorderStyle.FixedSingle;
-			blankForm.Controls.AddRange(new Control[] { blankCheck, blankGroup, saveBlank, runCalc });
-			allBlank.Dock = DockStyle.Fill;
-
-			blankCheck.Checked = false;
-*/
-			OnResize(null);
+//			MapControl.HeightChanged += mapHeight;
+//			MapControl.SelectedTileChanged += tileChange;
 		}
 
-//		public ViewLib.Base.Map_Observer_Form BlankForm
-//		{
-//			get { return blankForm; }
-//		}
-		/*
-		public static MapViewPanel Instance
+		#region Settings
+		public bool SelectGrayscale
 		{
-			get
-			{
-				if (myInstance == null)
-				{
-					myInstance = new MapViewPanel();
-					xConsole.AddLine("Main view panel created");
-				}
-				return myInstance;
-			}
+			get { return selectGrayscale; }
+			set { selectGrayscale = value; Refresh(); }
+		}
+
+		public Color GridColor
+		{
+			get { return gridColor; }
+			set { gridColor = value; transBrush = new SolidBrush(value); Refresh(); }
+		}
+
+		public Color GridLineColor
+		{
+			get { return dashPen.Color; }
+			set { dashPen.Color = value; Refresh(); }
+		}
+
+		public int GridLineWidth
+		{
+			get { return (int)dashPen.Width; }
+			set { dashPen.Width = value; Refresh(); }
+		}
+
+		public bool UseGrid
+		{
+			get { return useGrid; }
+			set { useGrid = value; Refresh(); }
+		}
+
+		public override void SetupDefaultSettings(Map_Observer_Form sender)
+		{
+			base.SetupDefaultSettings(sender);
+
+			sender.Settings.AddSetting("UseGrid", "If true, a grid will show up at the current level of editing", "MapView", "UseGrid", this);
+			sender.Settings.AddSetting("GridColor", "Color of the grid in (a,r,g,b) format", "MapView", "GridColor", this);
+			sender.Settings.AddSetting("GridLineColor", "Color of the lines that make up the grid", "MapView", "GridLineColor", this);
+			sender.Settings.AddSetting("GridLineWidth", "Width of the grid lines in pixels", "MapView", "GridLineWidth", this);
+			sender.Settings.AddSetting("SelectGrayscale", "If true, the selection area will show up in gray", "MapView", "SelectGrayscale", this);
+		}
+		#endregion
+		/*
+		public new MapView.Cursor Cursor
+		{
+			get { return cursor; }
+			set { cursor = value; Refresh(); }
 		}*/
 
-		private void fillBlank()
+		public bool DrawAll
 		{
-			blankGroup = new GroupBox();
-			blankGroup.Text = "Visible levels";
-			blankGroup.Enabled = false;
-
-			blankCheck = new CheckBox();
-			blankCheck.Text = "Show blank";
-			blankCheck.CheckedChanged += new EventHandler(checkChange);
-
-			//int wid=30;
-			int y = 12;
-
-			l0 = makeCheck("0", new Point(5, y), new EventHandler(setDraw));
-			l1 = makeCheck("1", new Point(l0.Right, y), new EventHandler(setDraw));
-			l2 = makeCheck("2", new Point(l1.Right, y), new EventHandler(setDraw));
-			l3 = makeCheck("3", new Point(l2.Right, y), new EventHandler(setDraw));
-
-			s0 = makeCheck("0", new Point(5, l0.Bottom), new EventHandler(setVisible));
-			s1 = makeCheck("1", new Point(s0.Right, l1.Bottom), new EventHandler(setVisible));
-			s2 = makeCheck("2", new Point(s1.Right, l2.Bottom), new EventHandler(setVisible));
-			s3 = makeCheck("3", new Point(s2.Right, l3.Bottom), new EventHandler(setVisible));
-
-			saveBlank = new Button();
-			saveBlank.Text = "Save Blank";
-			saveBlank.Click += new EventHandler(saveBlankClick);
-
-			runCalc = new Button();
-			runCalc.Text = "Run Calc";
-			runCalc.Click += new EventHandler(runCalcClick);
-
-			blankGroup.Controls.AddRange(new Control[] { l0, l1, l2, l3, s0, s1, s2, s3 });
+			get { return drawAll; }
+			set { drawAll = value; Refresh(); }
 		}
 
-		private CheckBox makeCheck(string text, Point location, EventHandler evt)
+		public bool[] Vis
 		{
-			CheckBox c = new CheckBox();
-			c.Text = text;
-			c.Location = location;
-			c.Width = 30;
-			c.Checked = true;
-			c.CheckedChanged += evt;
-			return c;
+			get { return vis; }
 		}
 
-		private void setVisible(object sender, EventArgs e)
+		public bool[] Draw
 		{
-			if (sender == s0)
-			{
-				view.Vis[0] = !s0.Checked;
-			}
-			else if (sender == s1)
-			{
-				view.Vis[1] = !s1.Checked;
-			}
-			else if (sender == s2)
-			{
-				view.Vis[2] = !s2.Checked;
-			}
-			else //l3
-			{
-				view.Vis[3] = !s3.Checked;
-			}
+			get { return draw; }
 		}
 
-		private void runCalcClick(object sender, EventArgs e)
+		public new void Resize()
 		{
-			if (MapControl.Current is XCMapFile)
-				((XCMapFile)MapControl.Current).CalcDrawAbove();
-		}
-
-		private void saveBlankClick(object sender, EventArgs e)
-		{
-			if (MapControl.Current is XCMapFile)
-				((XCMapFile)MapControl.Current).SaveBlanks();
-		}
-
-		private void setDraw(object sender, EventArgs e)
-		{
-			if (sender == l0)
-			{
-				view.Draw[0] = !l0.Checked;
-			}
-			else if (sender == l1)
-			{
-				view.Draw[1] = !l1.Checked;
-			}
-			else if (sender == l2)
-			{
-				view.Draw[2] = !l2.Checked;
-			}
-			else //l3
-			{
-				view.Draw[3] = !l3.Checked;
-			}
-		}
-
-		private void checkChange(object sender, EventArgs e)
-		{
-			blankGroup.Enabled = blankCheck.Checked;
-			view.DrawAll = !blankCheck.Checked;
-
-			if (BlankChanged != null)
-				BlankChanged(blankCheck.Checked);
-		}
-
-		private void update(object sender, EventArgs e)
-		{
-			view.Refresh();
-		}
-
-		private void up_click(object sender, EventArgs e)
-		{
-			MapControl.Current.Up();
-			view.Focus();
-		}
-
-		private void down_click(object sender, EventArgs e)
-		{
-			MapControl.Current.Down();
-			view.Focus();
-		}
-
-		protected override void OnResize(EventArgs e)
-		{
-			base.OnResize(e);
-			vert.Value = vert.Minimum;
-			horiz.Value = horiz.Minimum;
-			vert_Scroll(null, null);
-			horiz_Scroll(null, null);
-
-			int h = 0, w = 0;
-
-			if (vert.Visible = (view.Height > ClientSize.Height))
-			{
-				vert.Maximum = view.Height - ClientSize.Height + horiz.Height;
-				w = vert.Width;
-			}
-			else
-				horiz.Width = ClientSize.Width;
-
-			if (horiz.Visible = (view.Width > ClientSize.Width))
-			{
-				horiz.Maximum = Math.Max((view.Width - ClientSize.Width + vert.Width), horiz.Minimum);
-				h = horiz.Height;
-			}
-			else
-				vert.Height = ClientSize.Height;
-
-			view.Viewable = new Size(Width - w, Height - h);
-			view.Refresh();
-		}
-
-		private void vert_Scroll(object sender, System.Windows.Forms.ScrollEventArgs e)
-		{
-			view.Location = new Point(view.Left, -(vert.Value) + 1);
-			view.NewLeft = true;
-			view.Refresh();
-		}
-
-		private void horiz_Scroll(object sender, System.Windows.Forms.ScrollEventArgs e)
-		{
-			view.Location = new Point(-(horiz.Value), view.Top);
-			view.NewLeft = true;
-			view.Refresh();
-		}
-
-		//public void SetMap(XCMapDesc map)
-		//{
-		//    view.Map = map.GetMapFile();
-		//    view.Focus();
-		//    OnResize(null);
-		//}
-		/*
-		public void SetMap(Map map)
-		{
-			view.Map = map;
-			view.Focus();
 			OnResize(null);
 		}
-		*/
 
-		/*** Timer stuff ***/
-		private static int current;
-		private static Timer timer;
-		private static bool started;
-		public static event EventHandler ImageUpdate;
-
-		public static void Start()
+		protected override void OnMouseDown(MouseEventArgs e)
 		{
-			if (timer == null)
-			{
-				timer = new Timer();
-				timer.Interval = 100;
-				timer.Tick += new EventHandler(tick);
-				timer.Start();
-				started = true;
-			}
+			if (map != null) {
+				mDown = true;
+				selectedLoc = convertCoordsDiamond(e.X, e.Y, map.CurrentHeight);
+				StartDrag = EndDrag = selectedLoc;
+				flipLock2 = true;
+				if (!drawAll && !flipLock)
+					map[mouseOver.Row, mouseOver.Col].DrawAbove = !map[mouseOver.Row, mouseOver.Col].DrawAbove;
 
-			if (!started)
-			{
-				timer.Start();
-				started = true;
+				map.SelectedTile = new MapLocation(mouseOver.Row, mouseOver.Col, map.CurrentHeight);
+
+				Focus();
+				Refresh();
+				flipLock2 = false;
 			}
 		}
 
-		public static void Stop()
+		protected override void OnMouseUp(MouseEventArgs e)
 		{
-			if (timer == null)
-			{
-				timer = new Timer();
-				timer.Interval = 100;
-				timer.Tick += new EventHandler(tick);
-				started = false;
+			mDown = false;
+			Refresh();
+		}
+
+		protected override void OnMouseMove(MouseEventArgs e)
+		{
+			if (map != null) {
+				MapLocation temp = convertCoordsDiamond(e.X, e.Y, map.CurrentHeight);
+
+				if (temp.Row != mouseOver.Row || temp.Col != mouseOver.Col) {
+					mouseOver = temp;
+
+					if (mDown)
+						MapControl.EndDrag = mouseOver;
+
+					Refresh();
+				}
 			}
+		}
 
-			if (started)
+		public MapLocation StartDrag
+		{
+			get { return startDrag; }
+			set
 			{
-				timer.Stop();
-				started = false;
+				if (map != null) {
+					startDrag = value;
+					if (startDrag.Row < 0)
+						startDrag.Row = 0;
+					else if (startDrag.Row >= map.Size.Rows)
+						startDrag.Row = map.Size.Rows - 1;
+
+					if (startDrag.Col < 0)
+						startDrag.Col = 0;
+					else if (startDrag.Col >= map.Size.Cols)
+						startDrag.Col = map.Size.Cols - 1;
+				}
 			}
 		}
 
-		public static bool Updating
+		public MapLocation EndDrag
 		{
-			get { return started; }
+			get { return endDrag; }
+			set
+			{
+				endDrag = value;
+				if (endDrag.Row < 0)
+					endDrag.Row = 0;
+				else if (endDrag.Row >= map.Size.Rows)
+					endDrag.Row = map.Size.Rows - 1;
+
+				if (endDrag.Col < 0)
+					endDrag.Col = 0;
+				else if (endDrag.Col >= map.Size.Cols)
+					endDrag.Col = map.Size.Cols - 1;
+			}
 		}
 
-		public static int Interval
+		protected override void mapChanged(MapChangedEventArgs e)
 		{
-			get { return timer.Interval; }
-			set { timer.Interval = value; }
+			base.mapChanged(e);
+
+			if (map != null) {
+				origin = new Point((map.Size.Rows - 1) * hdWid * Globals.PckImageScale, 0);
+				Width = (map.Size.Rows + map.Size.Cols) * hdWid * Globals.PckImageScale;
+				Height = map.Size.Height * 25 * Globals.PckImageScale + (map.Size.Rows + map.Size.Cols) * hdHeight * Globals.PckImageScale;
+			}
 		}
 
-		private static void tick(object sender, EventArgs e)
+		public int CurrentImage
 		{
-			current = (current + 1) % 8;
-
-			if (ImageUpdate != null)
-				ImageUpdate(null, null);
+			set { currentImage = value; }
 		}
 
-		public static int Current
+		public Size Viewable
 		{
-			get { return current; }
-			set { current = value; }
+			get { return viewable; }
+			set { viewable = value; }
+		}
+
+		public bool NewLeft
+		{
+			set { newLeft = value; }
+		}
+
+
+		public override void SelectedTileChanged(Map sender, SelectedTileChangedEventArgs e)
+		{
+			selectedLoc = e.MapLocation;
+
+			StartDrag = MapControl.StartDrag;
+			EndDrag = MapControl.EndDrag;
+
+			flipLock = true;
+			if (!drawAll && !flipLock2)
+				map[selectedLoc.Row, selectedLoc.Col, map.CurrentHeight].DrawAbove = !map[selectedLoc.Row, selectedLoc.Col, map.CurrentHeight].DrawAbove;
+
+			flipLock = false;
+			base.SelectedTileChanged(sender, e);
+		}
+
+		private int topx, topy, wid, hei, bottomx, bottomy;
+
+		protected override void OnPaint(PaintEventArgs e)
+		{
+			if(IsDesignMode)
+				base.OnPaint(e);
+			else if (map != null) {
+				Graphics g = e.Graphics;
+
+				if (newLeft) {
+					topx = -(Location.X + PckImage.Width);
+					topy = -(Location.Y + PckImage.Height);
+					wid = (-Location.X) + viewable.Width;
+					hei = (-Location.Y) + viewable.Height + PckImage.Height;
+					bottomx = topx + wid + PckImage.Width;
+					bottomy = topy + hei + PckImage.Height;
+
+					newLeft = false;
+				}
+
+				for (int h = map.Size.Height - 1; h >= 0; h--) {
+					bool val = true;
+
+					if (!drawAll)
+						val = true;
+					else {
+						if (h >= map.CurrentHeight)
+							val = true;
+						else
+							val = false;
+					}
+
+					if ((!drawAll && vis[h]) || !val)
+						continue;
+
+					if (h == map.CurrentHeight && useGrid) {
+						underGrid = new GraphicsPath();
+						Point pt0 = new Point(origin.X + hdWid, origin.Y + (map.CurrentHeight + 1) * 24);
+						Point pt1 = new Point(origin.X + map.Size.Cols * hdWid + hdWid, origin.Y + map.Size.Cols * hdHeight + (map.CurrentHeight + 1) * 24);
+						Point pt2 = new Point(origin.X + hdWid + (map.Size.Cols - map.Size.Rows) * hdWid, origin.Y + (map.Size.Rows + map.Size.Cols) * hdHeight + (map.CurrentHeight + 1) * 24);
+						Point pt3 = new Point(origin.X - map.Size.Rows * hdWid + hdWid, origin.Y + map.Size.Rows * hdHeight + (map.CurrentHeight + 1) * 24);
+						underGrid.AddLine(pt0, pt1);
+						underGrid.AddLine(pt1, pt2);
+						underGrid.AddLine(pt2, pt3);
+						underGrid.CloseFigure();
+
+						g.FillPath(transBrush, underGrid);
+
+						for (int i = 0; i <= map.Size.Rows; i++)
+							g.DrawLine(dashPen, origin.X - i * hdWid + hdWid, origin.Y + i * hdHeight + (map.CurrentHeight + 1) * 24,
+								origin.X + ((map.Size.Cols - i) * hdWid) + hdWid, origin.Y + (map.CurrentHeight + 1) * 24 + ((i + map.Size.Cols) * hdHeight));
+						for (int i = 0; i <= map.Size.Cols; i++)
+							g.DrawLine(dashPen, origin.X + i * hdWid + hdWid, origin.Y + i * hdHeight + (map.CurrentHeight + 1) * 24,
+								(origin.X + i * hdWid + hdWid) - map.Size.Rows * hdWid, (origin.Y + i * hdHeight) + map.Size.Rows * hdHeight + (map.CurrentHeight + 1) * 24);
+					}
+
+					for (int row = 0, startX = origin.X, startY = origin.Y + (24 * h * Globals.PckImageScale); row < map.Size.Rows; row++, startX -= hdWid * Globals.PckImageScale, startY += hdHeight * Globals.PckImageScale) {
+						for (int col = 0, x = startX, y = startY; col < map.Size.Cols; col++, x += hdWid * Globals.PckImageScale, y += hdHeight * Globals.PckImageScale) {
+							if (x > bottomx || y > bottomy)
+								break;
+
+							bool here = false;
+							if (row == mouseOver.Row && col == mouseOver.Col || row == selectedLoc.Row && col == selectedLoc.Col) {
+								if (cursor != null)
+									cursor.DrawHigh(g, x, y, MapViewScroller.Current, false, map.CurrentHeight == h);
+								here = true;
+							}
+
+							if (x > topx && x < wid && y > topy && y < hei) {
+								if (!drawAll && draw[h]) {
+									if (map[row, col, h].DrawAbove) {
+										if (!selectGrayscale)
+											drawTile(g, (XCMapTile)map[row, col, h], x, y);
+										else if ((here && Globals.UseGray) || (((row >= startDrag.Row && row <= endDrag.Row) || (row >= startDrag.Row && row <= endDrag.Row)) &&
+											((col >= startDrag.Col && col <= endDrag.Col) || (col >= startDrag.Col && col <= endDrag.Col))))
+											drawTileGray(g, (XCMapTile)map[row, col, h], x, y);
+										else
+											drawTile(g, (XCMapTile)map[row, col, h], x, y);
+									}
+								} else if (h == map.CurrentHeight || map[row, col, h].DrawAbove) {
+									if (!selectGrayscale)
+										drawTile(g, (XCMapTile)map[row, col, h], x, y);
+									else if ((here && Globals.UseGray))
+										drawTileGray(g, (XCMapTile)map[row, col, h], x, y);
+									else if (startDrag.Col >= endDrag.Col && col <= startDrag.Col && col >= endDrag.Col) {
+										if (startDrag.Row >= endDrag.Row && row <= startDrag.Row && row >= endDrag.Row)
+											drawTileGray(g, (XCMapTile)map[row, col, h], x, y);
+										else if (startDrag.Row <= endDrag.Row && row >= startDrag.Row && row <= endDrag.Row)
+											drawTileGray(g, (XCMapTile)map[row, col, h], x, y);
+										else
+											drawTile(g, (XCMapTile)map[row, col, h], x, y);
+
+									} else if (startDrag.Col <= endDrag.Col && col >= startDrag.Col && col <= endDrag.Col) {
+										if (startDrag.Row >= endDrag.Row && row <= startDrag.Row && row >= endDrag.Row)
+											drawTileGray(g, (XCMapTile)map[row, col, h], x, y);
+										else if (startDrag.Row <= endDrag.Row && row >= startDrag.Row && row <= endDrag.Row)
+											drawTileGray(g, (XCMapTile)map[row, col, h], x, y);
+										else
+											drawTile(g, (XCMapTile)map[row, col, h], x, y);
+									} else
+										drawTile(g, (XCMapTile)map[row, col, h], x, y);
+								}
+							}
+
+							if (here && cursor != null)
+								cursor.DrawLow(g, x, y, MapViewScroller.Current, false, map.CurrentHeight == h);
+						}
+					}
+
+				}
+			}
+		}
+
+		public Point Origin
+		{
+			get { return origin; }
+		}
+
+		private void drawTile(Graphics g, XCMapTile mt, int x, int y)
+		{
+			if (mt.Ground != null && TopView.Instance.GroundVisible)
+				g.DrawImage(mt.Ground[MapViewScroller.Current].Image, x, y - mt.Ground.YOffset);
+
+			if (mt.North != null && TopView.Instance.NorthVisible)
+				g.DrawImage(mt.North[MapViewScroller.Current].Image, x, y - mt.North.YOffset);
+
+			if (mt.West != null && TopView.Instance.WestVisible)
+				g.DrawImage(mt.West[MapViewScroller.Current].Image, x, y - mt.West.YOffset);
+
+			if (mt.Content != null && TopView.Instance.ContentVisible)
+				g.DrawImage(mt.Content[MapViewScroller.Current].Image, x, y - mt.Content.YOffset);
+		}
+
+		private void drawTileGray(Graphics g, XCMapTile mt, int x, int y)
+		{
+			if (mt.Ground != null && TopView.Instance.GroundVisible)
+				g.DrawImage(mt.Ground[MapViewScroller.Current].Gray, x, y - mt.Ground.YOffset);
+
+			if (mt.North != null && TopView.Instance.NorthVisible)
+				g.DrawImage(mt.North[MapViewScroller.Current].Gray, x, y - mt.North.YOffset);
+
+			if (mt.West != null && TopView.Instance.WestVisible)
+				g.DrawImage(mt.West[MapViewScroller.Current].Gray, x, y - mt.West.YOffset);
+
+			if (mt.Content != null && TopView.Instance.ContentVisible)
+				g.DrawImage(mt.Content[MapViewScroller.Current].Gray, x, y - mt.Content.YOffset);
+		}
+
+		/// <summary>
+		/// convert from screen coordinates to tile coordinates
+		/// </summary>
+		/// <param name="xp"></param>
+		/// <param name="yp"></param>
+		/// <param name="level"></param>
+		/// <returns></returns>
+		private MapLocation convertCoordsDiamond(int xp, int yp, int level)
+		{
+			int x = xp - origin.X - (hdWid * Globals.PckImageScale); //16 is half the width of the diamond
+			int y = yp - origin.Y - (24 * Globals.PckImageScale) * (level + 1); //24 is the distance from the top of the diamond to the very top of the image
+
+			double x1 = (x * 1.0 / (2 * (hdWid * Globals.PckImageScale))) + (y * 1.0 / (2 * (hdHeight * Globals.PckImageScale)));
+			double x2 = -(x * 1.0 - 2 * y * 1.0) / (2 * (hdWid * Globals.PckImageScale));
+
+			return new MapLocation((int)Math.Floor(x2), (int)Math.Floor(x1));
+		}
+
+		/// <summary>
+		/// convert from map coordinates to rectangular coordinates
+		/// </summary>
+		/// <param name="p">the map coordinates in (column,row) form</param>
+		/// <returns>(x,y) screen coordinates relative to this panel</returns>
+		private Point ConvertCoordsRect(Point p)
+		{
+			int x = p.X;
+			int y = p.Y;
+
+			return new Point(origin.X + ((PckImage.Width / 2) * (x - y)), origin.Y + (x + y));
 		}
 	}
 }

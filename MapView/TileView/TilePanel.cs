@@ -46,7 +46,7 @@ namespace MapView
 			vert.Location = new Point(Width - vert.Width, 0);
 			this.Controls.Add(vert);
 
-			MapViewScrollPanel.ImageUpdate += new EventHandler(tick);
+			MapViewScroller.ImageUpdate += new EventHandler(tick);
 			selectedNum = 0;
 			borderRect = ClientRectangle;
 			TileCategory = "All";
@@ -174,7 +174,7 @@ namespace MapView
 					foreach (Tile t in tiles) {
 						if (t != null && (TileCategory == "All" || t.Category == TileCategory)) {
 							g.FillRectangle(FillBrushes[t.SpecialType], i * (width + 2 * space), startY + j * (height + 2 * space), width + 2 * space, height + 2 * space);
-							g.DrawImage(t[MapViewScrollPanel.Current].Image, i * (width + 2 * space) + space, startY + j * (height + 2 * space) - t.YOffset + space);
+							g.DrawImage(t[MapViewScroller.Current].Image, i * (width + 2 * space) + space, startY + j * (height + 2 * space) - t.YOffset + space);
 
 							if (t.IsDoor)
 								g.DrawString("Door", this.Font, Brushes.Black, i * (width + 2 * space), startY + j * (height + 2 * space) + PckImage.Height - Font.Height);

@@ -28,7 +28,7 @@ namespace MapView
 		private void InitializeComponent()
 		{
 			this.scrollPanel = new System.Windows.Forms.Panel();
-			this.panel1 = new MapView.MapViewScrollPanel();
+			this.panel1 = new MapView.MapViewScroller();
 			this.scrollPanel.SuspendLayout();
 			this.SuspendLayout();
 			// 
@@ -68,7 +68,7 @@ namespace MapView
 		#endregion
 
 		private System.Windows.Forms.Panel scrollPanel;
-		private MapViewScrollPanel panel1;
+		private MapViewScroller panel1;
 
 	}
 }
