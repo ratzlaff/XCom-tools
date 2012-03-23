@@ -42,8 +42,7 @@ solution "Progs"
 		location "../XCom"
 		kind "SharedLib"
 		language "C#"
-		files { "../XCom/**.cs", "../XCom/**.resx", "../XCom/Properties/Settings.settings" }
-		embedded { "../XCom/_Embedded/**.*" }
+		files { "../XCom/**.cs", "../XCom/**.resx" }
 		
 		links { "UtilLib", "MapLib", "System", "System.Core", "System.Data", "System.Drawing", "System.Design", "System.Windows.Forms", "../libs/WeifenLuo.WinFormsUI.Docking.dll" }
 		prebuildcommands { "SubWCRev $(ProjectDir) $(ProjectDir)Properties\\AssemblyInfo.template $(ProjectDir)Properties\\AssemblyInfo.cs" }

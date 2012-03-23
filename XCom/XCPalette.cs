@@ -15,13 +15,12 @@ namespace XCom
 	public class XCPalette : Palette
 	{
 		private static readonly char COMMENT = '#';
-		private static readonly string embedPath = "XCom._Embedded.";
-
+		
 		private static Palette getEmbeddedPalette(string inName)
 		{
 			if (!LoadedPalettes.ContainsKey(inName)) {
-				Assembly thisAssembly = Assembly.GetExecutingAssembly();
-				LoadedPalettes.Add(inName, new XCPalette(thisAssembly.GetManifestResourceStream(embedPath + inName + ".pal")));
+				byte[] arr = (byte[])Properties.Resources.ResourceManager.GetObject(inName);
+				LoadedPalettes.Add(inName, new XCPalette(new MemoryStream(arr)));
 			}
 
 			return LoadedPalettes[inName];
@@ -30,18 +29,18 @@ namespace XCom
 		/// <summary>
 		/// XCom-UFO palettes embedded in this assembly
 		/// </summary>
-		public static Palette UFOBattle { get { return getEmbeddedPalette("ufo-battle"); } }
-		public static Palette UFOGeo { get { return getEmbeddedPalette("ufo-geo"); } }
-		public static Palette UFOGraph { get { return getEmbeddedPalette("ufo-graph"); } }
-		public static Palette UFOResearch { get { return getEmbeddedPalette("ufo-research"); } }
+		public static Palette UFOBattle { get { return getEmbeddedPalette("ufo_battle"); } }
+		public static Palette UFOGeo { get { return getEmbeddedPalette("ufo_geo"); } }
+		public static Palette UFOGraph { get { return getEmbeddedPalette("ufo_graph"); } }
+		public static Palette UFOResearch { get { return getEmbeddedPalette("ufo_research"); } }
 
 		/// <summary>
 		/// XCom-TFTD palettes embedded in this assembly
 		/// </summary>
-		public static Palette TFTDBattle { get { return getEmbeddedPalette("tftd-battle"); } }
-		public static Palette TFTDGeo { get { return getEmbeddedPalette("tftd-geo"); } }
-		public static Palette TFTDGraph { get { return getEmbeddedPalette("tftd-graph"); } }
-		public static Palette TFTDResearch { get { return getEmbeddedPalette("tftd-research"); } }
+		public static Palette TFTDBattle { get { return getEmbeddedPalette("tftd_battle"); } }
+		public static Palette TFTDGeo { get { return getEmbeddedPalette("tftd_geo"); } }
+		public static Palette TFTDGraph { get { return getEmbeddedPalette("tftd_graph"); } }
+		public static Palette TFTDResearch { get { return getEmbeddedPalette("tftd_research"); } }
 
 		// xcom palettes
 		public XCPalette(Stream s)
