@@ -7,12 +7,13 @@ using System.IO;
 using System.Reflection;
 using XCom;
 using UtilLib;
+using UtilLib.Parser;
 
 namespace MapView
 {
 	public partial class InstallWindow : Form
 	{
-		private XCom.VarCollection vars;
+		private VarCollection vars;
 		private List<string> ufoDirs, tftdDirs;
 
 		public InstallWindow()
@@ -21,7 +22,7 @@ namespace MapView
 			InitializeComponent();
 
 			DialogResult = DialogResult.Cancel;
-			vars = new XCom.VarCollection();
+			vars = new VarCollection();
 
 			ufoDirs = new List<string>();
 			ufoDirs.Add(@"C:\ufo");
@@ -95,6 +96,7 @@ namespace MapView
 
 			string mapFile = SharedSpace.Instance["MV_MapEditFile"].ToString();
 			string imageFile = SharedSpace.Instance["MV_ImagesFile"].ToString();
+			string layoutFile = SharedSpace.Instance["MV_LayoutFile"].ToString();
 			string runPath = SharedSpace.Instance.GetString("AppDir");
 
 			sw.WriteLine("mapdata:" + @mapFile);
@@ -119,15 +121,19 @@ namespace MapView
 
 			//write TFTD
 			if (txtTFTD.Text != "") {
-				appendFile(imageFile, "ImagesTFTD.dat");
-				appendFile(mapFile, "MapEditTFTD.dat");
+				appendFile(imageFile, "ImagesTFTD");
+				appendFile(mapFile, "MapEditTFTD");
 			}
 
 			//write UFO
 			if (txtUFO.Text != "") {
-				appendFile(imageFile, "ImagesUFO.dat");
-				appendFile(mapFile, "MapEditUFO.dat");
+				appendFile(imageFile, "ImagesUFO");
+				appendFile(mapFile, "MapEditUFO");
 			}
+
+			fs = new FileStream(@layoutFile, FileMode.Create);
+			fs.Close();
+			appendFile(layoutFile, "MVLayout");
 
 			this.DialogResult = DialogResult.OK;
 			Close();
@@ -135,7 +141,9 @@ namespace MapView
 
 		private void appendFile(string file, string resourceFile)
 		{
-			StreamReader sr = new StreamReader(ResourceLoader.GetStream(this.GetType(), resourceFile));
+			byte[] arr = (byte[])Properties.Resources.ResourceManager.GetObject(resourceFile);
+
+			StreamReader sr = new StreamReader(new MemoryStream(arr));
 			StreamWriter sw = new StreamWriter(new FileStream(file, FileMode.Append));
 
 			while (sr.Peek() != -1) {

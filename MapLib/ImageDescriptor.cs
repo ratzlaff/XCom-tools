@@ -4,37 +4,38 @@ using System.IO;
 using UtilLib;
 using MapLib.Base;
 
-namespace XCom
+namespace MapLib
 {
 	/// <summary>
 	/// Describes information about imagesets: the path to the pck, tab and mcd files
 	/// </summary>
-	public class ImageDescriptor:IComparable
+	public class ImageDescriptor : IComparable
 	{
 		private string basename;
 		private string basePath;
 		//private PckFile myPck;
 		//private McdFile myMcd;
-		private Hashtable pckTab,mcdTab;
+		private Hashtable pckTab, mcdTab;
 
 		public ImageDescriptor(string basename)
 		{
 			this.basename = basename;
-			basePath="";
+			basePath = "";
 			pckTab = new Hashtable(3);
 			mcdTab = new Hashtable(3);
 		}
 
-		public ImageDescriptor(string basename, string path):this(basename)
+		public ImageDescriptor(string basename, string path)
+			: this(basename)
 		{
-			basePath=path;
+			basePath = path;
 		}
-
+/*
 		public PckFile GetPckFile(Palette p)
 		{
-			if(pckTab[p]==null)			
-				pckTab[p] = GameInfo.CachePck(basePath,basename,2,p);//new PckFile(File.OpenRead(basePath+basename+".PCK"),File.OpenRead(basePath+basename+".TAB"),2,p,screen);//GameInfo.GetPckFile(basename,basePath,p,2,screen);
-			
+			if (pckTab[p] == null)
+				pckTab[p] = GameInfo.CachePck(basePath, basename, 2, p);//new PckFile(File.OpenRead(basePath+basename+".PCK"),File.OpenRead(basePath+basename+".TAB"),2,p,screen);//GameInfo.GetPckFile(basename,basePath,p,2,screen);
+
 			return (PckFile)pckTab[p];
 		}
 
@@ -45,8 +46,8 @@ namespace XCom
 
 		public McdFile GetMcdFile(Palette p)
 		{
-			if(mcdTab[p]==null)
-				mcdTab[p] = new McdFile(basename,basePath,GetPckFile(p));//GameInfo.GetMcdFile(basename,basePath,GetPckFile(p));
+			if (mcdTab[p] == null)
+				mcdTab[p] = new McdFile(basename, basePath, GetPckFile(p));//GameInfo.GetMcdFile(basename,basePath,GetPckFile(p));
 			return (McdFile)mcdTab[p];
 		}
 
@@ -54,7 +55,7 @@ namespace XCom
 		{
 			return GetMcdFile(GameInfo.DefaultPalette);
 		}
-
+*/
 		public override string ToString()
 		{
 			return basename;
@@ -67,13 +68,13 @@ namespace XCom
 
 		public string BaseName
 		{
-			get{return basename;}
+			get { return basename; }
 		}
 
 		public string BasePath
 		{
-			get{return basePath;}
-			set{basePath=value;}
+			get { return basePath; }
+			set { basePath = value; }
 		}
 	}
 }

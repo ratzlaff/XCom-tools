@@ -41,7 +41,7 @@ namespace MapView.TopViewForm
 
 			topViewPanel.ScrollPanel = center;
 
-			MainWindow.MakeToolstrip(toolStrip);
+//			MainWindow.MakeToolstrip(toolStrip);
 
 			visibleHash = new Dictionary<ToolStripMenuItem, UtilLib.Setting>();
 

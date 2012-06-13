@@ -1,5 +1,7 @@
 using System;
+using System.IO;
 using XCom;
+
 
 namespace MapView
 {
@@ -16,10 +18,10 @@ namespace MapView
 			get
 			{
 				if (extraTiles == null) {
-					System.IO.Stream sPck = System.Reflection.Assembly.GetExecutingAssembly().GetManifestResourceStream("MapView._Embedded.Extra.PCK");
-					System.IO.Stream sTab = System.Reflection.Assembly.GetExecutingAssembly().GetManifestResourceStream("MapView._Embedded.Extra.TAB");
+					MemoryStream sPck = new MemoryStream(Properties.Resources.Extra_PCK);
+					MemoryStream sTab = new MemoryStream(Properties.Resources.Extra_TAB);
 
-					extraTiles = new XCom.PckFile(sPck, sTab, 2, XCPalette.TFTDBattle);
+					extraTiles = new PckFile(sPck, sTab, "icons", 2, XCPalette.TFTDBattle);
 					extraTiles.Pal.SetTransparent(false);
 				}
 				return extraTiles;

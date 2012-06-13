@@ -10,6 +10,7 @@ using System.IO;
 using Microsoft.Win32;
 using System.Reflection;
 using UtilLib;
+using UtilLib.Parser;
 using UtilLib.Windows;
 using UtilLib.Loadable;
 using XCom.Interfaces.Base;
@@ -20,13 +21,14 @@ using MapLib;
 using WeifenLuo.WinFormsUI.Docking;
 using ViewLib;
 
+using MapLib.Base.Parsing;
+
 namespace MapView
 {
 	public delegate void StringDelegate(object sender, string args);
 
 	public partial class MainWindow : MainDockWindow
 	{
-//		private MapView.MapViewPanel mapView;
 		private LoadingForm lf;
 		private Dictionary<string, Map_Observer_Form> registeredForms;
 		private Dictionary<string, Settings> registeredSettings;
@@ -45,7 +47,7 @@ namespace MapView
 			PathInfo settingsFile = new PathInfo(SharedSpace.Instance.GetString("SettingsDir"), "MVSettings", "dat");
 			PathInfo mapeditFile = new PathInfo(SharedSpace.Instance.GetString("SettingsDir"), "MapEdit", "dat");
 			PathInfo imagesFile = new PathInfo(SharedSpace.Instance.GetString("SettingsDir"), "Images", "dat");
-			PathInfo layoutFile = new PathInfo(SharedSpace.Instance.GetString("SettingsDir"), "Layout", "xml");
+			PathInfo layoutFile = new PathInfo(SharedSpace.Instance.GetString("SettingsDir"), "MVLayout", "xml");
 
 			sharedSpace.GetObj("MV_PathsFile", pathsFile);
 			sharedSpace.GetObj("MV_SettingsFile", settingsFile);
@@ -61,10 +63,11 @@ namespace MapView
 					Environment.Exit(-1);
 			}
 
-			GameInfo.ParseLine += new ParseLineDelegate(parseLine);
-			GameInfo.Init(XCPalette.TFTDBattle, pathsFile);
+			LoadData(pathsFile);
+
 			xConsole.AddLine("GameInfo.Init done");
 
+			// this logic should be reworked to use the BLANKS.PCK
 			XCPalette.TFTDBattle.SetTransparent(true);
 			XCPalette.UFOBattle.SetTransparent(true);
 			XCPalette.TFTDBattle.Grayscale.SetTransparent(true);
@@ -79,7 +82,7 @@ namespace MapView
 			DockPanel = dockPanel;
 			LayoutFile = SharedSpace.Instance["MV_LayoutFile"].ToString();
 
-			MakeToolstrip(tools);
+//			MakeToolstrip(tools);
 			tools.Items.Add(new ToolStripSeparator());
 
 			xConsole.AddLine("Main view window created");
@@ -91,9 +94,10 @@ namespace MapView
 			registeredSettings["MainWindow"] = settings;
 
 			registerForm(MapList.Instance, showMenu, DockState.DockLeft);
-			registerForm(TopView.Instance, showMenu, DockState.Float);
+			registerForm(TopView.Instance, showMenu, DockState.DockBottom);
 			registerForm(TileView.Instance, showMenu, DockState.DockRight);
-			registerForm(RmpView.Instance, showMenu, DockState.Float);
+			registerForm(PropertyView.Instance, showMenu, DockState.DockRight);
+			registerForm(RmpView.Instance, showMenu, DockState.DockRightAutoHide);
 			registerForm(MapViewTool.Instance, showMenu, DockState.Document);
 
 //			if (XCom.Globals.UseBlanks)
@@ -102,8 +106,8 @@ namespace MapView
 //			addWindow(xConsole.Instance,showMenu);
 //			((MenuItem)windowMI[xConsole.Instance]).PerformClick();
 
-			registerForm(new HelpScreen(), miHelp, DockState.Float);
-			registerForm(new AboutWindow(), miHelp, DockState.Float);
+			registerForm(new HelpScreen(), miHelp, DockState.Hidden);
+			registerForm(new AboutWindow(), miHelp, DockState.Hidden);
 			xConsole.AddLine("Quick help and About created");
 
 			if (settingsFile.Exists()) {
@@ -140,6 +144,8 @@ namespace MapView
 			//}
 			/****************************************/
 
+			UtilLib.Parser.Design.ParseBlockCollectionEditor.DrawFont = Font;
+
 			xConsole.AddLine("About to show window");
 			Show();
 		}
@@ -154,26 +160,59 @@ namespace MapView
 			RegisterDockForm(f, initialState);
 		}
 
-		private void parseLine(XCom.KeyVal line, XCom.VarCollection vars)
+		private void LoadData(PathInfo paths)
 		{
-			switch (line.Keyword.ToLower()) {
-				case "cursor":
-					if (line.Rest.EndsWith("\\"))
-						SharedSpace.Instance.GetObj("cursorFile", line.Rest + "CURSOR");
-					else
-						SharedSpace.Instance.GetObj("cursorFile", line.Rest + "\\CURSOR");
-					break;
-				case "logfile":
-					try {
-						bool lineBool = false;
-						if (bool.TryParse(line.Rest, out lineBool))
-							xConsole.LogToFile("console.log");
+			VarCollection vars = new VarCollection(new StreamReader(File.OpenRead(paths.ToString())));
+			Directory.SetCurrentDirectory(paths.Path);
+
+			KeyVal kv = null;
+			MapEdit_dat mapSets = null;
+
+			while ((kv = vars.ReadLine()) != null) {
+				switch (kv.Keyword) {
+					case "mapdata":
+						mapSets = new MapEdit_dat(kv.Rest);
+						mapSets.Parse(vars);
+						SharedSpace.Instance["mapdata"] = mapSets;
+						break;
+					case "images":
+						Images_dat imageInfo = new Images_dat(kv.Rest);
+						imageInfo.Parse(vars);
+						SharedSpace.Instance["images"] = imageInfo;
+						break;
+					case "cursor":
+						if (kv.Rest.EndsWith("\\"))
+							SharedSpace.Instance.GetObj("cursorFile", kv.Rest + "CURSOR");
 						else
-							xConsole.LogToFile(line.Rest);
-					} catch {
-						Console.WriteLine("Could not parse logfile line");
-					}
-					break;
+							SharedSpace.Instance.GetObj("cursorFile", kv.Rest + "\\CURSOR");
+						break;
+					case "logfile":
+						try {
+							bool lineBool = false;
+							if (bool.TryParse(kv.Rest, out lineBool))
+								xConsole.LogToFile("console.log");
+							else
+								xConsole.LogToFile(kv.Rest);
+						} catch {
+							Console.WriteLine("Could not parse logfile line");
+						}
+						break;
+					default:
+//						if (ParseLine != null)
+//							ParseLine(kv, vars);
+//						else
+							Console.WriteLine("Unhandled var: {0}:{1}", kv.Keyword, kv.Rest);
+						break;
+				}
+			}
+
+			vars.BaseStream.Close();
+
+			if (mapSets != null) {
+				foreach (MapCollection mc in mapSets.Items)
+					foreach (Tileset t in mc.Tilesets.Data)
+						foreach (MapInfo mi in t.Maps.Data)
+							mi.PostLoad();
 			}
 		}
 
@@ -230,9 +269,9 @@ namespace MapView
 						foreach (MapLib.Base.Tile t in MapControl.Current.Tiles)
 							t.Animate((bool)val);					
 					break;
-				case "SaveWindowPositions":
-					PathsEditor.SaveRegistry = (bool)val;
-					break;
+//				case "SaveWindowPositions":
+//					PathsEditor.SaveRegistry = (bool)val;
+//					break;
 /*
 				case "UseGrid":
 					MapViewPanel.Instance.View.UseGrid = (bool)val;
@@ -321,15 +360,6 @@ namespace MapView
 			}
 		}
 
-		private void miPaths_Click(object sender, System.EventArgs e)
-		{
-			PathsEditor p = new PathsEditor(SharedSpace.Instance["MV_PathsFile"].ToString());
-			p.ShowDialog();
-
-//			GameInfo.Init(XCPalette.TFTDBattle, (PathInfo)SharedSpace.Instance["MV_PathsFile"]);
-//			initList();
-		}
-
 		public DialogResult NotifySave()
 		{
 			if (MapControl.Current != null && Globals.MapChanged)
@@ -416,116 +446,20 @@ namespace MapView
 			mif.Map = MapControl.Current;
 		}
 
-		public static void Cut_click(object sender, EventArgs e)
+		public void Cut_click(object sender, EventArgs e)
 		{
 			MapControl.Copy();
 			MapControl.ClearSelection();
 		}
 
-		public static void Copy_click(object sender, EventArgs e)
+		public void Copy_click(object sender, EventArgs e)
 		{
 			MapControl.Copy();
 		}
 
-		public static void Paste_click(object sender, EventArgs e)
+		public void Paste_click(object sender, EventArgs e)
 		{
 			MapControl.Paste();
-		}
-
-		/// <summary>
-		/// Adds buttons for Up,Down,Cut,Copy and Paste to a toolstrip as well as sets some properties for the toolstrip
-		/// </summary>
-		/// <param name="toolStrip"></param>
-		public static void MakeToolstrip(ToolStrip toolStrip)
-		{
-			ToolStripButton btnUp = new System.Windows.Forms.ToolStripButton();
-			ToolStripButton btnDown = new System.Windows.Forms.ToolStripButton();
-			ToolStripButton btnCut = new System.Windows.Forms.ToolStripButton();
-			ToolStripButton btnCopy = new System.Windows.Forms.ToolStripButton();
-			ToolStripButton btnPaste = new System.Windows.Forms.ToolStripButton();
-			// 
-			// toolStrip1
-			// 
-			toolStrip.Items.AddRange(new ToolStripItem[] {
-				btnUp,
-				btnDown,
-				btnCut,
-				btnCopy,
-				btnPaste});
-			toolStrip.Padding = new System.Windows.Forms.Padding(0);
-			toolStrip.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
-			toolStrip.TabIndex = 1;
-			// 
-			// btnUp
-			// 
-			btnUp.AutoSize = false;
-			btnUp.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			btnUp.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
-			btnUp.ImageTransparentColor = System.Drawing.Color.Magenta;
-			btnUp.Name = "btnUp";
-			btnUp.Size = new System.Drawing.Size(25, 25);
-			btnUp.Text = "toolStripButton1";
-			btnUp.ToolTipText = "Level Up";
-			btnUp.Click += delegate(object sender, EventArgs e) {
-				MapControl.Current.Up();
-			};
-			// 
-			// btnDown
-			// 
-			btnDown.AutoSize = false;
-			btnDown.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			btnDown.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
-			btnDown.ImageTransparentColor = System.Drawing.Color.Magenta;
-			btnDown.Name = "btnDown";
-			btnDown.Size = new System.Drawing.Size(25, 25);
-			btnDown.Text = "toolStripButton2";
-			btnDown.ToolTipText = "Level Down";
-			btnDown.Click += delegate(object sender, EventArgs e) {
-				MapControl.Current.Down();
-			};
-			// 
-			// btnCut
-			// 
-			btnCut.AutoSize = false;
-			btnCut.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			btnCut.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
-			btnCut.ImageTransparentColor = System.Drawing.Color.Magenta;
-			btnCut.Name = "btnCut";
-			btnCut.Size = new System.Drawing.Size(25, 25);
-			btnCut.Text = "toolStripButton3";
-			btnCut.ToolTipText = "Cut";
-			btnCut.Click += new EventHandler(Cut_click);
-			// 
-			// btnCopy
-			// 
-			btnCopy.AutoSize = false;
-			btnCopy.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			btnCopy.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
-			btnCopy.ImageTransparentColor = System.Drawing.Color.Magenta;
-			btnCopy.Name = "btnCopy";
-			btnCopy.Size = new System.Drawing.Size(25, 25);
-			btnCopy.Text = "toolStripButton4";
-			btnCopy.ToolTipText = "Copy";
-			btnCopy.Click += new EventHandler(Copy_click);
-			// 
-			// btnPaste
-			// 
-			btnPaste.AutoSize = false;
-			btnPaste.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			btnPaste.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
-			btnPaste.ImageTransparentColor = System.Drawing.Color.Magenta;
-			btnPaste.Name = "btnPaste";
-			btnPaste.Size = new System.Drawing.Size(25, 25);
-			btnPaste.Text = "toolStripButton5";
-			btnPaste.ToolTipText = "Paste";
-			btnPaste.Click += new EventHandler(Paste_click);
-
-			Assembly a = Assembly.GetExecutingAssembly();
-			btnCut.Image = Bitmap.FromStream(a.GetManifestResourceStream("MapView._Embedded.cut.gif"));
-			btnPaste.Image = Bitmap.FromStream(a.GetManifestResourceStream("MapView._Embedded.paste.gif"));
-			btnCopy.Image = Bitmap.FromStream(a.GetManifestResourceStream("MapView._Embedded.copy.gif"));
-			btnUp.Image = Bitmap.FromStream(a.GetManifestResourceStream("MapView._Embedded.up.gif"));
-			btnDown.Image = Bitmap.FromStream(a.GetManifestResourceStream("MapView._Embedded.down.gif"));
 		}
 
 		private void miExport_Click(object sender, EventArgs e)
@@ -549,6 +483,16 @@ namespace MapView
 		private void miOpen_Click(object sender, EventArgs e)
 		{
 
+		}
+
+		private void btnUp_Click(object sender, EventArgs e)
+		{
+			MapControl.Current.Up();
+		}
+
+		private void btnDown_Click(object sender, EventArgs e)
+		{
+			MapControl.Current.Down();
 		}
 	}
 }

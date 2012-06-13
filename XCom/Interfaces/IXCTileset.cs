@@ -4,10 +4,10 @@ using XCom.Interfaces.Base;
 using UtilLib;
 using MapLib;
 using MapLib.Base;
-
+/*
 namespace XCom.Interfaces
 {
-	public class IXCTileset : ITileset
+	public class IXCTileset : MapCollection
 	{
 		protected Palette myPal;
 		protected string rootPath, rmpPath, blankPath;
@@ -121,3 +121,4 @@ namespace XCom.Interfaces
 		public virtual XCMapDesc RemoveMap(string name, string subset) { return null; }
 	}
 }
+*/

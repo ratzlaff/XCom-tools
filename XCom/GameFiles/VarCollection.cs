@@ -1,19 +1,19 @@
 using System;
-using System.Collections;
+using System.Collections.Generic;
 using System.IO;
-
+/*
 namespace XCom
 {
 	public class VarCollection
 	{
-		private Hashtable vars;
+		private Dictionary<string, Variable> vars;
 		private VarCollection other;
 		private string baseVar;
 		private StreamReader sr;
 
 		public VarCollection()
 		{
-			vars = new Hashtable();
+			vars = new Dictionary<string, Variable>();
 			other=null;
 			baseVar="";
 		}
@@ -26,7 +26,7 @@ namespace XCom
 		public VarCollection(StreamReader sr)
 		{
 			this.sr=sr;
-			vars = new Hashtable();
+			vars = new Dictionary<string, Variable>();
 			other=null;
 		}
 
@@ -42,7 +42,7 @@ namespace XCom
 
 		public VarCollection(StreamReader sr,VarCollection vars)
 		{
-			this.vars=new Hashtable();
+			this.vars = vars.Vars;
 			this.sr=sr;
 			other=vars;
 		}
@@ -52,7 +52,7 @@ namespace XCom
 			if(vars[val]==null)
 				vars[val] = new Variable(baseVar,flag+":",val);
 			else
-				((Variable)vars[val]).Inc(flag+":");
+				vars[val].Inc(flag+":");
 		}
 
 		public VarCollection Other
@@ -60,7 +60,7 @@ namespace XCom
 			get{return other;}
 		}
 
-		public Hashtable Vars
+		public Dictionary<string, Variable> Vars
 		{
 			get{return vars;}
 		}
@@ -68,7 +68,7 @@ namespace XCom
 		public string ParseVar(string line)
 		{			
 			foreach(string s in vars.Keys)
-				line = line.Replace(s,(string)vars[s]);
+				line = line.Replace(s, vars[s].Value);
 
 			if(other!=null)
 				return other.ParseVar(line);
@@ -76,7 +76,7 @@ namespace XCom
 			return line;
 		}
 
-		public ICollection Variables
+		public ICollection<string> Variables
 		{
 			get{return vars.Keys;}
 		}
@@ -170,3 +170,4 @@ namespace XCom
 		}
 	}
 }
+*/

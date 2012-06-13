@@ -1,9 +1,8 @@
 using System;
 using System.Collections.Generic;
-using XCom.Interfaces;
 using UtilLib;
 
-namespace XCom
+namespace UtilLib
 {
 	public class SharedSpace
 	{
@@ -56,9 +55,9 @@ namespace XCom
 			return (double)mySpace[key];
 		}
 
-		public List<XCom.Interfaces.IXCImageFile> GetImageModList()
-		{
-			return (List<XCom.Interfaces.IXCImageFile>)mySpace["ImageMods"];
-		}
+//		public List<XCom.Interfaces.IXCImageFile> GetImageModList()
+//		{
+//			return (List<XCom.Interfaces.IXCImageFile>)mySpace["ImageMods"];
+//		}
 	}
 }

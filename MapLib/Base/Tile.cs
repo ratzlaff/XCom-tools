@@ -10,6 +10,7 @@ namespace MapLib.Base
 	{
 		protected TileImage[] images;
 		protected int id;
+		protected TileInfo mInfo;
 
 		public Tile(int id)
 		{
@@ -48,6 +49,11 @@ namespace MapLib.Base
 		public virtual int YOffset
 		{
 			get { return 0; }
+		}
+
+		public virtual TileInfo Properties
+		{
+			get { return mInfo; }
 		}
 
 		public virtual void Animate(bool isOn)

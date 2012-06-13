@@ -5,7 +5,7 @@ using XCom.Interfaces;
 using System.Reflection;
 using XCom.Interfaces.Base;
 using MapLib;
-
+/*
 namespace XCom
 {
 	public class XCTileset:IXCTileset
@@ -160,3 +160,4 @@ namespace XCom
 		}
 	}
 }
+*/

@@ -6,7 +6,6 @@ namespace UtilLib.Parser
 {
 	public class VarCollection
 	{
-		//private Hashtable vars;
 		private Dictionary<string, Variable> vars;
 		private VarCollection other;
 		private string baseVar;
@@ -28,6 +27,12 @@ namespace UtilLib.Parser
 			other = null;
 		}
 
+		public VarCollection(StreamReader sr, VarCollection vc)
+			:	this(sr)
+		{
+			other = vc;
+		}
+
 		public VarCollection(string baseVar)
 			: this()
 		{
@@ -37,6 +42,7 @@ namespace UtilLib.Parser
 		public VarCollection(VarCollection other)
 			: this()
 		{
+			this.sr = other.sr;
 			this.other = other;
 		}
 
@@ -79,12 +85,12 @@ namespace UtilLib.Parser
 			get
 			{
 				if (other == null || vars[var] != null)
-					return (string)vars[var].Value;
+					return vars[var].Value;
 				return other[var];
 			}
 			set
 			{
-				if (vars[var] != null)
+				if (vars.ContainsKey(var))
 					vars[var].Value = value;
 				else
 					vars[var] = new Variable(var, value);

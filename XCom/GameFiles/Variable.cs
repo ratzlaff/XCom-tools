@@ -1,7 +1,7 @@
 using System;
 using System.IO;
 using System.Collections;
-
+/*
 namespace XCom
 {
 	public class Variable
@@ -61,3 +61,4 @@ namespace XCom
 		}
 	}
 }
+*/

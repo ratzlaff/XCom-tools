@@ -1,17 +1,15 @@
 using System;
+using MapLib.Base;
 
 namespace XCom.Interfaces.Base
 {
-	public class IInfo
+	public class IInfo:TileInfo
 	{
-		protected int id;
-
 		protected IInfo(int id)
+			:	base(id)
 		{
-			this.id = id;
 		}
 
-		public int ID { get { return id; } }
 		public virtual sbyte TileOffset { get { return 0; } }
 		public virtual sbyte StandOffset { get { return 0; } }
 		public virtual TileType TileType { get { return TileType.All; } }

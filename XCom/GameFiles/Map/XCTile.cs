@@ -1,6 +1,7 @@
 using System;
 using System.Drawing;
 using XCom.Interfaces;
+using System.ComponentModel;
 
 namespace XCom
 {
@@ -16,6 +17,7 @@ namespace XCom
 			: base(id/*, info*/)
 		{
 			this.entry = info;
+			mInfo = info;
 			myFile = file;
 			mcdFile = mFile;
 
@@ -145,6 +147,7 @@ namespace XCom
 			images[7] = myFile[entry.Image1];
 		}
 
+		[Browsable(false)]
 		public XCTile[] Tiles
 		{
 			get { return tiles; }

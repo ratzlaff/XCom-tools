@@ -1,17 +1,19 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
 using System.Text;
 using System.Windows.Forms;
-using System.Drawing;
-using System.ComponentModel;
-using UtilLib;
-using MapLib;
-using MapLib.Base;
 using WeifenLuo.WinFormsUI.Docking;
+using UtilLib;
+using MapLib.Base;
+using MapLib;
 
 namespace ViewLib
 {
-	public class Map_Observer_Form : DockContent
+	public partial class Map_Observer_Form : DockContent
 	{
 		protected Settings settings;
 		protected MenuItem menuItem;
@@ -25,13 +27,11 @@ namespace ViewLib
 
 		public Map_Observer_Form()
 		{
+			InitializeComponent();
+
 			settings = new Settings();
 			FillBrushes = new Dictionary<string, SolidBrush>();
 			DrawPens = new Dictionary<string, Pen>();
-
-			this.StartPosition = FormStartPosition.Manual;
-			this.ShowInTaskbar = false;
-			this.FormBorderStyle = FormBorderStyle.SizableToolWindow;
 
 			if (!IsDesignMode) {
 				MapControl.MapChanged += mapChanged;

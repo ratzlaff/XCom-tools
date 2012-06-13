@@ -11,6 +11,7 @@ namespace UtilLib.Parser
 	public class VarCollection_Structure
 	{
 		private KeyVal root;
+		private VarCollection mVC;
 
 		/// <summary>
 		/// Constructor
@@ -32,6 +33,11 @@ namespace UtilLib.Parser
 		public Dictionary<string, KeyVal> KeyValList
 		{
 			get { return root.SubHash; }
+		}
+
+		public VarCollection Vars
+		{
+			get { return mVC; }
 		}
 
 		private void parse_block(VarCollection vc, KeyVal parent)

@@ -7,10 +7,11 @@ using MapLib.Base;
 
 namespace XCom.Interfaces.Base
 {
-	public class IMapDesc:IAssemblyLoadable,IOpenSave
+/*
+	public class IMapDesc : IAssemblyLoadable, IOpenSave
 	{
 		protected string name;
-		protected string expDesc="No Description";
+		protected string expDesc = "No Description";
 		protected string ext = ".unused";
 
 		public IMapDesc() { throw new Exception("Parameterless constructor for IMapDesc should not be used"); }
@@ -23,7 +24,7 @@ namespace XCom.Interfaces.Base
 			throw new Exception("GetMapFile() is not overridden");
 		}
 
-		public virtual void Unload(){}
+		public virtual void Unload() { }
 
 		public virtual string FileFilter
 		{
@@ -44,4 +45,5 @@ namespace XCom.Interfaces.Base
 		/// </summary>
 		public virtual string ExplorerDescription { get { return expDesc; } }
 	}
+*/
 }

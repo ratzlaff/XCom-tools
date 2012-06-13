@@ -50,7 +50,7 @@ namespace XCom
 				SaveBlanks();
 			}
 		}
-
+/*
 		public void Hq2x()
 		{
 			//instead, i would want to make an image of the whole map, and run that through hq2x
@@ -61,7 +61,7 @@ namespace XCom
 			PckImage.Width *= 2;
 			PckImage.Height *= 2;
 		}
-
+*/
 		public RmpEntry AddRmp(MapLocation loc)
 		{
 			RmpEntry re = Rmp.AddEntry((byte)loc.Row, (byte)loc.Col, (byte)loc.Height);

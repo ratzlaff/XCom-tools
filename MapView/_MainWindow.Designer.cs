@@ -55,7 +55,6 @@ namespace MapView
 			this.bar = new System.Windows.Forms.MenuItem();
 			this.quititem = new System.Windows.Forms.MenuItem();
 			this.miEdit = new System.Windows.Forms.MenuItem();
-			this.miPaths = new System.Windows.Forms.MenuItem();
 			this.miOptions = new System.Windows.Forms.MenuItem();
 			this.miInfo = new System.Windows.Forms.MenuItem();
 			this.miAnimation = new System.Windows.Forms.MenuItem();
@@ -71,10 +70,16 @@ namespace MapView
 			this.dockPanel = new WeifenLuo.WinFormsUI.Docking.DockPanel();
 			this.toolStripContainer1 = new System.Windows.Forms.ToolStripContainer();
 			this.tools = new System.Windows.Forms.ToolStrip();
+			this.btnUp = new System.Windows.Forms.ToolStripButton();
+			this.btnDown = new System.Windows.Forms.ToolStripButton();
+			this.btnCut = new System.Windows.Forms.ToolStripButton();
+			this.ctnCopy = new System.Windows.Forms.ToolStripButton();
+			this.btnPaste = new System.Windows.Forms.ToolStripButton();
 			this.statusStrip1.SuspendLayout();
 			this.toolStripContainer1.ContentPanel.SuspendLayout();
 			this.toolStripContainer1.TopToolStripPanel.SuspendLayout();
 			this.toolStripContainer1.SuspendLayout();
+			this.tools.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// mainMenu
@@ -153,26 +158,19 @@ namespace MapView
 			// 
 			this.miEdit.Index = 1;
 			this.miEdit.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
-            this.miPaths,
             this.miOptions,
             this.miInfo});
 			this.miEdit.Text = "Edit";
 			// 
-			// miPaths
-			// 
-			this.miPaths.Index = 0;
-			this.miPaths.Text = "Paths";
-			this.miPaths.Click += new System.EventHandler(this.miPaths_Click);
-			// 
 			// miOptions
 			// 
-			this.miOptions.Index = 1;
+			this.miOptions.Index = 0;
 			this.miOptions.Text = "Options";
 			this.miOptions.Click += new System.EventHandler(this.miOptions_Click);
 			// 
 			// miInfo
 			// 
-			this.miInfo.Index = 2;
+			this.miInfo.Index = 1;
 			this.miInfo.Text = "Map Info";
 			this.miInfo.Click += new System.EventHandler(this.miInfo_Click);
 			// 
@@ -229,9 +227,9 @@ namespace MapView
 			this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.statusMapName,
             this.tsMapSize});
-			this.statusStrip1.Location = new System.Drawing.Point(0, 245);
+			this.statusStrip1.Location = new System.Drawing.Point(0, 207);
 			this.statusStrip1.Name = "statusStrip1";
-			this.statusStrip1.Size = new System.Drawing.Size(557, 22);
+			this.statusStrip1.Size = new System.Drawing.Size(464, 22);
 			this.statusStrip1.TabIndex = 2;
 			this.statusStrip1.Text = "statusStrip1";
 			// 
@@ -262,7 +260,7 @@ namespace MapView
 			this.dockPanel.DocumentStyle = WeifenLuo.WinFormsUI.Docking.DocumentStyle.DockingSdi;
 			this.dockPanel.Location = new System.Drawing.Point(0, 0);
 			this.dockPanel.Name = "dockPanel";
-			this.dockPanel.Size = new System.Drawing.Size(557, 220);
+			this.dockPanel.Size = new System.Drawing.Size(464, 182);
 			dockPanelGradient1.EndColor = System.Drawing.SystemColors.ControlLight;
 			dockPanelGradient1.StartColor = System.Drawing.SystemColors.ControlLight;
 			autoHideStripSkin1.DockStripGradient = dockPanelGradient1;
@@ -313,17 +311,18 @@ namespace MapView
 			// 
 			// toolStripContainer1
 			// 
+			this.toolStripContainer1.BottomToolStripPanelVisible = false;
 			// 
 			// toolStripContainer1.ContentPanel
 			// 
 			this.toolStripContainer1.ContentPanel.Controls.Add(this.dockPanel);
-			this.toolStripContainer1.ContentPanel.Size = new System.Drawing.Size(557, 220);
+			this.toolStripContainer1.ContentPanel.Size = new System.Drawing.Size(464, 182);
 			this.toolStripContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.toolStripContainer1.LeftToolStripPanelVisible = false;
 			this.toolStripContainer1.Location = new System.Drawing.Point(0, 0);
 			this.toolStripContainer1.Name = "toolStripContainer1";
 			this.toolStripContainer1.RightToolStripPanelVisible = false;
-			this.toolStripContainer1.Size = new System.Drawing.Size(557, 245);
+			this.toolStripContainer1.Size = new System.Drawing.Size(464, 207);
 			this.toolStripContainer1.TabIndex = 5;
 			this.toolStripContainer1.Text = "toolStripContainer1";
 			// 
@@ -334,16 +333,72 @@ namespace MapView
 			// tools
 			// 
 			this.tools.Dock = System.Windows.Forms.DockStyle.None;
-			this.tools.Location = new System.Drawing.Point(3, 0);
+			this.tools.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.btnUp,
+            this.btnDown,
+            this.btnCut,
+            this.ctnCopy,
+            this.btnPaste});
+			this.tools.Location = new System.Drawing.Point(5, 0);
 			this.tools.Name = "tools";
-			this.tools.Size = new System.Drawing.Size(111, 25);
+			this.tools.Size = new System.Drawing.Size(127, 25);
 			this.tools.TabIndex = 0;
+			// 
+			// btnUp
+			// 
+			this.btnUp.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.btnUp.Image = global::MapView.Properties.Resources.bullet_arrow_up;
+			this.btnUp.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.btnUp.Name = "btnUp";
+			this.btnUp.Size = new System.Drawing.Size(23, 22);
+			this.btnUp.Text = "Up";
+			this.btnUp.Click += new System.EventHandler(this.btnUp_Click);
+			// 
+			// btnDown
+			// 
+			this.btnDown.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.btnDown.Image = global::MapView.Properties.Resources.bullet_arrow_down;
+			this.btnDown.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.btnDown.Name = "btnDown";
+			this.btnDown.Size = new System.Drawing.Size(23, 22);
+			this.btnDown.Text = "Down";
+			this.btnDown.Click += new System.EventHandler(this.btnDown_Click);
+			// 
+			// btnCut
+			// 
+			this.btnCut.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.btnCut.Image = global::MapView.Properties.Resources.cut;
+			this.btnCut.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.btnCut.Name = "btnCut";
+			this.btnCut.Size = new System.Drawing.Size(23, 22);
+			this.btnCut.Text = "Cut";
+			this.btnCut.Click += new System.EventHandler(this.Cut_click);
+			// 
+			// ctnCopy
+			// 
+			this.ctnCopy.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.ctnCopy.Image = global::MapView.Properties.Resources.page_white_copy;
+			this.ctnCopy.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.ctnCopy.Name = "ctnCopy";
+			this.ctnCopy.Size = new System.Drawing.Size(23, 22);
+			this.ctnCopy.Text = "Copy";
+			this.ctnCopy.Click += new System.EventHandler(this.Copy_click);
+			// 
+			// btnPaste
+			// 
+			this.btnPaste.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.btnPaste.Image = global::MapView.Properties.Resources.page_white_paste;
+			this.btnPaste.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.btnPaste.Name = "btnPaste";
+			this.btnPaste.Size = new System.Drawing.Size(23, 22);
+			this.btnPaste.Text = "Paste";
+			this.btnPaste.Click += new System.EventHandler(this.Paste_click);
 			// 
 			// MainWindow
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.BackColor = System.Drawing.SystemColors.Control;
-			this.ClientSize = new System.Drawing.Size(557, 267);
+			this.ClientSize = new System.Drawing.Size(464, 229);
 			this.Controls.Add(this.toolStripContainer1);
 			this.Controls.Add(this.statusStrip1);
 			this.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -362,6 +417,8 @@ namespace MapView
 			this.toolStripContainer1.TopToolStripPanel.PerformLayout();
 			this.toolStripContainer1.ResumeLayout(false);
 			this.toolStripContainer1.PerformLayout();
+			this.tools.ResumeLayout(false);
+			this.tools.PerformLayout();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -379,7 +436,6 @@ namespace MapView
 		private System.Windows.Forms.MenuItem miAnimation;
 		private System.Windows.Forms.MenuItem miHelp;
 		private System.Windows.Forms.MenuItem miEdit;
-		private System.Windows.Forms.MenuItem miPaths;
 		private System.Windows.Forms.MenuItem miOptions;
 		private System.Windows.Forms.MenuItem miSaveImage;
 		private System.Windows.Forms.SaveFileDialog saveFile;
@@ -395,5 +451,10 @@ namespace MapView
 		private WeifenLuo.WinFormsUI.Docking.DockPanel dockPanel;
 		private System.Windows.Forms.ToolStripContainer toolStripContainer1;
 		private System.Windows.Forms.ToolStrip tools;
+		private System.Windows.Forms.ToolStripButton btnUp;
+		private System.Windows.Forms.ToolStripButton btnDown;
+		private System.Windows.Forms.ToolStripButton btnCut;
+		private System.Windows.Forms.ToolStripButton ctnCopy;
+		private System.Windows.Forms.ToolStripButton btnPaste;
 	}
 }

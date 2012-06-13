@@ -28,20 +28,18 @@ namespace MapView
 		{
 			this.components = new System.ComponentModel.Container();
 			this.menu = new System.Windows.Forms.MainMenu(this.components);
-			this.menuItem1 = new System.Windows.Forms.MenuItem();
-			this.mcdInfoTab = new System.Windows.Forms.MenuItem();
 			this.menuItem2 = new System.Windows.Forms.MenuItem();
 			this.menuItem3 = new System.Windows.Forms.MenuItem();
 			this.tabs = new System.Windows.Forms.TabControl();
 			this.allTab = new System.Windows.Forms.TabPage();
-			this.all = new MapView.TilePanel();
 			this.groundTab = new System.Windows.Forms.TabPage();
-			this.ground = new MapView.TilePanel();
 			this.wWallsTab = new System.Windows.Forms.TabPage();
-			this.wWalls = new MapView.TilePanel();
 			this.nWallsTab = new System.Windows.Forms.TabPage();
-			this.nWalls = new MapView.TilePanel();
 			this.objectsTab = new System.Windows.Forms.TabPage();
+			this.all = new MapView.TilePanel();
+			this.ground = new MapView.TilePanel();
+			this.wWalls = new MapView.TilePanel();
+			this.nWalls = new MapView.TilePanel();
 			this.objs = new MapView.TilePanel();
 			this.tabs.SuspendLayout();
 			this.allTab.SuspendLayout();
@@ -54,25 +52,11 @@ namespace MapView
 			// menu
 			// 
 			this.menu.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
-            this.menuItem1,
             this.menuItem2});
-			// 
-			// menuItem1
-			// 
-			this.menuItem1.Index = 0;
-			this.menuItem1.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
-            this.mcdInfoTab});
-			this.menuItem1.Text = "MCD";
-			// 
-			// mcdInfoTab
-			// 
-			this.mcdInfoTab.Index = 0;
-			this.mcdInfoTab.Text = "MCD Info";
-			this.mcdInfoTab.Click += new System.EventHandler(this.mcdInfoTab_Click);
 			// 
 			// menuItem2
 			// 
-			this.menuItem2.Index = 1;
+			this.menuItem2.Index = 0;
 			this.menuItem2.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
             this.menuItem3});
 			this.menuItem2.Text = "Edit";
@@ -94,7 +78,7 @@ namespace MapView
 			this.tabs.Location = new System.Drawing.Point(0, 0);
 			this.tabs.Name = "tabs";
 			this.tabs.SelectedIndex = 0;
-			this.tabs.Size = new System.Drawing.Size(542, 310);
+			this.tabs.Size = new System.Drawing.Size(542, 289);
 			this.tabs.TabIndex = 0;
 			// 
 			// allTab
@@ -102,9 +86,45 @@ namespace MapView
 			this.allTab.Controls.Add(this.all);
 			this.allTab.Location = new System.Drawing.Point(4, 22);
 			this.allTab.Name = "allTab";
-			this.allTab.Size = new System.Drawing.Size(534, 284);
+			this.allTab.Size = new System.Drawing.Size(534, 263);
 			this.allTab.TabIndex = 0;
 			this.allTab.Text = "All";
+			// 
+			// groundTab
+			// 
+			this.groundTab.Controls.Add(this.ground);
+			this.groundTab.Location = new System.Drawing.Point(4, 22);
+			this.groundTab.Name = "groundTab";
+			this.groundTab.Size = new System.Drawing.Size(534, 284);
+			this.groundTab.TabIndex = 1;
+			this.groundTab.Text = "Ground";
+			// 
+			// wWallsTab
+			// 
+			this.wWallsTab.Controls.Add(this.wWalls);
+			this.wWallsTab.Location = new System.Drawing.Point(4, 22);
+			this.wWallsTab.Name = "wWallsTab";
+			this.wWallsTab.Size = new System.Drawing.Size(534, 284);
+			this.wWallsTab.TabIndex = 2;
+			this.wWallsTab.Text = "West Walls";
+			// 
+			// nWallsTab
+			// 
+			this.nWallsTab.Controls.Add(this.nWalls);
+			this.nWallsTab.Location = new System.Drawing.Point(4, 22);
+			this.nWallsTab.Name = "nWallsTab";
+			this.nWallsTab.Size = new System.Drawing.Size(534, 284);
+			this.nWallsTab.TabIndex = 4;
+			this.nWallsTab.Text = "North Walls";
+			// 
+			// objectsTab
+			// 
+			this.objectsTab.Controls.Add(this.objs);
+			this.objectsTab.Location = new System.Drawing.Point(4, 22);
+			this.objectsTab.Name = "objectsTab";
+			this.objectsTab.Size = new System.Drawing.Size(534, 284);
+			this.objectsTab.TabIndex = 3;
+			this.objectsTab.Text = "Objects";
 			// 
 			// all
 			// 
@@ -112,19 +132,10 @@ namespace MapView
 			this.all.Location = new System.Drawing.Point(0, 0);
 			this.all.Name = "all";
 			this.all.SelectedTile = null;
-			this.all.Size = new System.Drawing.Size(534, 284);
+			this.all.Size = new System.Drawing.Size(534, 263);
 			this.all.StartY = 0;
 			this.all.TabIndex = 0;
 			this.all.TileChanged += new MapView.SelectedTileChanged(this.tileChanged);
-			// 
-			// groundTab
-			// 
-			this.groundTab.Controls.Add(this.ground);
-			this.groundTab.Location = new System.Drawing.Point(4, 22);
-			this.groundTab.Name = "groundTab";
-			this.groundTab.Size = new System.Drawing.Size(315, 130);
-			this.groundTab.TabIndex = 1;
-			this.groundTab.Text = "Ground";
 			// 
 			// ground
 			// 
@@ -132,20 +143,11 @@ namespace MapView
 			this.ground.Location = new System.Drawing.Point(0, 0);
 			this.ground.Name = "ground";
 			this.ground.SelectedTile = null;
-			this.ground.Size = new System.Drawing.Size(315, 130);
+			this.ground.Size = new System.Drawing.Size(534, 284);
 			this.ground.StartY = 0;
 			this.ground.TabIndex = 1;
 			this.ground.TileCategory = "Ground";
 			this.ground.TileChanged += new MapView.SelectedTileChanged(this.tileChanged);
-			// 
-			// wWallsTab
-			// 
-			this.wWallsTab.Controls.Add(this.wWalls);
-			this.wWallsTab.Location = new System.Drawing.Point(4, 22);
-			this.wWallsTab.Name = "wWallsTab";
-			this.wWallsTab.Size = new System.Drawing.Size(315, 130);
-			this.wWallsTab.TabIndex = 2;
-			this.wWallsTab.Text = "West Walls";
 			// 
 			// wWalls
 			// 
@@ -153,20 +155,11 @@ namespace MapView
 			this.wWalls.Location = new System.Drawing.Point(0, 0);
 			this.wWalls.Name = "wWalls";
 			this.wWalls.SelectedTile = null;
-			this.wWalls.Size = new System.Drawing.Size(315, 130);
+			this.wWalls.Size = new System.Drawing.Size(534, 284);
 			this.wWalls.StartY = 0;
 			this.wWalls.TabIndex = 1;
 			this.wWalls.TileCategory = "WestWall";
 			this.wWalls.TileChanged += new MapView.SelectedTileChanged(this.tileChanged);
-			// 
-			// nWallsTab
-			// 
-			this.nWallsTab.Controls.Add(this.nWalls);
-			this.nWallsTab.Location = new System.Drawing.Point(4, 22);
-			this.nWallsTab.Name = "nWallsTab";
-			this.nWallsTab.Size = new System.Drawing.Size(315, 130);
-			this.nWallsTab.TabIndex = 4;
-			this.nWallsTab.Text = "North Walls";
 			// 
 			// nWalls
 			// 
@@ -174,20 +167,11 @@ namespace MapView
 			this.nWalls.Location = new System.Drawing.Point(0, 0);
 			this.nWalls.Name = "nWalls";
 			this.nWalls.SelectedTile = null;
-			this.nWalls.Size = new System.Drawing.Size(315, 130);
+			this.nWalls.Size = new System.Drawing.Size(534, 284);
 			this.nWalls.StartY = 0;
 			this.nWalls.TabIndex = 1;
 			this.nWalls.TileCategory = "NorthWall";
 			this.nWalls.TileChanged += new MapView.SelectedTileChanged(this.tileChanged);
-			// 
-			// objectsTab
-			// 
-			this.objectsTab.Controls.Add(this.objs);
-			this.objectsTab.Location = new System.Drawing.Point(4, 22);
-			this.objectsTab.Name = "objectsTab";
-			this.objectsTab.Size = new System.Drawing.Size(315, 130);
-			this.objectsTab.TabIndex = 3;
-			this.objectsTab.Text = "Objects";
 			// 
 			// objs
 			// 
@@ -195,7 +179,7 @@ namespace MapView
 			this.objs.Location = new System.Drawing.Point(0, 0);
 			this.objs.Name = "objs";
 			this.objs.SelectedTile = null;
-			this.objs.Size = new System.Drawing.Size(315, 130);
+			this.objs.Size = new System.Drawing.Size(534, 284);
 			this.objs.StartY = 0;
 			this.objs.TabIndex = 1;
 			this.objs.TileCategory = "Object";
@@ -203,10 +187,9 @@ namespace MapView
 			// 
 			// TileView
 			// 
-			this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
-			this.ClientSize = new System.Drawing.Size(542, 310);
+			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+			this.ClientSize = new System.Drawing.Size(542, 289);
 			this.Controls.Add(this.tabs);
-			this.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.Menu = this.menu;
 			this.Name = "TileView";
 			this.Text = "TileView";
@@ -228,8 +211,6 @@ namespace MapView
 		private System.Windows.Forms.TabPage nWallsTab;
 		private System.Windows.Forms.TabPage wWallsTab;
 		private System.Windows.Forms.MainMenu menu;
-		private System.Windows.Forms.MenuItem menuItem1;
-		private System.Windows.Forms.MenuItem mcdInfoTab;
 		private TilePanel all;
 		private TilePanel ground;
 		private TilePanel wWalls;

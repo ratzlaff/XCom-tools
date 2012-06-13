@@ -30,6 +30,7 @@ namespace ViewLib
 		{
 			toolsToLoad.Add(window);
 			initialState[window] = state;
+//			window.DockAreas = DockAreas.DockBottom | DockAreas.DockLeft | DockAreas.DockRight | DockAreas.DockTop | DockAreas.Float;
 		}
 
 		private IDockContent getWindow(string window)
@@ -51,7 +52,11 @@ namespace ViewLib
 			base.OnLoad(e);
 
 			if (File.Exists(LayoutFile))
-				DockPanel.LoadFromXml(LayoutFile, getWindow);
+				try {
+					DockPanel.LoadFromXml(LayoutFile, getWindow);
+				} catch (Exception ex) {
+					Console.WriteLine("Could not load layout file: " + ex.ToString());
+				}
 
 			// show new forms that dont exist in the LayoutFile
 			foreach (DockContent tw in toolsToLoad)

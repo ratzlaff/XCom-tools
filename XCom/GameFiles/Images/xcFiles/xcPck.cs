@@ -34,6 +34,7 @@ namespace XCom.GameFiles.Images.xcFiles
 
 			    return new PckFile(System.IO.File.OpenRead(directory+"\\"+file),
 			        tabStream,
+					tabBase,
 			        2,
 			        pal,
 			        imgHei,
@@ -46,6 +47,7 @@ namespace XCom.GameFiles.Images.xcFiles
 
 				return new PckFile(System.IO.File.OpenRead(directory+"\\"+file),
 					tabStream,
+					tabBase,
 					4,
 					pal,
 					imgHei,

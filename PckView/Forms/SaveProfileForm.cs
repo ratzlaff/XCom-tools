@@ -7,6 +7,7 @@ using System.IO;
 using XCom.Interfaces;
 using XCom;
 using MapLib.Base;
+using UtilLib;
 
 namespace PckView
 {
@@ -20,10 +21,10 @@ namespace PckView
 			DialogResult = DialogResult.Cancel;
 			UtilLib.Windows.RegistryInfo ri = new UtilLib.Windows.RegistryInfo(this);
 
-			if (!Directory.Exists(XCom.SharedSpace.Instance["CustomDir"].ToString()))
-				Directory.CreateDirectory(XCom.SharedSpace.Instance["CustomDir"].ToString());
+			if (!Directory.Exists(SharedSpace.Instance["CustomDir"].ToString()))
+				Directory.CreateDirectory(SharedSpace.Instance["CustomDir"].ToString());
 
-			saveFile.InitialDirectory = XCom.SharedSpace.Instance["CustomDir"].ToString();
+			saveFile.InitialDirectory = SharedSpace.Instance["CustomDir"].ToString();
 			saveFile.FileName = "profile.pvp";
 
 			txtOutDir.Text = saveFile.InitialDirectory + "\\" + saveFile.FileName;

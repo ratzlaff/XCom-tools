@@ -12,6 +12,7 @@ using XCom.Interfaces.Base;
 using UtilLib;
 using MapLib.Base;
 
+#if HERE
 namespace MapView
 {
 	/// <summary>
@@ -1232,7 +1233,7 @@ namespace MapView
 				populateTree();
 			}
 		}
-
+/*
 		private IXCTileset getCurrset()
 		{
 			TreeNode t = treeMaps.SelectedNode;
@@ -1247,6 +1248,7 @@ namespace MapView
 			else //parent node
 				return (IXCTileset)GameInfo.TilesetInfo.Tilesets[t.Text];
 		}
+*/
 /*
 		private void btnSave2_Click(object sender, System.EventArgs e)
 		{
@@ -1451,3 +1453,4 @@ namespace MapView
 		}
 	}
 }
+#endif

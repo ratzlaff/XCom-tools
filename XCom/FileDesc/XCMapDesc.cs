@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using XCom.Interfaces.Base;
 using UtilLib;
 using MapLib.Base;
-
+using MapLib;
+#if NOPE
 namespace XCom
 {
-	public class XCMapDesc:IMapDesc
+	public class XCMapDesc : MapInfo
 	{
 		protected Palette myPal;
 		protected bool isStatic;
@@ -21,7 +22,8 @@ namespace XCom
 			//string tileset,
 			string rmpPath,
 			string[] dependencies,
-			Palette myPal):base(basename)
+			Palette myPal)
+			: base(basename)
 		{
 			this.myPal = myPal;
 			this.basename = basename;
@@ -33,37 +35,37 @@ namespace XCom
 			isStatic = false;
 		}
 
-		public override Map GetMapFile() 
+		public override Map  Map
 		{
-			ImageInfo images = GameInfo.ImageInfo;
-
-			List<Tile> a = new List<Tile>();
-			//if (p == null)
-			//    p = GameInfo.DefaultPalette;
-
-			foreach (string s in dependencies)
+			get
 			{
-				if (images[s] != null)
-				{
-					McdFile mcd = images[s].GetMcdFile(myPal);
-					foreach (XCTile t in mcd)
-						a.Add(t);
-				}
-			}
+				ImageInfo images = GameInfo.ImageInfo;
 
-			XCMapFile map = new XCMapFile(basename, basePath, blankPath, a, dependencies);
-			map.Rmp = new RmpFile(basename, rmpPath);
-			return map;
+				List<Tile> a = new List<Tile>();
+
+				foreach (string s in dependencies) {
+					if (images[s] != null) {
+						McdFile mcd = images[s].GetMcdFile(myPal);
+						foreach (XCTile t in mcd)
+							a.Add(t);
+					}
+				}
+
+				XCMapFile map = new XCMapFile(basename, basePath, blankPath, a, dependencies);
+				map.Rmp = new RmpFile(basename, rmpPath);
+				return map;
+			}
 		}
+
 		public string[] Dependencies { get { return dependencies; } set { dependencies = value; } }
 		public bool IsStatic { get { return isStatic; } set { isStatic = value; } }
 		public int CompareTo(object other)
 		{
-			if (other is XCMapDesc)
-			{
+			if (other is XCMapDesc) {
 				return basename.CompareTo(((XCMapDesc)other).basename);
 			}
 			return 1;
 		}
 	}
 }
+#endif

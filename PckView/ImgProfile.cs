@@ -28,6 +28,7 @@ namespace PckView
 			sr.Close();
 
 			List<xcProfile> profileList = new List<xcProfile>();
+			List<XCom.Interfaces.IXCImageFile> files = (List<XCom.Interfaces.IXCImageFile>)SharedSpace.Instance["ImageMods"];
 
 			foreach (string s in vs.KeyValList.Keys) {
 				ImgProfile profile = new ImgProfile();
@@ -42,7 +43,7 @@ namespace PckView
 				if (info.ContainsKey("openSingle") && info["openSingle"] != null)
 					profile.single = info["openSingle"].Rest + info["open"].Rest;
 
-				foreach (IXCImageFile ixc in SharedSpace.Instance.GetImageModList())
+				foreach (IXCImageFile ixc in files)
 					if (ixc.ExplorerDescription == info["codec"].Rest) {
 						profile.imgType = ixc;
 						break;

@@ -58,7 +58,7 @@ namespace MapView
 			transBrush = new SolidBrush(gridColor);
 
 			dashPen = new Pen(Brushes.Black, 1);
-
+/*
 			try {
 				cursor = new Cursor(GameInfo.CachePck(SharedSpace.Instance.GetString("cursorFile"), "", 4, XCPalette.TFTDBattle));
 			} catch {
@@ -66,10 +66,8 @@ namespace MapView
 					cursor = new Cursor(GameInfo.CachePck(SharedSpace.Instance.GetString("cursorFile"), "", 2, XCPalette.UFOBattle));
 				} catch { cursor = null; }
 			}
+*/
 			xConsole.AddLine("Cursor loaded");
-
-//			MapControl.HeightChanged += mapHeight;
-//			MapControl.SelectedTileChanged += tileChange;
 		}
 
 		#region Settings

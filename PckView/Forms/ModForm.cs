@@ -1,8 +1,9 @@
 using System;
 using System.Drawing;
-using System.Collections;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows.Forms;
+using UtilLib;
 
 //http://www.vbdotnetheaven.com/Code/May2004/MultiColListViewMCB.asp
 
@@ -10,8 +11,6 @@ namespace PckView
 {
 	public partial class ModForm : System.Windows.Forms.Form
 	{
-		private XCom.SharedSpace space;
-
 		public ModForm()
 		{
 			InitializeComponent();
@@ -19,12 +18,13 @@ namespace PckView
 			UtilLib.Windows.RegistryInfo ri = new UtilLib.Windows.RegistryInfo(this);
 		}
 
-		public XCom.SharedSpace SharedSpace
+		public SharedSpace SharedSpace
 		{
 			set
 			{
-				space = value;
-				foreach (XCom.Interfaces.IXCImageFile xcf in space.GetImageModList())
+				List<XCom.Interfaces.IXCImageFile> files = (List<XCom.Interfaces.IXCImageFile>)SharedSpace.Instance["ImageMods"];
+
+				foreach (XCom.Interfaces.IXCImageFile xcf in files)
 				{
 					if (xcf.FileExtension == ".bad" && xcf.Author == "Author" && xcf.Description == "Description")
 						modList.Items.Add(new ListViewItem(new string[] { xcf.FileExtension, xcf.Author, xcf.GetType().ToString() }));

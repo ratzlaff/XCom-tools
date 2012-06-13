@@ -7,15 +7,20 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using ViewLib;
-using XCom.Interfaces.Base;
-using XCom;
 using MapLib;
+
+using UtilLib;
+using MapLib.Base.Parsing;
 
 namespace MapView
 {
+	public delegate void NodeSelectedDelegate(object sender, TreeNode node);
+
 	public partial class MapList : Map_Observer_Form
 	{
 		private static MapList instance;
+
+		public static event NodeSelectedDelegate NodeSelected;
 
 		private MapList()
 		{
@@ -23,9 +28,10 @@ namespace MapView
 
 			tvMapList.TreeViewNodeSorter = new System.Collections.CaseInsensitiveComparer();
 			tvMapList.Nodes.Clear();
-			foreach (string key in GameInfo.TilesetInfo.Tilesets.Keys)
-				AddTileset(GameInfo.TilesetInfo.Tilesets[key]);
-			xConsole.AddLine("Map list created");
+			MapEdit_dat mapedit = (MapEdit_dat)SharedSpace.Instance["mapdata"];
+			foreach (MapCollection mc in mapedit.Items)
+				AddCollection(mc);
+//			xConsole.AddLine("Map list created");
 		}
 
 		private class SortableTreeNode : TreeNode, IComparable
@@ -40,27 +46,27 @@ namespace MapView
 			}
 		}
 
-		private void addMaps(TreeNode tn, Dictionary<string, IMapDesc> maps)
+		public void AddCollection(MapCollection mc)
 		{
-			foreach (string key in maps.Keys) {
-				SortableTreeNode mapNode = new SortableTreeNode(key);
-				mapNode.Tag = maps[key];
-				tn.Nodes.Add(mapNode);
+			SortableTreeNode tSetNode = new SortableTreeNode(mc.Name);
+			tSetNode.Tag = mc;
+			tvMapList.Nodes.Add(tSetNode);
+
+			foreach (Tileset t in mc.Tilesets) {
+				SortableTreeNode tsGroup = new SortableTreeNode(t.Name);
+				tsGroup.Tag = t;
+				tSetNode.Nodes.Add(tsGroup);
+			
+				addMaps(tsGroup, t);
 			}
 		}
 
-		public void AddTileset(ITileset tSet)
+		private void addMaps(TreeNode tn, Tileset tileset)
 		{
-			SortableTreeNode tSetNode = new SortableTreeNode(tSet.Name);
-			tSetNode.Tag = tSet;
-			tvMapList.Nodes.Add(tSetNode);
-
-			foreach (string tSetMapGroup in tSet.Subsets.Keys) {
-				SortableTreeNode tsGroup = new SortableTreeNode(tSetMapGroup);
-				tsGroup.Tag = tSet.Subsets[tSetMapGroup];
-				tSetNode.Nodes.Add(tsGroup);
-
-				addMaps(tsGroup, tSet.Subsets[tSetMapGroup]);
+			foreach (MapInfo mi in tileset.Maps) {
+				SortableTreeNode mapNode = new SortableTreeNode(mi.Name);
+				mapNode.Tag = mi;
+				tn.Nodes.Add(mapNode);
 			}
 		}
 
@@ -69,28 +75,16 @@ namespace MapView
 //			if (NotifySave() == DialogResult.Cancel)
 //				return;
 
-			if (tvMapList.SelectedNode.Tag is IMapDesc) {
-				IMapDesc imd = (IMapDesc)tvMapList.SelectedNode.Tag;
-				MapControl.Current = imd.GetMapFile();
+			if (tvMapList.SelectedNode.Tag is MapInfo) {
+				MapInfo imd = (MapInfo)tvMapList.SelectedNode.Tag;
+				MapLib.Base.Map m = imd.Map;
+				if (m != null)
+					MapControl.Current = m;				
 			}
-/*
-				statusMapName.Text = "Map:" + imd.Name;
-				tsMapSize.Text = "Size: " + MapControl.Current.Size.ToString();
 
-				//turn off door animations
-				if (miDoors.Checked) {
-					miDoors.Checked = false;
-					miDoors_Click(null, null);
-				}
-
-				miExport.Enabled = true;
-				showMenu.Enabled = true;
-
-				// notify everyone that there is a new map
-				MapControl.RequestRefresh();
- */
-//			} else
-//				miExport.Enabled = false;
+			if (NodeSelected != null) {
+				NodeSelected(this, tvMapList.SelectedNode);
+			}
 		}
 
 		public static MapList Instance

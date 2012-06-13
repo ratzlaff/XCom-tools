@@ -16,27 +16,19 @@ using MapLib.Base;
 
 namespace MapView
 {
-	public delegate void SelectedTileChanged(TilePanel sender, Tile newTile);
+	public delegate void SelectedTileChanged(object sender, Tile newTile);
 
 	public partial class TileView : Map_Observer_Form
 	{
-		private RichTextBox rtb;
-
 		private TilePanel[] panels;
-		private Form MCDInfo;
-
 		private static TileView myInstance;
+
+		public static event SelectedTileChanged TileChanged;
+
 		private TileView()
 		{
 			InitializeComponent();
 			panels = new TilePanel[] { all, ground, wWalls, nWalls, objs };
-
-			SizeChanged += new EventHandler(TileView_SizeChanged);
-		}
-
-		void TileView_SizeChanged(object sender, EventArgs e)
-		{
-			Console.WriteLine("New size is: " + Size);
 		}
 
 		#region Settings
@@ -75,12 +67,13 @@ namespace MapView
 			}
 		}
 
-		private void tileChanged(TilePanel sender, Tile t)
+		private void tileChanged(object sender, Tile t)
 		{
 			if (t != null) {
 				Text = "TileView: mapID:" + t.MapID + " mcdID: " + t.ID;
-				if (rtb != null)
-					t.FillInfo(rtb);
+
+				if (TileChanged != null)
+					TileChanged(this, t);
 			}
 		}
 
@@ -114,34 +107,6 @@ namespace MapView
 				all.SelectedTile = value;
 				Refresh();
 			}
-		}
-
-		private void mcdInfoTab_Click(object sender, System.EventArgs e)
-		{
-			if (!mcdInfoTab.Checked) {
-				if (MCDInfo == null) {
-					MCDInfo = new Form();
-					MCDInfo.Text = "MCD Info";
-					rtb = new RichTextBox();
-					rtb.WordWrap = false;
-					rtb.ReadOnly = true;
-					MCDInfo.Controls.Add(rtb);
-					rtb.Dock = DockStyle.Fill;
-					MCDInfo.Size = new Size(200, 470);
-					MCDInfo.Closing += new CancelEventHandler(infoTabClosing);
-				}
-				MCDInfo.Visible = true;
-				MCDInfo.Location = new Point(this.Location.X - MCDInfo.Width, this.Location.Y);
-				MCDInfo.Show();
-				mcdInfoTab.Checked = true;
-			}
-		}
-
-		private void infoTabClosing(object sender, CancelEventArgs e)
-		{
-			e.Cancel = true;
-			MCDInfo.Visible = false;
-			mcdInfoTab.Checked = false;
 		}
 	}
 }

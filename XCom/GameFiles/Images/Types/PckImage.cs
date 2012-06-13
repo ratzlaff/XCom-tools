@@ -226,9 +226,9 @@ namespace XCom
 			string ret="";
 
 			if(pckFile!=null)
-				ret+=pckFile.ToString();
-			ret+=fileNum+"\n";
-
+				ret+=pckFile.Name+": ";
+			ret+=fileNum;
+/*
 			for(int i=0;i<expanded.Length;i++)
 			{
 				ret+=expanded[i];
@@ -237,6 +237,7 @@ namespace XCom
 				else
 					ret+=" ";
 			}
+ */
 			return ret;
 		}
 	}

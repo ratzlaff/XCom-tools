@@ -1,8 +1,11 @@
 using System;
 using System.Drawing;
 using System.Collections;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows.Forms;
+
+using UtilLib;
 
 namespace PckView
 {
@@ -10,7 +13,6 @@ namespace PckView
 
 	public partial class OpenCustomForm : System.Windows.Forms.Form
 	{
-		private XCom.SharedSpace space;
 		private string file, directory;
 
 		public event TryDecodeEventHandler TryClick;
@@ -27,9 +29,9 @@ namespace PckView
 			ri.AddProperty("WidVal");
 			ri.AddProperty("HeiVal");
 
-			space = XCom.SharedSpace.Instance;
+			List<XCom.Interfaces.IXCImageFile> files = (List<XCom.Interfaces.IXCImageFile>)SharedSpace.Instance["ImageMods"];
 
-			foreach (XCom.Interfaces.IXCImageFile xcf in space.GetImageModList())
+			foreach (XCom.Interfaces.IXCImageFile xcf in files)
 				if (xcf.FileOptions[XCom.Interfaces.IXCImageFile.Filter.Custom])
 					cbTypes.Items.Add(new BmpForm.cbItem(xcf, xcf.ExplorerDescription));
 

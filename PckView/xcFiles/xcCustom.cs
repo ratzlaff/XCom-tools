@@ -37,7 +37,7 @@ namespace PckView
 
 		private void tryIt(object sender, TryDecodeEventArgs tde)
 		{
-			PckViewForm pvf = (PckViewForm)XCom.SharedSpace.Instance["PckView"];
+			PckViewForm pvf = (PckViewForm)SharedSpace.Instance["PckView"];
 
 			XCom.XCImageCollection ixc = tde.XCFile.LoadFile(tde.Directory,tde.File,tde.TryWidth,tde.TryHeight);
 			//ixc.IXCFile=this;

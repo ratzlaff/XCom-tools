@@ -1,9 +1,10 @@
 using System;
 using System.Drawing;
-using System.Collections;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows.Forms;
 using UtilLib.Windows;
+using UtilLib;
 
 namespace PckView
 {
@@ -41,7 +42,9 @@ namespace PckView
 
 			DialogResult = DialogResult.Cancel;
 
-			foreach (XCom.Interfaces.IXCImageFile xcf in XCom.SharedSpace.Instance.GetImageModList())
+			List<XCom.Interfaces.IXCImageFile> files = (List<XCom.Interfaces.IXCImageFile>)SharedSpace.Instance["ImageMods"];
+
+			foreach (XCom.Interfaces.IXCImageFile xcf in files)
 				if (xcf.FileOptions[XCom.Interfaces.IXCImageFile.Filter.Bmp])
 					cbTypes.Items.Add(new cbItem(xcf, xcf.ExplorerDescription));
 

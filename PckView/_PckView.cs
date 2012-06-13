@@ -66,12 +66,12 @@ namespace PckView
 			xConsole.AddLine("Custom directory: " + sharedSpace["CustomDir"].ToString());
 			#endregion
 
-			if (!Directory.Exists(XCom.SharedSpace.Instance["CustomDir"].ToString())) {
-				Directory.CreateDirectory(XCom.SharedSpace.Instance["CustomDir"].ToString());
+			if (!Directory.Exists(SharedSpace.Instance["CustomDir"].ToString())) {
+				Directory.CreateDirectory(SharedSpace.Instance["CustomDir"].ToString());
 
 				try {
 					StreamReader sr = new StreamReader(Assembly.GetExecutingAssembly().GetManifestResourceStream("PckView._Embedded.scr.pvp"));
-					StreamWriter sw = new StreamWriter(XCom.SharedSpace.Instance["CustomDir"].ToString() + "/scr.pvp");
+					StreamWriter sw = new StreamWriter(SharedSpace.Instance["CustomDir"].ToString() + "/scr.pvp");
 
 					while (sr.Peek() != -1)
 						sw.WriteLine(sr.ReadLine());

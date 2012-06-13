@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using System.Drawing;
 using XCom.Interfaces;
+using System.ComponentModel;
+using XCom.Interfaces.Base;
 
 #region About the mcdEntry
 /* from http://ufo2k-allegro.lxnt.info/srcdocs/terrapck_8h-source.html
@@ -60,7 +62,7 @@ namespace XCom
 	public enum SpecialType { Tile = 0, StartPoint, IonBeamAccel, DestroyObjective, MagneticNav, AlienCryo, AlienClon, AlienLearn, AlienImplant, Unknown9, AlienPlastics, ExamRoom, DeadTile, EndPoint, MustDestroy };
 	public enum TileType { Ground = 0, WestWall = 1, NorthWall = 2, Object = 3, All = -1 };
 
-	public class McdEntry : XCom.Interfaces.Base.IInfo
+	public class McdEntry : IInfo
 	{
 		private byte[] info;
 		private Rectangle rect;
@@ -68,7 +70,7 @@ namespace XCom
 
 		private static int globalStaticID = 0;
 
-		internal McdEntry(byte[] info)
+		public McdEntry(byte[] info)
 			: base(globalStaticID++)
 		{
 			this.info = info;

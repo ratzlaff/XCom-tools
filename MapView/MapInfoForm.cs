@@ -8,6 +8,7 @@ using XCom;
 using XCom.Interfaces;
 using XCom.Interfaces.Base;
 using MapLib.Base;
+using MapLib;
 
 namespace MapView
 {
@@ -29,7 +30,7 @@ namespace MapView
 		private System.Windows.Forms.GroupBox groupInfo;
 
 		private Map map;
-		private int slotsUsed=0;
+		private int slotsUsed = 0;
 
 		public MapInfoForm()
 		{
@@ -40,115 +41,106 @@ namespace MapView
 		{
 			set
 			{
-				map=value;
+				map = value;
 				startAnalyzing();
 			}
 		}
 
 		private void startAnalyzing()
 		{
-			groupAnalyze.Visible=true;
-			Hashtable imgHash=new Hashtable();
-			Hashtable mcdHash=new Hashtable();
-			groupInfo.Text="Map: "+map.Name;
+			groupAnalyze.Visible = true;
+			Hashtable imgHash = new Hashtable();
+			Hashtable mcdHash = new Hashtable();
+			groupInfo.Text = "Map: " + map.Name;
 			lblDimensions.Text = map.Size.Rows + "," + map.Size.Cols + "," + map.Size.Height;
 
-			lblPckFiles.Text="";
-			bool one=true;
-			int totalImages=0;
-			int totalMcd=0;
-			if(map is XCMapFile)
-				foreach(string s in ((XCMapFile)map).Dependencies)
-				{
-					if(one)
-						one=false;
+			lblPckFiles.Text = "";
+			bool one = true;
+			int totalImages = 0;
+			int totalMcd = 0;
+			if (map is XCMapFile)
+				foreach (string s in ((XCMapFile)map).Dependencies) {
+					if (one)
+						one = false;
 					else
-						lblPckFiles.Text+=",";
+						lblPckFiles.Text += ",";
 
-					totalImages+=GameInfo.ImageInfo[s].GetPckFile().Count;
-					totalMcd+=GameInfo.ImageInfo[s].GetMcdFile().Length;
-					lblPckFiles.Text+=s;
+//					totalImages += MapData.ImageInfo[s].GetPckFile().Count;
+//					totalMcd += MapData.ImageInfo[s].GetMcdFile().Length;
+					lblPckFiles.Text += s;
 				}
 
 			pBar.Maximum = map.Size.Rows * map.Size.Cols * map.Size.Height;
-			pBar.Value=0;
+			pBar.Value = 0;
 
 			for (int h = 0; h < map.Size.Height; h++)
 				for (int r = 0; r < map.Size.Rows; r++)
-					for (int c = 0; c < map.Size.Cols; c++)
-					{
-                        XCMapTile tile = (XCMapTile)map[r, c, h];
-                        if (!tile.Blank)
-						{
-                            if (tile.Ground != null)
-							{
-                                count(imgHash, mcdHash, tile.Ground);
-                                if (tile.Ground is XCTile)
-                                    count(imgHash, mcdHash, ((XCTile)tile.Ground).Dead);
+					for (int c = 0; c < map.Size.Cols; c++) {
+						XCMapTile tile = (XCMapTile)map[r, c, h];
+						if (!tile.Blank) {
+							if (tile.Ground != null) {
+								count(imgHash, mcdHash, tile.Ground);
+								if (tile.Ground is XCTile)
+									count(imgHash, mcdHash, ((XCTile)tile.Ground).Dead);
 								slotsUsed++;
 							}
-                            if (tile.West != null)
-							{
-                                count(imgHash, mcdHash, tile.West);
-                                if (tile.West is XCTile)
-                                    count(imgHash, mcdHash, ((XCTile)tile.West).Dead);
+							if (tile.West != null) {
+								count(imgHash, mcdHash, tile.West);
+								if (tile.West is XCTile)
+									count(imgHash, mcdHash, ((XCTile)tile.West).Dead);
 								slotsUsed++;
 							}
-                            if (tile.North != null)
-							{
-                                count(imgHash, mcdHash, tile.North);
-                                if (tile.North is XCTile)
-                                    count(imgHash, mcdHash, ((XCTile)tile.North).Dead);
+							if (tile.North != null) {
+								count(imgHash, mcdHash, tile.North);
+								if (tile.North is XCTile)
+									count(imgHash, mcdHash, ((XCTile)tile.North).Dead);
 								slotsUsed++;
 							}
-                            if (tile.Content != null)
-							{
-                                count(imgHash, mcdHash, tile.Content);
-                                if (tile.Content is XCTile)
-                                    count(imgHash, mcdHash, ((XCTile)tile.Content).Dead);
+							if (tile.Content != null) {
+								count(imgHash, mcdHash, tile.Content);
+								if (tile.Content is XCTile)
+									count(imgHash, mcdHash, ((XCTile)tile.Content).Dead);
 								slotsUsed++;
 							}
 
-							pBar.Value=(r+1)*(c+1)*(h+1);
+							pBar.Value = (r + 1) * (c + 1) * (h + 1);
 							pBar.Refresh();
 						}
 					}
-							
-			lblMcd.Text=mcdHash.Keys.Count+"/"+totalMcd+"   "+Math.Round(100*((mcdHash.Keys.Count*1.0)/(totalMcd)),2)+"%";
-			lblPckImages.Text=imgHash.Keys.Count+"/"+totalImages+"   "+Math.Round(100*((imgHash.Keys.Count*1.0)/(totalImages)),2)+"%";
-			lblFilled.Text=slotsUsed+"/"+(pBar.Maximum*4)+"   "+Math.Round(100*((slotsUsed*1.0)/(pBar.Maximum*4)),2)+"%";
 
-			groupAnalyze.Visible=false;
+			lblMcd.Text = mcdHash.Keys.Count + "/" + totalMcd + "   " + Math.Round(100 * ((mcdHash.Keys.Count * 1.0) / (totalMcd)), 2) + "%";
+			lblPckImages.Text = imgHash.Keys.Count + "/" + totalImages + "   " + Math.Round(100 * ((imgHash.Keys.Count * 1.0) / (totalImages)), 2) + "%";
+			lblFilled.Text = slotsUsed + "/" + (pBar.Maximum * 4) + "   " + Math.Round(100 * ((slotsUsed * 1.0) / (pBar.Maximum * 4)), 2) + "%";
+
+			groupAnalyze.Visible = false;
 		}
 
 		private void count(Hashtable img, Hashtable mcd, Tile tile)
 		{
-/*
-			if(tile!=null)
-			{
-				foreach(PckImage pi in tile.Images)
-					img[pi.StaticID]=true;
-				mcd[tile.ID]=true;
-			}
-*/
+			/*
+						if(tile!=null)
+						{
+							foreach(PckImage pi in tile.Images)
+								img[pi.StaticID]=true;
+							mcd[tile.ID]=true;
+						}
+			*/
 		}
 
 		#region Windows Form Designer generated code
 		/// <summary>
 		/// Clean up any resources being used.
 		/// </summary>
-		protected override void Dispose( bool disposing )
+		protected override void Dispose(bool disposing)
 		{
-			if( disposing )
-			{
-				if(components != null)
-				{
+			if (disposing) {
+				if (components != null) {
 					components.Dispose();
 				}
 			}
-			base.Dispose( disposing );
+			base.Dispose(disposing);
 		}
-		
+
 		/// <summary>
 		/// Required method for Designer support - do not modify
 		/// the contents of this method with the code editor.
