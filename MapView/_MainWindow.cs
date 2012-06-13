@@ -293,8 +293,10 @@ namespace MapView
 		{
 			base.OnLoad(e);
 
-			foreach (System.Reflection.PropertyInfo pi in cachedProperties.Keys)
-				pi.SetValue(this, cachedProperties[pi], new object[] { });
+			if (cachedProperties != null) {
+				foreach (System.Reflection.PropertyInfo pi in cachedProperties.Keys)
+					pi.SetValue(this, cachedProperties[pi], new object[] { });
+			}
 		}
 
 		protected override void OnFormClosing(FormClosingEventArgs e)

@@ -384,6 +384,24 @@ namespace XCom
 		/// gets the index of this RmpEntry
 		/// </summary>
 		public byte Index { get; set; }
+
+		public void CopyFrom(RmpEntry defaultEntry)
+		{
+			if (defaultEntry == null)
+				return;
+
+			for (int i = 0; i < 5; i++) {
+				links[i].Index = defaultEntry.links[i].Index;
+				links[i].Distance = defaultEntry.links[i].Distance;
+				links[i].UType = defaultEntry.links[i].UType;
+			}
+
+			this.unitType = defaultEntry.unitType;
+			this.unitRank1 = defaultEntry.unitRank1;
+			this.unitRank2 = defaultEntry.unitRank2;
+			this.zero1 = defaultEntry.zero1;
+			this.usage = defaultEntry.usage;
+		}
 	}
 
 	public class Link

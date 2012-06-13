@@ -18,6 +18,8 @@ namespace MapView.RmpViewForm
 	{
 		protected new XCMapFile map;
 		private Font myFont = new Font("Arial", 12, FontStyle.Bold);
+		private Point[] selPtCircle;
+		private RmpEntry defaultSelection;
 
 		public RmpPanel() { }
 
@@ -25,6 +27,32 @@ namespace MapView.RmpViewForm
 		{
 			this.map = (XCMapFile)e.Map;
 			base.mapChanged(e);
+		}
+
+		public RmpEntry DefaultEntry
+		{
+			get
+			{
+				return defaultSelection;
+			}
+			set
+			{
+				defaultSelection = value;
+
+				if (defaultSelection != null) {
+					int x1 = offX - (1 + defaultSelection.Row - defaultSelection.Col) * hWidth;
+					int y1 = offY + (defaultSelection.Col + defaultSelection.Row) * hHeight;
+					int x2 = x1 + hWidth * 2;
+					int y2 = y1 + hHeight * 2;
+
+					selPtCircle = new Point[]{
+						new Point(x1+hWidth, y1-2)
+					,	new Point(x2+2, y1+hHeight)
+					,	new Point(x1+hWidth, y2+2)
+					,	new Point(x1-2, y1+hHeight)
+					};
+				}
+			}
 		}
 
 		protected override void OnPaint(PaintEventArgs e)
@@ -179,6 +207,10 @@ namespace MapView.RmpViewForm
 				for (int i = 0; i <= map.Size.Cols; i++)
 					g.DrawLine(pens["GridColor"], offX + i * hWidth, offY + i * hHeight, (offX + i * hWidth) - map.Size.Rows * hWidth, (offY + i * hHeight) + map.Size.Rows * hHeight);
 
+				if (DefaultEntry != null && DefaultEntry.Height == map.CurrentHeight) {
+					g.DrawClosedCurve(pens["DefaultSelectionColor"], selPtCircle); //origin.X - (1 + DefaultEntry.Row - DefaultEntry.Col) * hWidth, origin.Y + (DefaultEntry.Col + DefaultEntry.Row) * hHeight, hWidth * 2, hHeight * 2);
+				}
+
 				g.DrawString("W", myFont, System.Drawing.Brushes.Black, 0, 0);
 				g.DrawString("N", myFont, System.Drawing.Brushes.Black, Width - 30, 0);
 				g.DrawString("S", myFont, System.Drawing.Brushes.Black, 0, Height - myFont.Height);
@@ -195,6 +227,9 @@ namespace MapView.RmpViewForm
 
 			// SelectedLinkColor, SelectedLinkWidth
 			addPenSetting(new Pen(new SolidBrush(Color.Blue), 2), "SelectedLink", "Links", "Color of selected link lines", "Width of selected link lines", sender.Settings);
+
+			// DefaultSelectionColor, DefaultSelectionWidth
+			addPenSetting(new Pen(new SolidBrush(Color.DeepSkyBlue), 4), "DefaultSelection", "Nodes", "Color of selected default creation node", "Width of selected default creation node", sender.Settings);
 
 			// WallColor, WallWidth
 			addPenSetting(new Pen(new SolidBrush(Color.Black), 4), "Wall", "View", "Color of wall indicators", "Width of wall indicators", sender.Settings);

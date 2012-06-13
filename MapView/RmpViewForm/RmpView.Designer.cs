@@ -48,6 +48,7 @@ namespace MapView.RmpViewForm
 			this.rankLabel = new System.Windows.Forms.Label();
 			this.idxLabel = new System.Windows.Forms.Label();
 			this.gbNodeInfo = new System.Windows.Forms.GroupBox();
+			this.cbDefault = new System.Windows.Forms.CheckBox();
 			this.statusStrip1 = new System.Windows.Forms.StatusStrip();
 			this.lblMouseOver = new System.Windows.Forms.ToolStripStatusLabel();
 			this.btnRemove = new System.Windows.Forms.Button();
@@ -167,7 +168,7 @@ namespace MapView.RmpViewForm
 			this.tbZero.Location = new System.Drawing.Point(43, 75);
 			this.tbZero.Name = "tbZero";
 			this.tbZero.ReadOnly = true;
-			this.tbZero.Size = new System.Drawing.Size(171, 20);
+			this.tbZero.Size = new System.Drawing.Size(0, 20);
 			this.tbZero.TabIndex = 9;
 			this.tbZero.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbZero_KeyDown);
 			this.tbZero.Leave += new System.EventHandler(this.tbZero_Leave);
@@ -178,7 +179,7 @@ namespace MapView.RmpViewForm
 						| System.Windows.Forms.AnchorStyles.Right)));
 			this.cbRank2.Location = new System.Drawing.Point(43, 51);
 			this.cbRank2.Name = "cbRank2";
-			this.cbRank2.Size = new System.Drawing.Size(171, 21);
+			this.cbRank2.Size = new System.Drawing.Size(0, 21);
 			this.cbRank2.TabIndex = 8;
 			this.cbRank2.SelectedIndexChanged += new System.EventHandler(this.cbRank2_SelectedIndexChanged);
 			// 
@@ -188,7 +189,7 @@ namespace MapView.RmpViewForm
 						| System.Windows.Forms.AnchorStyles.Right)));
 			this.cbRank1.Location = new System.Drawing.Point(43, 27);
 			this.cbRank1.Name = "cbRank1";
-			this.cbRank1.Size = new System.Drawing.Size(171, 21);
+			this.cbRank1.Size = new System.Drawing.Size(0, 21);
 			this.cbRank1.TabIndex = 7;
 			this.cbRank1.SelectedIndexChanged += new System.EventHandler(this.cbRank1_SelectedIndexChanged);
 			// 
@@ -198,7 +199,7 @@ namespace MapView.RmpViewForm
 						| System.Windows.Forms.AnchorStyles.Right)));
 			this.cbType.Location = new System.Drawing.Point(43, 3);
 			this.cbType.Name = "cbType";
-			this.cbType.Size = new System.Drawing.Size(171, 21);
+			this.cbType.Size = new System.Drawing.Size(0, 21);
 			this.cbType.TabIndex = 6;
 			this.cbType.SelectedIndexChanged += new System.EventHandler(this.cbType_SelectedIndexChanged);
 			// 
@@ -251,6 +252,7 @@ namespace MapView.RmpViewForm
 			// 
 			// gbNodeInfo
 			// 
+			this.gbNodeInfo.Controls.Add(this.cbDefault);
 			this.gbNodeInfo.Controls.Add(this.statusStrip1);
 			this.gbNodeInfo.Controls.Add(this.btnRemove);
 			this.gbNodeInfo.Controls.Add(this.idxLabel);
@@ -259,18 +261,29 @@ namespace MapView.RmpViewForm
 			this.gbNodeInfo.Controls.Add(this.label7);
 			this.gbNodeInfo.Controls.Add(this.splitContainer1);
 			this.gbNodeInfo.Dock = System.Windows.Forms.DockStyle.Bottom;
-			this.gbNodeInfo.Location = new System.Drawing.Point(0, 255);
+			this.gbNodeInfo.Location = new System.Drawing.Point(0, 237);
 			this.gbNodeInfo.Name = "gbNodeInfo";
-			this.gbNodeInfo.Size = new System.Drawing.Size(462, 189);
+			this.gbNodeInfo.Size = new System.Drawing.Size(462, 207);
 			this.gbNodeInfo.TabIndex = 1;
 			this.gbNodeInfo.TabStop = false;
 			this.gbNodeInfo.Text = "Node Info";
+			// 
+			// cbDefault
+			// 
+			this.cbDefault.AutoSize = true;
+			this.cbDefault.Location = new System.Drawing.Point(3, 161);
+			this.cbDefault.Name = "cbDefault";
+			this.cbDefault.Size = new System.Drawing.Size(60, 17);
+			this.cbDefault.TabIndex = 33;
+			this.cbDefault.Text = "Default";
+			this.cbDefault.UseVisualStyleBackColor = true;
+			this.cbDefault.CheckedChanged += new System.EventHandler(this.cbDefault_CheckedChanged);
 			// 
 			// statusStrip1
 			// 
 			this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.lblMouseOver});
-			this.statusStrip1.Location = new System.Drawing.Point(3, 164);
+			this.statusStrip1.Location = new System.Drawing.Point(3, 182);
 			this.statusStrip1.Name = "statusStrip1";
 			this.statusStrip1.Size = new System.Drawing.Size(456, 22);
 			this.statusStrip1.TabIndex = 34;
@@ -361,7 +374,7 @@ namespace MapView.RmpViewForm
 			this.splitContainer1.Panel2.Controls.Add(this.cbUse1);
 			this.splitContainer1.Panel2.Controls.Add(this.cbUse2);
 			this.splitContainer1.Size = new System.Drawing.Size(459, 127);
-			this.splitContainer1.SplitterDistance = 217;
+			this.splitContainer1.SplitterDistance = 143;
 			this.splitContainer1.TabIndex = 33;
 			// 
 			// cbUsage
@@ -370,14 +383,14 @@ namespace MapView.RmpViewForm
 						| System.Windows.Forms.AnchorStyles.Right)));
 			this.cbUsage.Location = new System.Drawing.Point(43, 99);
 			this.cbUsage.Name = "cbUsage";
-			this.cbUsage.Size = new System.Drawing.Size(171, 21);
+			this.cbUsage.Size = new System.Drawing.Size(0, 21);
 			this.cbUsage.TabIndex = 2;
 			this.cbUsage.SelectedIndexChanged += new System.EventHandler(this.cbUsage_SelectedIndexChanged);
 			// 
 			// txtDist5
 			// 
 			this.txtDist5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.txtDist5.Location = new System.Drawing.Point(199, 99);
+			this.txtDist5.Location = new System.Drawing.Point(146, 99);
 			this.txtDist5.Name = "txtDist5";
 			this.txtDist5.Size = new System.Drawing.Size(32, 20);
 			this.txtDist5.TabIndex = 32;
@@ -387,7 +400,7 @@ namespace MapView.RmpViewForm
 			// txtDist4
 			// 
 			this.txtDist4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.txtDist4.Location = new System.Drawing.Point(199, 75);
+			this.txtDist4.Location = new System.Drawing.Point(146, 75);
 			this.txtDist4.Name = "txtDist4";
 			this.txtDist4.Size = new System.Drawing.Size(32, 20);
 			this.txtDist4.TabIndex = 31;
@@ -397,7 +410,7 @@ namespace MapView.RmpViewForm
 			// txtDist3
 			// 
 			this.txtDist3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.txtDist3.Location = new System.Drawing.Point(199, 51);
+			this.txtDist3.Location = new System.Drawing.Point(146, 51);
 			this.txtDist3.Name = "txtDist3";
 			this.txtDist3.Size = new System.Drawing.Size(32, 20);
 			this.txtDist3.TabIndex = 30;
@@ -407,7 +420,7 @@ namespace MapView.RmpViewForm
 			// txtDist2
 			// 
 			this.txtDist2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.txtDist2.Location = new System.Drawing.Point(199, 27);
+			this.txtDist2.Location = new System.Drawing.Point(146, 27);
 			this.txtDist2.Name = "txtDist2";
 			this.txtDist2.Size = new System.Drawing.Size(32, 20);
 			this.txtDist2.TabIndex = 29;
@@ -417,7 +430,7 @@ namespace MapView.RmpViewForm
 			// txtDist1
 			// 
 			this.txtDist1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.txtDist1.Location = new System.Drawing.Point(199, 3);
+			this.txtDist1.Location = new System.Drawing.Point(146, 3);
 			this.txtDist1.Name = "txtDist1";
 			this.txtDist1.Size = new System.Drawing.Size(32, 20);
 			this.txtDist1.TabIndex = 28;
@@ -431,7 +444,7 @@ namespace MapView.RmpViewForm
 						| System.Windows.Forms.AnchorStyles.Right)));
 			this.cbUse5.Location = new System.Drawing.Point(115, 99);
 			this.cbUse5.Name = "cbUse5";
-			this.cbUse5.Size = new System.Drawing.Size(84, 21);
+			this.cbUse5.Size = new System.Drawing.Size(31, 21);
 			this.cbUse5.TabIndex = 26;
 			this.cbUse5.SelectedIndexChanged += new System.EventHandler(this.cbUse5_SelectedIndexChanged);
 			// 
@@ -441,7 +454,7 @@ namespace MapView.RmpViewForm
 						| System.Windows.Forms.AnchorStyles.Right)));
 			this.cbUse4.Location = new System.Drawing.Point(115, 75);
 			this.cbUse4.Name = "cbUse4";
-			this.cbUse4.Size = new System.Drawing.Size(84, 21);
+			this.cbUse4.Size = new System.Drawing.Size(31, 21);
 			this.cbUse4.TabIndex = 25;
 			this.cbUse4.SelectedIndexChanged += new System.EventHandler(this.cbUse4_SelectedIndexChanged);
 			// 
@@ -451,7 +464,7 @@ namespace MapView.RmpViewForm
 						| System.Windows.Forms.AnchorStyles.Right)));
 			this.cbUse3.Location = new System.Drawing.Point(115, 51);
 			this.cbUse3.Name = "cbUse3";
-			this.cbUse3.Size = new System.Drawing.Size(84, 21);
+			this.cbUse3.Size = new System.Drawing.Size(31, 21);
 			this.cbUse3.TabIndex = 24;
 			this.cbUse3.SelectedIndexChanged += new System.EventHandler(this.cbUse3_SelectedIndexChanged);
 			// 
@@ -461,7 +474,7 @@ namespace MapView.RmpViewForm
 						| System.Windows.Forms.AnchorStyles.Right)));
 			this.cbUse1.Location = new System.Drawing.Point(115, 3);
 			this.cbUse1.Name = "cbUse1";
-			this.cbUse1.Size = new System.Drawing.Size(84, 21);
+			this.cbUse1.Size = new System.Drawing.Size(31, 21);
 			this.cbUse1.TabIndex = 22;
 			this.cbUse1.SelectedIndexChanged += new System.EventHandler(this.cbUse1_SelectedIndexChanged);
 			// 
@@ -471,15 +484,15 @@ namespace MapView.RmpViewForm
 						| System.Windows.Forms.AnchorStyles.Right)));
 			this.cbUse2.Location = new System.Drawing.Point(115, 27);
 			this.cbUse2.Name = "cbUse2";
-			this.cbUse2.Size = new System.Drawing.Size(84, 21);
+			this.cbUse2.Size = new System.Drawing.Size(31, 21);
 			this.cbUse2.TabIndex = 23;
 			this.cbUse2.SelectedIndexChanged += new System.EventHandler(this.cbUse2_SelectedIndexChanged);
 			// 
 			// rmpPanel
 			// 
 			this.rmpPanel.Anchor = System.Windows.Forms.AnchorStyles.None;
-			this.rmpPanel.Location = new System.Drawing.Point(0, 0);
-			this.rmpPanel.MinHeight = 4;
+			this.rmpPanel.DefaultEntry = null;
+			this.rmpPanel.Location = new System.Drawing.Point(0, -9);
 			this.rmpPanel.Name = "rmpPanel";
 			this.rmpPanel.Size = new System.Drawing.Size(368, 188);
 			this.rmpPanel.TabIndex = 2;
@@ -516,7 +529,7 @@ namespace MapView.RmpViewForm
 			this.scrollPanel.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.scrollPanel.Location = new System.Drawing.Point(0, 24);
 			this.scrollPanel.Name = "scrollPanel";
-			this.scrollPanel.Size = new System.Drawing.Size(462, 231);
+			this.scrollPanel.Size = new System.Drawing.Size(462, 213);
 			this.scrollPanel.TabIndex = 3;
 			this.scrollPanel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.mouseMove);
 			// 
@@ -527,9 +540,9 @@ namespace MapView.RmpViewForm
 			this.Controls.Add(this.scrollPanel);
 			this.Controls.Add(this.menuStrip1);
 			this.Controls.Add(this.gbNodeInfo);
+			this.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.MainMenuStrip = this.menuStrip1;
 			this.Name = "RmpView";
-			this.ShowInTaskbar = false;
 			this.Text = "RmpView";
 			this.gbNodeInfo.ResumeLayout(false);
 			this.gbNodeInfo.PerformLayout();
@@ -588,6 +601,7 @@ namespace MapView.RmpViewForm
 		private System.Windows.Forms.MenuStrip menuStrip1;
 		private System.Windows.Forms.ToolStripMenuItem miEdit;
 		private System.Windows.Forms.ToolStripMenuItem miOptions;
+		private System.Windows.Forms.CheckBox cbDefault;
 		private MapView.RmpViewForm.RmpPanel rmpPanel;
 		private System.Windows.Forms.SplitContainer splitContainer1;
 		private System.Windows.Forms.StatusStrip statusStrip1;

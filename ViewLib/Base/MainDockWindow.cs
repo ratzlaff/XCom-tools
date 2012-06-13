@@ -60,7 +60,8 @@ namespace ViewLib
 
 			// show new forms that dont exist in the LayoutFile
 			foreach (DockContent tw in toolsToLoad)
-				tw.Show(DockPanel, initialState[tw]);
+				if (initialState[tw] != DockState.Hidden)
+					tw.Show(DockPanel, initialState[tw]);
 		}
 
 		protected override void OnClosing(CancelEventArgs e)

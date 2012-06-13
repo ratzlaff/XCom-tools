@@ -151,7 +151,4 @@
   <data name="MapEditUFO" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\_Embedded\MapEditUFO.dat;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="MVLayout" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\_Embedded\MVLayout.xml;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
 </root>

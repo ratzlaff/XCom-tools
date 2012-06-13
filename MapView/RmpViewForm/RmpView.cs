@@ -33,7 +33,9 @@ namespace MapView.RmpViewForm
 		private Label links;
 		private int clickRow, clickCol;
 
-		private RmpEntry currEntry;
+		private RmpEntry currEntry, defaultEntry;
+		private bool setCheck;
+
 		private static RmpView instance;
 
 		private RmpView()
@@ -95,6 +97,7 @@ namespace MapView.RmpViewForm
 			cbUsage.Items.AddRange(RmpFile.SpawnUsage);
 
 			currEntry = null;
+			setCheck = false;
 
 			Text = "RmpView";
 		}
@@ -144,6 +147,7 @@ namespace MapView.RmpViewForm
 //				if (currEntry == null && e.MouseEventArgs.Button == MouseButtons.Right)
 //				{
 //					currEntry = map.AddRmp(e.MapLocation);
+//                  currEntry.CopyFrom(defaultEntry);
 //				}
 			}
 			catch { return; }
@@ -180,6 +184,14 @@ namespace MapView.RmpViewForm
 
 				byteList.Add(i);
 			}
+
+			bool isChecked = false;
+			if (defaultEntry != null && currEntry != null)
+				isChecked = currEntry.Index == defaultEntry.Index;
+
+			setCheck = true;
+			cbDefault.Checked = isChecked;
+			setCheck = false;
 
 			byteList.AddRange(itms2);
 
@@ -581,6 +593,18 @@ namespace MapView.RmpViewForm
 		{
 			currEntry.Usage = (SpawnUsage)((StrEnum)cbUsage.SelectedItem).Enum;
 			Refresh();
+		}
+
+		private void cbDefault_CheckedChanged(object sender, EventArgs e)
+		{
+			if (!setCheck) {
+				if (cbDefault.Checked)
+					defaultEntry = currEntry;
+				else
+					defaultEntry = null;
+				rmpPanel.DefaultEntry = defaultEntry;
+				Refresh();
+			}
 		}
 	}
 }
