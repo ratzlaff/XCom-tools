@@ -133,7 +133,7 @@ namespace MapView
 
 			fs = new FileStream(@layoutFile, FileMode.Create);
 			fs.Close();
-			appendFile(layoutFile, "MVLayout");
+//			appendFile(layoutFile, "MVLayout");
 
 			this.DialogResult = DialogResult.OK;
 			Close();

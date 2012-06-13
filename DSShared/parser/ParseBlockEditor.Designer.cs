@@ -27,7 +27,6 @@ namespace UtilLib.Parser.Design
 		/// </summary>
 		private void InitializeComponent()
 		{
-			this.splitContainer1 = new System.Windows.Forms.SplitContainer();
 			this.gbCaption = new System.Windows.Forms.GroupBox();
 			this.items = new System.Windows.Forms.ListBox();
 			this.panel1 = new System.Windows.Forms.Panel();
@@ -37,40 +36,21 @@ namespace UtilLib.Parser.Design
 			this.btnRemove = new System.Windows.Forms.Button();
 			this.btnAdd = new System.Windows.Forms.Button();
 			this.propGrid = new System.Windows.Forms.PropertyGrid();
-			this.splitContainer1.Panel1.SuspendLayout();
-			this.splitContainer1.Panel2.SuspendLayout();
-			this.splitContainer1.SuspendLayout();
+			this.splitter1 = new System.Windows.Forms.Splitter();
 			this.gbCaption.SuspendLayout();
 			this.panel1.SuspendLayout();
 			this.panel2.SuspendLayout();
 			this.SuspendLayout();
-			// 
-			// splitContainer1
-			// 
-			this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.splitContainer1.Location = new System.Drawing.Point(0, 0);
-			this.splitContainer1.Name = "splitContainer1";
-			// 
-			// splitContainer1.Panel1
-			// 
-			this.splitContainer1.Panel1.Controls.Add(this.gbCaption);
-			// 
-			// splitContainer1.Panel2
-			// 
-			this.splitContainer1.Panel2.Controls.Add(this.propGrid);
-			this.splitContainer1.Size = new System.Drawing.Size(343, 222);
-			this.splitContainer1.SplitterDistance = 129;
-			this.splitContainer1.TabIndex = 0;
 			// 
 			// gbCaption
 			// 
 			this.gbCaption.Controls.Add(this.items);
 			this.gbCaption.Controls.Add(this.panel1);
 			this.gbCaption.Controls.Add(this.panel2);
-			this.gbCaption.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.gbCaption.Dock = System.Windows.Forms.DockStyle.Left;
 			this.gbCaption.Location = new System.Drawing.Point(0, 0);
 			this.gbCaption.Name = "gbCaption";
-			this.gbCaption.Size = new System.Drawing.Size(129, 222);
+			this.gbCaption.Size = new System.Drawing.Size(154, 264);
 			this.gbCaption.TabIndex = 0;
 			this.gbCaption.TabStop = false;
 			this.gbCaption.Text = "Object List";
@@ -81,7 +61,7 @@ namespace UtilLib.Parser.Design
 			this.items.FormattingEnabled = true;
 			this.items.Location = new System.Drawing.Point(3, 46);
 			this.items.Name = "items";
-			this.items.Size = new System.Drawing.Size(96, 173);
+			this.items.Size = new System.Drawing.Size(121, 212);
 			this.items.TabIndex = 1;
 			this.items.SelectedIndexChanged += new System.EventHandler(this.items_SelectedIndexChanged);
 			// 
@@ -90,16 +70,16 @@ namespace UtilLib.Parser.Design
 			this.panel1.Controls.Add(this.btnDown);
 			this.panel1.Controls.Add(this.btnUp);
 			this.panel1.Dock = System.Windows.Forms.DockStyle.Right;
-			this.panel1.Location = new System.Drawing.Point(99, 46);
+			this.panel1.Location = new System.Drawing.Point(124, 46);
 			this.panel1.Name = "panel1";
-			this.panel1.Size = new System.Drawing.Size(27, 173);
+			this.panel1.Size = new System.Drawing.Size(27, 215);
 			this.panel1.TabIndex = 2;
 			// 
 			// btnDown
 			// 
 			this.btnDown.Anchor = System.Windows.Forms.AnchorStyles.None;
 			this.btnDown.Image = global::UtilLib.Properties.Resources.bullet_arrow_down;
-			this.btnDown.Location = new System.Drawing.Point(2, 89);
+			this.btnDown.Location = new System.Drawing.Point(2, 110);
 			this.btnDown.Name = "btnDown";
 			this.btnDown.Size = new System.Drawing.Size(22, 23);
 			this.btnDown.TabIndex = 1;
@@ -109,7 +89,7 @@ namespace UtilLib.Parser.Design
 			// 
 			this.btnUp.Anchor = System.Windows.Forms.AnchorStyles.None;
 			this.btnUp.Image = global::UtilLib.Properties.Resources.bullet_arrow_up;
-			this.btnUp.Location = new System.Drawing.Point(2, 60);
+			this.btnUp.Location = new System.Drawing.Point(2, 81);
 			this.btnUp.Name = "btnUp";
 			this.btnUp.Size = new System.Drawing.Size(22, 23);
 			this.btnUp.TabIndex = 0;
@@ -122,13 +102,13 @@ namespace UtilLib.Parser.Design
 			this.panel2.Dock = System.Windows.Forms.DockStyle.Top;
 			this.panel2.Location = new System.Drawing.Point(3, 16);
 			this.panel2.Name = "panel2";
-			this.panel2.Size = new System.Drawing.Size(123, 30);
+			this.panel2.Size = new System.Drawing.Size(148, 30);
 			this.panel2.TabIndex = 0;
 			// 
 			// btnRemove
 			// 
 			this.btnRemove.Anchor = System.Windows.Forms.AnchorStyles.Top;
-			this.btnRemove.Location = new System.Drawing.Point(64, 3);
+			this.btnRemove.Location = new System.Drawing.Point(77, 3);
 			this.btnRemove.Name = "btnRemove";
 			this.btnRemove.Size = new System.Drawing.Size(55, 23);
 			this.btnRemove.TabIndex = 1;
@@ -138,7 +118,7 @@ namespace UtilLib.Parser.Design
 			// btnAdd
 			// 
 			this.btnAdd.Anchor = System.Windows.Forms.AnchorStyles.Top;
-			this.btnAdd.Location = new System.Drawing.Point(3, 3);
+			this.btnAdd.Location = new System.Drawing.Point(16, 3);
 			this.btnAdd.Name = "btnAdd";
 			this.btnAdd.Size = new System.Drawing.Size(55, 23);
 			this.btnAdd.TabIndex = 0;
@@ -148,24 +128,31 @@ namespace UtilLib.Parser.Design
 			// propGrid
 			// 
 			this.propGrid.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.propGrid.Location = new System.Drawing.Point(0, 0);
+			this.propGrid.Location = new System.Drawing.Point(157, 0);
 			this.propGrid.Name = "propGrid";
-			this.propGrid.Size = new System.Drawing.Size(210, 222);
+			this.propGrid.Size = new System.Drawing.Size(292, 264);
 			this.propGrid.TabIndex = 0;
+			// 
+			// splitter1
+			// 
+			this.splitter1.Location = new System.Drawing.Point(154, 0);
+			this.splitter1.Name = "splitter1";
+			this.splitter1.Size = new System.Drawing.Size(3, 264);
+			this.splitter1.TabIndex = 1;
+			this.splitter1.TabStop = false;
 			// 
 			// ParseBlockEditor
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(343, 222);
-			this.Controls.Add(this.splitContainer1);
+			this.ClientSize = new System.Drawing.Size(449, 264);
+			this.Controls.Add(this.propGrid);
+			this.Controls.Add(this.splitter1);
+			this.Controls.Add(this.gbCaption);
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
 			this.Name = "ParseBlockEditor";
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
 			this.Text = "Object list editor";
-			this.splitContainer1.Panel1.ResumeLayout(false);
-			this.splitContainer1.Panel2.ResumeLayout(false);
-			this.splitContainer1.ResumeLayout(false);
 			this.gbCaption.ResumeLayout(false);
 			this.panel1.ResumeLayout(false);
 			this.panel2.ResumeLayout(false);
@@ -175,7 +162,6 @@ namespace UtilLib.Parser.Design
 
 		#endregion
 
-		private System.Windows.Forms.SplitContainer splitContainer1;
 		private System.Windows.Forms.PropertyGrid propGrid;
 		private System.Windows.Forms.GroupBox gbCaption;
 		private System.Windows.Forms.ListBox items;
@@ -185,6 +171,7 @@ namespace UtilLib.Parser.Design
 		private System.Windows.Forms.Panel panel1;
 		private System.Windows.Forms.Button btnDown;
 		private System.Windows.Forms.Button btnUp;
+		private System.Windows.Forms.Splitter splitter1;
 
 	}
 }
