@@ -3,10 +3,10 @@ using MapLib.Base;
 
 namespace XCom.Interfaces.Base
 {
-	public class IInfo:TileInfo
+	public class XCTileInfo : TileInfo
 	{
-		protected IInfo(int id)
-			:	base(id)
+		protected XCTileInfo(int id)
+			: base(id)
 		{
 		}
 

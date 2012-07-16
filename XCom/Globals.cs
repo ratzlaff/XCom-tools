@@ -6,11 +6,6 @@ namespace XCom
 
 	public static class Globals
 	{
-		public static string RegistryKey
-		{
-			get { return "ViewSuite"; }
-		}
-
 		public static bool UseBlanks { get; set; }
 
 		/// <summary>
