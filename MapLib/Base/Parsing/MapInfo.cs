@@ -31,6 +31,11 @@ namespace MapLib.Base.Parsing
 			deps = new ImageDependencyList();
 		}
 
+		public Tileset Tileset
+		{
+			get { return Parent; }
+		}
+
 		public virtual void PostLoad()
 		{
 			Images_dat images = (Images_dat)SharedSpace.Instance["images"];

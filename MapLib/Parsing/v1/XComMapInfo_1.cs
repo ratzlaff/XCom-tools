@@ -19,7 +19,7 @@ namespace MapLib.Parsing
 		{
 			get 
 			{
-
+				Console.WriteLine("Load map here: " + Tileset.MapCollection.Name + ":" + Tileset.Name + ":" + Name);
 				return null; 
 			}
 		}

@@ -36,7 +36,7 @@ namespace UtilLib.Parser
 		}
 
 		[Browsable(false)]
-		public P Parent
+		protected P Parent
 		{
 			get { return mParent; }
 			set { mParent = value; }

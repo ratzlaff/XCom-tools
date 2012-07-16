@@ -30,6 +30,11 @@ namespace MapLib
 			mCollection = new ParseBlockCollection<MapInfo, Tileset>(this, "Map List");
 		}
 
+		public MapCollection MapCollection
+		{
+			get { return Parent; }
+		}
+
 //		[Editor(typeof(CollectionEditor), typeof(UITypeEditor))]
 		public ParseBlockCollection<MapInfo, Tileset> Maps
 		{
