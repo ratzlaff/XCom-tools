@@ -3,16 +3,14 @@ using System.Drawing;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows.Forms;
-using XCom;
-using XCom.Interfaces;
 using System.Drawing.Drawing2D;
 using Microsoft.Win32;
-using XCom.Interfaces.Base;
 using System.Reflection;
 
 using MapLib;
 using MapLib.Base;
 using ViewLib;
+using XCom;
 
 namespace MapView.TopViewForm
 {

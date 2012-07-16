@@ -4,8 +4,6 @@ using System.Collections;
 using System.ComponentModel;
 using System.Windows.Forms;
 using XCom;
-using XCom.Interfaces;
-using XCom.Interfaces.Base;
 using MapLib.Base;
 
 namespace MapView

@@ -1,16 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
 using System.Text;
 using System.Drawing;
 using System.Windows.Forms;
 using System.Drawing.Drawing2D;
-using XCom;
-using XCom.Interfaces.Base;
 using ViewLib;
 using UtilLib;
 using MapLib;
+using XCom;
 
 namespace MapView.RmpViewForm
 {

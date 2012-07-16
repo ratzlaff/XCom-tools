@@ -4,8 +4,6 @@ using System.Collections;
 using System.Drawing;
 using System.Windows.Forms;
 using System.Collections.Generic;
-//using XCom.Interfaces;
-using XCom.Interfaces.Base;
 using MapLib.Base;
 using MapLib;
 
@@ -30,38 +28,32 @@ namespace XCom
 
 			readMap(File.OpenRead(basePath + basename + ".MAP"), tiles);
 
-			if (File.Exists(blankPath + basename + BlankFile.Extension))
-			{
-				try
-				{
+			if (File.Exists(blankPath + basename + BlankFile.Extension)) {
+				try {
 					BlankFile.LoadBlanks(basename, blankPath, this);
-				}
-				catch
-				{
+				} catch {
 					for (int h = 0; h < mapSize.Height; h++)
 						for (int r = 0; r < mapSize.Rows; r++)
 							for (int c = 0; c < mapSize.Cols; c++)
 								((XCMapTile)this[r, c, h]).DrawAbove = true;
 				}
-			}
-			else if (blankPath != "" && Globals.UseBlanks)
-			{
+			} else if (blankPath != "" && Globals.UseBlanks) {
 				CalcDrawAbove();
 				SaveBlanks();
 			}
 		}
-/*
-		public void Hq2x()
-		{
-			//instead, i would want to make an image of the whole map, and run that through hq2x
-			foreach (string s in dependencies)
-				foreach (PckImage pi in GameInfo.GetPckFile(s))
-					pi.Hq2x();
+		/*
+				public void Hq2x()
+				{
+					//instead, i would want to make an image of the whole map, and run that through hq2x
+					foreach (string s in dependencies)
+						foreach (PckImage pi in GameInfo.GetPckFile(s))
+							pi.Hq2x();
 
-			PckImage.Width *= 2;
-			PckImage.Height *= 2;
-		}
-*/
+					PckImage.Width *= 2;
+					PckImage.Height *= 2;
+				}
+		*/
 		public RmpEntry AddRmp(MapLocation loc)
 		{
 			RmpEntry re = Rmp.AddEntry((byte)loc.Row, (byte)loc.Col, (byte)loc.Height);
@@ -87,15 +79,12 @@ namespace XCom
 		public void CalcDrawAbove()
 		{
 			for (int h = mapSize.Height - 1; h >= 0; h--)
-				for (int row = 0; row < mapSize.Rows; row++)
-				{
-					for (int col = 0; col < mapSize.Cols; col++)
-					{
+				for (int row = 0; row < mapSize.Rows; row++) {
+					for (int col = 0; col < mapSize.Cols; col++) {
 						if (this[row, col, h] == null)
 							continue;
 
-						try
-						{
+						try {
 							if (((XCMapTile)this[row, col, h - 1]).Ground != null && //top
 								((XCMapTile)this[row + 1, col, h - 1]).Ground != null && //south
 								((XCMapTile)this[row + 2, col, h - 1]).Ground != null &&
@@ -106,8 +95,7 @@ namespace XCom
 								((XCMapTile)this[row, col + 2, h - 1]).Ground != null &&
 								((XCMapTile)this[row + 1, col + 2, h - 1]).Ground != null)
 								((XCMapTile)this[row, col, h]).DrawAbove = false;
-						}
-						catch { }
+						} catch { }
 					}
 				}
 		}
@@ -153,8 +141,7 @@ namespace XCom
 
 			for (int h = 0; h < mapSize.Height; h++)
 				for (int r = 0; r < mapSize.Rows; r++)
-					for (int c = 0; c < mapSize.Cols; c++)
-					{
+					for (int c = 0; c < mapSize.Cols; c++) {
 						XCMapTile xcmt = (XCMapTile)this[r, c, h];
 						if (xcmt.Ground == null)
 							s.WriteByte(0);
@@ -210,8 +197,7 @@ namespace XCom
 
 			for (int h = 0; h < height; h++)
 				for (int r = 0; r < rows; r++)
-					for (int c = 0; c < cols; c++)
-					{
+					for (int c = 0; c < cols; c++) {
 						int q1 = input.ReadByte();
 						int q2 = input.ReadByte();
 						int q3 = input.ReadByte();
@@ -224,8 +210,7 @@ namespace XCom
 
 		private XCMapTile createTile(List<Tile> tiles, int q1, int q2, int q3, int q4)
 		{
-			try
-			{
+			try {
 				XCTile a, b, c, d;
 				a = b = c = d = null;
 				if (q1 != 0 && q1 != 1)
@@ -238,9 +223,7 @@ namespace XCom
 					d = (XCTile)tiles[q4 - 2];
 
 				return new XCMapTile(a, b, c, d);
-			}
-			catch
-			{
+			} catch {
 				//Console.WriteLine("Error in Map::createTile, indexes: {0},{1},{2},{3} length: {4}",q1,q2,q3,q4,tiles.Length);
 				return XCMapTile.BlankTile;
 			}

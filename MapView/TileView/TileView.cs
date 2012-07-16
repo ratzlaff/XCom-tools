@@ -6,13 +6,11 @@ using System.ComponentModel;
 using System.Windows.Forms;
 using System.Reflection;
 using System.IO;
-using XCom;
-using XCom.Interfaces;
-using XCom.Interfaces.Base;
 using ViewLib;
 using UtilLib;
 using MapLib;
 using MapLib.Base;
+using XCom;
 
 namespace MapView
 {

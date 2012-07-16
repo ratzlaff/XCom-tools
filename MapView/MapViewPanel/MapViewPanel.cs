@@ -2,14 +2,12 @@ using System;
 using System.Windows.Forms;
 using System.Drawing;
 using System.Drawing.Drawing2D;
-using XCom;
-using XCom.Interfaces;
 using System.Collections;
-using XCom.Interfaces.Base;
 using MapView.TopViewForm;
 using MapLib.Base;
 using MapLib;
 using ViewLib;
+using XCom;
 
 namespace MapView
 {

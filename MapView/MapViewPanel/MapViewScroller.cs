@@ -4,12 +4,10 @@ using System.Collections;
 using System.ComponentModel;
 using System.Windows.Forms;
 using System.Data;
-using XCom;
-using XCom.Interfaces;
-using XCom.Interfaces.Base;
 
 using MapLib;
 using MapLib.Base;
+using XCom;
 
 namespace MapView
 {

@@ -1,16 +1,4 @@
 using System;
-using System.Drawing;
-using System.Collections;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Windows.Forms;
-using System.IO;
-using XCom;
-using XCom.Interfaces;
-using Microsoft.Win32;
-using XCom.Interfaces.Base;
-using UtilLib;
-using MapLib.Base;
 
 #if HERE
 namespace MapView

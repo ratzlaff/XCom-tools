@@ -2,21 +2,20 @@ using System;
 using System.Drawing;
 using System.Collections;
 using XCom.Interfaces;
-using XCom.Interfaces.Base;
 using MapLib.Base;
 
 namespace XCom
 {
-	public class XCMapTile:MapTile
+	public class XCMapTile : MapTile
 	{
 		public enum MapQuadrant { Ground, West, North, Content };
 		private RmpEntry rmpInfo;
-		private Tile ground, north, west, content;		
-        private bool blank;
+		private Tile ground, north, west, content;
+		private bool blank;
 
 		//private IUnit unit;
 
-//		private int maxSub = 0;		
+		//		private int maxSub = 0;		
 		private int standOffset = 0;
 
 		internal XCMapTile(Tile ground, Tile west, Tile north, Tile content)
@@ -32,7 +31,7 @@ namespace XCom
 			//unit = null;
 		}
 
-		public static new XCMapTile BlankTile
+		public static XCMapTile BlankTile
 		{
 			get
 			{
@@ -52,34 +51,34 @@ namespace XCom
 
 		private void calcTiles()
 		{
-/*
-			int notNull = 0;
-			maxSub = -255;
-			if (ground != null)
-			{
-				notNull++;
-				maxSub = ground.Info.TileOffset;
-				standOffset = ground.Info.StandOffset;
-			}
-			if (north != null)
-			{
-				notNull++;
-				maxSub = Math.Max(maxSub, north.Info.TileOffset);
-				standOffset = Math.Max(standOffset, north.Info.TileOffset);
-			}
-			if (west != null)
-			{
-				notNull++;
-				maxSub = Math.Max(maxSub, west.Info.TileOffset);
-				standOffset = Math.Max(standOffset, west.Info.TileOffset);
-			}
-			if (content != null)
-			{
-				notNull++;
-				maxSub = Math.Max(maxSub, content.Info.TileOffset);
-				standOffset = Math.Max(standOffset, content.Info.TileOffset);
-			}
-			*/
+			/*
+						int notNull = 0;
+						maxSub = -255;
+						if (ground != null)
+						{
+							notNull++;
+							maxSub = ground.Info.TileOffset;
+							standOffset = ground.Info.StandOffset;
+						}
+						if (north != null)
+						{
+							notNull++;
+							maxSub = Math.Max(maxSub, north.Info.TileOffset);
+							standOffset = Math.Max(standOffset, north.Info.TileOffset);
+						}
+						if (west != null)
+						{
+							notNull++;
+							maxSub = Math.Max(maxSub, west.Info.TileOffset);
+							standOffset = Math.Max(standOffset, west.Info.TileOffset);
+						}
+						if (content != null)
+						{
+							notNull++;
+							maxSub = Math.Max(maxSub, content.Info.TileOffset);
+							standOffset = Math.Max(standOffset, content.Info.TileOffset);
+						}
+						*/
 			if (ground != null)
 				usedTiles.Add(ground);
 			if (north != null)
@@ -106,8 +105,7 @@ namespace XCom
 		{
 			get
 			{
-				switch (quad)
-				{
+				switch (quad) {
 					case MapQuadrant.Ground:
 						return Ground;
 					case MapQuadrant.Content:
@@ -122,8 +120,7 @@ namespace XCom
 			}
 			set
 			{
-				switch (quad)
-				{
+				switch (quad) {
 					case MapQuadrant.Ground:
 						Ground = value;
 						break;

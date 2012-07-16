@@ -89,15 +89,15 @@ namespace XCom
 {
 	public enum UnitType : byte { Any = 0, Flying, Small, FlyingLarge, Large };
 
-	public enum UnitRankUFO:byte{Civilian=0,XCom,Soldier,Navigator,LeaderCommander,Engineer,Misc1,Medic,Misc2};
-	public enum UnitRankTFTD:byte{Civilian=0,XCom,Soldier,SquadLeader,LeaderCommander,Medic,Misc1,Technician,Misc2};
-	public enum SpawnUsage:byte{NoSpawn=0,Spawn1=1,Spawn2=2,Spawn3=3,Spawn4=4,Spawn5=5,Spawn6=6,Spawn7=7,Spawn8=8,Spawn9=9,Spawn10=10};
+	public enum UnitRankUFO : byte { Civilian = 0, XCom, Soldier, Navigator, LeaderCommander, Engineer, Misc1, Medic, Misc2 };
+	public enum UnitRankTFTD : byte { Civilian = 0, XCom, Soldier, SquadLeader, LeaderCommander, Medic, Misc1, Technician, Misc2 };
+	public enum SpawnUsage : byte { NoSpawn = 0, Spawn1 = 1, Spawn2 = 2, Spawn3 = 3, Spawn4 = 4, Spawn5 = 5, Spawn6 = 6, Spawn7 = 7, Spawn8 = 8, Spawn9 = 9, Spawn10 = 10 };
 
-	public enum UnitRankNum:byte{Zero=0,One,Two,Three,Four,Five,Six,Seven,Eight};
-	public enum LinkTypes:byte{NotUsed=0xFF,ExitNorth=0xFE,ExitEast=0xFD,ExitSouth=0xFC,ExitWest=0xFB};
-	
+	public enum UnitRankNum : byte { Zero = 0, One, Two, Three, Four, Five, Six, Seven, Eight };
+	public enum LinkTypes : byte { NotUsed = 0xFF, ExitNorth = 0xFE, ExitEast = 0xFD, ExitSouth = 0xFC, ExitWest = 0xFB };
 
-	public class RmpFile:IEnumerable
+
+	public class RmpFile : IEnumerable
 	{
 		private ArrayList entries;
 		private string basename, basePath;
@@ -136,33 +136,31 @@ namespace XCom
 
 		internal RmpFile(string basename, string basePath)
 		{
-			this.basename=basename;
-			this.basePath=basePath;
+			this.basename = basename;
+			this.basePath = basePath;
 			entries = new ArrayList();
 
-			if(File.Exists(basePath+basename+".RMP"))
-			{
-				BufferedStream bs = new BufferedStream(File.OpenRead(basePath+basename+".RMP"));
+			if (File.Exists(basePath + basename + ".RMP")) {
+				BufferedStream bs = new BufferedStream(File.OpenRead(basePath + basename + ".RMP"));
 
-				for(byte i=0;i<bs.Length/24;i++)
-				{
+				for (byte i = 0; i < bs.Length / 24; i++) {
 					byte[] data = new byte[24];
-					bs.Read(data,0,24);
-					entries.Add(new RmpEntry(i,data));
+					bs.Read(data, 0, 24);
+					entries.Add(new RmpEntry(i, data));
 				}
 				bs.Close();
 			}
 		}
 
 		public void Save()
-		{	
-			Save(File.Create(basePath+basename+".RMP"));
+		{
+			Save(File.Create(basePath + basename + ".RMP"));
 		}
 
 		public void Save(FileStream fs)
 		{
-			for(int i=0;i<entries.Count;i++)
-				((RmpEntry)entries[i]).Save(fs);	
+			for (int i = 0; i < entries.Count; i++)
+				((RmpEntry)entries[i]).Save(fs);
 			fs.Close();
 		}
 
@@ -173,12 +171,12 @@ namespace XCom
 
 		public RmpEntry this[int i]
 		{
-			get{return (RmpEntry)entries[i];}
+			get { return (RmpEntry)entries[i]; }
 		}
 
 		public int Length
 		{
-			get{return entries.Count;}
+			get { return entries.Count; }
 		}
 
 		public void RemoveEntry(RmpEntry r)
@@ -187,27 +185,25 @@ namespace XCom
 			//Console.WriteLine("delete: "+r);
 
 			entries.Remove(r);
-			foreach(RmpEntry rr in entries)
-			{
-				if(rr.Index > oldIdx)
+			foreach (RmpEntry rr in entries) {
+				if (rr.Index > oldIdx)
 					rr.Index--;
 
-				for(int i=0;i<5;i++)
-				{
+				for (int i = 0; i < 5; i++) {
 					Link l = rr[i];
-					if(l.Index==oldIdx)
-						l.Index=Link.NotUsed;
-					else if(l.Index>oldIdx && l.Index<0xFB)
+					if (l.Index == oldIdx)
+						l.Index = Link.NotUsed;
+					else if (l.Index > oldIdx && l.Index < 0xFB)
 						l.Index--;
 				}
 			}
 
 		}
 
-		public RmpEntry AddEntry(byte row, byte col,byte height)
+		public RmpEntry AddEntry(byte row, byte col, byte height)
 		{
 			//Console.WriteLine("Adding {0},{1},{2}",row,col,height);
-			RmpEntry re = new RmpEntry((byte)entries.Count,row,col,height);
+			RmpEntry re = new RmpEntry((byte)entries.Count, row, col, height);
 			entries.Add(re);
 			return re;
 		}
@@ -236,7 +232,7 @@ namespace XCom
 		} RmpRec;		  
 		 */
 		#endregion
-		private byte row,col,height;
+		private byte row, col, height;
 		private Link[] links;
 		private UnitType unitType;
 		private byte unitRank1;
@@ -245,21 +241,20 @@ namespace XCom
 		private SpawnUsage usage;
 		//private byte[] data;
 
-		public RmpEntry(byte idx,byte[] data)
+		public RmpEntry(byte idx, byte[] data)
 		{
 			//this.data = data;
-			Index=idx;
+			Index = idx;
 			row = data[0];
 			col = data[1];
 			height = data[2];
 
 			links = new Link[5];
 
-			int x=4;
-			for(int i=0;i<5;i++)
-			{
-				links[i] = new Link(data[x],data[x+1],data[x+2]);
-				x+=3;
+			int x = 4;
+			for (int i = 0; i < 5; i++) {
+				links[i] = new Link(data[x], data[x + 1], data[x + 2]);
+				x += 3;
 			}
 
 			unitType = (UnitType)data[19];
@@ -272,13 +267,12 @@ namespace XCom
 		public RmpEntry(byte idx, byte row, byte col, byte height)
 		{
 			Index = idx;
-			this.row=row;
-			this.col=col;
-			this.height=height;
+			this.row = row;
+			this.col = col;
+			this.height = height;
 			links = new Link[5];
-			for(int i=0;i<5;i++)
-			{
-				links[i] = new Link(Link.NotUsed,0,0);
+			for (int i = 0; i < 5; i++) {
+				links[i] = new Link(Link.NotUsed, 0, 0);
 			}
 			unitType = (UnitType)0;
 			unitRank1 = 0;
@@ -289,9 +283,8 @@ namespace XCom
 
 		public override bool Equals(object o)
 		{
-			if(o is RmpEntry)
-			{
-				return Index==((RmpEntry)o).Index;
+			if (o is RmpEntry) {
+				return Index == ((RmpEntry)o).Index;
 			}
 			return false;
 		}
@@ -300,17 +293,16 @@ namespace XCom
 		{
 			return Index;
 		}
-        
+
 		public void Save(FileStream fs)
 		{
 			//fs.Write(data,0,data.Length);
-			
+
 			fs.WriteByte(row);
 			fs.WriteByte(col);
 			fs.WriteByte(height);
 			fs.WriteByte(0);
-			for(int i=0;i<5;i++)
-			{
+			for (int i = 0; i < 5; i++) {
 				fs.WriteByte(links[i].Index);
 				fs.WriteByte(links[i].Distance);
 				fs.WriteByte((byte)links[i].UType);
@@ -325,59 +317,59 @@ namespace XCom
 		public override string ToString()
 		{
 			string res = "";
-			res+="r:"+row+" c:"+col+" h:"+height;
+			res += "r:" + row + " c:" + col + " h:" + height;
 			return res;
 		}
 
 		public byte Row
 		{
-			get{return row;}
+			get { return row; }
 		}
 
 		public byte Col
 		{
-			get{return col;}
+			get { return col; }
 		}
 
 		public byte Height
 		{
-			get{return height;}
+			get { return height; }
 		}
 
 		public UnitType UType
 		{
-			get{return unitType;}
-			set{unitType=value;}
+			get { return unitType; }
+			set { unitType = value; }
 		}
 		public byte URank1
 		{
-			get{return unitRank1;}
-			set{unitRank1=value;}
+			get { return unitRank1; }
+			set { unitRank1 = value; }
 		}
 		public UnitRankNum URank2
 		{
-			get{return unitRank2;}
-			set{unitRank2=value;}
+			get { return unitRank2; }
+			set { unitRank2 = value; }
 		}
 		public byte Zero1
 		{
-			get{return zero1;}
-			set{zero1=value;}
+			get { return zero1; }
+			set { zero1 = value; }
 		}
 		public SpawnUsage Usage
 		{
-			get{return usage;}
-			set{usage=value;}
+			get { return usage; }
+			set { usage = value; }
 		}
-	
+
 		public int NumLinks
 		{
-			get{return links.Length;}
+			get { return links.Length; }
 		}
 
 		public Link this[int i]
 		{
-			get{return links[i];}
+			get { return links[i]; }
 		}
 
 		/// <summary>
@@ -406,16 +398,16 @@ namespace XCom
 
 	public class Link
 	{
-		public const byte NotUsed=0xFF;
-		public const byte ExitNorth=0xFE;
-		public const byte ExitEast=0xFD;
-		public const byte ExitSouth=0xFC;
-		public const byte ExitWest=0xFB;
+		public const byte NotUsed = 0xFF;
+		public const byte ExitNorth = 0xFE;
+		public const byte ExitEast = 0xFD;
+		public const byte ExitSouth = 0xFC;
+		public const byte ExitWest = 0xFB;
 
 		public Link(byte index, byte distance, byte type)
 		{
-			Index=index;
-			Distance=distance;
+			Index = index;
+			Distance = distance;
 			UType = (UnitType)type;
 		}
 

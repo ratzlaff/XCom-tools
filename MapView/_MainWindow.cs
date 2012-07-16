@@ -13,7 +13,6 @@ using UtilLib;
 using UtilLib.Parser;
 using UtilLib.Windows;
 using UtilLib.Loadable;
-using XCom.Interfaces.Base;
 using System.Collections.Generic;
 using MapView.RmpViewForm;
 using MapView.TopViewForm;

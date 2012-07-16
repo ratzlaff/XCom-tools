@@ -5,7 +5,6 @@ using System.Windows.Forms;
 using System.Drawing;
 using System.Reflection;
 using XCom;
-using XCom.Interfaces.Base;
 using ViewLib;
 using UtilLib;
 using MapLib;
