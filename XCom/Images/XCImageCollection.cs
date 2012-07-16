@@ -1,18 +1,18 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
-using XCom.Interfaces;
+using XCom.Images;
 using UtilLib;
 using MapLib.Base;
 
-namespace XCom
+namespace XCom.Images
 {
 	public class XCImageCollection : List<XCImage>
 	{
 		protected string name, path;
 		private Palette mPalette;
 //		protected int mScale = 1;
-		private XCom.Interfaces.IXCImageFile ixcFile;
+		private xcImageFile ixcFile;
 
 		public string Name
 		{
@@ -26,7 +26,7 @@ namespace XCom
 			set { path = value; }
 		}
 
-		public IXCImageFile IXCFile
+		public xcImageFile IXCFile
 		{
 			get { return ixcFile; }
 			set { ixcFile = value; }

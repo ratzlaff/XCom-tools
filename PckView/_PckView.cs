@@ -9,7 +9,7 @@ using System.IO;
 using System.Drawing.Imaging;
 using System.Reflection;
 using XCom;
-using XCom.Interfaces;
+using XCom.Images;
 using UtilLib;
 using UtilLib.Windows;
 using UtilLib.Loadable;
@@ -30,14 +30,14 @@ namespace PckView
 		private Dictionary<Palette, MenuItem> palMI;
 		private SharedSpace sharedSpace;
 		private MenuItem selectedMI;
-		private LoadOfType<IXCImageFile> loadedTypes;
+		private LoadOfType<xcImageFile> loadedTypes;
 		private ConsoleForm console;
 		private OpenSaveFilter osFilter;
 		private xcCustom xcCustom;
 		private TabControl tabs;
 
-		private Dictionary<int, IXCImageFile> openDictionary;
-		private Dictionary<int, IXCImageFile> saveDictionary;
+		private Dictionary<int, xcImageFile> openDictionary;
+		private Dictionary<int, xcImageFile> saveDictionary;
 
 		public PckViewForm()
 		{
@@ -46,21 +46,19 @@ namespace PckView
 			#region shared space information
 			sharedSpace = SharedSpace.Instance;
 
-			if (sharedSpace.GetObj("xConsole") == null)
-			{
+			if (sharedSpace.GetObj("xConsole") == null) {
 				console = (ConsoleForm)sharedSpace.GetObj("xConsole", new ConsoleForm());
-				console.FormClosing += delegate(object sender, FormClosingEventArgs e)
-				{
+				console.FormClosing += delegate(object sender, FormClosingEventArgs e) {
 					e.Cancel = true;
 					console.Hide();
 				};
 			}
 			console.Show();
 
-			sharedSpace.GetObj("PckView",this);
+			sharedSpace.GetObj("PckView", this);
 			sharedSpace.GetObj("AppDir", Environment.CurrentDirectory);
 			sharedSpace.GetObj("CustomDir", Environment.CurrentDirectory + "\\custom");
-			sharedSpace.GetObj("SettingsDir", Environment.CurrentDirectory + "\\settings");	
+			sharedSpace.GetObj("SettingsDir", Environment.CurrentDirectory + "\\settings");
 
 			xConsole.AddLine("Current directory: " + sharedSpace["AppDir"]);
 			xConsole.AddLine("Custom directory: " + sharedSpace["CustomDir"].ToString());
@@ -116,37 +114,34 @@ namespace PckView
 			if (!File.Exists("hq2xa.dll"))
 				miHq2x.Enabled = false;
 
-			loadedTypes = new LoadOfType<IXCImageFile>();
-			loadedTypes.OnLoad += new LoadOfType<IXCImageFile>.TypeLoadDelegate(loadedTypes_OnLoad);
+			loadedTypes = new LoadOfType<xcImageFile>();
+			loadedTypes.OnLoad += new LoadOfType<xcImageFile>.TypeLoadDelegate(loadedTypes_OnLoad);
 			sharedSpace["ImageMods"] = loadedTypes.AllLoaded;
 
 			//loadedTypes.OnLoad += new LoadOfType<IXCFile>.TypeLoadDelegate(sortLoaded);
 
 			loadedTypes.LoadFrom(Assembly.GetExecutingAssembly());
-			loadedTypes.LoadFrom(Assembly.GetAssembly(typeof(XCom.Interfaces.IXCImageFile)));			
+			loadedTypes.LoadFrom(Assembly.GetAssembly(typeof(xcImageFile)));
 
-			if (Directory.Exists(sharedSpace["CustomDir"].ToString()))
-			{
+			if (Directory.Exists(sharedSpace["CustomDir"].ToString())) {
 				//Console.WriteLine("Custom directory exists: "+sharedSpace["CustomDir"].ToString());
 				xConsole.AddLine("Custom directory exists: " + sharedSpace["CustomDir"].ToString());
 				foreach (string s in Directory.GetFiles(sharedSpace["CustomDir"].ToString()))
-					if (s.EndsWith(".dll"))
-					{
+					if (s.EndsWith(".dll")) {
 						xConsole.AddLine("Loading dll: " + s);
 						loadedTypes.LoadFrom(Assembly.LoadFrom(s));
-					}
-					else if (s.EndsWith(xcProfile.PROFILE_EXT))
+					} else if (s.EndsWith(xcProfile.PROFILE_EXT))
 						foreach (xcProfile ip in ImgProfile.LoadFile(s))
 							loadedTypes.Add(ip);
 			}
 
 			osFilter = new OpenSaveFilter();
-			osFilter.SetFilter(IXCImageFile.Filter.Open);
+			osFilter.SetFilter(xcImageFile.Filter.Open);
 
-			openDictionary = new Dictionary<int, IXCImageFile>();
-			saveDictionary = new Dictionary<int, IXCImageFile>();
+			openDictionary = new Dictionary<int, xcImageFile>();
+			saveDictionary = new Dictionary<int, xcImageFile>();
 
-			osFilter.SetFilter(IXCImageFile.Filter.Open);
+			osFilter.SetFilter(xcImageFile.Filter.Open);
 			string filter = loadedTypes.CreateFilter(osFilter, openDictionary);
 			openFile.Filter = filter;
 		}
@@ -160,14 +155,13 @@ namespace PckView
 		{
 			saveitem.Enabled = transItem.Enabled = bytesMenu.Enabled = miPalette.Enabled = e.Collection != null;
 
-			if (e.Collection != null)
-			{
+			if (e.Collection != null) {
 				bytesMenu.Enabled = miPalette.Enabled = transItem.Enabled = e.Collection.IXCFile.FileOptions.BitDepth == 8;
 				xConsole.AddLine("bpp is: " + e.Collection.IXCFile.FileOptions.BitDepth);
 			}
 		}
 
-		void loadedTypes_OnLoad(object sender, LoadOfType<IXCImageFile>.TypeLoadArgs e)
+		void loadedTypes_OnLoad(object sender, LoadOfType<xcImageFile>.TypeLoadArgs e)
 		{
 			if (e.LoadedObj is xcCustom)
 				xcCustom = (xcCustom)e.LoadedObj;
@@ -178,9 +172,9 @@ namespace PckView
 			foreach (xcProfile ip in ImgProfile.LoadFile(s))
 				loadedTypes.Add(ip);
 
-			osFilter.SetFilter(IXCImageFile.Filter.Open);
+			osFilter.SetFilter(xcImageFile.Filter.Open);
 			openDictionary.Clear();
-			openFile.Filter = loadedTypes.CreateFilter(osFilter,openDictionary);
+			openFile.Filter = loadedTypes.CreateFilter(osFilter, openDictionary);
 		}
 
 		private ContextMenu makeContextMenu()
@@ -220,8 +214,7 @@ namespace PckView
 
 			if (tabs == null)
 				v = TotalViewPck.Instance;
-			else
-			{
+			else {
 				foreach (object o in tabs.SelectedTab.Controls)
 					if (o is TotalViewPck)
 						v = (TotalViewPck)o;
@@ -239,20 +232,17 @@ namespace PckView
 					rtb.Text += string.Format("{0:x} ", b);
 				f.Text = "Bytes: " + v.Selected.Bytes.Length;
 
-				f.Show();	
+				f.Show();
 			}
 		}
 
 		void addMany_Click(object sender, EventArgs e)
 		{
-			if (TotalViewPck.Instance.Collection != null)
-			{
+			if (TotalViewPck.Instance.Collection != null) {
 				openBMP.Title = "Hold shift to select multiple files";
 				openBMP.Multiselect = true;
-				if (openBMP.ShowDialog() == DialogResult.OK)
-				{
-					foreach (string s in openBMP.FileNames)
-					{
+				if (openBMP.ShowDialog() == DialogResult.OK) {
+					foreach (string s in openBMP.FileNames) {
 						Bitmap b = new Bitmap(s);
 						TotalViewPck.Instance.Collection.Add(XCom.Bmp.LoadTile(b, 0, TotalViewPck.Instance.Pal, 0, 0, TotalViewPck.Instance.Collection.IXCFile.ImageSize.Width, TotalViewPck.Instance.Collection.IXCFile.ImageSize.Height));
 					}
@@ -317,18 +307,15 @@ namespace PckView
 		private void viewClicked(int click)
 		{
 			selected = click;
-			if (TotalViewPck.Instance.Selected != null)
-			{
+			if (TotalViewPck.Instance.Selected != null) {
 				editImage.Enabled = true;
 				saveImage.Enabled = true;
 				deleteImage.Enabled = true;
-				if (bytesText != null)
-				{
+				if (bytesText != null) {
 					bytesText.Text = TotalViewPck.Instance.Selected.ToString();
 					bytesFrame.Text = "Length: " + TotalViewPck.Instance.Selected.Bytes.Length;
 				}
-			}
-			else //selected is null
+			} else //selected is null
 			{
 				if (bytesText != null)
 					bytesText.Text = "";
@@ -346,8 +333,7 @@ namespace PckView
 
 		private void openItem_Click(object sender, System.EventArgs e)
 		{
-			if (openFile.ShowDialog() == DialogResult.OK)
-			{
+			if (openFile.ShowDialog() == DialogResult.OK) {
 				OnResize(null);
 
 				string fName = openFile.FileName.Substring(openFile.FileName.LastIndexOf("\\") + 1).ToLower();
@@ -356,61 +342,49 @@ namespace PckView
 				string file = fName.Substring(0, fName.LastIndexOf("."));
 				string path = openFile.FileName.Substring(0, openFile.FileName.LastIndexOf("\\") + 1);
 
-				XCom.XCImageCollection toLoad = null;
+				XCImageCollection toLoad = null;
 				bool recover = false;
 
 				//Console.WriteLine(openFile.FilterIndex+" -> "+filterIndex[openFile.FilterIndex].GetType());
 #if !DEBUG
-				try
-				{
+				try {
 #endif
-					IXCImageFile filterIdx = openDictionary[openFile.FilterIndex];//filterIndex[openFile.FilterIndex];
+					xcImageFile filterIdx = openDictionary[openFile.FilterIndex];//filterIndex[openFile.FilterIndex];
 					if (filterIdx.GetType() == typeof(xcForceCustom)) //special case
 					{
 						toLoad = filterIdx.LoadFile(path, fName);
 						recover = true;
-					}
-					else if (filterIdx.GetType() == typeof(xcCustom)) //for *.* files, try singles and then extensions
+					} else if (filterIdx.GetType() == typeof(xcCustom)) //for *.* files, try singles and then extensions
 					{
 						//try singles
-						foreach (XCom.Interfaces.IXCImageFile ixf in loadedTypes.AllLoaded)
-						{
+						foreach (xcImageFile ixf in loadedTypes.AllLoaded) {
 							if (ixf.SingleFileName != null && ixf.SingleFileName.ToLower() == fName.ToLower())
-								try { toLoad = ixf.LoadFile(path, fName); break; }
-								catch { }
+								try { toLoad = ixf.LoadFile(path, fName); break; } catch { }
 						}
 
-						if (toLoad == null)
-						{
+						if (toLoad == null) {
 							//singles not loaded, try non singles
-							foreach (XCom.Interfaces.IXCImageFile ixf in loadedTypes.AllLoaded)
-							{								
+							foreach (xcImageFile ixf in loadedTypes.AllLoaded) {
 								if (ixf.SingleFileName == null && ixf.FileExtension.ToLower() == ext.ToLower())
-									try { toLoad = ixf.LoadFile(path, fName); break; }
-									catch { }
+									try { toLoad = ixf.LoadFile(path, fName); break; } catch { }
 							}
 
 							//nothing loaded, force the custom dialog
-							if(toLoad == null)
+							if (toLoad == null)
 								toLoad = xcCustom.LoadFile(path, fName, 0, 0);
 						}
-					}
-					else //load file based on its filterIndex
+					} else //load file based on its filterIndex
 						toLoad = filterIdx.LoadFile(path, fName, filterIdx.ImageSize.Width, filterIdx.ImageSize.Height);
-#if !DEBUG	
-				}
-				catch (Exception ex)
-				{
-					if (MessageBox.Show(this, "Error loading file: " + fName + "\nPath: " + openFile.FileName + "\nError loading file, do you wish to try and recover?\n\nError Message: " + ex + ":" + ex.Message, "Error loading file", MessageBoxButtons.YesNo, MessageBoxIcon.Error) == DialogResult.Yes)
-					{
+#if !DEBUG
+				} catch (Exception ex) {
+					if (MessageBox.Show(this, "Error loading file: " + fName + "\nPath: " + openFile.FileName + "\nError loading file, do you wish to try and recover?\n\nError Message: " + ex + ":" + ex.Message, "Error loading file", MessageBoxButtons.YesNo, MessageBoxIcon.Error) == DialogResult.Yes) {
 						toLoad = xcCustom.LoadFile(path, fName, 0, 0);
 						recover = true;
 					}
 				}
 #endif
 
-				if (!recover && toLoad != null)
-				{
+				if (!recover && toLoad != null) {
 					SetImages(toLoad);
 
 					UpdateText();
@@ -429,12 +403,11 @@ namespace PckView
 		{
 			SaveFileDialog saveFile = new SaveFileDialog();
 
-			osFilter.SetFilter(IXCImageFile.Filter.Save);
+			osFilter.SetFilter(xcImageFile.Filter.Save);
 			saveDictionary.Clear();
 			saveFile.Filter = loadedTypes.CreateFilter(osFilter, saveDictionary);
 
-			if (saveFile.ShowDialog() == DialogResult.OK)
-			{
+			if (saveFile.ShowDialog() == DialogResult.OK) {
 				string dir = saveFile.FileName.Substring(0, saveFile.FileName.LastIndexOf("\\"));
 				saveDictionary[saveFile.FilterIndex].SaveCollection(dir, Path.GetFileNameWithoutExtension(saveFile.FileName), TotalViewPck.Instance.Collection);
 			}
@@ -442,15 +415,12 @@ namespace PckView
 
 		private void viewClick(object sender, EventArgs e)
 		{
-			if (TotalViewPck.Instance.Collection != null)
-			{
-				if (TotalViewPck.Instance.Collection.IXCFile.SingleFileName != null)
-				{
+			if (TotalViewPck.Instance.Collection != null) {
+				if (TotalViewPck.Instance.Collection.IXCFile.SingleFileName != null) {
 					string fName = TotalViewPck.Instance.Collection.Name.Substring(0, TotalViewPck.Instance.Collection.Name.IndexOf("."));
 					string ext = TotalViewPck.Instance.Collection.Name.Substring(TotalViewPck.Instance.Collection.Name.IndexOf(".") + 1);
 					saveBmpSingle.FileName = fName + TotalViewPck.Instance.Selected.FileNum;
-				}
-				else
+				} else
 					saveBmpSingle.FileName = TotalViewPck.Instance.Collection.Name + TotalViewPck.Instance.Selected.FileNum;
 
 				if (saveBmpSingle.ShowDialog() == DialogResult.OK)
@@ -460,12 +430,10 @@ namespace PckView
 
 		private void replaceClick(object sender, EventArgs e)
 		{
-			if (TotalViewPck.Instance.Collection != null)
-			{
+			if (TotalViewPck.Instance.Collection != null) {
 				openBMP.Title = "Selected number: " + selected;
 				openBMP.Multiselect = false;
-				if (openBMP.ShowDialog() == DialogResult.OK)
-				{
+				if (openBMP.ShowDialog() == DialogResult.OK) {
 					Bitmap b = new Bitmap(openBMP.FileName);
 
 					TotalViewPck.Instance.Selected = XCom.Bmp.Load(b, TotalViewPck.Instance.Pal, TotalViewPck.Instance.Collection.IXCFile.ImageSize.Width, TotalViewPck.Instance.Collection.IXCFile.ImageSize.Height, 1)[0];
@@ -492,8 +460,7 @@ namespace PckView
 		{
 			if (showBytes.Checked)
 				bytesFrame.BringToFront();
-			else if (TotalViewPck.Instance.Selected != null)
-			{
+			else if (TotalViewPck.Instance.Selected != null) {
 				bytesFrame = new Form();
 				bytesText = new RichTextBox();
 				bytesText.Dock = DockStyle.Fill;
@@ -537,16 +504,14 @@ namespace PckView
 
 		private void editClick(object sender, EventArgs e)
 		{
-			if (TotalViewPck.Instance.Selected != null)
-			{
+			if (TotalViewPck.Instance.Selected != null) {
 				editor.CurrImage = (XCImage)TotalViewPck.Instance.Selected.Clone();
 
 				if (editor.Visible)
 					editor.BringToFront();
-				else
-				{
-//					editor.Left = Right;
-//					editor.Top = Top;
+				else {
+					//					editor.Left = Right;
+					//					editor.Top = Top;
 					editor.Palette = currPal;
 					editor.Show();
 				}
@@ -585,13 +550,11 @@ namespace PckView
 
 		private void miSaveDir_Click(object sender, System.EventArgs e)
 		{
-			if (TotalViewPck.Instance.Collection != null)
-			{
+			if (TotalViewPck.Instance.Collection != null) {
 				string fNameStart = "";
 				string extStart = "";
 
-				if (TotalViewPck.Instance.Collection.Name.IndexOf(".") > 0)
-				{
+				if (TotalViewPck.Instance.Collection.Name.IndexOf(".") > 0) {
 					fNameStart = TotalViewPck.Instance.Collection.Name.Substring(0, TotalViewPck.Instance.Collection.Name.IndexOf("."));
 					extStart = TotalViewPck.Instance.Collection.Name.Substring(TotalViewPck.Instance.Collection.Name.IndexOf(".") + 1);
 				}
@@ -600,8 +563,7 @@ namespace PckView
 
 				saveBmpSingle.Title = "Select directory to save images in";
 
-				if (saveBmpSingle.ShowDialog() == DialogResult.OK)
-				{
+				if (saveBmpSingle.ShowDialog() == DialogResult.OK) {
 					string path = saveBmpSingle.FileName.Substring(0, saveBmpSingle.FileName.LastIndexOf(@"\"));
 					string file = saveBmpSingle.FileName.Substring(saveBmpSingle.FileName.LastIndexOf(@"\") + 1);
 					string fName = file.Substring(0, file.LastIndexOf("."));
@@ -620,8 +582,7 @@ namespace PckView
 
 					string zeros = "";
 					int tens = TotalViewPck.Instance.Collection.Count;
-					while (tens > 0)
-					{
+					while (tens > 0) {
 						zeros += "0";
 						tens /= 10;
 					}
@@ -634,8 +595,7 @@ namespace PckView
 					pw.Height = 50;
 
 					pw.Show();
-					foreach (XCImage xc in TotalViewPck.Instance.Collection)
-					{
+					foreach (XCImage xc in TotalViewPck.Instance.Collection) {
 						//Console.WriteLine("Save to: "+path+@"\"+fName+(xc.FileNum+countNum)+"."+ext);
 						//Console.WriteLine("Save: " + path + @"\" + fName + string.Format("{0:" + zeros + "}", xc.FileNum) + "." + ext);
 						UtilLib.Bmp.Save(path + @"\" + fName + string.Format("{0:" + zeros + "}", xc.FileNum) + "." + ext, xc.Image);
@@ -662,8 +622,7 @@ namespace PckView
 			XCImageCollection newCollection = TotalViewPck.Instance.Collection;
 			TotalViewPck.Instance.Collection = original;
 
-			if (Controls.Contains(TotalViewPck.Instance))
-			{
+			if (Controls.Contains(TotalViewPck.Instance)) {
 				Controls.Remove(TotalViewPck.Instance);
 
 				tabs = new TabControl();

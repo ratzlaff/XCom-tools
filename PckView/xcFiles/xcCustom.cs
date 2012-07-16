@@ -1,14 +1,15 @@
 using System;
-using XCom.Interfaces;
+using XCom.Images;
 using XCom;
 using UtilLib;
 
 namespace PckView
 {
-	public class xcCustom:IXCImageFile
+	public class xcCustom : xcImageFile
 	{
 		public xcCustom() : this(0, 0) { }
-		public xcCustom(int wid, int hei):base(wid,hei)
+		public xcCustom(int wid, int hei)
+			: base(wid, hei)
 		{
 			ext = ".*";
 			author = "Ben Ratzlaff";
@@ -26,10 +27,10 @@ namespace PckView
 		//    set { base.FilterIndex = value; FIDX = value; }
 		//}
 
-		protected override XCom.XCImageCollection LoadFileOverride(string directory, string file, int imgWid, int imgHei, MapLib.Base.Palette pal)
+		protected override XCImageCollection LoadFileOverride(string directory, string file, int imgWid, int imgHei, MapLib.Base.Palette pal)
 		{
-			OpenCustomForm ocf = new OpenCustomForm(directory,file);
-			ocf.TryClick+=new TryDecodeEventHandler(tryIt);
+			OpenCustomForm ocf = new OpenCustomForm(directory, file);
+			ocf.TryClick += new TryDecodeEventHandler(tryIt);
 			ocf.Show();
 
 			return null;
@@ -39,9 +40,9 @@ namespace PckView
 		{
 			PckViewForm pvf = (PckViewForm)SharedSpace.Instance["PckView"];
 
-			XCom.XCImageCollection ixc = tde.XCFile.LoadFile(tde.Directory,tde.File,tde.TryWidth,tde.TryHeight);
+			XCImageCollection ixc = tde.XCFile.LoadFile(tde.Directory, tde.File, tde.TryWidth, tde.TryHeight);
 			//ixc.IXCFile=this;
-			imageSize = new System.Drawing.Size(tde.TryWidth,tde.TryHeight);
+			imageSize = new System.Drawing.Size(tde.TryWidth, tde.TryHeight);
 
 			pvf.SetImages(ixc);
 		}

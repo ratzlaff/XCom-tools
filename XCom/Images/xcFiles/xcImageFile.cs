@@ -6,13 +6,13 @@ using UtilLib.Interfaces;
 using UtilLib.Loadable;
 using MapLib.Base;
 
-namespace XCom.Interfaces
+namespace XCom.Images
 {
 	/// <summary>
 	/// Class that contains all information needed to read/save image files and collections.
 	/// This class should not be instantiated directly. Upon startup, objects from derived classes will be created and tracked
 	/// </summary>
-	public class IXCImageFile : IAssemblyLoadable, IOpenSave
+	public class xcImageFile : IAssemblyLoadable, IOpenSave
 	{
 		protected MapLib.Base.Palette defPal = XCPalette.TFTDBattle;
 		protected System.Drawing.Size imageSize;
@@ -44,8 +44,8 @@ namespace XCom.Interfaces
 		public virtual bool RegisterFile()
 		{
 			//Console.WriteLine("{0} registered: {1}", this.GetType(), GetType() != typeof(IXCFile));
-			xConsole.AddLine(string.Format("{0} registered: {1}", this.GetType(), GetType() != typeof(IXCImageFile)));
-			return GetType() != typeof(IXCImageFile);
+			xConsole.AddLine(string.Format("{0} registered: {1}", this.GetType(), GetType() != typeof(xcImageFile)));
+			return GetType() != typeof(xcImageFile);
 		}
 
 		/// <summary>
@@ -67,7 +67,7 @@ namespace XCom.Interfaces
 		/// </summary>
 		/// <param name="width">Default width</param>
 		/// <param name="height">Default Height</param>
-		public IXCImageFile(int width, int height)
+		public xcImageFile(int width, int height)
 		{
 			imageSize = new System.Drawing.Size(width, height);
 			expDesc = this.GetType().ToString();
@@ -76,7 +76,7 @@ namespace XCom.Interfaces
 		/// <summary>
 		/// Creates an object of this class with width and height of 0
 		/// </summary>
-		public IXCImageFile() : this(0, 0) { }
+		public xcImageFile() : this(0, 0) { }
 
 		/// <summary>
 		/// Who wrote this class
@@ -196,7 +196,7 @@ namespace XCom.Interfaces
 
 	public class xcFileOptions
 	{
-		private Dictionary<IXCImageFile.Filter, bool> filters;
+		private Dictionary<xcImageFile.Filter, bool> filters;
 		private int bitDepth = 8;
 		private int space = 1;
 
@@ -208,20 +208,20 @@ namespace XCom.Interfaces
 
 		public xcFileOptions(bool save, bool bmp, bool open, bool custom)
 		{
-			filters = new Dictionary<IXCImageFile.Filter, bool>();
+			filters = new Dictionary<xcImageFile.Filter, bool>();
 
 			Init(save, bmp, open, custom);
 		}
 
 		public void Init(bool save, bool bmp, bool open, bool custom)
 		{
-			filters[IXCImageFile.Filter.Bmp] = bmp;
-			filters[IXCImageFile.Filter.Custom] = custom;
-			filters[IXCImageFile.Filter.Open] = open;
-			filters[IXCImageFile.Filter.Save] = save;
+			filters[xcImageFile.Filter.Bmp] = bmp;
+			filters[xcImageFile.Filter.Custom] = custom;
+			filters[xcImageFile.Filter.Open] = open;
+			filters[xcImageFile.Filter.Save] = save;
 		}
 
-		public bool this[IXCImageFile.Filter filter]
+		public bool this[xcImageFile.Filter filter]
 		{
 			get { return filters[filter]; }
 		}

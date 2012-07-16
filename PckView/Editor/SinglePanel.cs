@@ -2,7 +2,7 @@ using System;
 using System.Windows.Forms;
 using System.Collections;
 using XCom;
-using XCom.Interfaces;
+using XCom.Images;
 using UtilLib;
 
 namespace PckView
@@ -22,19 +22,19 @@ namespace PckView
 
 		public XCImage Image
 		{
-			get{return img;}
-			set{img=value;Width=img.Image.Width;Height=img.Image.Height;Refresh();}
+			get { return img; }
+			set { img = value; Width = img.Image.Width; Height = img.Image.Height; Refresh(); }
 		}
 
 		protected override void OnPaint(PaintEventArgs e)
 		{
-			if(img!=null)
-				e.Graphics.DrawImage(img.Image,0,0);
+			if (img != null)
+				e.Graphics.DrawImage(img.Image, 0, 0);
 		}
 
 		public MapLib.Base.Palette Palette
 		{
-			set{if(img!=null){img.Image.Palette = value.Colors;Refresh();}}
+			set { if (img != null) { img.Image.Palette = value.Colors; Refresh(); } }
 		}
 
 	}

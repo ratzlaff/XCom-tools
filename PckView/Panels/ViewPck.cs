@@ -2,7 +2,7 @@ using System;
 using System.Windows.Forms;
 using System.Drawing;
 using System.Drawing.Imaging;
-using XCom.Interfaces;
+using XCom.Images;
 using XCom;
 using ViewLib;
 using UtilLib;

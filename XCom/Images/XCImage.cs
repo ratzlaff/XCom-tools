@@ -3,7 +3,7 @@ using System.Drawing;
 using UtilLib;
 using MapLib.Base;
 
-namespace XCom.Interfaces
+namespace XCom.Images
 {
 	public class XCImage : TileImage, ICloneable
 	{

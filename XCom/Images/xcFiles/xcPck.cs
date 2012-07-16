@@ -1,12 +1,12 @@
 using System;
-using XCom.Interfaces;
+using XCom.Images;
 using System.Windows.Forms;
 using UtilLib;
 using MapLib.Base;
 
-namespace XCom.GameFiles.Images.xcFiles
+namespace XCom.xcFiles
 {
-	public class xcPck:IXCImageFile
+	public class xcPck:xcImageFile
 	{
 		private const string TAB_EXT = ".tab";
 		private Panel savePanel;

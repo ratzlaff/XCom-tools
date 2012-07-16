@@ -3,7 +3,7 @@ using System.Windows.Forms;
 using System.Drawing;
 using System.Collections;
 using XCom;
-using XCom.Interfaces;
+using XCom.Images;
 using UtilLib;
 
 namespace PckView

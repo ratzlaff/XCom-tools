@@ -1,6 +1,6 @@
 using System;
 using System.Drawing;
-using XCom.Interfaces;
+using XCom.Images;
 using System.ComponentModel;
 
 namespace XCom

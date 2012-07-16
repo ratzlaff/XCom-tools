@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows.Forms;
+using XCom.Images;
 
 using UtilLib;
 
@@ -17,10 +18,10 @@ namespace PckView
 
 		public event TryDecodeEventHandler TryClick;
 
-		public OpenCustomForm(string directory,string file)
+		public OpenCustomForm(string directory, string file)
 		{
-			this.directory=directory;
-			this.file=file;
+			this.directory = directory;
+			this.file = file;
 			InitializeComponent();
 
 			//Console.WriteLine("File: "+file);
@@ -29,10 +30,10 @@ namespace PckView
 			ri.AddProperty("WidVal");
 			ri.AddProperty("HeiVal");
 
-			List<XCom.Interfaces.IXCImageFile> files = (List<XCom.Interfaces.IXCImageFile>)SharedSpace.Instance["ImageMods"];
+			List<xcImageFile> files = (List<xcImageFile>)SharedSpace.Instance["ImageMods"];
 
-			foreach (XCom.Interfaces.IXCImageFile xcf in files)
-				if (xcf.FileOptions[XCom.Interfaces.IXCImageFile.Filter.Custom])
+			foreach (xcImageFile xcf in files)
+				if (xcf.FileOptions[xcImageFile.Filter.Custom])
 					cbTypes.Items.Add(new BmpForm.cbItem(xcf, xcf.ExplorerDescription));
 
 			if (cbTypes.Items.Count > 0)
@@ -41,20 +42,20 @@ namespace PckView
 
 		public string ErrorString
 		{
-			get{return txtErr.Text;}
-			set{txtErr.Text=value;}
+			get { return txtErr.Text; }
+			set { txtErr.Text = value; }
 		}
 
 		public int WidVal
 		{
-			get{return scrollWid.Value;}
-			set{scrollWid.Value=value;wid_Scroll(null,null);}
+			get { return scrollWid.Value; }
+			set { scrollWid.Value = value; wid_Scroll(null, null); }
 		}
 
 		public int HeiVal
 		{
-			get{return scrollHei.Value;}
-			set{scrollHei.Value=value;hei_Scroll(null,null);}
+			get { return scrollHei.Value; }
+			set { scrollHei.Value = value; hei_Scroll(null, null); }
 		}
 
 		private void wid_Scroll(object sender, System.Windows.Forms.ScrollEventArgs e)
@@ -69,16 +70,12 @@ namespace PckView
 
 		private void btnTry_Click(object sender, System.EventArgs e)
 		{
-			if(TryClick!=null)
-			{
-				try
-				{
-					TryClick(this,new TryDecodeEventArgs(scrollWid.Value,scrollHei.Value,directory,file,((BmpForm.cbItem)cbTypes.SelectedItem).itm));
-					txtErr.Text="";
-					Height=184;
-				}
-				catch (Exception ex)
-				{
+			if (TryClick != null) {
+				try {
+					TryClick(this, new TryDecodeEventArgs(scrollWid.Value, scrollHei.Value, directory, file, ((BmpForm.cbItem)cbTypes.SelectedItem).itm));
+					txtErr.Text = "";
+					Height = 184;
+				} catch (Exception ex) {
 					txtErr.Text = ex.Message + "\n" + ex.StackTrace;
 					if (Height <= 184)
 						Height = 184 + 200;
@@ -89,9 +86,9 @@ namespace PckView
 		private void btnProfile_Click(object sender, System.EventArgs e)
 		{
 			SaveProfileForm spf = new SaveProfileForm();
-			spf.ImgHei=scrollHei.Value;
-			spf.ImgWid=scrollWid.Value;
-			spf.ImgType=((BmpForm.cbItem)cbTypes.SelectedItem).itm;
+			spf.ImgHei = scrollHei.Value;
+			spf.ImgWid = scrollWid.Value;
+			spf.ImgType = ((BmpForm.cbItem)cbTypes.SelectedItem).itm;
 			spf.FileString = file;
 
 			if (spf.ShowDialog(this) == DialogResult.OK)
@@ -102,7 +99,7 @@ namespace PckView
 		{
 			int val = scrollWid.Value;
 			int.TryParse(txtWid.Text, out val);
-			if(val >= scrollWid.Minimum && val <= scrollWid.Maximum)
+			if (val >= scrollWid.Minimum && val <= scrollWid.Maximum)
 				scrollWid.Value = val;
 		}
 
@@ -115,44 +112,44 @@ namespace PckView
 		}
 	}
 
-	public class TryDecodeEventArgs:EventArgs
+	public class TryDecodeEventArgs : EventArgs
 	{
-		private int width,height;
-		private string directory,file;
-		private XCom.Interfaces.IXCImageFile itm;
+		private int width, height;
+		private string directory, file;
+		private xcImageFile itm;
 
-		public TryDecodeEventArgs(int width, int height, string directory, string file, XCom.Interfaces.IXCImageFile itm)
+		public TryDecodeEventArgs(int width, int height, string directory, string file, xcImageFile itm)
 		{
-			this.itm=itm;
-			this.file=file;
-			this.width=width;
-			this.height=height;
-			this.directory=directory;
+			this.itm = itm;
+			this.file = file;
+			this.width = width;
+			this.height = height;
+			this.directory = directory;
 		}
 
-		public XCom.Interfaces.IXCImageFile XCFile
+		public xcImageFile XCFile
 		{
-			get{return itm;}			
+			get { return itm; }
 		}
 
 		public string File
 		{
-			get{return file;}
+			get { return file; }
 		}
 
 		public string Directory
 		{
-			get{return directory;}
+			get { return directory; }
 		}
 
 		public int TryWidth
 		{
-			get{return width;}
+			get { return width; }
 		}
 
 		public int TryHeight
-		{		
-			get{return height;}
+		{
+			get { return height; }
 		}
 	}
 }

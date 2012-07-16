@@ -1,14 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using XCom.Interfaces;
+using XCom.Images;
 using System.IO;
 using UtilLib;
 using MapLib.Base;
 
-namespace XCom.GameFiles.Images.xcFiles
+namespace XCom.xcFiles
 {
-	public class xcBdy : IXCImageFile
+	public class xcBdy : xcImageFile
 	{
 		public xcBdy() : this(320, 200) { }
 

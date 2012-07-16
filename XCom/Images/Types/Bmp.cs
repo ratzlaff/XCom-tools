@@ -6,9 +6,9 @@ using System.IO;
 using System.Collections.Generic;
 using System.Drawing.Imaging;
 using System.Reflection;
-using XCom.Interfaces;
 using UtilLib;
 using MapLib.Base;
+using XCom.Images;
 
 #if hq2xWorks
 using hq2x;

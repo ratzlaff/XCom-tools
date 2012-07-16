@@ -1,12 +1,12 @@
 using System;
 using System.IO;
-using XCom.Interfaces;
+using XCom.Images;
 using XCom;
 using UtilLib;
 
 namespace PckView
 {
-	public class xcSPE : IXCImageFile
+	public class xcSPE : xcImageFile
 	{
 		public xcSPE() : this(0, 0) { }
 		public xcSPE(int wid, int hei)
@@ -20,10 +20,10 @@ namespace PckView
 			fileOptions.Init(true, false, true, false);
 		}
 
-		protected override XCom.XCImageCollection LoadFileOverride(string directory, string file, int imgWid, int imgHei, MapLib.Base.Palette pal)
+		protected override XCImageCollection LoadFileOverride(string directory, string file, int imgWid, int imgHei, MapLib.Base.Palette pal)
 		{
 			SpecCollection sc = new SpecCollection(File.OpenRead(directory + "\\" + file));
-			
+
 			xConsole.AddLine("File: " + directory + "\\" + file);
 
 			SPECollection spe = new SPECollection(file, sc.EntryList);

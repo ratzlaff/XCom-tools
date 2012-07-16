@@ -1,12 +1,13 @@
 using System;
-using XCom.Interfaces;
+using XCom.Images;
 using UtilLib;
 
 namespace PckView
 {
-	public class xcBmp : IXCImageFile
+	public class xcBmp : xcImageFile
 	{
-		public xcBmp():base(0,0)
+		public xcBmp()
+			: base(0, 0)
 		{
 			//fileOptions.BmpDialog=false;
 			//fileOptions.SaveDialog=false; //save as bmp has its own menu item
@@ -22,23 +23,22 @@ namespace PckView
 			expDesc = "8-bit bmp file";
 		}
 
-		protected override XCom.XCImageCollection LoadFileOverride(string directory, string file, int imgWid, int imgHei, MapLib.Base.Palette pal)
+		protected override XCImageCollection LoadFileOverride(string directory, string file, int imgWid, int imgHei, MapLib.Base.Palette pal)
 		{
-			System.Drawing.Bitmap bmp =new System.Drawing.Bitmap(directory+"\\"+file);
+			System.Drawing.Bitmap bmp = new System.Drawing.Bitmap(directory + "\\" + file);
 			BmpForm bmf = new BmpForm();
-			bmf.Bitmap=bmp;
+			bmf.Bitmap = bmp;
 
-			if(bmf.ShowDialog()==System.Windows.Forms.DialogResult.OK)
-			{
+			if (bmf.ShowDialog() == System.Windows.Forms.DialogResult.OK) {
 				imageSize = bmf.SelectedSize;
 
-				return XCom.Bmp.Load(bmp,pal,imageSize.Width,imageSize.Height,bmf.SelectedSpace);
+				return XCom.Bmp.Load(bmp, pal, imageSize.Width, imageSize.Height, bmf.SelectedSpace);
 			}
 
 			return null;
 		}
 
-		public override void SaveCollection(string directory, string file, XCom.XCImageCollection images)
+		public override void SaveCollection(string directory, string file, XCImageCollection images)
 		{
 			TotalViewPck.Instance.View.SaveBMP(directory + "//" + file + ".bmp", TotalViewPck.Instance.Pal);
 		}

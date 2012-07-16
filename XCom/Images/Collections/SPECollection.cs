@@ -1,5 +1,5 @@
 using System;
-using XCom.Interfaces;
+using XCom.Images;
 using System.Collections.Generic;
 using System.IO;
 using System.Drawing;

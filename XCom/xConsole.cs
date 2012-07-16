@@ -1,7 +1,6 @@
 using System;
 using System.Drawing;
 using System.Collections;
-using XCom.Interfaces;
 using XCom;
 using System.Windows.Forms;
 using System.IO;

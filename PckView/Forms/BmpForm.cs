@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Windows.Forms;
 using UtilLib.Windows;
 using UtilLib;
+using XCom.Images;
 
 namespace PckView
 {
@@ -16,10 +17,10 @@ namespace PckView
 
 		public class cbItem
 		{
-			public XCom.Interfaces.IXCImageFile itm;
+			public xcImageFile itm;
 			public string text;
 
-			public cbItem(XCom.Interfaces.IXCImageFile itm, string text)
+			public cbItem(xcImageFile itm, string text)
 			{
 				this.itm = itm;
 				this.text = text;
@@ -42,10 +43,10 @@ namespace PckView
 
 			DialogResult = DialogResult.Cancel;
 
-			List<XCom.Interfaces.IXCImageFile> files = (List<XCom.Interfaces.IXCImageFile>)SharedSpace.Instance["ImageMods"];
+			List<xcImageFile> files = (List<xcImageFile>)SharedSpace.Instance["ImageMods"];
 
-			foreach (XCom.Interfaces.IXCImageFile xcf in files)
-				if (xcf.FileOptions[XCom.Interfaces.IXCImageFile.Filter.Bmp])
+			foreach (xcImageFile xcf in files)
+				if (xcf.FileOptions[xcImageFile.Filter.Bmp])
 					cbTypes.Items.Add(new cbItem(xcf, xcf.ExplorerDescription));
 
 			if (cbTypes.Items.Count > 0)
@@ -87,15 +88,12 @@ namespace PckView
 
 		private void guess()
 		{
-			if (bmp != null && cbTypes.Items.Count > 0)
-			{
+			if (bmp != null && cbTypes.Items.Count > 0) {
 				cbItem cbSel = null;
-				foreach (cbItem cb in cbTypes.Items)
-				{
-					XCom.Interfaces.IXCImageFile xcf = cb.itm;
+				foreach (cbItem cb in cbTypes.Items) {
+					xcImageFile xcf = cb.itm;
 
-					if ((bmp.Width + 1) % (xcf.ImageSize.Width + 1) == 0 && (bmp.Height + 1) % (xcf.ImageSize.Height + 1) == 0)
-					{
+					if ((bmp.Width + 1) % (xcf.ImageSize.Width + 1) == 0 && (bmp.Height + 1) % (xcf.ImageSize.Height + 1) == 0) {
 						cbSel = cb;
 						break;
 					}
@@ -127,14 +125,12 @@ namespace PckView
 		private void drawPanel_Paint(object sender, System.Windows.Forms.PaintEventArgs e)
 		{
 			e.Graphics.DrawImage(bmp, 0, 0);
-			for (int i = scrollWidth.Value; i < drawPanel.Width; i += scrollWidth.Value + scrollSpace.Value)
-			{
+			for (int i = scrollWidth.Value; i < drawPanel.Width; i += scrollWidth.Value + scrollSpace.Value) {
 				e.Graphics.DrawLine(drawPen, i, 0, i, drawPanel.Height);
 				e.Graphics.DrawLine(drawPen, i + scrollSpace.Value - 1, 0, i + scrollSpace.Value - 1, drawPanel.Height);
 			}
 
-			for (int i = scrollHeight.Value; i < drawPanel.Height; i += scrollHeight.Value + scrollSpace.Value)
-			{
+			for (int i = scrollHeight.Value; i < drawPanel.Height; i += scrollHeight.Value + scrollSpace.Value) {
 				e.Graphics.DrawLine(drawPen, 0, i, drawPanel.Width, i);
 				e.Graphics.DrawLine(drawPen, 0, i + scrollSpace.Value - 1, drawPanel.Width, i + scrollSpace.Value - 1);
 			}
@@ -148,8 +144,7 @@ namespace PckView
 		private void miLineColor_Click(object sender, System.EventArgs e)
 		{
 			colors.Color = drawPen.Color;
-			if (colors.ShowDialog() == DialogResult.OK)
-			{
+			if (colors.ShowDialog() == DialogResult.OK) {
 				drawPen.Color = colors.Color;
 				Refresh();
 			}
@@ -167,22 +162,18 @@ namespace PckView
 
 		private void txtWidth_TextChanged(object sender, System.EventArgs e)
 		{
-			try
-			{
+			try {
 				scrollWidth.Value = int.Parse(txtWidth.Text);
 				scrollWidth_Scroll(null, null);
-			}
-			catch { }
+			} catch { }
 		}
 
 		private void txtHeight_TextChanged(object sender, System.EventArgs e)
 		{
-			try
-			{
+			try {
 				scrollHeight.Value = int.Parse(txtHeight.Text);
 				scrollHeight_Scroll(null, null);
-			}
-			catch { }
+			} catch { }
 		}
 
 		private void btnOk_Click(object sender, System.EventArgs e)
@@ -193,12 +184,10 @@ namespace PckView
 
 		private void txtSpace_TextChanged(object sender, EventArgs e)
 		{
-			try
-			{
+			try {
 				scrollSpace.Value = int.Parse(txtSpace.Text);
 				scrollSpace_Scroll(null, null);
-			}
-			catch { }
+			} catch { }
 		}
 	}
 }

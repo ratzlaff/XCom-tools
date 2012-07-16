@@ -2,24 +2,25 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using UtilLib;
+using XCom.Images;
 
 namespace PckView
 {
-	public class OpenSaveFilter : IFilter<XCom.Interfaces.IXCImageFile>
+	public class OpenSaveFilter : IFilter<xcImageFile>
 	{
-		private XCom.Interfaces.IXCImageFile.Filter filterBy;
+		private xcImageFile.Filter filterBy;
 
 		public OpenSaveFilter()
 		{
-			filterBy = XCom.Interfaces.IXCImageFile.Filter.Open;
+			filterBy = xcImageFile.Filter.Open;
 		}
 
-		public void SetFilter(XCom.Interfaces.IXCImageFile.Filter filter)
+		public void SetFilter(xcImageFile.Filter filter)
 		{
 			filterBy = filter;
 		}
 
-		public bool FilterObj(XCom.Interfaces.IXCImageFile obj)
+		public bool FilterObj(xcImageFile obj)
 		{
 			//Console.WriteLine("Filter: {0} -> {1}", filterBy, obj.FileOptions[filterBy]);
 			return obj.FileOptions[filterBy];

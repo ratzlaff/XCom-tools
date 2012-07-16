@@ -4,8 +4,8 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows.Forms;
 using System.IO;
-using XCom.Interfaces;
 using XCom;
+using XCom.Images;
 using MapLib.Base;
 using UtilLib;
 
@@ -64,7 +64,7 @@ namespace PckView
 			set { profileInfo.ImgHei = value; restring(); }
 		}
 
-		public IXCImageFile ImgType
+		public xcImageFile ImgType
 		{
 			get { return profileInfo.ImgType; }
 			set { profileInfo.ImgType = value; restring(); }

@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using XCom.Interfaces;
+using XCom.Images;
 using UtilLib;
 using System.IO;
 using XCom;
@@ -15,7 +15,7 @@ namespace PckView
 		public ImgProfile() { }
 
 		private int imgWid = 0, imgHei = 0;
-		private IXCImageFile imgType = null;
+		private xcImageFile imgType = null;
 		private string desc = "";
 		private string defPal = "";
 		private string single = "";
@@ -28,7 +28,7 @@ namespace PckView
 			sr.Close();
 
 			List<xcProfile> profileList = new List<xcProfile>();
-			List<XCom.Interfaces.IXCImageFile> files = (List<XCom.Interfaces.IXCImageFile>)SharedSpace.Instance["ImageMods"];
+			List<xcImageFile> files = (List<xcImageFile>)SharedSpace.Instance["ImageMods"];
 
 			foreach (string s in vs.KeyValList.Keys) {
 				ImgProfile profile = new ImgProfile();
@@ -43,7 +43,7 @@ namespace PckView
 				if (info.ContainsKey("openSingle") && info["openSingle"] != null)
 					profile.single = info["openSingle"].Rest + info["open"].Rest;
 
-				foreach (IXCImageFile ixc in files)
+				foreach (xcImageFile ixc in files)
 					if (ixc.ExplorerDescription == info["codec"].Rest) {
 						profile.imgType = ixc;
 						break;
@@ -85,7 +85,7 @@ namespace PckView
 			set { imgHei = value; }
 		}
 
-		public IXCImageFile ImgType
+		public xcImageFile ImgType
 		{
 			get { return imgType; }
 			set { imgType = value; }

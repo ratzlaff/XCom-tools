@@ -4,7 +4,7 @@ using System.Collections;
 using System.ComponentModel;
 using System.Windows.Forms;
 using XCom;
-using XCom.Interfaces;
+using XCom.Images;
 using UtilLib;
 using MapLib.Base;
 

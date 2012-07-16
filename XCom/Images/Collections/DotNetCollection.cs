@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Drawing;
-using XCom.Interfaces;
+using XCom.Images;
 using System.Windows.Forms;
 using System.Drawing.Imaging;
 using UtilLib;
@@ -37,8 +37,7 @@ namespace XCom
 			int bpp = 4;
 			PixelFormat pf = src.PixelFormat;
 			xConsole.AddLine("Pixelformat is: " + pf.ToString());
-			switch (src.PixelFormat)
-			{
+			switch (src.PixelFormat) {
 				case (PixelFormat.Format24bppRgb):
 					bpp = 3;
 					break;
@@ -51,10 +50,8 @@ namespace XCom
 					throw new Exception("Image is not 24 or 32 bit, a different collection is needed");
 			}
 
-			for (int i = 0, idx = 0; i < src.Height; i += (height + space))
-			{
-				for (int j = 0; j < src.Width; j += (width + space), idx++)
-				{
+			for (int i = 0, idx = 0; i < src.Height; i += (height + space)) {
+				for (int j = 0; j < src.Width; j += (width + space), idx++) {
 					Bitmap dest = new Bitmap(width, height, pf);
 					BitmapData destData = dest.LockBits(new Rectangle(0, 0, dest.Width, dest.Height), ImageLockMode.WriteOnly, dest.PixelFormat);
 
@@ -63,11 +60,9 @@ namespace XCom
 					dest.UnlockBits(destData);
 
 					Add(new XCImage(dest, idx));
-					try
-					{
+					try {
 						pw.Value = idx;
-					}
-					catch { }
+					} catch { }
 				}
 				//srcPtr += srcData.Stride - srcData.Width * bpp;
 			}
@@ -76,14 +71,12 @@ namespace XCom
 			pw.Hide();
 		}
 
-		private unsafe void copyData(BitmapData srcData, int srcX, int srcY, BitmapData destData, int destX, int destY, int width, int height,int bpp)
+		private unsafe void copyData(BitmapData srcData, int srcX, int srcY, BitmapData destData, int destX, int destY, int width, int height, int bpp)
 		{
-			for (int y = 0; y < height && y + srcY < srcData.Height; y++)
-			{
+			for (int y = 0; y < height && y + srcY < srcData.Height; y++) {
 				int srcRow = (srcY + y) * srcData.Stride;
 				int destRow = y * destData.Stride;
-				for (int x = 0; x < width && srcX + x < srcData.Width; x++)
-				{
+				for (int x = 0; x < width && srcX + x < srcData.Width; x++) {
 					byte* srcPixel = ((byte*)(srcData.Scan0)) + srcRow + ((srcX + x) * bpp);
 					byte* destPixel = ((byte*)(destData.Scan0)) + destRow + (x * bpp);
 

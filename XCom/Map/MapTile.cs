@@ -1,7 +1,6 @@
 using System;
 using System.Drawing;
 using System.Collections;
-using XCom.Interfaces;
 using MapLib.Base;
 
 namespace XCom

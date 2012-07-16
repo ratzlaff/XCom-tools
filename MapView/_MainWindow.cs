@@ -4,7 +4,6 @@ using System.ComponentModel;
 using System.Windows.Forms;
 using System.Data;
 using XCom;
-using XCom.Interfaces;
 using System.Drawing.Drawing2D;
 using System.IO;
 using Microsoft.Win32;

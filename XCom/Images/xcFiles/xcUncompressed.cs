@@ -1,11 +1,11 @@
 using System;
-using XCom.Interfaces;
+using XCom.Images;
 using UtilLib;
 using MapLib.Base;
 
-namespace XCom.GameFiles.Images.xcFiles
+namespace XCom.xcFiles
 {
-	public class xcUncompressed:IXCImageFile
+	public class xcUncompressed:xcImageFile
 	{
 		public xcUncompressed() : this(0, 0) { }
 

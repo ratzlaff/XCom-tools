@@ -1,18 +1,19 @@
 using System;
 using XCom;
-using XCom.Interfaces;
+using XCom.Images;
 using System.Collections.Generic;
 using UtilLib;
 using MapLib.Base;
 
 namespace PckView
 {
-	public class xcProfile : IXCImageFile
+	public class xcProfile : xcImageFile
 	{
-		private IXCImageFile codec;
-		public static readonly string PROFILE_EXT=".pvp";
+		private xcImageFile codec;
+		public static readonly string PROFILE_EXT = ".pvp";
 
-		public xcProfile():base(0,0)
+		public xcProfile()
+			: base(0, 0)
 		{
 			fileOptions.Init(false, false, false, false);
 			//fileOptions.BmpDialog = false;
@@ -25,8 +26,9 @@ namespace PckView
 			desc = "Provides profile support";
 		}
 
-		public xcProfile(ImgProfile profile):base(0,0)
-		{			
+		public xcProfile(ImgProfile profile)
+			: base(0, 0)
+		{
 			imageSize = new System.Drawing.Size(profile.ImgWid, profile.ImgHei);
 			codec = profile.ImgType;
 			expDesc = profile.Description;
@@ -49,28 +51,25 @@ namespace PckView
 
 			xConsole.AddLine("Profile created: " + desc);
 
-			try
-			{
+			try {
 				defPal = Palette.LoadedPalettes[profile.Palette];
 				if (defPal == null)
 					defPal = XCPalette.TFTDBattle;
-			}
-			catch
-			{
+			} catch {
 				defPal = XCPalette.TFTDBattle;
 			}
 		}
 
-		public IXCImageFile Codec { get { return codec; } set { codec = value; } }
+		public xcImageFile Codec { get { return codec; } set { codec = value; } }
 
-		protected override XCom.XCImageCollection LoadFileOverride(string directory, string file, int imgWid, int imgHei, MapLib.Base.Palette pal)
+		protected override XCImageCollection LoadFileOverride(string directory, string file, int imgWid, int imgHei, MapLib.Base.Palette pal)
 		{
-			return codec.LoadFile(directory,file,imgWid,imgHei,pal);
+			return codec.LoadFile(directory, file, imgWid, imgHei, pal);
 		}
 
-		public override void SaveCollection(string directory, string file,XCom.XCImageCollection images)
+		public override void SaveCollection(string directory, string file, XCImageCollection images)
 		{
-			codec.SaveCollection(directory,file,images);
+			codec.SaveCollection(directory, file, images);
 		}
 	}
 }

@@ -2,14 +2,14 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Drawing;
-using XCom.Interfaces;
+using XCom.Images;
 using XCom;
 using System.IO;
 using UtilLib;
 
 namespace PckView
 {
-	public class xcDotNet:IXCImageFile
+	public class xcDotNet : xcImageFile
 	{
 		public xcDotNet() : this(32, 40) { }
 
@@ -39,14 +39,13 @@ namespace PckView
 			bmf.Bitmap = bmp;
 
 			xConsole.AddLine("File: " + directory + "\\" + file);
-			if (bmf.ShowDialog() == System.Windows.Forms.DialogResult.OK)
-			{
+			if (bmf.ShowDialog() == System.Windows.Forms.DialogResult.OK) {
 				imageSize = bmf.SelectedSize;
 
 				return new DotNetCollection(bmp, imgWid, imgHei, bmf.SelectedSpace);
 			}
 
-			return null;			
+			return null;
 		}
 
 		public override void SaveCollection(string directory, string file, XCImageCollection images)
