@@ -6,7 +6,7 @@ using System.IO;
 using UtilLib;
 using UtilLib.Parser;
 
-namespace MapLib
+namespace MapLib.Base.Parsing
 {
 	public class MapEdit_dat : FileDescType<MapCollection>
 	{
@@ -23,11 +23,6 @@ namespace MapLib
 
 			while (vars.ReadLine(out kv)) {
 				switch (kv.Keyword.ToLower()) {
-					case "tileset":
-						MapCollection mapColl = new MapCollection(kv.Rest);
-						mapColl.Parse(vars);
-						items.Add(mapColl.Name, mapColl);
-						break;
 					case "version":
 						version = double.Parse(kv.Rest);
 						break;

@@ -15,7 +15,6 @@ namespace MapLib.Base.Parsing
 		public ImageInfo(Images_dat inParent, KeyVal inData)
 			: base(inParent, inData.Keyword)
 		{
-
 		}
 
 		[Browsable(false)]

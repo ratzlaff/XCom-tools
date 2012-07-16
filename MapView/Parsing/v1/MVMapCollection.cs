@@ -1,26 +1,22 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.ComponentModel;
-using System.ComponentModel.Design;
 using System.Windows.Forms.Design;
 using System.Drawing.Design;
-using UtilLib.Parser;
-using UtilLib;
-using MapLib.Base;
+using System.Text;
 
-namespace MapLib
+using UtilLib.Parser;
+using MapLib.Base.Parsing;
+
+namespace MapView.Parsing.v1
 {
-	public class MapCollection : ParseBlock<MapEdit_dat>
+	public class MVMapCollection : MapCollection
 	{
-		protected ParseBlockCollection<Tileset, MapCollection> mCollection;
 		protected string rootPath, rmpPath, palette;
 
-		public MapCollection(string inName)
-			:	base(null, inName)
+		public MVMapCollection(string inName)
+			: base(inName)
 		{
-			mCollection = new ParseBlockCollection<Tileset, MapCollection>(this, "Tilesets");
 		}
 
 		[Editor(typeof(FolderNameEditor), typeof(UITypeEditor))]
@@ -35,12 +31,6 @@ namespace MapLib
 		{
 			get { return rmpPath; }
 			set { rmpPath = value; }
-		}
-
-//		[Editor(typeof(CollectionEditor), typeof(UITypeEditor))]
-		public ParseBlockCollection<Tileset, MapCollection> Tilesets
-		{
-			get { return mCollection; }
 		}
 
 		protected override void ProcessVar(VarCollection vars, KeyVal current)
@@ -60,10 +50,10 @@ namespace MapLib
 				case "blankpath":
 					break;
 				case "files": {
-					Tileset t = new Tileset(this, current.Rest);
-					t.Parse(vars);
-					mCollection.Add(t);
-				}
+						MVTileset t = new MVTileset(this, current.Rest);
+						t.Parse(vars);
+						mCollection.Add(t);
+					}
 					break;
 				default:
 					base.ProcessVar(vars, current);

@@ -4,37 +4,19 @@ using System.Collections.Generic;
 using UtilLib;
 using UtilLib.Parser;
 using MapLib.Base;
-
 using MapLib.Base.Parsing;
-using MapLib.Parsing;
 
-namespace MapLib
+namespace MapLib.Base.Parsing
 {
-	public class Images_dat : FileDescType<ImageInfo>
+	public abstract class Images_dat : FileDescType<ImageInfo>
 	{
 		public Images_dat(string inFile)
 			: base(inFile)
 		{
-
 		}
-
-		public override void Parse(VarCollection v)
-		{
-			StreamReader sr = new StreamReader(File.OpenRead(Path));
-			VarCollection vars = new VarCollection(sr, v);
-
-			KeyVal kv = null;
-
-			while (vars.ReadLine(out kv)) {
-				ImageInfo img = new XComImageInfo_1(this, kv);
-				items.Add(kv.Keyword, img);
-			}
-			sr.Close();
-		}
-
+/*
 		public override void Save(string outFile)
 		{
-/*
 			StreamWriter sw = new StreamWriter(outFile);
 
 			List<string> a = new List<string>(images.Keys);
@@ -55,8 +37,8 @@ namespace MapLib
 
 			sw.Flush();
 			sw.Close();
-*/
 		}
+*/
 
 /*
 		public static ImageCollection CacheImage(string inImage)

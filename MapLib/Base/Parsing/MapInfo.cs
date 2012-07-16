@@ -7,7 +7,6 @@ using System.ComponentModel;
 
 using UtilLib;
 using UtilLib.Parser;
-using MapLib.Parsing;
 
 namespace MapLib.Base.Parsing
 {

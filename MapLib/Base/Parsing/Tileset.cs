@@ -8,10 +8,8 @@ using System.Drawing.Design;
 
 using UtilLib;
 using UtilLib.Parser;
-using MapLib.Base.Parsing;
-using MapLib.Parsing;
 
-namespace MapLib
+namespace MapLib.Base.Parsing
 {
 	public class Tileset : ParseBlock<MapCollection>
 	{
@@ -25,7 +23,7 @@ namespace MapLib
 		}
 
 		public Tileset()
-			:	base(null, "")
+			: base(null, "")
 		{
 			mCollection = new ParseBlockCollection<MapInfo, Tileset>(this, "Map List");
 		}
@@ -35,16 +33,10 @@ namespace MapLib
 			get { return Parent; }
 		}
 
-//		[Editor(typeof(CollectionEditor), typeof(UITypeEditor))]
+		//		[Editor(typeof(CollectionEditor), typeof(UITypeEditor))]
 		public ParseBlockCollection<MapInfo, Tileset> Maps
 		{
 			get { return mCollection; }
-		}
-
-		protected override void ProcessVar(VarCollection vars, KeyVal current)
-		{
-			MapInfo mi = new XComMapInfo_1(this, current);
-			mCollection.Add(mi);
 		}
 	}
 }

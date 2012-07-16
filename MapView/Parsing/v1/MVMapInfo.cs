@@ -4,23 +4,23 @@ using System.Linq;
 using System.Text;
 
 using UtilLib.Parser;
+using MapLib.Base.Parsing;
 
-namespace MapLib.Parsing
+namespace MapView.Parsing.v1
 {
-	public class XComMapInfo_1 : MapLib.Base.Parsing.MapInfo
+	public class MVMapInfo : MapLib.Base.Parsing.MapInfo
 	{
-		public XComMapInfo_1(Tileset inParent, KeyVal inData)
+		public MVMapInfo(MVTileset inParent, KeyVal inData)
 			: base(inParent, inData)
 		{
-
 		}
 
-		public override Base.Map Map
+		public override MapLib.Base.Map Map
 		{
-			get 
+			get
 			{
 				Console.WriteLine("Load map here: " + Tileset.MapCollection.Name + ":" + Tileset.Name + ":" + Name);
-				return null; 
+				return null;
 			}
 		}
 	}

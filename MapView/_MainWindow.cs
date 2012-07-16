@@ -21,6 +21,7 @@ using MapLib;
 using WeifenLuo.WinFormsUI.Docking;
 using ViewLib;
 
+using MapView.Parsing;
 using MapLib.Base.Parsing;
 
 namespace MapView
@@ -171,12 +172,12 @@ namespace MapView
 			while ((kv = vars.ReadLine()) != null) {
 				switch (kv.Keyword) {
 					case "mapdata":
-						mapSets = new MapEdit_dat(kv.Rest);
+						mapSets = new MVMapEdit_dat(kv.Rest);
 						mapSets.Parse(vars);
 						SharedSpace.Instance["mapdata"] = mapSets;
 						break;
 					case "images":
-						Images_dat imageInfo = new Images_dat(kv.Rest);
+						Images_dat imageInfo = new MVImages_dat(kv.Rest);
 						imageInfo.Parse(vars);
 						SharedSpace.Instance["images"] = imageInfo;
 						break;
