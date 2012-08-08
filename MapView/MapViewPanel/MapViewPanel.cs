@@ -42,6 +42,7 @@ namespace MapView
 
 		public MapViewPanel()
 		{
+			cursor = new Cursor();
 			map = null;
 			currentImage = 0;
 			mouseOver = new MapLocation(-1, -1);
@@ -56,15 +57,7 @@ namespace MapView
 			transBrush = new SolidBrush(gridColor);
 
 			dashPen = new Pen(Brushes.Black, 1);
-/*
-			try {
-				cursor = new Cursor(GameInfo.CachePck(SharedSpace.Instance.GetString("cursorFile"), "", 4, XCPalette.TFTDBattle));
-			} catch {
-				try {
-					cursor = new Cursor(GameInfo.CachePck(SharedSpace.Instance.GetString("cursorFile"), "", 2, XCPalette.UFOBattle));
-				} catch { cursor = null; }
-			}
-*/
+
 			xConsole.AddLine("Cursor loaded");
 		}
 
@@ -224,6 +217,8 @@ namespace MapView
 				origin = new Point((map.Size.Rows - 1) * hdWid * Globals.PckImageScale, 0);
 				Width = (map.Size.Rows + map.Size.Cols) * hdWid * Globals.PckImageScale;
 				Height = map.Size.Height * 25 * Globals.PckImageScale + (map.Size.Rows + map.Size.Cols) * hdHeight * Globals.PckImageScale;
+
+				cursor.Images = map.Cursor;
 			}
 		}
 

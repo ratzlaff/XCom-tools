@@ -6,7 +6,7 @@ namespace MapLib.Base
 	/// <summary>
 	/// This class provides all the necessary information to draw an animated sprite
 	/// </summary>
-	public class Tile
+	public abstract class Tile
 	{
 		protected TileImage[] images;
 		protected int id;
@@ -16,14 +16,15 @@ namespace MapLib.Base
 		public Tile(int id, MapLib.ImageCollection inCollection)
 		{
 			this.id = id;
-			MapID = -1;
 			mCollection = inCollection;
 		}
 
 		/// <summary>
 		/// This is the ID by which the map knows this tile by
 		/// </summary>
-		public int MapID { get; set; }
+		public abstract int MapID { get; }
+
+		public abstract void Init(int inMapID);
 
 		/// <summary>
 		/// This is the collection this tile was made from

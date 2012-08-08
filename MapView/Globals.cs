@@ -40,7 +40,7 @@ namespace MapView
 						MemoryStream sPck = new MemoryStream(Properties.Resources.Extra_PCK);
 						MemoryStream sTab = new MemoryStream(Properties.Resources.Extra_TAB);
 
-						mFile = new PckFile(this, sPck, sTab, 2, XCPalette.TFTDBattle, 40, 32);
+						mFile = new PckFile(this, sPck, sTab, XCPalette.TFTDBattle, 40, 32);
 						mFile.Pal.SetTransparent(false);
 					}
 					return mFile;

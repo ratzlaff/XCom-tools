@@ -11,10 +11,12 @@ namespace XCom
 	{
 		private McdEntry entry;
 		private const int numImages = 8;
+		private int mMapID;
 
 		public XCTile(int id, MapLib.ImageCollection inFile, McdEntry info)
 			: base(id, inFile)
 		{
+			mMapID = -1;
 			this.entry = info;
 			mInfo = info;
 
@@ -144,9 +146,9 @@ namespace XCom
 			images[7] = Collection[entry.Image1];
 		}
 
-		public void Init()
+		public override void Init(int inMapID)
 		{
-			
+			mMapID = inMapID;
 			try {
 				if (entry.DieTile != 0)
 					Dead = entry.File.Tiles[entry.DieTile];
@@ -159,6 +161,11 @@ namespace XCom
 
 			if (entry.UFODoor || entry.HumanDoor || entry.Alt_MCD != 0)
 				Alternate = entry.File.Tiles[entry.Alt_MCD];
+		}
+
+		public override int MapID
+		{
+			get { return mMapID; }
 		}
 
 		public Tile Dead { get; set; }

@@ -12,17 +12,20 @@ namespace XCom
 
 	public class PckFile : XCImageCollection
 	{
+		private PckFile mBlanks;
 		private int bpp;
 		public static readonly string TAB_EXT = ".tab";
-		public PckFile(MapLib.Base.Parsing.ImageInfo inInfo, int bpp, Palette pal, int imgHeight, int imgWidth)
-			: this(inInfo, File.Open(inInfo.BasePath + inInfo.Name + ".pck", FileMode.Open), File.Open(inInfo.BasePath + inInfo.Name + ".tab", FileMode.Open), bpp, pal, imgHeight, imgWidth)
+		public PckFile(MapLib.Base.Parsing.ImageInfo inInfo, Palette pal, int imgHeight, int imgWidth)
+			: this(inInfo, File.Open(inInfo.BasePath + inInfo.Name + ".pck", FileMode.Open), File.Open(inInfo.BasePath + inInfo.Name + ".tab", FileMode.Open), pal, imgHeight, imgWidth)
 		{
 		}
 
-		public PckFile(MapLib.Base.Parsing.ImageInfo inInfo, Stream pckFile, Stream tabFile, int bpp, Palette pal, int imgHeight, int imgWidth)
+		public PckFile(MapLib.Base.Parsing.ImageInfo inInfo, Stream pckFile, Stream tabFile, Palette pal, int imgHeight, int imgWidth)
 			: base(inInfo)
 		{
-			Name = inInfo.Name;
+			if (inInfo != null)
+				Name = inInfo.Name;
+
 			if (tabFile != null)
 				tabFile.Position = 0;
 
@@ -32,15 +35,16 @@ namespace XCom
 			pckFile.Read(info, 0, info.Length);
 			pckFile.Close();
 
-			this.bpp = bpp;
-
 			Pal = pal;
 
 			uint[] offsets;
 
 			if (tabFile != null) {
-				offsets = new uint[(tabFile.Length / bpp) + 1];
 				BinaryReader br = new BinaryReader(tabFile);
+				bpp = br.ReadInt32() == 0 ? 4 : 2;
+				br.BaseStream.Position = 0;
+
+				offsets = new uint[(tabFile.Length / bpp) + 1];
 
 				if (bpp == 2)
 					for (int i = 0; i < tabFile.Length / bpp; i++)
@@ -69,9 +73,14 @@ namespace XCom
 				tabFile.Close();
 		}
 
-		public PckFile(MapLib.Base.Parsing.ImageInfo inInfo, int bpp, Palette pal)
-			: this(inInfo, bpp, pal, 40, 32)
+		public PckFile(MapLib.Base.Parsing.ImageInfo inInfo, Palette pal)
+			: this(inInfo, pal, 40, 32)
 		{ }
+
+		public PckFile Blanks
+		{
+			get { return mBlanks; }
+		}
 
 		public int Bpp
 		{

@@ -14,6 +14,7 @@ namespace MapLib.Base.Parsing
 	public class Tileset : ParseBlock<MapCollection>
 	{
 		protected ParseBlockCollection<MapInfo, Tileset> mCollection;
+		protected MapCollection mMapCollection;
 
 		public Tileset(MapCollection inParent, string inName)
 			: base(inParent, inName)

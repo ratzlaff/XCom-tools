@@ -22,25 +22,21 @@ namespace MapLib.Base
 		protected MapLocation selected;
 		protected MapSize mapSize;
 		protected MapTile[] mapData;
-		protected List<Tile> tiles;
-		protected string name;
 		protected MapInfo mInfo;
 
-		protected Map(string name, MapInfo inInfo, List<Tile> tiles)
+		protected Map(MapInfo inInfo)
 		{
-			this.name = name;
-			this.tiles = tiles;
 			mInfo = inInfo;
 		}
 
 		public string Name
 		{
-			get { return name; }
+			get { return mInfo.Name; }
 		}
 
-		public List<Tile> Tiles
+		public abstract List<Tile> Tiles
 		{
-			get { return tiles; }
+			get;
 		}
 
 		public MapInfo MapInfo
@@ -245,6 +241,11 @@ namespace MapLib.Base
 			for (int c = s.Col; c <= e.Col; c++)
 				for (int r = s.Row; r <= e.Row; r++)
 					copied[r - s.Row, c - s.Col] = this[r, c];
+		}
+
+		public abstract ImageCollection Cursor
+		{
+			get;
 		}
 
 #if NO

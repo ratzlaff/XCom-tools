@@ -142,7 +142,7 @@ namespace UtilLib.Parser
 					break;
 			}
 
-			if (line.IndexOf("$") > 0) //replace any variables the line might have
+			while (line.IndexOf("$") > 0) //replace any variables the line might have
 				line = vars.ParseVar(line);
 
 			return line;

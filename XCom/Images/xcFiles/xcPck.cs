@@ -21,41 +21,20 @@ namespace XCom.xcFiles
 			expDesc = "Pck File";
 		}
 
-		protected override XCImageCollection LoadFileOverride(string directory,string file,int imgWid,int imgHei,Palette pal)
+		protected override XCImageCollection LoadFileOverride(string directory, string file, int imgWid, int imgHei, Palette pal)
 		{
-			throw new NotImplementedException();
-/*
-			System.IO.Stream tabStream=null;
+			System.IO.Stream tabStream = null;
 
-			string tabBase = file.Substring(0,file.LastIndexOf("."));
+			string tabBase = file.Substring(0, file.LastIndexOf("."));
 
-			try
-			{
-			    if(System.IO.File.Exists(directory+"\\"+tabBase+TAB_EXT))
-			        tabStream = System.IO.File.OpenRead(directory+"\\"+tabBase+TAB_EXT);
+			if (System.IO.File.Exists(directory + "\\" + tabBase + TAB_EXT))
+				tabStream = System.IO.File.OpenRead(directory + "\\" + tabBase + TAB_EXT);
 
-			    return new PckFile(System.IO.File.OpenRead(directory+"\\"+file),
-			        tabStream,
-					tabBase,
-			        2,
-			        pal,
-			        imgHei,
-			        imgWid);
-			}
-			catch(Exception)
-			{
-				if(System.IO.File.Exists(directory+"\\"+tabBase+TAB_EXT))
-					tabStream = System.IO.File.OpenRead(directory+"\\"+tabBase+TAB_EXT);
-
-				return new PckFile(System.IO.File.OpenRead(directory+"\\"+file),
-					tabStream,
-					tabBase,
-					4,
-					pal,
-					imgHei,
-					imgWid);
-			}
-*/
+			return new PckFile(null, System.IO.File.OpenRead(directory + "\\" + file),
+				tabStream,
+				pal,
+				imgHei,
+				imgWid);
 		}
 
 		private System.Windows.Forms.Panel SavingOptions

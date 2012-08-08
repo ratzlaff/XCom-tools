@@ -6,25 +6,39 @@ using System.Windows.Forms;
 using System.Collections.Generic;
 using MapLib.Base;
 using MapLib;
+using MapLib.Base.Parsing;
 
 namespace XCom
 {
 	public class XCMapFile : Map
 	{
-		private string basename, basePath, blankPath;
+		private PckFile mCursor;
 		private RmpFile rmpFile;
+		private List<Tile> mTiles;
 
-		public XCMapFile(string basename, string basePath, string blankPath, List<Tile> tiles)
-			: base(basename, null, tiles)
+		public XCMapFile(MapInfo inInfo)
+			: base(inInfo)
 		{
-			this.basename = basename;
-			this.basePath = basePath;
-			this.blankPath = blankPath;
+			string basename = inInfo.Name;
+			string basePath = inInfo.Tileset.MapCollection.RootPath;
+			string blankPath = basePath;
 
-			for (int i = 0; i < tiles.Count; i++)
-				tiles[i].MapID = i;
+			mTiles = new List<Tile>();
+			foreach (ImageInfo img in inInfo.Dependencies.Data)
+				if (img.Tiles != null)
+					foreach (Tile t in img.Tiles)
+						mTiles.Add(t);
 
-			readMap(File.OpenRead(basePath + basename + ".MAP"), tiles);
+			for (int i = 0; i < mTiles.Count; i++)
+				mTiles[i].Init(i);
+
+			readMap(File.OpenRead(basePath + basename + ".MAP"));
+
+			if (File.Exists(basePath + "..\\UFOGRAPH\\CURSOR.TAB")) {
+				Stream tabStream = File.OpenRead(basePath + "..\\UFOGRAPH\\CURSOR.TAB");
+				Stream fileStream = File.OpenRead(basePath + "..\\UFOGRAPH\\CURSOR.PCK");
+				mCursor = new PckFile(null, fileStream, tabStream, XCom.XCPalette.UFOBattle, 40, 32);
+			}
 
 			if (File.Exists(blankPath + basename + BlankFile.Extension)) {
 				try {
@@ -40,6 +54,11 @@ namespace XCom
 				SaveBlanks();
 			}
 		}
+
+		public override ImageCollection Cursor
+		{
+			get { return mCursor; }
+		}
 		/*
 				public void Hq2x()
 				{
@@ -52,6 +71,11 @@ namespace XCom
 					PckImage.Height *= 2;
 				}
 		*/
+		public override List<Tile> Tiles
+		{
+			get { return mTiles; }
+		}
+
 		public RmpEntry AddRmp(MapLocation loc)
 		{
 			RmpEntry re = Rmp.AddEntry((byte)loc.Row, (byte)loc.Col, (byte)loc.Height);
@@ -66,7 +90,8 @@ namespace XCom
 
 		public void SaveBlanks()
 		{
-			BlankFile.SaveBlanks(basename, blankPath, this);
+			throw new NotImplementedException();
+//			BlankFile.SaveBlanks(basename, blankPath, this);
 		}
 
 		public void CalcDrawAbove()
@@ -93,11 +118,6 @@ namespace XCom
 				}
 		}
 
-		public string BaseName
-		{
-			get { return basename; }
-		}
-
 		/// <summary>
 		/// Writes a blank map to the Stream provided
 		/// </summary>
@@ -122,7 +142,8 @@ namespace XCom
 
 		public override void Save()
 		{
-			Save(File.Create(basePath + basename + ".MAP"));
+			throw new NotImplementedException();
+//			Save(File.Create(basePath + basename + ".MAP"));
 		}
 
 		public override void Save(FileStream s)
@@ -176,7 +197,7 @@ namespace XCom
 			}
 		}
 
-		private void readMap(Stream s, List<Tile> tiles)
+		private void readMap(Stream s)
 		{
 			BufferedStream input = new BufferedStream(s);
 			int rows = input.ReadByte();
@@ -196,24 +217,24 @@ namespace XCom
 						int q3 = input.ReadByte();
 						int q4 = input.ReadByte();
 
-						this[r, c, h] = createTile(tiles, q1, q2, q3, q4);
+						this[r, c, h] = createTile(q1, q2, q3, q4);
 					}
 			input.Close();
 		}
 
-		private XCMapTile createTile(List<Tile> tiles, int q1, int q2, int q3, int q4)
+		private XCMapTile createTile(int q1, int q2, int q3, int q4)
 		{
 			try {
-				XCTile a, b, c, d;
+				Tile a, b, c, d;
 				a = b = c = d = null;
 				if (q1 != 0 && q1 != 1)
-					a = (XCTile)tiles[q1 - 2];
+					a = mTiles[q1 - 2];
 				if (q2 != 0 && q2 != 1)
-					b = (XCTile)tiles[q2 - 2];
+					b = mTiles[q2 - 2];
 				if (q3 != 0 && q3 != 1)
-					c = (XCTile)tiles[q3 - 2];
+					c = mTiles[q3 - 2];
 				if (q4 != 0 && q4 != 1)
-					d = (XCTile)tiles[q4 - 2];
+					d = mTiles[q4 - 2];
 
 				return new XCMapTile(a, b, c, d);
 			} catch {

@@ -83,7 +83,7 @@ namespace PckView
 
 		public XCImage Selected
 		{
-			get { throw new NotImplementedException(); /* if (myFile != null)return myFile[clickY * numAcross() + clickX]; return null; */}
+			get { if (myFile != null)return (XCImage)myFile[clickY * numAcross() + clickX]; return null; }
 			set { if (myFile != null)myFile[clickY * numAcross() + clickX] = value; }
 		}
 

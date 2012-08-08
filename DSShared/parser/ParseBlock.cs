@@ -39,7 +39,6 @@ namespace UtilLib.Parser
 		protected P Parent
 		{
 			get { return mParent; }
-			set { mParent = value; }
 		}
 
 		public override string ToString() { return Name; }

@@ -38,7 +38,8 @@ namespace MapView.Parsing.v1
 			get
 			{
 				if (mPckFile == null)
-					mPckFile = new XCom.PckFile(this, 2, XCom.XCPalette.UFOBattle);
+					mPckFile = new XCom.PckFile(this, XCom.XCPalette.UFOBattle);
+
 				return mPckFile;
 			}
 		}

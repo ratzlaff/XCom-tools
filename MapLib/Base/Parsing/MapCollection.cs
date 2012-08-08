@@ -12,7 +12,7 @@ using MapLib.Base;
 
 namespace MapLib.Base.Parsing
 {
-	public class MapCollection : ParseBlock<MapEdit_dat>
+	public abstract class MapCollection : ParseBlock<MapEdit_dat>
 	{
 		protected ParseBlockCollection<Tileset, MapCollection> mCollection;
 
@@ -20,6 +20,12 @@ namespace MapLib.Base.Parsing
 			:	base(null, inName)
 		{
 			mCollection = new ParseBlockCollection<Tileset, MapCollection>(this, "Tilesets");
+		}
+
+		public abstract string RootPath
+		{
+			get;
+			set;
 		}
 
 //		[Editor(typeof(CollectionEditor), typeof(UITypeEditor))]

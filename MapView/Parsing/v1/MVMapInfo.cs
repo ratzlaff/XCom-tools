@@ -21,18 +21,18 @@ namespace MapView.Parsing.v1
 		{
 		}
 
+		protected override void ProcessVar(VarCollection vars, KeyVal current)
+		{
+			base.ProcessVar(vars, current);
+		}
+
 		public override MapLib.Base.Map Map
 		{
 			get
 			{
-				Console.WriteLine("Load map here: " + Tileset.MapCollection.Name + ":" + Tileset.Name + ":" + Name);
-				foreach (ImageInfo img in Dependencies.Data) {
-					if (img.Images != null) {
-						foreach (TileImage tImg in img.Images) {
-							Console.WriteLine("Got image!");
-						}
-					}
-				}
+				if (mMap == null)
+					mMap = new XCom.XCMapFile(this);
+
 				return mMap;
 			}
 		}

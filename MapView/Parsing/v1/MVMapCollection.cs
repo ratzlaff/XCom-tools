@@ -20,7 +20,7 @@ namespace MapView.Parsing.v1
 		}
 
 		[Editor(typeof(FolderNameEditor), typeof(UITypeEditor))]
-		public string RootPath
+		public override string RootPath
 		{
 			get { return rootPath; }
 			set { rootPath = value; }

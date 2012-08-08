@@ -25,12 +25,6 @@ namespace XCom
 				mTiles.Add(new XCTile(i, inImages, new McdEntry(info, this)));
 			}
 			file.Close();
-
-			foreach (XCTile t in mTiles)
-				mTiles.Add(t);
-
-			foreach (XCTile t in mTiles)
-				t.Init();
 		}
 
 		public List<Tile> Tiles

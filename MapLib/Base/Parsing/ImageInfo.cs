@@ -16,6 +16,8 @@ namespace MapLib.Base.Parsing
 			: base(inParent, inData.Keyword)
 		{
 			basePath = inData.Rest;
+
+			ImageCollection.ImageCache[Name] = this;
 		}
 
 		public string BasePath
