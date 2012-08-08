@@ -12,7 +12,8 @@ namespace XCom
 {
 	public class DotNetCollection : XCImageCollection
 	{
-		public DotNetCollection(Bitmap src, int width, int height, int space)
+		public DotNetCollection(MapLib.Base.Parsing.ImageInfo inInfo, Bitmap src, int width, int height, int space)
+			: base(inInfo)
 		{
 			Form pvf = (Form)SharedSpace.Instance["PckView"];
 

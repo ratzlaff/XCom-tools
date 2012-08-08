@@ -23,6 +23,8 @@ namespace XCom.xcFiles
 
 		protected override XCImageCollection LoadFileOverride(string directory,string file,int imgWid,int imgHei,Palette pal)
 		{
+			throw new NotImplementedException();
+/*
 			System.IO.Stream tabStream=null;
 
 			string tabBase = file.Substring(0,file.LastIndexOf("."));
@@ -53,6 +55,7 @@ namespace XCom.xcFiles
 					imgHei,
 					imgWid);
 			}
+*/
 		}
 
 		private System.Windows.Forms.Panel SavingOptions

@@ -15,10 +15,22 @@ namespace MapLib.Base.Parsing
 		public ImageInfo(Images_dat inParent, KeyVal inData)
 			: base(inParent, inData.Keyword)
 		{
+			basePath = inData.Rest;
+		}
+
+		public string BasePath
+		{
+			get { return basePath; }
 		}
 
 		[Browsable(false)]
 		public abstract ImageCollection Images
+		{
+			get;
+		}
+
+		[Browsable(false)]
+		public abstract List<Tile> Tiles
 		{
 			get;
 		}

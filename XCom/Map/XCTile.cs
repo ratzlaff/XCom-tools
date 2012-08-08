@@ -3,23 +3,20 @@ using System.Drawing;
 using XCom.Images;
 using System.ComponentModel;
 
+using MapLib.Base;
+
 namespace XCom
 {
-	public class XCTile : MapLib.Base.Tile
+	public class XCTile : Tile
 	{
-		private McdFile mcdFile;
-		private PckFile myFile;
-		private XCTile[] tiles;
 		private McdEntry entry;
 		private const int numImages = 8;
 
-		public XCTile(int id, PckFile file, McdEntry info, McdFile mFile)
-			: base(id/*, info*/)
+		public XCTile(int id, MapLib.ImageCollection inFile, McdEntry info)
+			: base(id, inFile)
 		{
 			this.entry = info;
 			mInfo = info;
-			myFile = file;
-			mcdFile = mFile;
 
 			images = new XCImage[numImages];
 
@@ -125,52 +122,47 @@ namespace XCom
 
 		public void MakeAnimate()
 		{
-			images[0] = myFile[entry.Image1];
-			images[1] = myFile[entry.Image2];
-			images[2] = myFile[entry.Image3];
-			images[3] = myFile[entry.Image4];
-			images[4] = myFile[entry.Image5];
-			images[5] = myFile[entry.Image6];
-			images[6] = myFile[entry.Image7];
-			images[7] = myFile[entry.Image8];
+			images[0] = Collection[entry.Image1];
+			images[1] = Collection[entry.Image2];
+			images[2] = Collection[entry.Image3];
+			images[3] = Collection[entry.Image4];
+			images[4] = Collection[entry.Image5];
+			images[5] = Collection[entry.Image6];
+			images[6] = Collection[entry.Image7];
+			images[7] = Collection[entry.Image8];
 		}
 
 		public void StopAnimate()
 		{
-			images[0] = myFile[entry.Image1];
-			images[1] = myFile[entry.Image1];
-			images[2] = myFile[entry.Image1];
-			images[3] = myFile[entry.Image1];
-			images[4] = myFile[entry.Image1];
-			images[5] = myFile[entry.Image1];
-			images[6] = myFile[entry.Image1];
-			images[7] = myFile[entry.Image1];
+			images[0] = Collection[entry.Image1];
+			images[1] = Collection[entry.Image1];
+			images[2] = Collection[entry.Image1];
+			images[3] = Collection[entry.Image1];
+			images[4] = Collection[entry.Image1];
+			images[5] = Collection[entry.Image1];
+			images[6] = Collection[entry.Image1];
+			images[7] = Collection[entry.Image1];
 		}
 
-		[Browsable(false)]
-		public XCTile[] Tiles
+		public void Init()
 		{
-			get { return tiles; }
-			set
-			{
-				tiles = value;
-				try {
-					if (entry.DieTile != 0)
-						Dead = tiles[entry.DieTile];
-				} catch {
-					if (MapID == 102 || MapID == 0)
-						Dead = tiles[7];
-					else
-						Console.WriteLine("Error, could not set dead tile: {0} mapID:{1}", entry.DieTile, MapID);
-				}
-
-				if (entry.UFODoor || entry.HumanDoor || entry.Alt_MCD != 0)
-					Alternate = tiles[entry.Alt_MCD];
+			
+			try {
+				if (entry.DieTile != 0)
+					Dead = entry.File.Tiles[entry.DieTile];
+			} catch {
+				if (MapID == 102 || MapID == 0)
+					Dead = entry.File.Tiles[7];
+				else
+					Console.WriteLine("Error, could not set dead tile: {0} mapID:{1}", entry.DieTile, MapID);
 			}
+
+			if (entry.UFODoor || entry.HumanDoor || entry.Alt_MCD != 0)
+				Alternate = entry.File.Tiles[entry.Alt_MCD];
 		}
 
-		public XCTile Dead { get; set; }
+		public Tile Dead { get; set; }
 
-		public XCTile Alternate { get; set; }
+		public Tile Alternate { get; set; }
 	}
 }

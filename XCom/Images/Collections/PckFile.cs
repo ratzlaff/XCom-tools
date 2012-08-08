@@ -14,10 +14,15 @@ namespace XCom
 	{
 		private int bpp;
 		public static readonly string TAB_EXT = ".tab";
-
-		public PckFile(Stream pckFile, Stream tabFile, string name, int bpp, Palette pal, int imgHeight, int imgWidth)
+		public PckFile(MapLib.Base.Parsing.ImageInfo inInfo, int bpp, Palette pal, int imgHeight, int imgWidth)
+			: this(inInfo, File.Open(inInfo.BasePath + inInfo.Name + ".pck", FileMode.Open), File.Open(inInfo.BasePath + inInfo.Name + ".tab", FileMode.Open), bpp, pal, imgHeight, imgWidth)
 		{
-			Name = name;
+		}
+
+		public PckFile(MapLib.Base.Parsing.ImageInfo inInfo, Stream pckFile, Stream tabFile, int bpp, Palette pal, int imgHeight, int imgWidth)
+			: base(inInfo)
+		{
+			Name = inInfo.Name;
 			if (tabFile != null)
 				tabFile.Position = 0;
 
@@ -64,8 +69,8 @@ namespace XCom
 				tabFile.Close();
 		}
 
-		public PckFile(Stream pckFile, Stream tabFile, string name, int bpp, Palette pal)
-			: this(pckFile, tabFile, name, bpp, pal, 40, 32)
+		public PckFile(MapLib.Base.Parsing.ImageInfo inInfo, int bpp, Palette pal)
+			: this(inInfo, bpp, pal, 40, 32)
 		{ }
 
 		public int Bpp

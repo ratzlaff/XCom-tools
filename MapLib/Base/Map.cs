@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Text;
 using System.Drawing;
 
+using MapLib.Base.Parsing;
+
 namespace MapLib.Base
 {
 	public delegate void MapModifiedDelegate(MapModifiedArgs e);
@@ -22,11 +24,13 @@ namespace MapLib.Base
 		protected MapTile[] mapData;
 		protected List<Tile> tiles;
 		protected string name;
+		protected MapInfo mInfo;
 
-		protected Map(string name, List<Tile> tiles)
+		protected Map(string name, MapInfo inInfo, List<Tile> tiles)
 		{
 			this.name = name;
 			this.tiles = tiles;
+			mInfo = inInfo;
 		}
 
 		public string Name
@@ -37,6 +41,11 @@ namespace MapLib.Base
 		public List<Tile> Tiles
 		{
 			get { return tiles; }
+		}
+
+		public MapInfo MapInfo
+		{
+			get { return mInfo; }
 		}
 
 		public virtual void Save() { throw new Exception("Save() is not yet implemented"); }

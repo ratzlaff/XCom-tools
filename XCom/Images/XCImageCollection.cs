@@ -4,15 +4,21 @@ using System.Drawing;
 using XCom.Images;
 using UtilLib;
 using MapLib.Base;
+using MapLib;
 
 namespace XCom.Images
 {
-	public class XCImageCollection : List<XCImage>
+	public class XCImageCollection : ImageCollection
 	{
 		protected string name, path;
 		private Palette mPalette;
 //		protected int mScale = 1;
 		private xcImageFile ixcFile;
+
+		public XCImageCollection(MapLib.Base.Parsing.ImageInfo inInfo)
+			: base(inInfo)
+		{
+		}
 
 		public string Name
 		{
@@ -51,7 +57,7 @@ namespace XCom.Images
 				mPalette = value;
 			}
 		}
-
+		/*
 		public new XCImage this[int i]
 		{
 			get { return (i < Count && i >= 0 ? base[i] : null); }
@@ -64,7 +70,7 @@ namespace XCom.Images
 					Add(value);
 				}
 			}
-		}
+		}*/
 
 		public void Remove(int i)
 		{

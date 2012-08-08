@@ -33,6 +33,8 @@ namespace PckView
 
 		protected override XCImageCollection LoadFileOverride(string directory, string file, int imgWid, int imgHei, MapLib.Base.Palette pal)
 		{
+			throw new NotImplementedException();
+/*
 			Image img = Image.FromFile(directory + "\\" + file);
 			System.Drawing.Bitmap bmp = new System.Drawing.Bitmap(img);
 			BmpForm bmf = new BmpForm();
@@ -46,6 +48,7 @@ namespace PckView
 			}
 
 			return null;
+*/
 		}
 
 		public override void SaveCollection(string directory, string file, XCImageCollection images)

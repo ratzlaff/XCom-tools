@@ -430,6 +430,8 @@ namespace PckView
 
 		private void replaceClick(object sender, EventArgs e)
 		{
+			throw new NotImplementedException();
+/*
 			if (TotalViewPck.Instance.Collection != null) {
 				openBMP.Title = "Selected number: " + selected;
 				openBMP.Multiselect = false;
@@ -442,6 +444,7 @@ namespace PckView
 
 				UpdateText();
 			}
+*/
 		}
 
 		private void UpdateText()

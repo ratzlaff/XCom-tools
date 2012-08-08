@@ -22,6 +22,8 @@ namespace PckView
 
 		protected override XCImageCollection LoadFileOverride(string directory, string file, int imgWid, int imgHei, MapLib.Base.Palette pal)
 		{
+			throw new NotImplementedException();
+/*
 			SpecCollection sc = new SpecCollection(File.OpenRead(directory + "\\" + file));
 
 			xConsole.AddLine("File: " + directory + "\\" + file);
@@ -37,6 +39,7 @@ namespace PckView
 			}
 
 			return spe;
+*/
 		}
 	}
 }

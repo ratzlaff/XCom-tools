@@ -13,15 +13,13 @@ namespace XCom
 	{
 		private string basename, basePath, blankPath;
 		private RmpFile rmpFile;
-		private string[] dependencies;
 
-		public XCMapFile(string basename, string basePath, string blankPath, List<Tile> tiles, string[] depList)
-			: base(basename, tiles)
+		public XCMapFile(string basename, string basePath, string blankPath, List<Tile> tiles)
+			: base(basename, null, tiles)
 		{
 			this.basename = basename;
 			this.basePath = basePath;
 			this.blankPath = blankPath;
-			dependencies = depList;
 
 			for (int i = 0; i < tiles.Count; i++)
 				tiles[i].MapID = i;
@@ -64,11 +62,6 @@ namespace XCom
 		public override MapTile BlankTile()
 		{
 			return XCMapTile.BlankTile;
-		}
-
-		public string[] Dependencies
-		{
-			get { return dependencies; }
 		}
 
 		public void SaveBlanks()

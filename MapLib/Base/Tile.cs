@@ -11,17 +11,27 @@ namespace MapLib.Base
 		protected TileImage[] images;
 		protected int id;
 		protected TileInfo mInfo;
+		protected MapLib.ImageCollection mCollection;
 
-		public Tile(int id)
+		public Tile(int id, MapLib.ImageCollection inCollection)
 		{
 			this.id = id;
 			MapID = -1;
+			mCollection = inCollection;
 		}
 
 		/// <summary>
 		/// This is the ID by which the map knows this tile by
 		/// </summary>
 		public int MapID { get; set; }
+
+		/// <summary>
+		/// This is the collection this tile was made from
+		/// </summary>
+		public MapLib.ImageCollection Collection
+		{
+			get { return mCollection; }
+		}
 
 		/// <summary>
 		/// This is the ID unique to this ITile after it has been loaded

@@ -7,7 +7,8 @@ namespace XCom
 {
 	public class UncompressedCollection : XCImageCollection
 	{
-		public UncompressedCollection(int imgWid, int imgHei, System.IO.Stream inFile, Palette pal)
+		public UncompressedCollection(int imgWid, int imgHei, System.IO.Stream inFile, MapLib.Base.Parsing.ImageInfo inInfo, Palette pal)
+			: base(inInfo)
 		{
 			System.IO.BinaryReader sr = new System.IO.BinaryReader(inFile);
 			int i = 0;

@@ -56,8 +56,9 @@ namespace MapView
 			bool one = true;
 			int totalImages = 0;
 			int totalMcd = 0;
+			
 			if (map is XCMapFile)
-				foreach (string s in ((XCMapFile)map).Dependencies) {
+				foreach (MapLib.Base.Parsing.ImageInfo imgInfo in map.MapInfo.Dependencies.Data) {
 					if (one)
 						one = false;
 					else
@@ -65,7 +66,7 @@ namespace MapView
 
 //					totalImages += MapData.ImageInfo[s].GetPckFile().Count;
 //					totalMcd += MapData.ImageInfo[s].GetMcdFile().Length;
-					lblPckFiles.Text += s;
+					lblPckFiles.Text += imgInfo.Name;
 				}
 
 			pBar.Maximum = map.Size.Rows * map.Size.Cols * map.Size.Height;

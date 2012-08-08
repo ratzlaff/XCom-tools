@@ -60,6 +60,8 @@ namespace XCom
         /// <returns></returns>
         public static XCImageCollection Load(Bitmap b, Palette pal, int imgWid, int imgHei, int space)
         {
+			throw new NotImplementedException();
+/*
             XCImageCollection list = new XCImageCollection();
 
             int cols = (b.Width + space) / (imgWid + space);
@@ -80,6 +82,7 @@ namespace XCom
             list.Pal = pal;
 
             return list;
+*/
         }
 
         public static XCImage LoadTile(Bitmap src, int imgNum, Palette p, int startX, int startY, int imgWid, int imgHei)

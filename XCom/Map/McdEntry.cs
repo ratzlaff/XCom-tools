@@ -66,16 +66,23 @@ namespace XCom
 		private byte[] info;
 		private Rectangle rect;
 		private int width, height;
+		private McdFile mFile;
 
 		private static int globalStaticID = 0;
 
-		public McdEntry(byte[] info)
+		public McdEntry(byte[] info, McdFile inFile)
 			: base(globalStaticID++)
 		{
 			this.info = info;
+			mFile = inFile;
 			rect = new Rectangle(0, this.TileOffset, PckImage.Width, PckImage.Height - TileOffset);
 			width = PckImage.Width;
 			height = PckImage.Height - TileOffset;
+		}
+
+		public McdFile File
+		{
+			get { return mFile; }
 		}
 
 		public Rectangle Bounds

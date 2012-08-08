@@ -19,7 +19,8 @@ namespace XCom
 			}
 		}
 
-		public SPECollection(string name, List<SpecEntry> entries)
+		public SPECollection(string name, List<SpecEntry> entries, MapLib.Base.Parsing.ImageInfo inInfo)
+			: base(inInfo)
 		{
 			Palette imgPalette = new Palette(name, 0, true);
 			int i = 0;
