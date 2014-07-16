@@ -1,7 +1,6 @@
 using System;
 using System.Drawing;
 using System.Collections;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows.Forms;
 using System.Reflection;
@@ -23,7 +22,7 @@ namespace MapView
 
 		private TilePanel all,ground,wWalls,nWalls,objects;
 		private TilePanel[] panels;
-		private Form MCDInfo;
+		private Form MCDInfoForm;
 		private System.Windows.Forms.TabControl tabs;
 		private System.Windows.Forms.TabPage allTab;
 		private System.Windows.Forms.TabPage groundTab;
@@ -37,6 +36,8 @@ namespace MapView
 		private TileView()
 		{
 			InitializeComponent();
+
+            tabs.Selected += tabs_Selected;
 
 			all = new TilePanel(TileType.All);
 			ground=new TilePanel(TileType.Ground);
@@ -63,6 +64,17 @@ namespace MapView
 			edit.MenuItems.Add("Options",new EventHandler(options_click));
 			menu.MenuItems.Add(edit);
 		}
+
+        private void tabs_Selected(object sender, TabControlEventArgs e)
+        {
+            var tile = SelectedTile;
+            if (tile != null && tile.Info is McdEntry)
+            {
+                var info = (McdEntry)tile.Info;
+                Text = "TileView: mapID:" + tile.MapID + " mcdID: " + tile.ID;
+                UpdateMcdText(info);
+            }
+        }
 
 		private void options_click(object sender,EventArgs e)
 		{
@@ -96,14 +108,14 @@ namespace MapView
 		//    get{return settings;}
 		//}
 
-		private void addPanel(TilePanel panel, TabPage page)
-		{
-			panel.Dock = DockStyle.Fill;
-			page.Controls.Add(panel);
-			panel.TileChanged+=new SelectedTileChanged(tileChanged);
-		}
+	    private void addPanel(TilePanel panel, TabPage page)
+	    {
+	        panel.Dock = DockStyle.Fill;
+	        page.Controls.Add(panel);
+	        panel.TileChanged += tileChanged;
+	    }
 
-		public static TileView Instance
+	    public static TileView Instance
 		{
 			get
 			{
@@ -122,74 +134,110 @@ namespace MapView
 //			}
 //		}
 
-		private void tileChanged(TilePanel sender, ITile t)
-		{
-			if(t!=null && t.Info is McdEntry)
-			{
-				McdEntry info = (McdEntry)t.Info;
-				Text = "TileView: mapID:"+t.MapID+" mcdID: "+t.ID;
-				if(MCDInfo==null)
-					return;
-				rtb.Text = "";
-				rtb.SelectionColor = Color.Gray;
-				for(int i=0;i<30;i++)
-					rtb.AppendText(info[i]+" ");
-				rtb.AppendText("\n");
-				rtb.SelectionColor = Color.Gray;
-				for(int i=30;i<62;i++)
-					rtb.AppendText(info[i]+" ");
-				rtb.AppendText("\n\n");
-				rtb.SelectionColor = Color.Black;
+	    private void tileChanged(TilePanel sender, ITile tile)
+	    {
+	        if (tile != null && tile.Info is McdEntry)
+	        {
+	            var info = (McdEntry) tile.Info;
+	            Text = "TileView: mapID:" + tile.MapID + " mcdID: " + tile.ID;
+	            UpdateMcdText(info);
+	        }
+	    }
 
-				rtb.AppendText(string.Format("Images: {0} {1} {2} {3} {4} {5} {6} {7}\n",info.Image1,info.Image2,info.Image3,info.Image4,info.Image5,info.Image6,info.Image7,info.Image8));// unsigned char Frame[8];      //Each frame is an index into the ____.TAB file; it rotates between the frames constantly.
-				rtb.AppendText(string.Format("loft references: {0} {1} {2} {3} {4} {5} {6} {7} {8} {9} {10} {11}\n",info[8],info[9],info[10],info[11],info[12],info[13],info[14],info[15],info[16],info[17],info[18],info[19]));// unsigned char LOFT[12];      //The 12 levels of references into GEODATA\LOFTEMPS.DAT
-				rtb.AppendText(string.Format("scang reference: {0} {1} -> {2}\n",info[20],info[21],info[20]*256+info[21]));// short int ScanG;      //A reference into the GEODATA\SCANG.DAT
-				//rtb.AppendText(string.Format("Unknown data: {0}\n",info[22]));// unsigned char u23;
-				//rtb.AppendText(string.Format("Unknown data: {0}\n",info[23]));// unsigned char u24;
-				//rtb.AppendText(string.Format("Unknown data: {0}\n",info[24]));// unsigned char u25;
-				//rtb.AppendText(string.Format("Unknown data: {0}\n",info[25]));// unsigned char u26;
-				//rtb.AppendText(string.Format("Unknown data: {0}\n",info[26]));// unsigned char u27;
-				//rtb.AppendText(string.Format("Unknown data: {0}\n",info[27]));// unsigned char u28;
-				//rtb.AppendText(string.Format("Unknown data: {0}\n",info[28]));// unsigned char u29;
-				//rtb.AppendText(string.Format("Unknown data: {0}\n",info[29]));// unsigned char u30;
-				rtb.AppendText(string.Format("UFO Door?: {0}\n",info.UFODoor));// unsigned char UFO_Door;      //If it's a UFO door it uses only Frame[0] until it is walked through, then it animates once and becomes Alt_MCD.  It changes back at the end of the turn
-				rtb.AppendText(string.Format("SeeThru?: {0}\n",info.StopLOS));// unsigned char Stop_LOS;      //You cannot see through this tile.
-				rtb.AppendText(string.Format("No Floor?: {0}\n",info.NoGround));// unsigned char No_Floor;      //If 1, then a non-flying unit can't stand here
-				rtb.AppendText(string.Format("Big Wall?: {0}\n",info.BigWall));// unsigned char Big_Wall;      //It's an object (tile type 3), but it acts like a wall
-				rtb.AppendText(string.Format("Grav Lift?: {0}\n",info.GravLift));// unsigned char Gravlift;
-				rtb.AppendText(string.Format("People Door?: {0}\n",info.HumanDoor));// unsigned char Door;      //It's a human style door--you walk through it and it changes to Alt_MCD
-				rtb.AppendText(string.Format("Block fire?: {0}\n",info.BlockFire));// unsigned char Block_Fire;       //If 1, fire won't go through the tile
-				rtb.AppendText(string.Format("Block Smoke?: {0}\n",info.BlockSmoke));// unsigned char Block_Smoke;      //If 1, smoke won't go through the tile
-				//rtb.AppendText(string.Format("Unknown data: {0}\n",info[38]));// unsigned char u39;
-				rtb.AppendText(string.Format("TU Walk: {0}\n",info.TU_Walk));// unsigned char TU_Walk;       //The number of TUs require to pass the tile while walking.  An 0xFF (255) means it's unpassable.
-				rtb.AppendText(string.Format("TU Fly: {0}\n",info.TU_Fly));// unsigned char TU_Fly;        // remember, 0xFF means it's impassable!
-				rtb.AppendText(string.Format("TU Slide: {0}\n",info.TU_Slide));// unsigned char TU_Slide;      // sliding things include snakemen and silacoids
-				rtb.AppendText(string.Format("Armor: {0}\n",info.Armor));// unsigned char Armour;        //The higher this is the less likely it is that a weapon will destroy this tile when it's hit.
-				rtb.AppendText(string.Format("HE Block: {0}\n",info.HE_Block));// unsigned char HE_Block;      //How much of an explosion this tile will block
-				rtb.SelectionColor=Color.Red;
-				rtb.AppendText(string.Format("Death tile: {0}\n",info.DieTile));// unsigned char Die_MCD;       //If the terrain is destroyed, it is set to 0 and a tile of type Die_MCD is added
-				rtb.AppendText(string.Format("Flammable: {0}\n",info.Flammable));// unsigned char Flammable;     //How flammable it is (the higher the harder it is to set aflame)
-				rtb.SelectionColor=Color.Red;
-				rtb.AppendText(string.Format("Door open tile: {0}\n",info.Alt_MCD));// unsigned char Alt_MCD;       //If "Door" or "UFO_Door" is on, then when a unit walks through it the door is set to 0 and a tile type Alt_MCD is added.
-				//rtb.AppendText(string.Format("Unknown data: {0}\n",info[47]));// unsigned char u48;
-				rtb.AppendText(string.Format("Unit y offset: {0}\n",info.StandOffset));// signed char T_Level;      //When a unit or object is standing on the tile, the unit is shifted by this amount
-				rtb.AppendText(string.Format("tile y offset: {0}\n",info.TileOffset));// unsigned char P_Level;      //When the tile is drawn, this amount is subtracted from its y (so y position-P_Level is where it's drawn)
-				//rtb.AppendText(string.Format("Unknown data: {0}\n",info[50]));// unsigned char u51;
-				rtb.AppendText(string.Format("block light[0-10]: {0}\n",info.LightBlock));// unsigned char Light_Block;     //The amount of light it blocks, from 0 to 10
-				rtb.AppendText(string.Format("footstep sound effect: {0}\n",info.Footstep));// unsigned char Footstep;         //The Sound Effect set to choose from when footsteps are on the tile
-				rtb.AppendText(string.Format("tile type: {0}:{1}\n",(sbyte)info.TileType,info.TileType+""));//info.TileType==0?"floor":info.TileType==1?"west wall":info.TileType==2?"north wall":info.TileType==3?"object":"Unknown"));// unsigned char Tile_Type;       //This is the type of tile it is meant to be -- 0=floor, 1=west wall, 2=north wall, 3=object .  When this type of tile is in the Die_As or Open_As flags, this value is added to the tile coordinate to determine the byte in which the tile type should be written.
-				rtb.AppendText(string.Format("high explosive type: {0}:{1}\n",info.HE_Type,info.HE_Type==0?"HE":info.HE_Type==1?"smoke":"unknown"));// unsigned char HE_Type;         //0=HE  1=Smoke
-				rtb.AppendText(string.Format("HE Strength: {0}\n",info.HE_Strength));// unsigned char HE_Strength;     //The strength of the explosion caused when it's destroyed.  0 means no explosion.
-				rtb.AppendText(string.Format("smoke blockage: {0}\n",info.SmokeBlockage));// unsigned char Smoke_Blockage;      //? Not sure about this ...
-				rtb.AppendText(string.Format("# turns to burn: {0}\n",info.Fuel));// unsigned char Fuel;      //The number of turns the tile will burn when set aflame
-				rtb.AppendText(string.Format("amount of light produced: {0}\n",info.LightSource));// unsigned char Light_Source;      //The amount of light this tile produces
-				rtb.AppendText(string.Format("special properties: {0}\n",info.TargetType));// unsigned char Target_Type;       //The special properties of the tile
-				//rtb.AppendText(string.Format("Unknown data: {0}\n",info[60]));// unsigned char u61;
-				//rtb.AppendText(string.Format("Unknown data: {0}\n",info[61]));// unsigned char u62;
-			}
-		}
+	    private void UpdateMcdText(McdEntry info)
+	    {
+            if (rtb == null) return;
+            rtb.Text = "";
+	        rtb.SelectionColor = Color.Gray;
+	        for (int i = 0; i < 30; i++)
+	            rtb.AppendText(info[i] + " ");
+	        rtb.AppendText("\n");
+	        rtb.SelectionColor = Color.Gray;
+	        for (int i = 30; i < 62; i++)
+	            rtb.AppendText(info[i] + " ");
+	        rtb.AppendText("\n\n");
+	        rtb.SelectionColor = Color.Black;
 
-		public override IMap_Base Map
+	        rtb.AppendText(string.Format("Images: {0} {1} {2} {3} {4} {5} {6} {7}\n", info.Image1, info.Image2, info.Image3,
+	            info.Image4, info.Image5, info.Image6, info.Image7, info.Image8));
+	            // unsigned char Frame[8];      //Each frame is an index into the ____.TAB file; it rotates between the frames constantly.
+	        rtb.AppendText(string.Format("loft references: {0} {1} {2} {3} {4} {5} {6} {7} {8} {9} {10} {11}\n", info[8],
+	            info[9], info[10], info[11], info[12], info[13], info[14], info[15], info[16], info[17], info[18], info[19]));
+	            // unsigned char LOFT[12];      //The 12 levels of references into GEODATA\LOFTEMPS.DAT
+	        rtb.AppendText(string.Format("scang reference: {0} {1} -> {2}\n", info[20], info[21], info[20] * 256 + info[21]));
+	            // short int ScanG;      //A reference into the GEODATA\SCANG.DAT
+	        //rtb.AppendText(string.Format("Unknown data: {0}\n",info[22]));// unsigned char u23;
+	        //rtb.AppendText(string.Format("Unknown data: {0}\n",info[23]));// unsigned char u24;
+	        //rtb.AppendText(string.Format("Unknown data: {0}\n",info[24]));// unsigned char u25;
+	        //rtb.AppendText(string.Format("Unknown data: {0}\n",info[25]));// unsigned char u26;
+	        //rtb.AppendText(string.Format("Unknown data: {0}\n",info[26]));// unsigned char u27;
+	        //rtb.AppendText(string.Format("Unknown data: {0}\n",info[27]));// unsigned char u28;
+	        //rtb.AppendText(string.Format("Unknown data: {0}\n",info[28]));// unsigned char u29;
+	        //rtb.AppendText(string.Format("Unknown data: {0}\n",info[29]));// unsigned char u30;
+	        rtb.AppendText(string.Format("UFO Door?: {0}\n", info.UFODoor));
+	            // unsigned char UFO_Door;      //If it's a UFO door it uses only Frame[0] until it is walked through, then it animates once and becomes Alt_MCD.  It changes back at the end of the turn
+	        rtb.AppendText(string.Format("SeeThru?: {0}\n", info.StopLOS));
+	            // unsigned char Stop_LOS;      //You cannot see through this tile.
+	        rtb.AppendText(string.Format("No Floor?: {0}\n", info.NoGround));
+	            // unsigned char No_Floor;      //If 1, then a non-flying unit can't stand here
+	        rtb.AppendText(string.Format("Big Wall?: {0}\n", info.BigWall));
+	            // unsigned char Big_Wall;      //It's an object (tile type 3), but it acts like a wall
+	        rtb.AppendText(string.Format("Grav Lift?: {0}\n", info.GravLift)); // unsigned char Gravlift;
+	        rtb.AppendText(string.Format("People Door?: {0}\n", info.HumanDoor));
+	            // unsigned char Door;      //It's a human style door--you walk through it and it changes to Alt_MCD
+	        rtb.AppendText(string.Format("Block fire?: {0}\n", info.BlockFire));
+	            // unsigned char Block_Fire;       //If 1, fire won't go through the tile
+	        rtb.AppendText(string.Format("Block Smoke?: {0}\n", info.BlockSmoke));
+	            // unsigned char Block_Smoke;      //If 1, smoke won't go through the tile
+	        //rtb.AppendText(string.Format("Unknown data: {0}\n",info[38]));// unsigned char u39;
+	        rtb.AppendText(string.Format("TU Walk: {0}\n", info.TU_Walk));
+	            // unsigned char TU_Walk;       //The number of TUs require to pass the tile while walking.  An 0xFF (255) means it's unpassable.
+	        rtb.AppendText(string.Format("TU Fly: {0}\n", info.TU_Fly));
+	            // unsigned char TU_Fly;        // remember, 0xFF means it's impassable!
+	        rtb.AppendText(string.Format("TU Slide: {0}\n", info.TU_Slide));
+	            // unsigned char TU_Slide;      // sliding things include snakemen and silacoids
+	        rtb.AppendText(string.Format("Armor: {0}\n", info.Armor));
+	            // unsigned char Armour;        //The higher this is the less likely it is that a weapon will destroy this tile when it's hit.
+	        rtb.AppendText(string.Format("HE Block: {0}\n", info.HE_Block));
+	            // unsigned char HE_Block;      //How much of an explosion this tile will block
+	        rtb.SelectionColor = Color.Red;
+	        rtb.AppendText(string.Format("Death tile: {0}\n", info.DieTile));
+	            // unsigned char Die_MCD;       //If the terrain is destroyed, it is set to 0 and a tile of type Die_MCD is added
+	        rtb.AppendText(string.Format("Flammable: {0}\n", info.Flammable));
+	            // unsigned char Flammable;     //How flammable it is (the higher the harder it is to set aflame)
+	        rtb.SelectionColor = Color.Red;
+	        rtb.AppendText(string.Format("Door open tile: {0}\n", info.Alt_MCD));
+	            // unsigned char Alt_MCD;       //If "Door" or "UFO_Door" is on, then when a unit walks through it the door is set to 0 and a tile type Alt_MCD is added.
+	        //rtb.AppendText(string.Format("Unknown data: {0}\n",info[47]));// unsigned char u48;
+	        rtb.AppendText(string.Format("Unit y offset: {0}\n", info.StandOffset));
+	            // signed char T_Level;      //When a unit or object is standing on the tile, the unit is shifted by this amount
+	        rtb.AppendText(string.Format("tile y offset: {0}\n", info.TileOffset));
+	            // unsigned char P_Level;      //When the tile is drawn, this amount is subtracted from its y (so y position-P_Level is where it's drawn)
+	        //rtb.AppendText(string.Format("Unknown data: {0}\n",info[50]));// unsigned char u51;
+	        rtb.AppendText(string.Format("block light[0-10]: {0}\n", info.LightBlock));
+	            // unsigned char Light_Block;     //The amount of light it blocks, from 0 to 10
+	        rtb.AppendText(string.Format("footstep sound effect: {0}\n", info.Footstep));
+	            // unsigned char Footstep;         //The Sound Effect set to choose from when footsteps are on the tile
+	        rtb.AppendText(string.Format("tile type: {0}:{1}\n", (sbyte) info.TileType, info.TileType + ""));
+	            //info.TileType==0?"floor":info.TileType==1?"west wall":info.TileType==2?"north wall":info.TileType==3?"object":"Unknown"));// unsigned char Tile_Type;       //This is the type of tile it is meant to be -- 0=floor, 1=west wall, 2=north wall, 3=object .  When this type of tile is in the Die_As or Open_As flags, this value is added to the tile coordinate to determine the byte in which the tile type should be written.
+	        rtb.AppendText(string.Format("high explosive type: {0}:{1}\n", info.HE_Type,
+	            info.HE_Type == 0 ? "HE" : info.HE_Type == 1 ? "smoke" : "unknown"));
+	            // unsigned char HE_Type;         //0=HE  1=Smoke
+	        rtb.AppendText(string.Format("HE Strength: {0}\n", info.HE_Strength));
+	            // unsigned char HE_Strength;     //The strength of the explosion caused when it's destroyed.  0 means no explosion.
+	        rtb.AppendText(string.Format("smoke blockage: {0}\n", info.SmokeBlockage));
+	            // unsigned char Smoke_Blockage;      //? Not sure about this ...
+	        rtb.AppendText(string.Format("# turns to burn: {0}\n", info.Fuel));
+	            // unsigned char Fuel;      //The number of turns the tile will burn when set aflame
+	        rtb.AppendText(string.Format("amount of light produced: {0}\n", info.LightSource));
+	            // unsigned char Light_Source;      //The amount of light this tile produces
+	        rtb.AppendText(string.Format("special properties: {0}\n", info.TargetType));
+	            // unsigned char Target_Type;       //The special properties of the tile
+	        //rtb.AppendText(string.Format("Unknown data: {0}\n",info[60]));// unsigned char u61;
+	        //rtb.AppendText(string.Format("Unknown data: {0}\n",info[61]));// unsigned char u62;
+	    }
+
+	    public override IMap_Base Map
 		{
 			set 
 			{ 
@@ -362,21 +410,29 @@ namespace MapView
 		{
 			if(!mcdInfoTab.Checked)
 			{
-				if(MCDInfo==null)
-				{
-					MCDInfo = new Form();
-					MCDInfo.Text = "MCD Info";
-					rtb = new RichTextBox();
-					rtb.WordWrap=false;
-					rtb.ReadOnly=true;
-					MCDInfo.Controls.Add(rtb);
-					rtb.Dock=DockStyle.Fill;
-					MCDInfo.Size = new Size(200,470);
-					MCDInfo.Closing+=new CancelEventHandler(infoTabClosing);
-				}
-				MCDInfo.Visible=true;
-				MCDInfo.Location = new Point(this.Location.X-MCDInfo.Width,this.Location.Y);
-				MCDInfo.Show();
+			    if (MCDInfoForm == null)
+			    {
+			        MCDInfoForm = new Form();
+			        MCDInfoForm.Text = "MCD Info";
+			        rtb = new RichTextBox();
+			        rtb.WordWrap = false;
+			        rtb.ReadOnly = true;
+			        MCDInfoForm.Controls.Add(rtb);
+			        rtb.Dock = DockStyle.Fill;
+			        MCDInfoForm.Size = new Size(200, 470);
+			        MCDInfoForm.Closing += infoTabClosing;
+			       
+                    var tile = SelectedTile;
+			        if (tile != null && tile.Info is McdEntry)
+			        {
+			            var info = (McdEntry) tile.Info;
+			            Text = "TileView: mapID:" + tile.MapID + " mcdID: " + tile.ID;
+			            UpdateMcdText(info);
+			        }
+			    }
+			    MCDInfoForm.Visible=true;
+				MCDInfoForm.Location = new Point(this.Location.X-MCDInfoForm.Width,this.Location.Y);
+				MCDInfoForm.Show();
 				mcdInfoTab.Checked=true;
 			}
 		}
@@ -384,244 +440,8 @@ namespace MapView
 		private void infoTabClosing(object sender, CancelEventArgs e)
 		{
 			e.Cancel=true;
-			MCDInfo.Visible=false;
+			MCDInfoForm.Visible=false;
 			mcdInfoTab.Checked=false;
-		}
-	}
-
-	public class TilePanel : Panel
-	{
-		private ITile[] tiles;
-
-		private int space=2;
-		private int height = 40,width=32;
-		private SolidBrush brush = new SolidBrush(Color.FromArgb(204,204,255));
-		private Pen pen = new Pen(Brushes.Red,3);
-		private int startY=0;
-		private int selectedNum;
-		private VScrollBar vert;
-		private int numAcross=1;
-
-		public static readonly Color[] tileTypes={Color.Cornsilk,Color.Lavender,Color.DarkRed,Color.Fuchsia,Color.Aqua,
-									Color.DarkOrange,Color.DeepPink,Color.LightBlue,Color.Lime,
-									  Color.LightGreen,Color.MediumPurple,Color.LightCoral,Color.LightCyan,
-									  Color.Yellow,Color.Blue};
-		private TileType type;
-
-		public event SelectedTileChanged TileChanged;
-		//private static PckFile extraFile;
-		private static Hashtable brushes;
-
-		//public static PckFile ExtraFile
-		//{
-		//    get{return extraFile;}
-		//    set{extraFile=value;}
-		//}
-
-		public static Hashtable Colors
-		{
-			get{return brushes;}
-			set{brushes=value;}
-		}
-
-		public TilePanel(TileType type)
-		{
-			this.type=type;
-			vert = new VScrollBar();
-			vert.ValueChanged+=new EventHandler(valChange);
-			vert.Location = new Point(Width-vert.Width,0);
-			this.Controls.Add(vert);
-			MapViewPanel.ImageUpdate+=new EventHandler(tick);
-			SetStyle(ControlStyles.AllPaintingInWmPaint|ControlStyles.DoubleBuffer|ControlStyles.UserPaint,true);			
-			selectedNum=0;
-
-			Globals.LoadExtras();
-		}
-
-		private void valChange(object sender, EventArgs e)
-		{
-			startY = -vert.Value;
-			Refresh();
-		}
-
-		protected override void OnResize(EventArgs e)
-		{
-			numAcross = (Width-(vert.Visible?vert.Width:0))/(width+2*space);
-			vert.Location = new Point(Width-vert.Width,0);
-			vert.Height=Height;
-			vert.Maximum = Math.Max((PreferredHeight-Height)+10,vert.Minimum);	
-		
-			if(vert.Maximum==vert.Minimum)
-				vert.Visible=false;
-			else
-				vert.Visible=true;
-			Refresh();
-		}
-
-		public int StartY
-		{
-			get{return startY;}
-			set{startY=value;Refresh();}
-		}
-
-		public int PreferredHeight
-		{
-			get
-			{
-				if(tiles!=null && numAcross>0)
-				{
-					if(tiles.Length%numAcross==0)
-						return (tiles.Length/numAcross)*(height+2*space);
-
-					return (1+tiles.Length/numAcross)*(height+2*space);
-				}
-				return 0;
-			}
-		}
-
-		public System.Collections.Generic.List<ITile> Tiles
-		{
-			set
-			{
-			    if (value != null)
-			    {
-			        if (type == TileType.All)
-			        {
-			            //tiles=value;
-			            tiles = new ITile[value.Count + 1];
-			            tiles[0] = null;
-			            for (int i = 0; i < value.Count; i++)
-			                tiles[i + 1] = value[i];
-			        }
-			        else
-			        {
-			            var list = new List<ITile>();
-			            for (int i = 0; i < value.Count; i++)
-			                if (value[i].Info.TileType == type)
-			                    list.Add(value[i]);
-			            tiles = list.ToArray();
-			        }
-			    }
-			    else
-			    {
-			        tiles = null;
-			    }
-			    OnResize(null);
-			}
-		}
-
-		private int scrollAmount=20;
-
-		protected override void OnMouseWheel(MouseEventArgs e)
-		{
-			if(e.Delta<0)
-				if(vert.Value+scrollAmount<vert.Maximum)
-					vert.Value+=scrollAmount;
-				else
-					vert.Value = vert.Maximum;
-			else if(e.Delta>0)
-				if(vert.Value-scrollAmount>vert.Minimum)
-					vert.Value-=scrollAmount;
-				else
-					vert.Value = vert.Minimum;
-		}
-
-		protected override void OnMouseDown(MouseEventArgs e)
-		{
-			this.Focus();
-		    if (tiles == null) return;
-			int x = e.X/(width+2*space);
-			int y = (e.Y-startY)/(height+2*space);
-
-			if(x>=numAcross)
-				x=numAcross-1;
-
-			selectedNum = y*numAcross+x;
-
-			selectedNum = (selectedNum<tiles.Length)?selectedNum:tiles.Length-1;
-			if(TileChanged!=null)
-				TileChanged(this,SelectedTile);
-			Refresh();
-		}
-
-		protected override void OnPaint(PaintEventArgs e)
-		{
-			if(tiles!=null)
-			{
-				Graphics g = e.Graphics;				
-
-				int i=0,j=0;
-				foreach(ITile t in tiles)
-				{
-					if(t!=null && (type==TileType.All || t.Info.TileType==type))
-					{
-						g.FillRectangle((SolidBrush)brushes[t.Info.TargetType.ToString()]/*new SolidBrush(tileTypes[(int)t.Info.TargetType])*/,i*(width+2*space),startY+j*(height+2*space),width+2*space,height+2*space);
-						g.DrawImage(t[MapViewPanel.Current].Image,i*(width+2*space),startY+j*(height+2*space)-t.Info.TileOffset);
-
-						if(t.Info.HumanDoor || t.Info.UFODoor)
-							g.DrawString("Door",this.Font,Brushes.Black,i*(width+2*space),startY+j*(height+2*space)+PckImage.Height-Font.Height);
-
-						i=(i+1)%numAcross;
-						if(i==0)
-							j++;
-					}
-					else if(t==null)
-					{
-						if(Globals.ExtraTiles!=null)
-							g.DrawImage(Globals.ExtraTiles[0].Image, i * (width + 2 * space), startY + j * (height + 2 * space));
-						i=(i+1)%numAcross;
-						if(i==0)
-							j++;
-					}
-				}
-
-				//g.DrawRectangle(brush,(selectedNum%numAcross)*(width+2*space),startY+(selectedNum/numAcross)*(height+2*space),width+2*space,height+2*space)				
-
-				for(int k=0;k<=numAcross+1;k++)
-					g.DrawLine(Pens.Black,k*(width+2*space),startY,k*(width+2*space),startY+PreferredHeight);
-				for(int k=0;k<=PreferredHeight;k+=(height+2*space))
-					g.DrawLine(Pens.Black,0,startY+k,numAcross*(width+2*space),startY+k);
-
-				g.DrawRectangle(pen,(selectedNum%numAcross)*(width+2*space),startY+(selectedNum/numAcross)*(height+2*space),width+2*space,height+2*space);
-			}
-		}
-
-		public ITile SelectedTile
-		{
-			get
-			{
-				return tiles[selectedNum];
-			}
-			set
-			{
-				if(value==null)
-					selectedNum=0;
-				else
-				{
-					selectedNum = value.MapID+1;
-
-					if(TileChanged!=null)
-						TileChanged(this,SelectedTile);
-
-					int y = startY+(selectedNum/numAcross)*(height+2*space);
-					int val = -(startY-y);
-
-					if(val > vert.Minimum)
-					{
-						if(val < vert.Maximum)
-							vert.Value = val;
-						else
-							vert.Value = vert.Maximum;
-					}
-					else
-						vert.Value = vert.Minimum;
-				}
-			}
-		}
-
-		private void tick(object sender, EventArgs e)
-		{
-			Refresh();
 		}
 	}
 }
