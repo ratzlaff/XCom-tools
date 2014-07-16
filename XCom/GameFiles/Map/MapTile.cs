@@ -8,12 +8,16 @@ namespace XCom
 {
 	public class XCMapTile:IMapTile
 	{
-		public enum MapQuadrant { Ground, West, North, Content };
+	    public enum MapQuadrant
+	    {
+	        Ground, 
+            West, 
+            North,
+            Content
+	    };
 		private RmpEntry rmpInfo;
 		private ITile ground, north, west, content;		
         private bool blank;
-
-		//private IUnit unit;
 
 		private int maxSub = 0;		
 		private int standOffset = 0;
@@ -28,7 +32,6 @@ namespace XCom
 			calcTiles();
 			drawAbove = true;
 			blank = false;
-			//unit = null;
 		}
 
 		public static XCMapTile BlankTile
@@ -96,13 +99,7 @@ namespace XCom
 			get { return blank; }
 			set { blank = value; }
 		}
-
-		//public MapLocation MapCoords
-		//{
-		//    get{return mapCoords;}
-		//    set{mapCoords=value;}
-		//}
-
+         
 		public ITile this[MapQuadrant quad]
 		{
 			get
@@ -140,12 +137,6 @@ namespace XCom
 				}
 			}
 		}
-
-		//public IUnit Unit
-		//{
-		//	get { return unit; }
-		//	set { unit = value; }
-		//}
 
 		public ITile North
 		{

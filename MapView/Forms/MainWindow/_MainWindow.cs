@@ -474,10 +474,26 @@ namespace MapView
 			initList();
 		}
 
-		private void mapList_AfterSelect(object sender, System.Windows.Forms.TreeViewEventArgs e)
+
+	    private void mapList_BeforeSelect(object sender, TreeViewCancelEventArgs e)
+	    {
+	        if (NotifySave() == DialogResult.Cancel)
+	        {
+	            e.Cancel = true;
+	            return;
+	        }
+
+            // make old selected not bold 
+	        if (mapList.SelectedNode != null)
+	        {
+                mapList.SelectedNode.BackColor = Color.Transparent ;
+            }
+	    }
+
+	    private void mapList_AfterSelect(object sender, TreeViewEventArgs e)
 		{
-			if (NotifySave() == DialogResult.Cancel)
-				return;
+            // Make selected bold 
+            mapList.SelectedNode.BackColor = Color.Gold;
 
             IMapDesc imd = mapList.SelectedNode.Tag as IMapDesc;
             if (imd  != null)
@@ -521,80 +537,10 @@ namespace MapView
 						SetMap(map, frm);
 					}
 				}
-
-				//if (MapChanged != null)
-				//    MapChanged(this, new SetMapEventArgs(mapView.Map));
-
 				MapViewPanel.Instance.View.Refresh();
 			}
 			else
 				miExport.Enabled = false;
-			#region old
-			/*
-			if (mapList.SelectedNode.Parent != null)
-			{
-				if (mapList.SelectedNode.Parent.Parent != null)
-				{
-					string tileset = mapList.SelectedNode.Parent.Parent.Text;
-					string map = mapList.SelectedNode.Text;
-
-					try
-					{
-						IXCMapData imd = GameInfo.GetTileInfo().Tilesets[tileset][map];
-						((IXCTileset)GameInfo.GetTileInfo().Tilesets[tileset]).Palette.SetTransparent(true);
-
-						miExport.Enabled = true;
-						//if (mapView.View.Map != null)
-						//    mapView.View.Map.HeightChanged -= new HeightChangedDelegate(copyGroupx.HeightChanged);
-						mapView.SetMap(imd);
-						//mapView.View.Map.HeightChanged += new HeightChangedDelegate(copyGroupx.HeightChanged);
-						//copyGroupx.HeightChanged(mapView.Map.CurrentLevel);
-
-						statusMapName.Text = "Map:" + map;
-						tsMapSize.Text = "Size: " + mapView.View.Map.MapSize.ToString();
-
-						if (miDoors.Checked)
-						{
-							miDoors.Checked = false;
-							miDoors_Click(null, null);
-						}
-
-						this.Text = "Map Editor: " + imd.Name + " r:" + imd.GetMapFile().MapSize.Rows + " c:" + imd.GetMapFile().MapSize.Cols + " h:" + imd.GetMapFile().MapSize.Height;
-
-						if (!showMenu.Enabled)
-						{
-							foreach (MenuItem mi in showMenu.MenuItems)
-								mi.PerformClick();
-
-							showMenu.Enabled = true;
-						}
-
-						foreach (string key in registeredForms.Keys)
-						{
-							Form f = registeredForms[key];
-
-							if (f is Map_Observer_Form)
-							{
-								Map_Observer_Form frm = (Map_Observer_Form)f;
-								SetMap(mapView.View.Map, frm);
-							}
-						}
-
-						if (MapChanged != null)
-							MapChanged(this, new SetMapEventArgs(mapView.Map));
-
-						MapViewPanel.Instance.View.Refresh();
-					}
-					catch (FileNotFoundException ex)
-					{
-						xConsole.AddLine(ex.Message);
-						//((MenuItem)windowMI[xConsole.Instance]).PerformClick();
-					}
-				}
-			}
-			else
-				miExport.Enabled = false;*/
-			#endregion
 		}
 
 		public void SetMap(IMap_Base newMap, IMap_Observer observer)
