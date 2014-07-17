@@ -149,23 +149,18 @@ namespace MapView
             if (rtb == null) return;
             rtb.Text = "";
 	        rtb.SelectionColor = Color.Gray;
-	        for (int i = 0; i < 30; i++)
-	            rtb.AppendText(info[i] + " ");
+            rtb.AppendText(info.Reference0To30);
 	        rtb.AppendText("\n");
 	        rtb.SelectionColor = Color.Gray;
-	        for (int i = 30; i < 62; i++)
-	            rtb.AppendText(info[i] + " ");
+            rtb.AppendText(info.Reference30To62);
 	        rtb.AppendText("\n\n");
 	        rtb.SelectionColor = Color.Black;
 
 	        rtb.AppendText(string.Format("Images: {0} {1} {2} {3} {4} {5} {6} {7}\n", info.Image1, info.Image2, info.Image3,
 	            info.Image4, info.Image5, info.Image6, info.Image7, info.Image8));
-	            // unsigned char Frame[8];      //Each frame is an index into the ____.TAB file; it rotates between the frames constantly.
-	        rtb.AppendText(string.Format("loft references: {0} {1} {2} {3} {4} {5} {6} {7} {8} {9} {10} {11}\n", info[8],
-	            info[9], info[10], info[11], info[12], info[13], info[14], info[15], info[16], info[17], info[18], info[19]));
-	            // unsigned char LOFT[12];      //The 12 levels of references into GEODATA\LOFTEMPS.DAT
-	        rtb.AppendText(string.Format("scang reference: {0} {1} -> {2}\n", info[20], info[21], info[20] * 256 + info[21]));
-	            // short int ScanG;      //A reference into the GEODATA\SCANG.DAT
+	        rtb.AppendText(info.LoftReference);
+	        rtb.AppendText(info.ScanGReference);
+	        // short int ScanG;      //A reference into the GEODATA\SCANG.DAT
 	        //rtb.AppendText(string.Format("Unknown data: {0}\n",info[22]));// unsigned char u23;
 	        //rtb.AppendText(string.Format("Unknown data: {0}\n",info[23]));// unsigned char u24;
 	        //rtb.AppendText(string.Format("Unknown data: {0}\n",info[24]));// unsigned char u25;

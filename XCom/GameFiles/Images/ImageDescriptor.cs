@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.IO;
+using XCom.GameFiles.Map;
 
 namespace XCom
 {
@@ -43,9 +44,12 @@ namespace XCom
 
 		public McdFile GetMcdFile(Palette p)
 		{
-			if(mcdTab[p]==null)
-				mcdTab[p] = new McdFile(basename,basePath,GetPckFile(p));//GameInfo.GetMcdFile(basename,basePath,GetPckFile(p));
-			return (McdFile)mcdTab[p];
+		    if (mcdTab[p] == null)
+		    {
+                var xcTileFactory = new XcTileFactory(basename, basePath, GetPckFile(p));
+                mcdTab[p] = new McdFile(xcTileFactory);
+		    }
+		    return (McdFile)mcdTab[p];
 		}
 
 		public McdFile GetMcdFile()
