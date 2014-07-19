@@ -9,6 +9,7 @@ using System.IO;
 using System.Drawing.Imaging;
 using System.Reflection;
 using PckView.Args;
+using PckView.Forms.ImageBytes;
 using XCom;
 using XCom.Interfaces;
 using DSShared;
@@ -24,8 +25,6 @@ namespace PckView
 	{
         private TotalViewPck v;
 		private Palette currPal;
-		private Form bytesFrame;
-		private RichTextBox bytesText;
 		private Editor editor;
 		private MenuItem editImage, replaceImage, saveImage, deleteImage, addMany;
 		private Dictionary<Palette, MenuItem> palMI;
@@ -307,17 +306,12 @@ namespace PckView
 				editImage.Enabled = true;
 				saveImage.Enabled = true;
 				deleteImage.Enabled = true;
-				if (bytesText != null)
-				{
-				    var selected = v.SelectedItems[v.SelectedItems.Count - 1];
-					bytesText.Text = selected.ToString();
-					bytesFrame.Text = "Length: " + selected.Image.Bytes.Length;
-				}
+                var selected = v.SelectedItems[v.SelectedItems.Count - 1];
+                BytesFormHelper.ReloadBytes(selected);
 			}
 			else //selected is null
 			{
-				if (bytesText != null)
-					bytesText.Text = "";
+                BytesFormHelper.ReloadBytes(null);
 
 				editImage.Enabled = false;
 				saveImage.Enabled = false;
@@ -492,35 +486,19 @@ namespace PckView
 			Refresh();
 		}
 
-		private void showBytes_Click(object sender, System.EventArgs e)
+		private void showBytes_Click(object sender, EventArgs e)
 		{
             if (v.SelectedItems.Count == 0) return;
             var selected = v.SelectedItems[v.SelectedItems.Count - 1];
 
-			if (showBytes.Checked)
-				bytesFrame.BringToFront();
-            else if (selected != null)
-			{
-				bytesFrame = new Form();
-				bytesText = new RichTextBox();
-				bytesText.Dock = DockStyle.Fill;
-				bytesFrame.Controls.Add(bytesText);
-
-                foreach (byte b in selected.Image.Bytes)
-					bytesText.Text += b + " ";
-
-				bytesFrame.Closing += new CancelEventHandler(bClosing);
-				bytesFrame.Location = new Point(this.Right, this.Top);
-                bytesFrame.Text = "Length: " + selected.Image.Bytes.Length;
-				bytesFrame.Show();
-				showBytes.Checked = true;
-			}
+            showBytes.Checked = true ;
+            BytesFormHelper.ShowBytes(selected, bClosing, new Point(this.Right, this.Top));
 		}
 
-		private void bClosing(object sender, CancelEventArgs e)
-		{
-			showBytes.Checked = false;
-		}
+        private void bClosing( )
+        {
+            showBytes.Checked = false;
+        }
 
 		private void transOn_Click(object sender, System.EventArgs e)
 		{

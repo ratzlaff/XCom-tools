@@ -46,14 +46,14 @@ namespace XCom
 			Dictionary<string, Variable> vars = new Dictionary<string, Variable>();
 
 			foreach(string str in a)
-				if(images[str]!=null)
-				{
-					ImageDescriptor id = images[str];
-					if(!vars.ContainsKey(id.BasePath))
-						vars[id.BasePath]=new Variable(id.BaseName+":",id.BasePath);
-					else
-						vars[id.BasePath].Inc(id.BaseName+":");
-				}
+            {
+                if (images[str] == null) continue;
+                ImageDescriptor id = images[str];
+                if(!vars.ContainsKey(id.BasePath))
+                    vars[id.BasePath]=new Variable(id.BaseName+":",id.BasePath);
+                else
+                    vars[id.BasePath].Inc(id.BaseName+":");
+            }
 
 			foreach(string basePath in vars.Keys)
 				vars[basePath].Write(sw);

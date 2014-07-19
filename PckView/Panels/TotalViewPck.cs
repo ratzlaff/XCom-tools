@@ -16,10 +16,12 @@ namespace PckView
 	{
 		private ViewPck view;
 
-		private System.Windows.Forms.VScrollBar scroll;
+		private VScrollBar scroll;
 		private StatusBar statusBar;
-		private StatusBarPanel statusOverTile, statusBPP;
-		private int click, move;
+        private StatusBarPanel statusOverTile;
+        private StatusBarPanel statusBPP;
+        private int click;
+        private int move;
 
 		public event PckViewMouseClicked ViewClicked;
 		public event XCImageCollectionHandler XCImageCollectionSet;

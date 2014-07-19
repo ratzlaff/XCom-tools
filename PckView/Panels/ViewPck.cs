@@ -146,7 +146,7 @@ namespace PckView
             selected.X = x;
             selected.Y = y;
             selected.Index = index;
-
+	        if (index >= Collection.Count) return;
             if (ModifierKeys == Keys.Control)
             {
                 ViewPckItem existingItem = null;
