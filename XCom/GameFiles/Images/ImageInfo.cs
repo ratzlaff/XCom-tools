@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.IO;
 using System.Collections.Generic;
 
@@ -7,12 +8,10 @@ namespace XCom
 	public class ImageInfo:FileDesc
 	{
 		private Dictionary<string,ImageDescriptor> images;
-		private VarCollection vars;
 
 		public ImageInfo():base("")
 		{
 			images = new Dictionary<string, ImageDescriptor>();
-			vars = new VarCollection();
 		}
 
 		public ImageDescriptor this[string name]
@@ -62,9 +61,37 @@ namespace XCom
 			sw.Close();
 		}
 
-		public Dictionary<string, ImageDescriptor> Images
+        public ImagesAccessor Images
 		{
-			get{return images;}
+			get{return new ImagesAccessor(images);}
 		}
+
+        /// <summary>
+        /// Helps making sure images are accessed with upper case keys
+        /// </summary>
+	    public class ImagesAccessor
+	    {
+	        private readonly Dictionary<string, ImageDescriptor> _images;
+
+	        public ImagesAccessor(Dictionary<string, ImageDescriptor> images)
+	        {
+	            _images = images;
+	        }
+
+	        public IEnumerable Keys
+	        {
+	            get { return _images.Keys; }
+	        }
+
+	        public void Remove(string toString)
+	        {
+	            _images.Remove(toString.ToUpper());
+	        }
+
+            public ImageDescriptor this[string imageSet]
+            {
+                get { return _images[imageSet.ToUpper()]; }
+            }
+	    }
 	}
 }
