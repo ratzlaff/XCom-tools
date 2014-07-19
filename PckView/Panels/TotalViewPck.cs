@@ -1,7 +1,10 @@
 using System;
+using System.Collections.ObjectModel;
 using System.Windows.Forms;
 using System.Drawing;
 using System.Collections;
+using PckView.Args;
+using PckView.Panels;
 using XCom;
 using XCom.Interfaces;
 
@@ -75,10 +78,10 @@ namespace PckView
 			}
 		}
 
-		private void viewClik(int idx)
+        private void viewClik(object sender, PckViewMouseClickArgs e)
 		{
 			if (ViewClicked != null)
-				ViewClicked(idx);
+				ViewClicked(sender, e);
 		}
 
 		public Palette Pal
@@ -110,11 +113,14 @@ namespace PckView
 				scroll.Visible = false;
 		}
 
-		public XCImage Selected
+        public ReadOnlyCollection<ViewPckItemImage> SelectedItems
 		{
-			get { return view.Selected; }
-			set { view.Selected = value; }
+			get { return view.SelectedItems; }
 		}
+        public void ChangeItem(int index, XCImage image)
+        {
+            view.ChangeItem(index, image);
+        }
 
 		public XCImageCollection Collection
 		{
@@ -169,9 +175,9 @@ namespace PckView
 			view.Refresh();
 		}
 
-		private void viewClicked(int x)
-		{
-			click = x;
+        private void viewClicked(object sender, PckViewMouseClickArgs e)
+        { 
+			click = e.ClickedPck;
 			statusOverTile.Text = "Selected: " + click + " Over: " + move;
 		}
 
@@ -185,6 +191,11 @@ namespace PckView
 		{
 			view.Hq2x();
 		}
+         
+	    public void RemoveSelected()
+	    {
+            view.RemoveSelected(); 
+	    }
 	}
 
 	public class XCImageCollectionSetEventArgs

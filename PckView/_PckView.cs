@@ -8,6 +8,7 @@ using System.Data;
 using System.IO;
 using System.Drawing.Imaging;
 using System.Reflection;
+using PckView.Args;
 using XCom;
 using XCom.Interfaces;
 using DSShared;
@@ -21,11 +22,10 @@ namespace PckView
 {
 	public partial class PckViewForm : System.Windows.Forms.Form
 	{
-		private TotalViewPck v;
+        private TotalViewPck v;
 		private Palette currPal;
 		private Form bytesFrame;
 		private RichTextBox bytesText;
-		private int selected;
 		private Editor editor;
 		private MenuItem editImage, replaceImage, saveImage, deleteImage, addMany;
 		private Dictionary<Palette, MenuItem> palMI;
@@ -195,27 +195,35 @@ namespace PckView
 		}
 
 		void sb_Click(object sender, EventArgs e)
-		{
+        {
+            TotalViewPck v = null;
+
+            if (tabs == null)
+                v = TotalViewPck.Instance;
+            else
+            {
+                foreach (object o in tabs.SelectedTab.Controls)
+                    if (o is TotalViewPck)
+                        v = (TotalViewPck)o;
+            }
+		    if (v == null) return;
+
+            if (v.SelectedItems.Count != 1)
+            {
+                MessageBox.Show("Must select 1 item only", Text, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                return;
+            }
+
 			Form f = new Form();
 			RichTextBox rtb = new RichTextBox();
 			rtb.Dock = DockStyle.Fill;
 			f.Controls.Add(rtb);
 
-			TotalViewPck v = null;
 
-			if (tabs == null)
-				v = TotalViewPck.Instance;
-			else
-			{
-				foreach (object o in tabs.SelectedTab.Controls)
-					if (o is TotalViewPck)
-						v = (TotalViewPck)o;
-			}
-
-			foreach (byte b in v.Selected.Bytes)
+			foreach (byte b in v.SelectedItems[0].Image.Bytes)
 				rtb.Text += string.Format("{0:x} ", b);
 
-			f.Text = "Bytes: " + v.Selected.Bytes.Length;
+            f.Text = "Bytes: " + v.SelectedItems[0].Image.Bytes.Length;
 			f.Show();
 		}
 
@@ -291,19 +299,19 @@ namespace PckView
 
 			v.Refresh();
 		}
-
-		private void viewClicked(int click)
-		{
-			selected = click;
-			if (v.Selected != null)
+        
+        private void viewClicked(object sender, PckViewMouseClickArgs e)
+        {
+            if (v.SelectedItems.Count > 0)
 			{
 				editImage.Enabled = true;
 				saveImage.Enabled = true;
 				deleteImage.Enabled = true;
 				if (bytesText != null)
 				{
-					bytesText.Text = v.Selected.ToString();
-					bytesFrame.Text = "Length: " + v.Selected.Bytes.Length;
+				    var selected = v.SelectedItems[v.SelectedItems.Count - 1];
+					bytesText.Text = selected.ToString();
+					bytesFrame.Text = "Length: " + selected.Image.Bytes.Length;
 				}
 			}
 			else //selected is null
@@ -423,35 +431,48 @@ namespace PckView
 			}
 		}
 
-		private void viewClick(object sender, EventArgs e)
-		{
-			if (v.Collection != null)
-			{
-				if (v.Collection.IXCFile.SingleFileName != null)
-				{
-					string fName = v.Collection.Name.Substring(0, v.Collection.Name.IndexOf("."));
-					string ext = v.Collection.Name.Substring(v.Collection.Name.IndexOf(".") + 1);
-					saveBmpSingle.FileName = fName + v.Selected.FileNum;
-				}
-				else
-					saveBmpSingle.FileName = v.Collection.Name + v.Selected.FileNum;
+	    private void viewClick(object sender, EventArgs e)
+	    {
+	        if (v.SelectedItems.Count == 0) return;
+	        var selected = v.SelectedItems[v.SelectedItems.Count - 1];
+	        if (v.Collection != null)
+	        {
+	            if (v.Collection.IXCFile.SingleFileName != null)
+	            {
+	                string fName = v.Collection.Name.Substring(0, v.Collection.Name.IndexOf("."));
+	                string ext = v.Collection.Name.Substring(v.Collection.Name.IndexOf(".") + 1);
+                    saveBmpSingle.FileName = fName + selected.Image.FileNum;
+	            }
+	            else
+                    saveBmpSingle.FileName = v.Collection.Name + selected.Image.FileNum;
 
-				if (saveBmpSingle.ShowDialog() == DialogResult.OK)
-					Bmp.Save(saveBmpSingle.FileName, v.Selected.Image);
-			}
-		}
+	            if (saveBmpSingle.ShowDialog() == DialogResult.OK)
+                    Bmp.Save(saveBmpSingle.FileName, selected.Image.Image);
+	        }
+	    }
 
-		private void replaceClick(object sender, EventArgs e)
+	    private void replaceClick(object sender, EventArgs e)
 		{
-			if (v.Collection != null)
+		    if (v.SelectedItems.Count != 1)
+		    {
+		        MessageBox.Show("Must select 1 item only", Text, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+		        return;
+		    }
+		    if (v.Collection != null )
 			{
-				openBMP.Title = "Selected number: " + selected;
+                var title = string.Empty ;
+                foreach (var selectedIndex in v.SelectedItems)
+                {
+                    if (title != string.Empty) title += ", ";
+                    title += selectedIndex.Item.Index ;
+                }
+                openBMP.Title = "Selected number: " + title;
 				openBMP.Multiselect = false;
 				if (openBMP.ShowDialog() == DialogResult.OK)
 				{
-					Bitmap b = new Bitmap(openBMP.FileName);
-
-					v.Selected = Bmp.Load(b, v.Pal, v.Collection.IXCFile.ImageSize.Width, v.Collection.IXCFile.ImageSize.Height,1)[0];
+					var b = new Bitmap(openBMP.FileName);
+                    var image = Bmp.Load(b, v.Pal, v.Collection.IXCFile.ImageSize.Width, v.Collection.IXCFile.ImageSize.Height, 1)[0];
+                    v.ChangeItem(v.SelectedItems[0].Item.Index, image);
 					Refresh();
 				}
 
@@ -466,28 +487,31 @@ namespace PckView
 
 		private void removeClick(object sender, EventArgs e)
 		{
-			v.Collection.Remove(selected);
+		    v.RemoveSelected();
 			UpdateText();
 			Refresh();
 		}
 
 		private void showBytes_Click(object sender, System.EventArgs e)
 		{
+            if (v.SelectedItems.Count == 0) return;
+            var selected = v.SelectedItems[v.SelectedItems.Count - 1];
+
 			if (showBytes.Checked)
 				bytesFrame.BringToFront();
-			else if (v.Selected != null)
+            else if (selected != null)
 			{
 				bytesFrame = new Form();
 				bytesText = new RichTextBox();
 				bytesText.Dock = DockStyle.Fill;
 				bytesFrame.Controls.Add(bytesText);
 
-				foreach (byte b in v.Selected.Bytes)
+                foreach (byte b in selected.Image.Bytes)
 					bytesText.Text += b + " ";
 
 				bytesFrame.Closing += new CancelEventHandler(bClosing);
 				bytesFrame.Location = new Point(this.Right, this.Top);
-				bytesFrame.Text = "Length: " + v.Selected.Bytes.Length;
+                bytesFrame.Text = "Length: " + selected.Image.Bytes.Length;
 				bytesFrame.Show();
 				showBytes.Checked = true;
 			}
@@ -518,10 +542,13 @@ namespace PckView
 		}
 
 		private void editClick(object sender, EventArgs e)
-		{
-			if (v.Selected != null)
+        {
+            if (v.SelectedItems.Count == 0) return;
+            var selected = v.SelectedItems[v.SelectedItems.Count - 1];
+
+            if (selected != null)
 			{
-				editor.CurrImage = (XCImage)v.Selected.Clone();
+                editor.CurrImage = (XCImage)selected.Image.Clone();
 
 				if (editor.Visible)
 					editor.BringToFront();
@@ -552,20 +579,22 @@ namespace PckView
 			Refresh();
 		}
 
-		private void PckView_KeyDown(object sender, System.Windows.Forms.KeyEventArgs e)
+		private void PckView_KeyDown(object sender, KeyEventArgs e)
 		{
-			if (e.KeyCode == Keys.Delete && deleteImage.Enabled && selected < v.Collection.Count)
-				removeClick(null, null);
+		    if (e.KeyCode == Keys.Delete && deleteImage.Enabled)
+		    {
+                removeClick(null, null);
+		    }
 		}
 
-		private void miModList_Click(object sender, System.EventArgs e)
+		private void miModList_Click(object sender, EventArgs e)
 		{
 			ModForm mf = new ModForm();
 			mf.SharedSpace = sharedSpace;
 			mf.ShowDialog();
 		}
 
-		private void miSaveDir_Click(object sender, System.EventArgs e)
+		private void miSaveDir_Click(object sender, EventArgs e)
 		{
 			if (v.Collection != null)
 			{

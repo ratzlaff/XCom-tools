@@ -1,13 +1,18 @@
 using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Windows.Forms;
 using System.Drawing;
 using System.Drawing.Imaging;
+using PckView.Args;
+using PckView.Panels;
 using XCom.Interfaces;
 using XCom;
 
 namespace PckView
 {
-	public delegate void PckViewMouseClicked(int num);
+
+    public delegate void PckViewMouseClicked(object sender, PckViewMouseClickArgs e);
 	public delegate void PckViewMouseMoved(int moveNum);
 
 	public class ViewPck : Panel
@@ -17,24 +22,27 @@ namespace PckView
 		private int space=2;
 		private Color goodColor = Color.FromArgb(204,204,255);
 		private SolidBrush goodBrush = new SolidBrush(Color.FromArgb(204,204,255));
-		private int clickX, clickY,moveX, moveY;
-		private int startY;
+	    private int _moveX;
+        private int _moveY;
+		private int _startY;
+	    private readonly List<ViewPckItem> _selectedItems;
 
 		public event PckViewMouseClicked ViewClicked;
 		public event PckViewMouseMoved ViewMoved;
 
-		public ViewPck()
-		{
-			//pckFile=null;
-			this.Paint+=new PaintEventHandler(paint);	
-			this.SetStyle(ControlStyles.DoubleBuffer|ControlStyles.UserPaint|ControlStyles.AllPaintingInWmPaint,true);
-			this.MouseDown+=new MouseEventHandler(click);
-			this.MouseMove+=new MouseEventHandler(moving);
-			clickX = clickY = -1;
-			startY=0;	
-		}
+	    public ViewPck()
+	    {
+	        //pckFile=null;
+	        Paint += paint;
+	        SetStyle(ControlStyles.DoubleBuffer | ControlStyles.UserPaint | ControlStyles.AllPaintingInWmPaint, true);
+	        MouseDown += click;
+	        MouseMove += moving;
+	        _startY = 0;
 
-		//saves a bitmap as a 8-bit image
+	        _selectedItems = new List<ViewPckItem>();
+	    }
+
+	    //saves a bitmap as a 8-bit image
 		public void SaveBMP(string file,Palette pal)
 		{
 			Bmp.SaveBMP(file,myFile,pal,numAcross(),1);
@@ -53,7 +61,7 @@ namespace PckView
 
 		public int StartY
 		{
-			set{startY=value;Refresh();}
+			set{_startY=value;Refresh();}
 		}
 
 		public int PreferredHeight
@@ -82,78 +90,179 @@ namespace PckView
 			}	
 		}
 
-		public XCImage Selected
+        public ReadOnlyCollection<ViewPckItemImage> SelectedItems
 		{
-			get{if(myFile!=null)return myFile[clickY*numAcross()+clickX];return null;}
-			set{if(myFile!=null)myFile[clickY*numAcross()+clickX]=value;}
+		    get
+		    {
+		        if (myFile == null) return null;
+		        var list = new List<ViewPckItemImage>();
+		        foreach (var selectedItem in _selectedItems)
+		        {
+		            var item = new ViewPckItemImage();
+                    item.Item = selectedItem;
+                    item.Image = myFile[ GetIndexOf(selectedItem)];
+                    list.Add(item);
+		        }
+                return list.AsReadOnly(); 
+		    } 
 		}
 
-		private void moving(object sender, MouseEventArgs e)
+	    public void ChangeItem(int index, XCImage image)
+	    {
+            myFile[index] = image;
+	    }
+
+	    private void moving(object sender, MouseEventArgs e)
 		{
 			if(myFile!=null)
 			{
-				int x = e.X/(myFile.IXCFile.ImageSize.Width+2*space);
-				int y = (e.Y-startY)/(myFile.IXCFile.ImageSize.Height+2*space);
+				int x = e.X/ GetSpecialWidth(myFile.IXCFile.ImageSize.Width );
+				int y = (e.Y-_startY)/(myFile.IXCFile.ImageSize.Height+2*space);
 
-				if(x!=moveX || y != moveY)
+				if(x!=_moveX || y != _moveY)
 				{
-					moveX = x;
-					moveY = y;
+					_moveX = x;
+					_moveY = y;
 
-					if(moveX>=numAcross())moveX=numAcross()-1;
+					if(_moveX>=numAcross())_moveX=numAcross()-1;
 
 					if(ViewMoved != null)
-						ViewMoved(moveY*numAcross()+moveX);
+						ViewMoved(_moveY*numAcross()+_moveX);
 				}
 			}
 		}
 
-		private void click(object sender, MouseEventArgs e)
-		{
-			if(myFile!=null)
-			{
-				clickX = e.X/(myFile.IXCFile.ImageSize.Width+2*space);
-				clickY = (e.Y-startY)/(myFile.IXCFile.ImageSize.Height+2*space);
+	    private void click(object sender, MouseEventArgs e)
+	    {
+	        if (myFile == null) return;
 
-				if(clickX>=numAcross())clickX=numAcross()-1;
+	        var x = e.X / GetSpecialWidth(myFile.IXCFile.ImageSize.Width );
+	        var y = (e.Y - _startY) / (myFile.IXCFile.ImageSize.Height + 2 * space);
 
-				Refresh();
+	        if (x >= numAcross()) x = numAcross() - 1;
 
-				if(ViewClicked != null)
-					ViewClicked(clickY*numAcross()+clickX);
-			}
-		}
+	        var index = y * numAcross() + x;
+	        var selected = new ViewPckItem();
+            selected.X = x;
+            selected.Y = y;
+            selected.Index = index;
 
-		private void paint(object sender, PaintEventArgs e)
-		{
-			if(myFile!=null && myFile.Count>0)
-			{
-				Graphics g = e.Graphics;
-				if(myFile.IXCFile.FileOptions.BitDepth==8 && myFile[0].Palette.Transparent.A==0)
-					g.FillRectangle(goodBrush,clickX*(myFile.IXCFile.ImageSize.Width+2*space)-space,startY+clickY*(myFile.IXCFile.ImageSize.Height+2*space)-space,myFile.IXCFile.ImageSize.Width+2*space,myFile.IXCFile.ImageSize.Height+2*space);
-				else
-					g.FillRectangle(Brushes.Red,clickX*(myFile.IXCFile.ImageSize.Width+2*space)-space,startY+clickY*(myFile.IXCFile.ImageSize.Height+2*space)-space,myFile.IXCFile.ImageSize.Width+2*space,myFile.IXCFile.ImageSize.Height+2*space);
+            if (ModifierKeys == Keys.Control)
+            {
+                ViewPckItem existingItem = null;
+                foreach (var item in _selectedItems)
+                {
+                    if (item.X != x || item.Y != y) continue;
+                    existingItem = item;
+                }
 
-				for(int i=0;i<numAcross()+1;i++)
-					g.DrawLine(Pens.Black,new Point(i*(myFile.IXCFile.ImageSize.Width+2*space)-space,startY),new Point(i*(myFile.IXCFile.ImageSize.Width+2*space)-space,Height-startY));
-				for(int i=0;i<myFile.Count/numAcross()+1;i++)
-					g.DrawLine(Pens.Black,new Point(0,startY+i*(myFile.IXCFile.ImageSize.Height+2*space)-space),new Point(Width,startY+i*(myFile.IXCFile.ImageSize.Height+2*space)-space));
+                if (existingItem != null)
+                {
+                    _selectedItems.Remove(existingItem);
+                }
+                else
+                {
+                    _selectedItems.Add(selected);
+                }
+            }
+            else
+            {
+                _selectedItems.Clear();
+                _selectedItems.Add(selected);
+            }
 
-				for(int i=0;i<myFile.Count;i++)
-				{
-					int x = i%numAcross();
-					int y = i/numAcross();
-					try
-					{
-						g.DrawImage(myFile[i].Image,x*(myFile.IXCFile.ImageSize.Width+2*space),startY+y*(myFile.IXCFile.ImageSize.Height+2*space));
-					}
-					catch(Exception)
-					{}
-				}
-			}
-		}
+	        Refresh();
 
-		private int numAcross()
+	        if (ViewClicked != null)
+	        {
+	            var args = new PckViewMouseClickArgs(e, index);
+	            ViewClicked(this, args);
+	        }
+	    }
+
+	    private void paint(object sender, PaintEventArgs e)
+	    {
+	        if (myFile == null || myFile.Count <= 0) return;
+	        var g = e.Graphics;
+
+	        var specialWidth =   GetSpecialWidth(myFile.IXCFile.ImageSize.Width );
+
+	        foreach (var selectedItem in _selectedItems)
+	        {
+	            if (myFile.IXCFile.FileOptions.BitDepth == 8 && myFile[0].Palette.Transparent.A == 0)
+	            {
+	                g.FillRectangle(
+	                    goodBrush,
+	                    selectedItem.X * specialWidth - space,
+	                    _startY + selectedItem.Y * (myFile.IXCFile.ImageSize.Height + 2 * space) - space,
+                        specialWidth, myFile.IXCFile.ImageSize.Height + 2 * space);
+	            }
+	            else
+	            {
+	                g.FillRectangle(
+	                    Brushes.Red,
+                        selectedItem.X * specialWidth - space,
+	                    _startY + selectedItem.Y * (myFile.IXCFile.ImageSize.Height + 2 * space) - space,
+                        specialWidth, myFile.IXCFile.ImageSize.Height + 2 * space);
+	            }
+	        }
+
+	        for (int i = 0; i < numAcross() + 1; i++)
+                g.DrawLine(Pens.Black, new Point(i * specialWidth - space, _startY),
+                    new Point(i * specialWidth - space, Height - _startY));
+	        for (int i = 0; i < myFile.Count / numAcross() + 1; i++)
+	            g.DrawLine(Pens.Black, new Point(0, _startY + i * (myFile.IXCFile.ImageSize.Height + 2 * space) - space),
+	                new Point(Width, _startY + i * (myFile.IXCFile.ImageSize.Height + 2 * space) - space));
+
+	        for (int i = 0; i < myFile.Count; i++)
+	        {
+	            int x = i % numAcross();
+	            int y = i / numAcross();
+	            try
+	            {
+                    g.DrawImage(myFile[i].Image, x * specialWidth,
+	                    _startY + y * (myFile.IXCFile.ImageSize.Height + 2 * space));
+	            }
+	            catch (Exception)
+	            {
+	            }
+	        }
+	    }
+
+        public void RemoveSelected()
+        {
+            if (SelectedItems.Count == 0) return;
+
+            var lowestIndex = int.MaxValue;
+            var indexList = new List<int>();
+            foreach (var item in SelectedItems)
+            {
+                indexList.Add(item.Item.Index); 
+            }
+            indexList.Sort();
+            indexList.Reverse();
+            foreach (var index in indexList)
+            { 
+                if (index < lowestIndex) lowestIndex = index;
+                Collection.Remove(index);
+            }
+            if (Collection.Count == lowestIndex && lowestIndex > 0) lowestIndex = Collection.Count - 1;
+            ClearSelection(lowestIndex);
+        }
+
+        private void ClearSelection(int lowestIndex)
+        {
+            _selectedItems.Clear();
+            if (Collection.Count == 0) return;
+            var selected = new ViewPckItem();
+            selected.Y = lowestIndex / numAcross();
+            selected.X = lowestIndex - selected.Y;
+            selected.Index = selected.Y * numAcross() + selected.X;
+
+            _selectedItems.Add(selected);
+        }
+
+	    private int numAcross()
 		{
 			return Math.Max(1,(Width-8)/(myFile.IXCFile.ImageSize.Width+2*space));
 		}
@@ -162,5 +271,15 @@ namespace PckView
 		{
 			return (((myFile.Count)/numAcross()))*(myFile.IXCFile.ImageSize.Height+2*space)+60;
 		}
+
+        private int GetIndexOf(ViewPckItem selectedItem)
+        {
+            return selectedItem.Y * numAcross() + selectedItem.X;
+        }
+
+        private int GetSpecialWidth(int width)
+        {
+            return width + 2 * space;
+        } 
 	}
 }
