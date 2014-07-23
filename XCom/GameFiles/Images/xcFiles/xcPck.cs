@@ -19,36 +19,37 @@ namespace XCom.GameFiles.Images.xcFiles
 			expDesc = "Pck File";
 		}
 
-		protected override XCImageCollection LoadFileOverride(string directory,string file,int imgWid,int imgHei,Palette pal)
+		protected override XCImageCollection LoadFileOverride(
+            string directory,string file,int imgWid,int imgHei,Palette pal)
 		{
 			System.IO.Stream tabStream=null;
+            string tabBase = file.Substring(0, file.LastIndexOf("."));
+            var tabFilePath = directory + "\\" + tabBase + TAB_EXT;
 
-			string tabBase = file.Substring(0,file.LastIndexOf("."));
-
-			try
-			{
-			    if(System.IO.File.Exists(directory+"\\"+tabBase+TAB_EXT))
-			        tabStream = System.IO.File.OpenRead(directory+"\\"+tabBase+TAB_EXT);
-
-			    return new PckFile(System.IO.File.OpenRead(directory+"\\"+file),
-			        tabStream,
-			        2,
-			        pal,
-			        imgHei,
-			        imgWid);
-			}
-			catch(Exception)
-			{
-				if(System.IO.File.Exists(directory+"\\"+tabBase+TAB_EXT))
-					tabStream = System.IO.File.OpenRead(directory+"\\"+tabBase+TAB_EXT);
-
-				return new PckFile(System.IO.File.OpenRead(directory+"\\"+file),
-					tabStream,
-					4,
-					pal,
-					imgHei,
-					imgWid);
-			}
+            if (System.IO.File.Exists(tabFilePath))
+                tabStream = System.IO.File.OpenRead(tabFilePath);
+            using (tabStream)
+            using (var pckStream = System.IO.File.OpenRead(directory + "\\" + file))
+		    {
+		        try
+		        {
+		            return new PckFile(pckStream,
+		                tabStream,
+		                2,
+		                pal,
+		                imgHei,
+		                imgWid);
+		        }
+		        catch (Exception)
+		        {
+                    return new PckFile(pckStream,
+		                tabStream,
+		                4,
+		                pal,
+		                imgHei,
+		                imgWid);
+		        }
+		    }
 		}
 
 		private System.Windows.Forms.Panel SavingOptions

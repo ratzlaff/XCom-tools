@@ -626,14 +626,15 @@ namespace MapView
 
 		private void miResize_Click(object sender, System.EventArgs e)
 		{
-			ChangeMapSizeForm cmf = new ChangeMapSizeForm();
-			cmf.Map = mapView.View.Map;
-			if (cmf.ShowDialog(this) == DialogResult.OK)
-			{
-				cmf.Map.ResizeTo(cmf.NewRows, cmf.NewCols, cmf.NewHeight);
-				//mapView.View.Map.ResizeTo(cmf.NewRows, cmf.NewCols, cmf.NewHeight);
-				mapView.ForceResize();
-			}
+		    using (var cmf = new ChangeMapSizeForm())
+		    {
+		        cmf.Map = mapView.View.Map;
+		        if (cmf.ShowDialog(this) == DialogResult.OK)
+		        {
+		            cmf.Map.ResizeTo(cmf.NewRows, cmf.NewCols, cmf.NewHeight);
+		            mapView.ForceResize();
+		        }
+		    }
 		}
 
 		private bool windowFlag = false;

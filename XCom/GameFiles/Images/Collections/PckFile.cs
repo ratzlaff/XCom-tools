@@ -13,7 +13,8 @@ namespace XCom
 		private int bpp;
 		public static readonly string TAB_EXT = ".tab";
 
-		public PckFile(Stream pckFile, Stream tabFile,int bpp,Palette pal,int imgHeight,int imgWidth)
+		public PckFile(Stream pckFile, Stream tabFile,int bpp,Palette pal,
+            int imgHeight,int imgWidth)
 		{
 			if(tabFile!=null)
 				tabFile.Position=0;
@@ -22,7 +23,6 @@ namespace XCom
 
 			byte[] info = new byte[pckFile.Length];
 			pckFile.Read(info,0,info.Length);
-			pckFile.Close();
 
 			this.bpp=bpp;
 
@@ -59,10 +59,6 @@ namespace XCom
 
 				Add(new PckImage(i,imgDat,pal,this,imgHeight,imgWidth));
 			}
-
-			pckFile.Close();
-			if(tabFile!=null)
-				tabFile.Close();
 		}
 
 		public PckFile(Stream pckFile, Stream tabFile,int bpp,Palette pal):this(pckFile,tabFile,bpp,pal,40,32)

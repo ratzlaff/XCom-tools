@@ -180,7 +180,7 @@ namespace MapView
 			    if (MCDInfoForm == null)
 			    {
                     MCDInfoForm = new McdViewerForm();
-			        MCDInfoForm.Size = new Size(500, 870);
+			        MCDInfoForm.Size = new Size(480, 670);
 			        MCDInfoForm.Closing += infoTabClosing;
 			       
                     var tile = SelectedTile;

@@ -109,10 +109,17 @@ namespace XCom
 				pckHash.Add(p, new Dictionary<string, PckFile>());
 
 			//if(pckHash[p][basePath+basename]==null)
-			if(!pckHash[p].ContainsKey(basePath+basename))
-				pckHash[p].Add(basePath+basename,new PckFile(File.OpenRead(basePath+basename+".PCK"),File.OpenRead(basePath+basename+".TAB"),bpp,p));
+		    var path = basePath + basename;
+            if (!pckHash[p].ContainsKey(path))
+            {
+                using (var pckStream = File.OpenRead(path + ".PCK"))
+                using (var tabStream = File.OpenRead(path + ".TAB"))
+                {
+                    pckHash[p].Add(path, new PckFile(pckStream, tabStream, bpp,p));
+                }
+            }
 
-			return pckHash[p][basePath+basename];
+		    return pckHash[p][basePath+basename];
 		}
 	}
 }

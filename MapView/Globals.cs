@@ -21,10 +21,11 @@ namespace MapView
 		{
 			if (extraTiles == null)
 			{
-				System.IO.Stream sPck = System.Reflection.Assembly.GetExecutingAssembly().GetManifestResourceStream("MapView._Embedded.Extra.PCK");
-				System.IO.Stream sTab = System.Reflection.Assembly.GetExecutingAssembly().GetManifestResourceStream("MapView._Embedded.Extra.TAB");
-
-				extraTiles = new XCom.PckFile(sPck, sTab, 2, XCom.Palette.TFTDBattle);
+			    using (System.IO.Stream sPck = System.Reflection.Assembly.GetExecutingAssembly().GetManifestResourceStream("MapView._Embedded.Extra.PCK"))
+			    using (System.IO.Stream sTab = System.Reflection.Assembly.GetExecutingAssembly().GetManifestResourceStream("MapView._Embedded.Extra.TAB"))
+			    {
+			        extraTiles = new XCom.PckFile(sPck, sTab, 2, XCom.Palette.TFTDBattle);
+			    }
 			}
 		}
 	}
