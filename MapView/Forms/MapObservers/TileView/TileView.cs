@@ -197,7 +197,9 @@ namespace MapView
             {
                 editor.SelectedPalette = image.GetPckFile().Pal.Name;
                 editor.LoadPckFile(path);
-                editor.ShowDialog();
+                var owner = Owner;
+                if (owner == null) owner = this;
+                editor.ShowDialog(owner);
             }
         }
 

@@ -45,15 +45,16 @@ namespace PckView
 			sharedSpace = SharedSpace.Instance;
 
             if (sharedSpace.GetObj("xConsole") == null || console == null)
-			{
-				console = (ConsoleForm)sharedSpace.GetObj("xConsole", new ConsoleForm());
-				console.FormClosing += delegate(object sender, FormClosingEventArgs e)
-				{
-					e.Cancel = true;
-					console.Hide();
-				};
-			}
-			console.Show();
+            {
+                console = (ConsoleForm) sharedSpace.GetObj("xConsole", new ConsoleForm());
+                console.FormClosing += delegate(object sender, FormClosingEventArgs e)
+                {
+                    e.Cancel = true;
+                    console.Hide();
+                };
+                FormClosed += (sender, e) => console.Close();
+            }
+            console.Show();
 
 			sharedSpace.GetObj("PckView",this);
 			sharedSpace.GetObj("AppDir", Environment.CurrentDirectory);
