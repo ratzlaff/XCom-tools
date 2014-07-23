@@ -31,7 +31,7 @@ namespace MapView.Forms.Error
             this.label1 = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
             this.ErrorDetailsPanel = new System.Windows.Forms.GroupBox();
-            this.DetailsLabel = new System.Windows.Forms.Label();
+            this.DetailsLabel = new System.Windows.Forms.TextBox();
             this.CloseButton = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.ErrorDetailsPanel.SuspendLayout();
@@ -67,7 +67,7 @@ namespace MapView.Forms.Error
             this.ErrorDetailsPanel.Location = new System.Drawing.Point(0, 0);
             this.ErrorDetailsPanel.Margin = new System.Windows.Forms.Padding(0);
             this.ErrorDetailsPanel.Name = "ErrorDetailsPanel";
-            this.ErrorDetailsPanel.Size = new System.Drawing.Size(465, 20);
+            this.ErrorDetailsPanel.Size = new System.Drawing.Size(465, 18);
             this.ErrorDetailsPanel.TabIndex = 0;
             this.ErrorDetailsPanel.TabStop = false;
             this.ErrorDetailsPanel.Text = "Error Details";
@@ -76,8 +76,11 @@ namespace MapView.Forms.Error
             // 
             this.DetailsLabel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.DetailsLabel.Location = new System.Drawing.Point(3, 16);
+            this.DetailsLabel.Multiline = true;
             this.DetailsLabel.Name = "DetailsLabel";
-            this.DetailsLabel.Size = new System.Drawing.Size(459, 1);
+            this.DetailsLabel.ReadOnly = true;
+            this.DetailsLabel.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.DetailsLabel.Size = new System.Drawing.Size(459, 0);
             this.DetailsLabel.TabIndex = 1;
             this.DetailsLabel.Text = "Error Details go here";
             // 
@@ -106,6 +109,7 @@ namespace MapView.Forms.Error
             this.Load += new System.EventHandler(this.ErrorWindow_Load);
             this.panel1.ResumeLayout(false);
             this.ErrorDetailsPanel.ResumeLayout(false);
+            this.ErrorDetailsPanel.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -115,7 +119,7 @@ namespace MapView.Forms.Error
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.GroupBox ErrorDetailsPanel;
-        private System.Windows.Forms.Label DetailsLabel;
+        private System.Windows.Forms.TextBox DetailsLabel;
         private System.Windows.Forms.Button CloseButton;
     }
 }

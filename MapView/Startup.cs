@@ -22,19 +22,25 @@ namespace MapView
             Application.EnableVisualStyles(); 
             Application.SetCompatibleTextRenderingDefault(false);
             Application.ThreadException += Application_ThreadException;
+            try
+            {
+                MainWindow mw = new MainWindow();
+                // mw.SendMessage += new StringDelegate(mw_SendMessage);
 
-            MainWindow mw = new MainWindow();
-           // mw.SendMessage += new StringDelegate(mw_SendMessage);
+                Application.Run(mw);
 
-            Application.Run(mw);
-
-            // Get this AppDomain's settings and display some of them.
-            //AppDomainSetup ads = AppDomain.CurrentDomain.SetupInformation;
-            //Console.WriteLine("AppName={0}, AppBase={1}, ConfigFile={2}",
-            //    ads.ApplicationName,
-            //    ads.ApplicationBase,
-            //    ads.ConfigurationFile
-            //);
+                // Get this AppDomain's settings and display some of them.
+                //AppDomainSetup ads = AppDomain.CurrentDomain.SetupInformation;
+                //Console.WriteLine("AppName={0}, AppBase={1}, ConfigFile={2}",
+                //    ads.ApplicationName,
+                //    ads.ApplicationBase,
+                //    ads.ConfigurationFile
+                //);
+            }
+            catch (Exception ex)
+            {
+                _errorHandler.HandleException(ex);
+            }
         }
 
         void mw_SendMessage(object sender, string args)
