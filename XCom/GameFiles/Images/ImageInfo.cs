@@ -16,7 +16,12 @@ namespace XCom
 
 		public ImageDescriptor this[string name]
 		{
-			get{return images[name.ToUpper()];}
+		    get
+		    {
+		        var key = name.ToUpper();
+		        if (!images.ContainsKey(key)) return null;
+                return images[key];
+		    }
 			set{images[name.ToUpper()]=value;}
 		}
 

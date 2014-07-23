@@ -6,7 +6,6 @@ namespace XCom
 {
 	public class XCTile : XCom.Interfaces.Base.ITile
 	{
-		private McdFile mcdFile;
 		
 		private XCTile dead;
 		private XCTile alternate;
@@ -14,11 +13,10 @@ namespace XCom
 		private XCTile[] tiles;
 		private const int numImages=8;
 
-		public XCTile(int id,PckFile file, McdEntry info,McdFile mFile):base(id)
+		public XCTile(int id,PckFile file, McdEntry info ):base(id)
 		{
 			this.info = info;
 			myFile = file;
-			mcdFile = mFile;
 
 			image = new PckImage[numImages];	
 	

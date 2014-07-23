@@ -10,10 +10,10 @@ namespace XCom
 	{
 		private readonly XCTile[] _tiles;
 
-        internal McdFile(XcTileFactory xcTileFactory)
-	    {
-            _tiles = xcTileFactory.CreateTiles(this); 
-	    }
+        internal McdFile(XCTile[] tiles)
+        {
+            _tiles = tiles;
+        }
 
 	    public IEnumerator GetEnumerator()
 		{

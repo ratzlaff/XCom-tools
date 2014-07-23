@@ -39,14 +39,13 @@ namespace XCom
 			ImageInfo images = GameInfo.ImageInfo;
 
 			List<ITile> a = new List<ITile>();
-			//if (p == null)
-			//    p = GameInfo.DefaultPalette;
 
 			foreach (string s in dependencies)
 			{
-				if (images[s] != null)
+			    var image = images[s];
+				if (image != null)
 				{
-					McdFile mcd = images[s].GetMcdFile(myPal);
+					McdFile mcd = image.GetMcdFile(myPal);
 					foreach (XCTile t in mcd)
 						a.Add(t);
 				}

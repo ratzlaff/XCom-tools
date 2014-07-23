@@ -10,31 +10,25 @@ namespace XCom
 	/// </summary>
 	public class ImageDescriptor:IComparable
 	{
-		private string basename;
-		private string basePath;
 		//private PckFile myPck;
 		//private McdFile myMcd;
-		private Hashtable pckTab,mcdTab;
+		private readonly Hashtable mcdTab;
 
-		public ImageDescriptor(string basename)
+		public ImageDescriptor(string baseName)
 		{
-			this.basename = basename;
-			basePath="";
-			pckTab = new Hashtable(3);
+			BaseName = baseName;
+			BasePath="";
 			mcdTab = new Hashtable(3);
 		}
 
-		public ImageDescriptor(string basename, string path):this(basename)
+		public ImageDescriptor(string baseName, string path):this(baseName)
 		{
-			basePath=path;
+			BasePath=path;
 		}
 
 		public PckFile GetPckFile(Palette p)
-		{
-			if(pckTab[p]==null)			
-				pckTab[p] = GameInfo.CachePck(basePath,basename,2,p);//new PckFile(File.OpenRead(basePath+basename+".PCK"),File.OpenRead(basePath+basename+".TAB"),2,p,screen);//GameInfo.GetPckFile(basename,basePath,p,2,screen);
-			
-			return (PckFile)pckTab[p];
+        {
+            return GameInfo.CachePck(BasePath, BaseName, 2, p);//new PckFile(File.OpenRead(basePath+basename+".PCK"),File.OpenRead(basePath+basename+".TAB"),2,p,screen);//GameInfo.GetPckFile(basename,basePath,p,2,screen);
 		}
 
 		public PckFile GetPckFile()
@@ -46,8 +40,9 @@ namespace XCom
 		{
 		    if (mcdTab[p] == null)
 		    {
-                var xcTileFactory = new XcTileFactory(basename, basePath, GetPckFile(p));
-                mcdTab[p] = new McdFile(xcTileFactory);
+                var xcTileFactory = new XcTileFactory();
+		        var tiles = xcTileFactory.CreateTiles(BaseName, BasePath, GetPckFile(p));
+                mcdTab[p] = new McdFile(tiles);
 		    }
 		    return (McdFile)mcdTab[p];
 		}
@@ -59,23 +54,16 @@ namespace XCom
 
 		public override string ToString()
 		{
-			return basename;
+			return BaseName;
 		}
 
 		public int CompareTo(object other)
 		{
-			return basename.CompareTo(other.ToString());
+			return BaseName.CompareTo(other.ToString());
 		}
 
-		public string BaseName
-		{
-			get{return basename;}
-		}
+		public string BaseName { get; private set; }
 
-		public string BasePath
-		{
-			get{return basePath;}
-			set{basePath=value;}
-		}
+		public string BasePath{get; set; }
 	}
 }

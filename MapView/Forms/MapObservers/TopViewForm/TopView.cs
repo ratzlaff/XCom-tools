@@ -288,12 +288,12 @@ namespace MapView.TopViewForm
 
 		private void btnUp_Click(object sender, EventArgs e)
 		{
-			map.Up();
+			Map.Up();
 		}
 
 		private void btnDown_Click(object sender, EventArgs e)
 		{
-			map.Down();
+			Map.Down();
 		}
 	}
 }

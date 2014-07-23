@@ -9,7 +9,7 @@ namespace MapView
 {
 	public class Map_Observer_Form: Form, IMap_Observer
 	{
-		protected IMap_Base map;
+        private IMap_Base map;
 		private DSShared.Windows.RegistryInfo registryInfo;
 		private MenuItem menuItem;
 		private Settings settings;

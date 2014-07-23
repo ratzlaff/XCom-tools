@@ -39,7 +39,8 @@ namespace PckView
 
 		public override void SaveCollection(string directory, string file, XCom.XCImageCollection images)
 		{
-			TotalViewPck.Instance.View.SaveBMP(directory + "//" + file + ".bmp", TotalViewPck.Instance.Pal);
+		    throw new NotImplementedException();
+            //TotalViewPck.Instance.View.SaveBMP(directory + "//" + file + ".bmp", TotalViewPck.Instance.Pal);
 		}
 	}
 }

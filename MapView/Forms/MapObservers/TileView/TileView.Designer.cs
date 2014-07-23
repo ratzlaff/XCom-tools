@@ -23,13 +23,16 @@ namespace MapView
             this.wWallsTab = new System.Windows.Forms.TabPage();
             this.nWallsTab = new System.Windows.Forms.TabPage();
             this.objectsTab = new System.Windows.Forms.TabPage();
+            this.menuItem2 = new System.Windows.Forms.MenuItem();
+            this.EditPckMenuItem = new System.Windows.Forms.MenuItem();
             this.tabs.SuspendLayout();
             this.SuspendLayout();
             // 
             // menu
             // 
             this.menu.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
-            this.menuItem1});
+            this.menuItem1,
+            this.menuItem2});
             // 
             // menuItem1
             // 
@@ -98,6 +101,19 @@ namespace MapView
             this.objectsTab.TabIndex = 3;
             this.objectsTab.Text = "Objects";
             // 
+            // menuItem2
+            // 
+            this.menuItem2.Index = 1;
+            this.menuItem2.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
+            this.EditPckMenuItem});
+            this.menuItem2.Text = "PCK";
+            // 
+            // EditPckMenuItem
+            // 
+            this.EditPckMenuItem.Index = 0;
+            this.EditPckMenuItem.Text = "Edit PCK";
+            this.EditPckMenuItem.Click += new System.EventHandler(this.EditPckMenuItem_Click);
+            // 
             // TileView
             // 
             this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
@@ -124,6 +140,9 @@ namespace MapView
             base.Dispose(disposing);
         }
         #endregion
+
+        private System.Windows.Forms.MenuItem menuItem2;
+        private System.Windows.Forms.MenuItem EditPckMenuItem;
 
     }
 }

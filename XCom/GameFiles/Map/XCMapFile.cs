@@ -11,19 +11,19 @@ namespace XCom
 {
 	public class XCMapFile : IMap_Base
 	{
-		private string basename, basePath, blankPath;
-		private RmpFile rmpFile;
+	    private string blankPath;
+	    private RmpFile rmpFile;
 		private string[] dependencies;
 
-		public XCMapFile(string basename, string basePath, string blankPath, List<ITile> tiles, string[] depList)
-			: base(basename, tiles)
+		public XCMapFile(string baseName, string basePath, string blankPath, List<ITile> tiles, string[] depList)
+			: base(baseName, tiles)
 		{
-			this.basename = basename;
-			this.basePath = basePath;
+			this.BaseName = baseName;
+			this.BasePath = basePath;
 			this.blankPath = blankPath;
 			dependencies = depList;
 
-		    var filePath = basePath + basename + ".MAP";
+		    var filePath = basePath + baseName + ".MAP";
 		    if (!File.Exists(filePath))
 		    {
 		        throw new FileNotFoundException(filePath);
@@ -34,11 +34,11 @@ namespace XCom
 
             readMap(File.OpenRead(filePath), tiles);
 
-			if (File.Exists(blankPath + basename + BlankFile.Extension))
+			if (File.Exists(blankPath + baseName + BlankFile.Extension))
 			{
 				try
 				{
-					BlankFile.LoadBlanks(basename, blankPath, this);
+					BlankFile.LoadBlanks(baseName, blankPath, this);
 				}
 				catch
 				{
@@ -54,6 +54,9 @@ namespace XCom
 				SaveBlanks();
 			}
 		}
+
+        public string BaseName { get; private set; }
+        public string BasePath { get; private set; }
 
 		public void Hq2x()
 		{
@@ -80,7 +83,7 @@ namespace XCom
 
 		public void SaveBlanks()
 		{
-			BlankFile.SaveBlanks(basename, blankPath, this);
+			BlankFile.SaveBlanks(BaseName, blankPath, this);
 		}
 
 		public void CalcDrawAbove()
@@ -110,12 +113,7 @@ namespace XCom
 					}
 				}
 		}
-
-		public string BaseName
-		{
-			get { return basename; }
-		}
-
+         
 		/// <summary>
 		/// Writes a blank map to the Stream provided
 		/// </summary>
@@ -140,7 +138,7 @@ namespace XCom
 
 		public override void Save()
 		{
-			Save(File.Create(basePath + basename + ".MAP"));
+			Save(File.Create(BasePath + BaseName + ".MAP"));
 		}
 
 		public override void Save(FileStream s)
@@ -243,5 +241,18 @@ namespace XCom
 				return XCMapTile.BlankTile;
 			}
 		}
+
+	    public string GetDependecyName(ITile selectedTile)
+	    {
+	        var dependencyId = -1;
+	        foreach (var tile in Tiles)
+	        {
+	            if (tile.ID == 0) dependencyId ++;
+	            if (tile == selectedTile) break;
+	        }
+	        if (dependencyId == -1 ||
+	            dependencyId >= dependencies.Length) return null;
+	        return dependencies[dependencyId];
+	    }
 	}
 }

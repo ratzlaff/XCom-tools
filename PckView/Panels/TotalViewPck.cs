@@ -26,8 +26,6 @@ namespace PckView
 		public event PckViewMouseClicked ViewClicked;
 		public event XCImageCollectionHandler XCImageCollectionSet;
 
-		private static TotalViewPck myInstance;
-
 		public TotalViewPck()
 		{
 			scroll = new VScrollBar();
@@ -68,17 +66,7 @@ namespace PckView
 		public ViewPck View
 		{
 			get { return view; }
-		}
-
-		public static TotalViewPck Instance
-		{
-			get
-			{
-				if (myInstance == null)
-					myInstance = new TotalViewPck();
-				return myInstance;
-			}
-		}
+		} 
 
         private void viewClik(object sender, PckViewMouseClickArgs e)
 		{

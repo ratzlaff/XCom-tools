@@ -2,8 +2,10 @@ using System;
 using System.Drawing;
 using System.Collections;
 using System.ComponentModel;
+using System.IO;
 using System.Windows.Forms;
 using MapView.Forms.McdViewer;
+using PckView;
 using XCom;
 using XCom.Interfaces.Base;
 
@@ -122,8 +124,12 @@ namespace MapView
 	        if (tile != null && tile.Info is McdEntry)
 	        {
 	            var info = (McdEntry) tile.Info;
-	            Text = "TileView: mapID:" + tile.MapID + " mcdID: " + tile.ID;
+                Text = "TileView: mapID:" + tile.MapID + " mcdID: " + tile.ID + " Name: " + GetSelectedDependencyName();
 	            UpdateMcdText(info);
+	        }
+	        else
+	        {
+                Text = "TileView";
 	        }
 	    }
 
@@ -173,29 +179,49 @@ namespace MapView
 			}
 		}
 
-		private void mcdInfoTab_Click(object sender, System.EventArgs e)
+        private void EditPckMenuItem_Click(object sender, EventArgs e)
+        {
+            var dependencyName = GetSelectedDependencyName();
+            if (dependencyName == null) return;
+
+            var image = GameInfo.ImageInfo[dependencyName];
+            if (image == null) return;
+            var path = image.BasePath + image.BaseName + ".PCK";
+            if (!File.Exists(path))
+            {
+                MessageBox.Show("File does not exists: " + path);
+                return ;
+            }
+
+            using (var editor = new PckViewForm())
+            {
+                editor.SelectedPalette = image.GetPckFile().Pal.Name;
+                editor.LoadPckFile(path);
+                editor.ShowDialog();
+            }
+        }
+
+	    private void mcdInfoTab_Click(object sender, System.EventArgs e)
 		{
-			if(!mcdInfoTab.Checked)
-			{
-			    if (MCDInfoForm == null)
-			    {
-                    MCDInfoForm = new McdViewerForm();
-			        MCDInfoForm.Size = new Size(480, 670);
-			        MCDInfoForm.Closing += infoTabClosing;
+		    if (mcdInfoTab.Checked) return;
+		    if (MCDInfoForm == null)
+		    {
+		        MCDInfoForm = new McdViewerForm();
+		        MCDInfoForm.Size = new Size(480, 670);
+		        MCDInfoForm.Closing += infoTabClosing;
 			       
-                    var tile = SelectedTile;
-			        if (tile != null && tile.Info is McdEntry)
-			        {
-			            var info = (McdEntry) tile.Info;
-			            Text = "TileView: mapID:" + tile.MapID + " mcdID: " + tile.ID;
-			            UpdateMcdText(info);
-			        }
-			    }
-			    MCDInfoForm.Visible=true;
-				MCDInfoForm.Location = new Point(this.Location.X-MCDInfoForm.Width,this.Location.Y);
-				MCDInfoForm.Show();
-				mcdInfoTab.Checked=true;
-			}
+		        var tile = SelectedTile;
+		        if (tile != null && tile.Info is McdEntry)
+		        {
+		            var info = (McdEntry) tile.Info;
+		            Text = "TileView: mapID:" + tile.MapID + " mcdID: " + tile.ID;
+		            UpdateMcdText(info);
+		        }
+		    }
+		    MCDInfoForm.Visible=true;
+		    MCDInfoForm.Location = new Point(this.Location.X-MCDInfoForm.Width,this.Location.Y);
+		    MCDInfoForm.Show();
+		    mcdInfoTab.Checked=true;
 		}
 
 		private void infoTabClosing(object sender, CancelEventArgs e)
@@ -204,5 +230,18 @@ namespace MapView
 			MCDInfoForm.Visible=false;
 			mcdInfoTab.Checked=false;
 		}
+
+        private string GetSelectedDependencyName()
+        {
+            var selectedTile = SelectedTile;
+            if (selectedTile == null) return null;
+
+            var map = Map as XCMapFile;
+            if (map == null) return null;
+
+            var dependencyName = map.GetDependecyName(selectedTile);
+
+            return dependencyName;
+        }
 	}
 }
