@@ -38,23 +38,24 @@ namespace XCom
 		    if (!File.Exists(filePath)) return null;
 			ImageInfo images = GameInfo.ImageInfo;
 
-			List<ITile> a = new List<ITile>();
+			var tiles = new List<ITile>();
 
-			foreach (string s in dependencies)
+			foreach (string dependency in dependencies)
 			{
-			    var image = images[s];
+			    var image = images[dependency];
 				if (image != null)
 				{
 					McdFile mcd = image.GetMcdFile(myPal);
 					foreach (XCTile t in mcd)
-						a.Add(t);
+						tiles.Add(t);
 				}
 			}
 
-            XCMapFile map = new XCMapFile(basename, basePath, blankPath, a, dependencies);
+            XCMapFile map = new XCMapFile(basename, basePath, blankPath, tiles, dependencies);
 			map.Rmp = new RmpFile(basename, rmpPath);
 			return map;
 		}
+
 		public string[] Dependencies { get { return dependencies; } set { dependencies = value; } }
 		public bool IsStatic { get { return isStatic; } set { isStatic = value; } }
 		public int CompareTo(object other)

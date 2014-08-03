@@ -43,12 +43,13 @@ namespace MapView
             /***********************/
 
             mapView = MapViewPanel.Instance;
+            
             settingsHash = new Dictionary<string, Settings>();
 
             _mainWindowsManager = new MainWindowsManager();
             _mainWindowsMenuItemManager = new MainWindowsMenuItemManager(
-                showMenu, miHelp, mapView, settingsHash); 
-
+                showMenu, miHelp, mapView, settingsHash);
+             
             loadDefaults();
 
             Palette.TFTDBattle.SetTransparent(true);
@@ -87,6 +88,7 @@ namespace MapView
 			LogFile.Instance.WriteLine("GameInfo.Init done");
 
             _mainWindowsMenuItemManager.Register();
+            MainWindowsManager.TileView.MapChanged += TileView_MapChanged;
 
 			LogFile.Instance.WriteLine("Palette transparencies set");
 
@@ -436,49 +438,61 @@ namespace MapView
 	    }
 
 	    private void mapList_AfterSelect(object sender, TreeViewEventArgs e)
-		{
-            // Make selected bold 
+	    {
+	        // Make selected bold 
             mapList.SelectedNode.BackColor = Color.Gold;
 
-            IMapDesc imd = mapList.SelectedNode.Tag as IMapDesc;
-            if (imd  != null)
-			{
-				miExport.Enabled = true;
-			    var map = imd.GetMapFile();
-				mapView.SetMap(map);
+	        LoadSelectedNodeMap();
+	    }
 
-				statusMapName.Text = "Map:" + imd.Name;
-			    if (map != null)
-			    {
-			        tsMapSize.Text = "Size: " + map.MapSize.ToString();
-			    }
-			    else
-			    {
-                    tsMapSize.Text = "Size: Unknown";
-			    }
+        private void TileView_MapChanged()
+        {
+            LoadSelectedNodeMap();
+        }
 
-			    //turn off door animations
-				if (miDoors.Checked)
-				{
-					miDoors.Checked = false;
-					miDoors_Click(null, null);
-				}
+	    private void LoadSelectedNodeMap()
+	    {
+	        var imd = mapList.SelectedNode.Tag as IMapDesc;
+	        if (imd != null)
+	        {
+	            miExport.Enabled = true;
+	            var map = imd.GetMapFile();
+	            mapView.SetMap(map);
 
-				//open all the forms in the show menu once
-				if (!showMenu.Enabled)
-				{
-					foreach (MenuItem mi in showMenu.MenuItems)
-						mi.PerformClick();
+	            statusMapName.Text = "Map:" + imd.Name;
+	            if (map != null)
+	            {
+	                tsMapSize.Text = "Size: " + map.MapSize.ToString();
+	            }
+	            else
+	            {
+	                tsMapSize.Text = "Size: Unknown";
+	            }
 
-					showMenu.Enabled = true;
-				}
+	            //turn off door animations
+	            if (miDoors.Checked)
+	            {
+	                miDoors.Checked = false;
+	                miDoors_Click(null, null);
+	            }
 
-				//Reset all observer events
-                _mainWindowsManager.SetMap(map);
-			}
-			else
-				miExport.Enabled = false;
-		}
+	            //open all the forms in the show menu once
+	            if (!showMenu.Enabled)
+	            {
+	                foreach (MenuItem mi in showMenu.MenuItems)
+	                    mi.PerformClick();
+
+	                showMenu.Enabled = true;
+	            }
+
+	            //Reset all observer events
+	            _mainWindowsManager.SetMap(map);
+	        }
+	        else
+	        {
+	            miExport.Enabled = false;
+	        }
+	    }
 
 		public DialogResult NotifySave()
 		{

@@ -110,16 +110,27 @@ namespace XCom
 
 			//if(pckHash[p][basePath+basename]==null)
 		    var path = basePath + basename;
-            if (!pckHash[p].ContainsKey(path))
+		    var paleteHash = pckHash[p];
+            if (!paleteHash.ContainsKey(path))
             {
                 using (var pckStream = File.OpenRead(path + ".PCK"))
                 using (var tabStream = File.OpenRead(path + ".TAB"))
                 {
-                    pckHash[p].Add(path, new PckFile(pckStream, tabStream, bpp,p));
+                    paleteHash.Add(path, new PckFile(pckStream, tabStream, bpp, p));
                 }
             }
 
 		    return pckHash[p][basePath+basename];
 		}
+
+        public static void ClearPckCache(string basePath, string basename)
+	    {
+            var path = basePath + basename;
+            foreach (var paleteHash in pckHash.Values)
+            {
+                if (!paleteHash.ContainsKey(path)) continue;
+                paleteHash.Remove(path);
+            }
+	    }
 	}
 }

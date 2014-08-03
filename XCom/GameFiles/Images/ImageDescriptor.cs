@@ -65,5 +65,10 @@ namespace XCom
 		public string BaseName { get; private set; }
 
 		public string BasePath{get; set; }
+
+	    public void ClearMcd()
+	    {
+	        mcdTab.Clear();
+	    }
 	}
 }

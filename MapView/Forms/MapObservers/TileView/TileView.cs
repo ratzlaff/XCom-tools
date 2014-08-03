@@ -30,7 +30,8 @@ namespace MapView
 		private TabPage nWallsTab;
 		private TabPage wWallsTab;
 		private Hashtable brushes;
-        private readonly IMainWindowsShowAllManager _mainWindowsShowAllManager;
+
+	    private readonly IMainWindowsShowAllManager _mainWindowsShowAllManager;
 
 		public TileView()
 		{
@@ -65,6 +66,17 @@ namespace MapView
 			edit.MenuItems.Add("Options",new EventHandler(options_click));
 			menu.MenuItems.Add(edit);
 		}
+
+        #region public events
+
+        public event MethodInvoker MapChanged;
+        private void OnMapChanged()
+        {
+            MethodInvoker handler = MapChanged;
+            if (handler != null) handler();
+        }
+
+        #endregion
 
         private void tabs_Selected(object sender, TabControlEventArgs e)
         {
@@ -193,9 +205,13 @@ namespace MapView
                 editor.LoadPckFile(path, pckFile.Bpp);
                 var owner = Owner;
                 if (owner == null) owner = this;
-                if (editor.ShowDialog(owner) == DialogResult.OK)
+                editor.ShowDialog(owner);
+                if (editor.SavedFile)
                 {
-                    
+                    GameInfo.ImageInfo.Images[dependencyName].ClearMcd();
+                    GameInfo.ClearPckCache(image.BasePath, image.BaseName);
+
+                    OnMapChanged();
                 }
             }
 

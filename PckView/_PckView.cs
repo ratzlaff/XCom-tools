@@ -42,6 +42,8 @@ namespace PckView
 	    private int _currentFileBpp;
         private readonly IFileBackupManager _fileBackupManager = new FileBackupManager();
 
+        public bool SavedFile { get; private set; }
+
 	    public PckViewForm()
 		{
 			InitializeComponent();
@@ -328,7 +330,7 @@ namespace PckView
 
 		private void quitItem_Click(object sender, System.EventArgs e)
 		{
-			Environment.Exit(0);
+		    Close();
 		}
 
 		private void openItem_Click(object sender, System.EventArgs e)
@@ -735,9 +737,8 @@ namespace PckView
 
             // Save 
             PckFile.Save(dir, fileWithoutExt, _totalViewPck.Collection, _currentFileBpp);
-            
-            // mark as we have save the files 
-            DialogResult = DialogResult.OK;
+
+            SavedFile = true;
         }
 	}
 }
