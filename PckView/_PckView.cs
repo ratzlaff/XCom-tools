@@ -11,6 +11,7 @@ using System.Reflection;
 using DSShared.FileSystems;
 using PckView.Args;
 using PckView.Forms.ImageBytes;
+using PckView.Properties;
 using XCom;
 using XCom.GameFiles.Images.xcFiles;
 using XCom.Interfaces;
@@ -68,15 +69,13 @@ namespace PckView
 			sharedSpace.GetObj("CustomDir", Environment.CurrentDirectory + "\\custom");
 			sharedSpace.GetObj("SettingsDir", Environment.CurrentDirectory + "\\settings");	
 		
-
-
 			xConsole.AddLine("Current directory: " + sharedSpace["AppDir"]);
 			xConsole.AddLine("Custom directory: " + sharedSpace["CustomDir"].ToString());
 			#endregion
 
             _totalViewPck = new TotalViewPck(); 
 			_totalViewPck.Dock = DockStyle.Fill;
-			Controls.Add(_totalViewPck);
+            DrawPanel.Controls.Add(_totalViewPck);
 
 			_totalViewPck.View.DoubleClick += new EventHandler(doubleClick);
 			_totalViewPck.ViewClicked += new PckViewMouseClicked(viewClicked);
@@ -437,6 +436,12 @@ namespace PckView
             var images = LoadImageCollection(filterIdx, path, fileName.ToLower());
 	        SetImages(images);
 	        UpdateText();
+
+            MapViewIntegrationMenuItem.Visible = true;
+            if (Settings.Default.MapViewIntegrationHelpShown < 2)
+            {
+                MapViewIntegrationHelpPanel.Visible = true;
+            }
 	    }
 
 	    private static XCImageCollection LoadImageCollection(IXCImageFile filterIdx, string path,
@@ -706,7 +711,7 @@ namespace PckView
 
 				tabs = new TabControl();
 				tabs.Dock = DockStyle.Fill;
-				Controls.Add(tabs);
+                DrawPanel.Controls.Add(tabs);
 
 				TabPage tp = new TabPage();
                 tp.Controls.Add(_totalViewPck);
@@ -739,6 +744,20 @@ namespace PckView
             PckFile.Save(dir, fileWithoutExt, _totalViewPck.Collection, _currentFileBpp);
 
             SavedFile = true;
+        }
+
+        private void MapViewIntegrationMenuItem_Click(object sender, EventArgs e)
+        {
+            MapViewIntegrationHelpPanel.Visible = !MapViewIntegrationHelpPanel.Visible;
+            MapViewIntegrationMenuItem.Checked = MapViewIntegrationHelpPanel.Visible;
+        }
+
+        private void GotItMapViewButton_Click(object sender, EventArgs e)
+        {
+            MapViewIntegrationHelpPanel.Visible = false;
+            MapViewIntegrationMenuItem.Checked = false;
+            Settings.Default.MapViewIntegrationHelpShown ++;
+            Settings.Default.Save();
         }
 	}
 }

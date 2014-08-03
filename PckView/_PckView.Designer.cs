@@ -29,6 +29,7 @@ namespace PckView
 		private void InitializeComponent()
 		{
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PckViewForm));
             this.mainMenu = new System.Windows.Forms.MainMenu(this.components);
             this.menuItem1 = new System.Windows.Forms.MenuItem();
             this.openItem = new System.Windows.Forms.MenuItem();
@@ -48,9 +49,15 @@ namespace PckView
             this.helpItem = new System.Windows.Forms.MenuItem();
             this.miModList = new System.Windows.Forms.MenuItem();
             this.miConsole = new System.Windows.Forms.MenuItem();
+            this.MapViewIntegrationMenuItem = new System.Windows.Forms.MenuItem();
             this.openFile = new System.Windows.Forms.OpenFileDialog();
             this.saveBmpSingle = new System.Windows.Forms.SaveFileDialog();
             this.openBMP = new System.Windows.Forms.OpenFileDialog();
+            this.DrawPanel = new System.Windows.Forms.Panel();
+            this.MapViewIntegrationHelpPanel = new System.Windows.Forms.Panel();
+            this.GotItMapViewButton = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
+            this.MapViewIntegrationHelpPanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // mainMenu
@@ -158,7 +165,8 @@ namespace PckView
             this.aboutItem,
             this.helpItem,
             this.miModList,
-            this.miConsole});
+            this.miConsole,
+            this.MapViewIntegrationMenuItem});
             this.menuItem4.Text = "Help";
             // 
             // aboutItem
@@ -185,6 +193,13 @@ namespace PckView
             this.miConsole.Text = "Console";
             this.miConsole.Click += new System.EventHandler(this.miConsole_Click);
             // 
+            // MapViewIntegrationMenuItem
+            // 
+            this.MapViewIntegrationMenuItem.Index = 4;
+            this.MapViewIntegrationMenuItem.Text = "MapView Integration";
+            this.MapViewIntegrationMenuItem.Visible = false;
+            this.MapViewIntegrationMenuItem.Click += new System.EventHandler(this.MapViewIntegrationMenuItem_Click);
+            // 
             // saveBmpSingle
             // 
             this.saveBmpSingle.DefaultExt = "*.bmp";
@@ -194,16 +209,58 @@ namespace PckView
             // 
             this.openBMP.Filter = "8-bit 32x40 bmp|*.bmp";
             // 
+            // DrawPanel
+            // 
+            this.DrawPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.DrawPanel.Location = new System.Drawing.Point(0, 107);
+            this.DrawPanel.Name = "DrawPanel";
+            this.DrawPanel.Size = new System.Drawing.Size(494, 102);
+            this.DrawPanel.TabIndex = 1;
+            // 
+            // MapViewIntegrationHelpPanel
+            // 
+            this.MapViewIntegrationHelpPanel.Controls.Add(this.GotItMapViewButton);
+            this.MapViewIntegrationHelpPanel.Controls.Add(this.label1);
+            this.MapViewIntegrationHelpPanel.Dock = System.Windows.Forms.DockStyle.Top;
+            this.MapViewIntegrationHelpPanel.Location = new System.Drawing.Point(0, 0);
+            this.MapViewIntegrationHelpPanel.Name = "MapViewIntegrationHelpPanel";
+            this.MapViewIntegrationHelpPanel.Size = new System.Drawing.Size(494, 107);
+            this.MapViewIntegrationHelpPanel.TabIndex = 2;
+            this.MapViewIntegrationHelpPanel.Visible = false;
+            // 
+            // GotItMapViewButton
+            // 
+            this.GotItMapViewButton.Location = new System.Drawing.Point(23, 67);
+            this.GotItMapViewButton.Name = "GotItMapViewButton";
+            this.GotItMapViewButton.Size = new System.Drawing.Size(97, 34);
+            this.GotItMapViewButton.TabIndex = 2;
+            this.GotItMapViewButton.Text = "Got it";
+            this.GotItMapViewButton.UseVisualStyleBackColor = true;
+            this.GotItMapViewButton.Click += new System.EventHandler(this.GotItMapViewButton_Click);
+            // 
+            // label1
+            // 
+            this.label1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.label1.Location = new System.Drawing.Point(0, 0);
+            this.label1.Name = "label1";
+            this.label1.Padding = new System.Windows.Forms.Padding(3);
+            this.label1.Size = new System.Drawing.Size(494, 64);
+            this.label1.TabIndex = 1;
+            this.label1.Text = resources.GetString("label1.Text");
+            // 
             // PckViewForm
             // 
             this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
-            this.ClientSize = new System.Drawing.Size(288, 207);
+            this.ClientSize = new System.Drawing.Size(494, 209);
+            this.Controls.Add(this.DrawPanel);
+            this.Controls.Add(this.MapViewIntegrationHelpPanel);
             this.Location = new System.Drawing.Point(50, 50);
             this.Menu = this.mainMenu;
             this.Name = "PckViewForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "PckView";
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.PckView_KeyDown);
+            this.MapViewIntegrationHelpPanel.ResumeLayout(false);
             this.ResumeLayout(false);
 
 		}
@@ -231,5 +288,10 @@ namespace PckView
 		private System.Windows.Forms.MenuItem miConsole;
 		private System.Windows.Forms.MenuItem miCompare;
         private System.Windows.Forms.MenuItem SaveMenuItem;
+        private System.Windows.Forms.Panel DrawPanel;
+        private System.Windows.Forms.Panel MapViewIntegrationHelpPanel;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.MenuItem MapViewIntegrationMenuItem;
+        private System.Windows.Forms.Button GotItMapViewButton;
 	}
 }
