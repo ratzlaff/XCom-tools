@@ -195,11 +195,15 @@ namespace MapView
 
             using (var editor = new PckViewForm())
             {
-                editor.SelectedPalette = image.GetPckFile().Pal.Name;
-                editor.LoadPckFile(path);
+                var pckFile = image.GetPckFile();
+                editor.SelectedPalette = pckFile.Pal.Name;
+                editor.LoadPckFile(path, pckFile.Bpp);
                 var owner = Owner;
                 if (owner == null) owner = this;
-                editor.ShowDialog(owner);
+                if (editor.ShowDialog(owner) == DialogResult.OK)
+                {
+                    
+                }
             }
         }
 

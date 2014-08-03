@@ -132,20 +132,19 @@ namespace XCom.GameFiles.Images.xcFiles
 				radio2.Checked=false;
 		}
 
-		//Method to save a collection in its original format
-		public override void SaveCollection(string directory, string file,XCImageCollection images)
-		{
-			DSShared.Windows.InputBox ib = new DSShared.Windows.InputBox("Enter Pck Options", SavingOptions);
-
-			if (ib.ShowDialog() == DialogResult.OK)
-			{
-				int bpp = 4;
-				if (radio2.Checked)
-					bpp = 2;
-
-				PckFile.Save(directory, file, images, bpp);
-			}
-		}
+        //Method to save a collection in its original format
+        public override void SaveCollection(string directory, string file, XCImageCollection images)
+        {
+            var ib = new DSShared.Windows.InputBox("Enter Pck Options", SavingOptions);
+            int bpp;
+            if (ib.ShowDialog() != DialogResult.OK) return ;
+            {
+                bpp = 4;
+                if (radio2.Checked)
+                    bpp = 2;
+            }
+            PckFile.Save(directory, file, images, bpp);
+        } 
 	}
 
 	public class xcPckTab : xcPck

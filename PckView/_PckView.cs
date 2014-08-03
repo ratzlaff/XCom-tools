@@ -8,9 +8,11 @@ using System.Data;
 using System.IO;
 using System.Drawing.Imaging;
 using System.Reflection;
+using DSShared.FileSystems;
 using PckView.Args;
 using PckView.Forms.ImageBytes;
 using XCom;
+using XCom.GameFiles.Images.xcFiles;
 using XCom.Interfaces;
 using DSShared;
 using DSShared.Windows;
@@ -35,9 +37,12 @@ namespace PckView
 		private xcCustom xcCustom;
 		private TabControl tabs;
 		private Dictionary<int, IXCImageFile> openDictionary;
-		private Dictionary<int, IXCImageFile> saveDictionary; 
-         
-        public PckViewForm()
+		private Dictionary<int, IXCImageFile> saveDictionary;
+	    private string _currentFilePath;
+	    private int _currentFileBpp;
+        private readonly IFileBackupManager _fileBackupManager = new FileBackupManager();
+
+	    public PckViewForm()
 		{
 			InitializeComponent();
 
@@ -69,12 +74,14 @@ namespace PckView
 
             _totalViewPck = new TotalViewPck(); 
 			_totalViewPck.Dock = DockStyle.Fill;
-			this.Controls.Add(_totalViewPck);
+			Controls.Add(_totalViewPck);
 
 			_totalViewPck.View.DoubleClick += new EventHandler(doubleClick);
 			_totalViewPck.ViewClicked += new PckViewMouseClicked(viewClicked);
 			_totalViewPck.XCImageCollectionSet += new XCImageCollectionHandler(v_XCImageCollectionSet);
 			_totalViewPck.ContextMenu = makeContextMenu();
+         
+            SaveMenuItem.Visible = false ;
 
 			sharedSpace["Palettes"] = new Dictionary<string, Palette>();
 			palMI = new Dictionary<Palette, MenuItem>();
@@ -339,6 +346,11 @@ namespace PckView
 				XCom.XCImageCollection toLoad = null;
 				bool recover = false;
 
+                // remove saving - there are too many formats and stuff, 
+                // I will implement only one type of direct saving. 
+			    _currentFilePath = null;
+			    SaveMenuItem.Visible = false;
+
 				//Console.WriteLine(openFile.FilterIndex+" -> "+filterIndex[openFile.FilterIndex].GetType());
 #if !DEBUG
 				try
@@ -411,8 +423,11 @@ namespace PckView
 			}
 		}
 
-	    public void LoadPckFile(string filePath)
+        public void LoadPckFile(string filePath, int bpp)
 	    {
+            _currentFilePath = filePath;
+            _currentFileBpp = bpp;
+	        SaveMenuItem.Visible = true;
             IXCImageFile filterIdx = openDictionary[7]; 
 	        var fileName = Path.GetFileName(filePath);
 	        var path = Path.GetDirectoryName(filePath);
@@ -706,5 +721,23 @@ namespace PckView
 				tabs.TabPages.Add(tp);
 			}
 		}
+
+        private void SaveMenuItem_Click(object sender, EventArgs e)
+        {
+            osFilter.SetFilter(IXCImageFile.Filter.Save);
+            saveDictionary.Clear();
+            loadedTypes.CreateFilter(osFilter, saveDictionary);
+            var dir = Path.GetDirectoryName(_currentFilePath);
+            var fileWithoutExt = Path.GetFileNameWithoutExtension(_currentFilePath);
+
+            // Backup 
+            _fileBackupManager.Backup(_currentFilePath);
+
+            // Save 
+            PckFile.Save(dir, fileWithoutExt, _totalViewPck.Collection, _currentFileBpp);
+            
+            // mark as we have save the files 
+            DialogResult = DialogResult.OK;
+        }
 	}
 }
