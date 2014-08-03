@@ -23,21 +23,8 @@ namespace MapView.TopViewForm
 
 		public event EventHandler VisibleTileChanged;
 
-		#region Singleton access
-		private static TopView myInstance = null;
-		public static TopView Instance
-		{
-			get
-			{
-				if (myInstance == null)
-					myInstance = new TopView();
 
-				return myInstance;
-			}
-		}
-		#endregion
-
-		private TopView()
+		public TopView()
 		{
 			//LogFile.Instance.WriteLine("Start TopView window creation");		
 
@@ -233,7 +220,7 @@ namespace MapView.TopViewForm
 	        //y     x
 	        for (int c = s.X; c <= e.X; c++)
 	            for (int r = s.Y; r <= e.Y; r++)
-	                ((XCMapTile) map[r, c])[bottom.SelectedQuadrant] = TileView.Instance.SelectedTile;
+	                ((XCMapTile) map[r, c])[bottom.SelectedQuadrant] = MainWindowsManager.TileView.SelectedTile;
 	        Globals.MapChanged = true;
 	        MapViewPanel.Instance.Refresh();
 	        Refresh();

@@ -12,31 +12,31 @@ namespace MapView
         private IMap_Base map;
 		private DSShared.Windows.RegistryInfo registryInfo;
 		private MenuItem menuItem;
-		private Settings settings;
-		private Dictionary<string, IMap_Observer> moreObservers;
+        private readonly Settings _settings;
+		private readonly Dictionary<string, IMap_Observer> _moreObservers;
 
 		public Map_Observer_Form()
 		{
-			moreObservers = new Dictionary<string, IMap_Observer>();
-			settings = new Settings();
+			_moreObservers = new Dictionary<string, IMap_Observer>();
+			_settings = new Settings();
 			Load += new EventHandler(Map_Observer_Form_Load);			
 		}
 
 		private void Map_Observer_Form_Load(object sender, EventArgs e)
 		{
-			LoadDefaultSettings(settings);
+			LoadDefaultSettings(_settings);
 		}
 
 		protected virtual void LoadDefaultSettings(Settings settings){}
 
 		public Settings Settings
 		{
-			get { return settings; }
+			get { return _settings; }
 		}
 
 		public Dictionary<string, IMap_Observer> MoreObservers
 		{
-			get { return moreObservers; }
+			get { return _moreObservers; }
 		}
 
 		public MenuItem MenuItem

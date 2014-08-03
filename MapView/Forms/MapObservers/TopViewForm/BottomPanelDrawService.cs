@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Text;
+using MapView.Forms.MainWindow;
 using MapView.TopViewForm;
 using XCom;
 
@@ -35,7 +36,7 @@ namespace MapView.Forms.MapObservers.TopViewForm
                     tileHeight + 2);
 
             // Ground not visible 
-            if (!TopView.Instance.GroundVisible)
+            if (!MainWindowsManager.TopView.GroundVisible)
                 g.FillRectangle(System.Drawing.Brushes.DarkGray, startX, startY, tileWidth + 1, tileHeight + 2);
 
             if (mapTile != null && mapTile.Ground != null)
@@ -49,7 +50,7 @@ namespace MapView.Forms.MapObservers.TopViewForm
             else
                 g.DrawImage(Globals.ExtraTiles[3].Image, startX, startY);
 
-            if (!TopView.Instance.WestVisible)
+            if (!MainWindowsManager.TopView.WestVisible)
                 g.FillRectangle(System.Drawing.Brushes.DarkGray, startX + (TOTAL_QUADRAN_SPACE), startY,
                     tileWidth + 1, tileHeight + 2);
 
@@ -64,7 +65,7 @@ namespace MapView.Forms.MapObservers.TopViewForm
             else
                 g.DrawImage(Globals.ExtraTiles[1].Image, startX + (TOTAL_QUADRAN_SPACE), startY);
 
-            if (!TopView.Instance.NorthVisible)
+            if (!MainWindowsManager.TopView.NorthVisible)
                 g.FillRectangle(System.Drawing.Brushes.DarkGray, startX + (2 * TOTAL_QUADRAN_SPACE), startY,
                     tileWidth + 1, tileHeight + 2);
 
@@ -79,7 +80,7 @@ namespace MapView.Forms.MapObservers.TopViewForm
             else
                 g.DrawImage(Globals.ExtraTiles[2].Image, startX + (2 * TOTAL_QUADRAN_SPACE), startY);
 
-            if (!TopView.Instance.ContentVisible)
+            if (!MainWindowsManager.TopView.ContentVisible)
                 g.FillRectangle(System.Drawing.Brushes.DarkGray, startX + (3 * TOTAL_QUADRAN_SPACE), startY,
                     tileWidth + 1, tileHeight + 2);
 

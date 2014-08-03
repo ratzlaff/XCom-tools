@@ -27,50 +27,49 @@ namespace MapView
 		/// </summary>
 		private void InitializeComponent()
 		{
-			this.label1 = new System.Windows.Forms.Label();
-			this.label2 = new System.Windows.Forms.Label();
-			this.lblVersion = new System.Windows.Forms.Label();
-			this.SuspendLayout();
-			// 
-			// label1
-			// 
-			this.label1.Location = new System.Drawing.Point(0, 32);
-			this.label1.Name = "label1";
-			this.label1.Size = new System.Drawing.Size(296, 16);
-			this.label1.TabIndex = 0;
-			this.label1.Text = "Author: Ben Ratzlaff";
-			this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-			// 
-			// label2
-			// 
-			this.label2.Location = new System.Drawing.Point(0, 48);
-			this.label2.Name = "label2";
-			this.label2.Size = new System.Drawing.Size(296, 16);
-			this.label2.TabIndex = 1;
-			this.label2.Text = "Bugtester and ideas: BladeFireLight,JFarceur";
-			this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-			// 
-			// lblVersion
-			// 
-			this.lblVersion.Location = new System.Drawing.Point(0, 8);
-			this.lblVersion.Name = "lblVersion";
-			this.lblVersion.Size = new System.Drawing.Size(296, 16);
-			this.lblVersion.TabIndex = 2;
-			this.lblVersion.Text = "MapView 1.02 Release";
-			this.lblVersion.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-			// 
-			// AboutWindow
-			// 
-			this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
-			this.ClientSize = new System.Drawing.Size(292, 63);
-			this.Controls.AddRange(new System.Windows.Forms.Control[] {
-																		  this.lblVersion,
-																		  this.label2,
-																		  this.label1});
-			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
-			this.Name = "AboutWindow";
-			this.Text = "AboutWindow";
-			this.ResumeLayout(false);
+            this.label1 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.lblVersion = new System.Windows.Forms.Label();
+            this.SuspendLayout();
+            // 
+            // label1
+            // 
+            this.label1.Location = new System.Drawing.Point(0, 32);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(296, 16);
+            this.label1.TabIndex = 0;
+            this.label1.Text = "Author: Ben Ratzlaff";
+            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // label2
+            // 
+            this.label2.Location = new System.Drawing.Point(0, 48);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(296, 16);
+            this.label2.TabIndex = 1;
+            this.label2.Text = "Bugtester and ideas: BladeFireLight,JFarceur";
+            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lblVersion
+            // 
+            this.lblVersion.Location = new System.Drawing.Point(0, 8);
+            this.lblVersion.Name = "lblVersion";
+            this.lblVersion.Size = new System.Drawing.Size(296, 16);
+            this.lblVersion.TabIndex = 2;
+            this.lblVersion.Text = "MapView 1.02 Release";
+            this.lblVersion.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // AboutWindow
+            // 
+            this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
+            this.ClientSize = new System.Drawing.Size(292, 77);
+            this.Controls.Add(this.lblVersion);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.label1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.Name = "AboutWindow";
+            this.Text = "AboutWindow";
+            this.ResumeLayout(false);
 
 		}
 		#endregion

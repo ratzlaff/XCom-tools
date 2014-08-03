@@ -2,6 +2,7 @@ using System;
 using System.Windows.Forms;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using MapView.Forms.MainWindow;
 using XCom;
 using XCom.Interfaces;
 using System.Collections;
@@ -513,31 +514,33 @@ namespace MapView
 
 		private void drawTile(Graphics g, XCMapTile mt,int x, int y)
 		{
-			if(mt.Ground != null && TopView.Instance.GroundVisible)
+		    var topView = MainWindowsManager.TopView;
+            if (mt.Ground != null && topView.GroundVisible)
 				g.DrawImage(mt.Ground[MapViewPanel.Current].Image,x,y-mt.Ground.Info.TileOffset);
 
-			if(mt.North != null && TopView.Instance.NorthVisible)
+			if(mt.North != null && topView.NorthVisible)
 				g.DrawImage(mt.North[MapViewPanel.Current].Image,x,y-mt.North.Info.TileOffset);
 
-			if(mt.West != null && TopView.Instance.WestVisible)
+			if(mt.West != null && topView.WestVisible)
 				g.DrawImage(mt.West[MapViewPanel.Current].Image,x,y-mt.West.Info.TileOffset);
 
-			if(mt.Content != null && TopView.Instance.ContentVisible)
+			if(mt.Content != null && topView.ContentVisible)
 				g.DrawImage(mt.Content[MapViewPanel.Current].Image,x,y-mt.Content.Info.TileOffset);
 		}
 
 		private void drawTileGray(Graphics g, XCMapTile mt,int x, int y)
 		{
-			if(mt.Ground != null && TopView.Instance.GroundVisible)
+		    var topView = MainWindowsManager.TopView;
+			if(mt.Ground != null && topView.GroundVisible)
 				g.DrawImage(mt.Ground[MapViewPanel.Current].Gray,x,y-mt.Ground.Info.TileOffset);
 
-			if(mt.North != null && TopView.Instance.NorthVisible)
+			if(mt.North != null && topView.NorthVisible)
 				g.DrawImage(mt.North[MapViewPanel.Current].Gray,x,y-mt.North.Info.TileOffset);
 
-			if(mt.West != null && TopView.Instance.WestVisible)
+			if(mt.West != null && topView.WestVisible)
 				g.DrawImage(mt.West[MapViewPanel.Current].Gray,x,y-mt.West.Info.TileOffset);
 
-			if(mt.Content != null && TopView.Instance.ContentVisible)
+			if(mt.Content != null && topView.ContentVisible)
 				g.DrawImage(mt.Content[MapViewPanel.Current].Gray,x,y-mt.Content.Info.TileOffset);
 		}
 

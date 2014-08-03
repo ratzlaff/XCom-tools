@@ -28,9 +28,10 @@ namespace MapView
 	{
 		private MapView.MapViewPanel mapView;
 		private LoadingForm lf;
-		private Dictionary<string, Form> registeredForms;
-		private static Dictionary<string, Settings> settingsHash;
-
+		private static Dictionary<string, Settings> settingsHash; 
+        private readonly IMainWindowsMenuItemManager _mainWindowsMenuItemManager;
+        private readonly MainWindowsManager _mainWindowsManager;
+        
 		//private LoadOfType<IMapDesc> loadedTypes;
 
 		//public event StringDelegate SendMessage;
@@ -40,6 +41,20 @@ namespace MapView
             /***********************/
             InitializeComponent();
             /***********************/
+
+            mapView = MapViewPanel.Instance;
+            settingsHash = new Dictionary<string, Settings>();
+
+            _mainWindowsManager = new MainWindowsManager();
+            _mainWindowsMenuItemManager = new MainWindowsMenuItemManager(
+                showMenu, miHelp, mapView, settingsHash); 
+
+            loadDefaults();
+
+            Palette.TFTDBattle.SetTransparent(true);
+            Palette.UFOBattle.SetTransparent(true);
+            Palette.TFTDBattle.Grayscale.SetTransparent(true);
+            Palette.UFOBattle.Grayscale.SetTransparent(true);
 
 			#region Setup SharedSpace information and paths
 			SharedSpace sharedSpace = SharedSpace.Instance;
@@ -71,16 +86,12 @@ namespace MapView
 			GameInfo.Init(Palette.TFTDBattle, pathsFile);
 			LogFile.Instance.WriteLine("GameInfo.Init done");
 
-			Palette.TFTDBattle.SetTransparent(true);
-			Palette.UFOBattle.SetTransparent(true);
-			Palette.TFTDBattle.Grayscale.SetTransparent(true);
-			Palette.UFOBattle.Grayscale.SetTransparent(true);
+            _mainWindowsMenuItemManager.Register();
 
 			LogFile.Instance.WriteLine("Palette transparencies set");
 
 			MapViewPanel.ImageUpdate += new EventHandler(update);
 
-			mapView = MapViewPanel.Instance;
 			mapView.Dock = DockStyle.Fill;
 
 			instance = this;
@@ -94,8 +105,6 @@ namespace MapView
 
 			LogFile.Instance.WriteLine("Main view window created");
 
-			settingsHash = new Dictionary<string, Settings>();
-			loadDefaults();
 			LogFile.Instance.WriteLine("Default settings loaded");
 
 			try
@@ -117,19 +126,8 @@ namespace MapView
 
 			LogFile.Instance.WriteLine("Map list created");
 
-			registeredForms = new Dictionary<string, Form>();
-			registerForm(TopView.Instance, "TopView", showMenu);
-			registerForm(TileView.Instance, "TileView", showMenu);
-			registerForm(RmpView.Instance, "RmpView", showMenu);
-
-			if (XCom.Globals.UseBlanks)
-				registerForm(mapView.BlankForm, "Blank Info", showMenu);
-
-			//			addWindow(xConsole.Instance,"Console",showMenu);
-			//			((MenuItem)windowMI[xConsole.Instance]).PerformClick();
-
-			registerForm(new HelpScreen(), "Quick Help", miHelp);
-			registerForm(new AboutWindow(), "About", miHelp);
+            //			addWindow(xConsole.Instance,"Console",showMenu);
+            //			((MenuItem)windowMI[xConsole.Instance]).PerformClick();
 
 			LogFile.Instance.WriteLine("Quick help and About created");
 
@@ -182,55 +180,7 @@ namespace MapView
 		{
 			get { return instance; }
 		}
-
-		private void registerForm(Form f, string title, MenuItem parent)
-		{
-			f.Closing += new CancelEventHandler(formClosing);
-
-			f.Text = title;
-			MenuItem mi = new MenuItem(title);
-			mi.Tag = f;
-
-			if (f is Map_Observer_Form)
-			{
-				((Map_Observer_Form)f).MenuItem = mi;
-				((Map_Observer_Form)f).RegistryInfo = new DSShared.Windows.RegistryInfo(f, title);
-				settingsHash.Add(title, ((Map_Observer_Form)f).Settings);
-			}
-
-			f.ShowInTaskbar = false;
-			f.FormBorderStyle = FormBorderStyle.SizableToolWindow;
-
-			parent.MenuItems.Add(mi);
-			mi.Click += new EventHandler(formMIClick);
-			registeredForms.Add(title, f);
-		}
-
-		private void formMIClick(object sender, EventArgs e)
-		{
-			MenuItem mi = (MenuItem)sender;
-
-			if (!mi.Checked)
-			{
-				((Form)mi.Tag).Show();
-				((Form)mi.Tag).WindowState = FormWindowState.Normal;
-				mi.Checked = true;
-			}
-			else
-			{
-				((Form)mi.Tag).Close();
-				mi.Checked = false;
-			}
-		}
-
-		private void formClosing(object sender, CancelEventArgs e)
-		{
-			e.Cancel = true;
-			if (sender is Map_Observer_Form)
-				((Map_Observer_Form)sender).MenuItem.Checked = false;
-			((Form)sender).Hide();
-		}
-
+         
 		private void parseLine(XCom.KeyVal line, XCom.VarCollection vars)
 		{
 			switch (line.Keyword.ToLower())
@@ -368,12 +318,7 @@ namespace MapView
 				RegistryKey mvKey = swKey.CreateSubKey("MapView");
 				RegistryKey riKey = mvKey.CreateSubKey("MainView");
 
-				foreach (string key in registeredForms.Keys)
-				{
-					Form form = registeredForms[key];
-					form.WindowState = FormWindowState.Normal;
-					form.Close();
-				}
+			    _mainWindowsMenuItemManager.CloseAll();
 
 				WindowState = FormWindowState.Normal;
 				riKey.SetValue("Left", Left);
@@ -430,7 +375,7 @@ namespace MapView
 
 		private void update(object sender, EventArgs e)
 		{
-			TopView.Instance.BottomPanel.Refresh();
+			MainWindowsManager.TopView.BottomPanel.Refresh();
 		}
 
 		private static void myQuit(object sender, string command)
@@ -529,37 +474,10 @@ namespace MapView
 				}
 
 				//Reset all observer events
-				foreach (string key in registeredForms.Keys)
-				{
-                    var frm = registeredForms[key] as Map_Observer_Form;
-					if (frm != null)
-					{
-						SetMap(map, frm);
-					}
-				}
-				MapViewPanel.Instance.View.Refresh();
+                _mainWindowsManager.SetMap(map);
 			}
 			else
 				miExport.Enabled = false;
-		}
-
-		public void SetMap(IMap_Base newMap, IMap_Observer observer)
-		{
-			if (observer.Map != null)
-			{
-				observer.Map.HeightChanged -= new HeightChangedDelegate(observer.HeightChanged);
-				observer.Map.SelectedTileChanged -= new SelectedTileChangedDelegate(observer.SelectedTileChanged);
-			}
-
-			observer.Map = newMap;
-			if (newMap != null)
-			{
-				newMap.HeightChanged += new HeightChangedDelegate(observer.HeightChanged);
-				newMap.SelectedTileChanged += new SelectedTileChangedDelegate(observer.SelectedTileChanged);
-			}
-
-			foreach (string key in observer.MoreObservers.Keys)
-				SetMap(newMap, observer.MoreObservers[key]);
 		}
 
 		public DialogResult NotifySave()
@@ -638,7 +556,8 @@ namespace MapView
 		}
 
 		private bool windowFlag = false;
-		private void MainWindow_Activated(object sender, System.EventArgs e)
+
+	    private void MainWindow_Activated(object sender, System.EventArgs e)
 		{
 			if (!windowFlag)
 			{

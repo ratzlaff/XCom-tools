@@ -32,14 +32,11 @@ namespace MapView.RmpViewForm
         private int clickRow, clickCol;
 
         private RmpEntry currEntry;
-        //private Settings settings;
         private Panel contentPane;
-
-        private static RmpView instance;
-
+         
         private bool loadingGUI = false;
 
-        private RmpView()
+        public RmpView()
         {
             clickRow = clickCol = 0;
             InitializeComponent();
@@ -141,22 +138,7 @@ namespace MapView.RmpViewForm
             rmpPanel.Pens[key].Width = (int) val;
             Refresh();
         }
-
-        //public Settings Settings
-        //{
-        //    get { return settings; }
-        //}
-
-        public static RmpView Instance
-        {
-            get
-            {
-                if (instance == null)
-                    instance = new RmpView();
-                return instance;
-            }
-        }
-
+        
         private void mouseMove(object sender, MouseEventArgs e)
         {
             XCMapTile t = rmpPanel.GetTile(e.X, e.Y);

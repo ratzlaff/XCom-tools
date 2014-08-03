@@ -45,14 +45,16 @@ namespace MapView
 
         public TilePanel(TileType type)
         {
-            this.type=type;
+            this.type = type;
             vert = new VScrollBar();
-            vert.ValueChanged+=new EventHandler(valChange);
-            vert.Location = new Point(Width-vert.Width,0);
-            this.Controls.Add(vert);
-            MapViewPanel.ImageUpdate+=new EventHandler(tick);
-            SetStyle(ControlStyles.AllPaintingInWmPaint|ControlStyles.DoubleBuffer|ControlStyles.UserPaint,true);			
-            selectedNum=0;
+            vert.ValueChanged += valChange;
+            vert.Location = new Point(Width - vert.Width, 0);
+            
+            Controls.Add(vert);
+            MapViewPanel.ImageUpdate += tick;
+
+            SetStyle(ControlStyles.AllPaintingInWmPaint | ControlStyles.DoubleBuffer | ControlStyles.UserPaint, true);
+            selectedNum = 0;
 
             Globals.LoadExtras();
         }
@@ -133,6 +135,11 @@ namespace MapView
 
         protected override void OnMouseWheel(MouseEventArgs e)
         {
+            var handledMouseEventArgs = e as HandledMouseEventArgs;
+            if (handledMouseEventArgs != null)
+            {
+                handledMouseEventArgs.Handled = true;
+            }
             if(e.Delta<0)
                 if(vert.Value+scrollAmount<vert.Maximum)
                     vert.Value+=scrollAmount;
@@ -165,44 +172,55 @@ namespace MapView
 
         protected override void OnPaint(PaintEventArgs e)
         {
-            if(tiles!=null)
+            PaintTiles(e);
+        }
+
+        private void PaintTiles(PaintEventArgs e)
+        {
+            if (tiles == null) return;
+            Graphics g = e.Graphics;
+
+            int i = 0, j = 0;
+            foreach (ITile t in tiles)
             {
-                Graphics g = e.Graphics;				
-
-                int i=0,j=0;
-                foreach(ITile t in tiles)
+                if (t != null && (type == TileType.All || t.Info.TileType == type))
                 {
-                    if(t!=null && (type==TileType.All || t.Info.TileType==type))
-                    {
-                        g.FillRectangle((SolidBrush)brushes[t.Info.TargetType.ToString()]/*new SolidBrush(tileTypes[(int)t.Info.TargetType])*/,i*(width+2*space),startY+j*(height+2*space),width+2*space,height+2*space);
-                        g.DrawImage(t[MapViewPanel.Current].Image,i*(width+2*space),startY+j*(height+2*space)-t.Info.TileOffset);
+                    g.FillRectangle(
+                        (SolidBrush) brushes[t.Info.TargetType.ToString()], i*(width + 2*space),
+                        startY + j*(height + 2*space), width + 2*space, height + 2*space);
+                    g.DrawImage(t[MapViewPanel.Current].Image, i*(width + 2*space),
+                        startY + j*(height + 2*space) - t.Info.TileOffset);
 
-                        if(t.Info.HumanDoor || t.Info.UFODoor)
-                            g.DrawString("Door",this.Font,Brushes.Black,i*(width+2*space),startY+j*(height+2*space)+PckImage.Height-Font.Height);
+                    if (t.Info.HumanDoor || t.Info.UFODoor)
+                        g.DrawString("Door", this.Font, Brushes.Black, i*(width + 2*space),
+                            startY + j*(height + 2*space) + PckImage.Height - Font.Height);
 
-                        i=(i+1)%numAcross;
-                        if(i==0)
-                            j++;
-                    }
-                    else if(t==null)
-                    {
-                        if(Globals.ExtraTiles!=null)
-                            g.DrawImage(Globals.ExtraTiles[0].Image, i * (width + 2 * space), startY + j * (height + 2 * space));
-                        i=(i+1)%numAcross;
-                        if(i==0)
-                            j++;
-                    }
+                    i = (i + 1)%numAcross;
+                    if (i == 0)
+                        j++;
                 }
-
-                //g.DrawRectangle(brush,(selectedNum%numAcross)*(width+2*space),startY+(selectedNum/numAcross)*(height+2*space),width+2*space,height+2*space)				
-
-                for(int k=0;k<=numAcross+1;k++)
-                    g.DrawLine(Pens.Black,k*(width+2*space),startY,k*(width+2*space),startY+PreferredHeight);
-                for(int k=0;k<=PreferredHeight;k+=(height+2*space))
-                    g.DrawLine(Pens.Black,0,startY+k,numAcross*(width+2*space),startY+k);
-
-                g.DrawRectangle(pen,(selectedNum%numAcross)*(width+2*space),startY+(selectedNum/numAcross)*(height+2*space),width+2*space,height+2*space);
+                else if (t == null)
+                {
+                    g.FillRectangle(
+                        Brushes.AliceBlue, i * (width + 2 * space),
+                        startY + j * (height + 2 * space), width + 2 * space, height + 2 * space);
+                    if (Globals.ExtraTiles != null)
+                        g.DrawImage(Globals.ExtraTiles[0].Image, i*(width + 2*space), startY + j*(height + 2*space));
+                    i = (i + 1)%numAcross;
+                    if (i == 0)
+                        j++;
+                }
             }
+
+            //g.DrawRectangle(brush,(selectedNum%numAcross)*(width+2*space),startY+(selectedNum/numAcross)*(height+2*space),width+2*space,height+2*space)				
+
+            for (int k = 0; k <= numAcross + 1; k++)
+                g.DrawLine(Pens.Black, k*(width + 2*space), startY, k*(width + 2*space), startY + PreferredHeight);
+            for (int k = 0; k <= PreferredHeight; k += (height + 2*space))
+                g.DrawLine(Pens.Black, 0, startY + k, numAcross*(width + 2*space), startY + k);
+
+            g.DrawRectangle(pen, (selectedNum%numAcross)*(width + 2*space),
+                startY + (selectedNum/numAcross)*(height + 2*space), width + 2*space, height + 2*space);
         }
 
         public ITile SelectedTile

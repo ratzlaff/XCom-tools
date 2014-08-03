@@ -4,6 +4,7 @@ using System.Collections;
 using System.ComponentModel;
 using System.IO;
 using System.Windows.Forms;
+using MapView.Forms.MainWindow;
 using MapView.Forms.McdViewer;
 using PckView;
 using XCom;
@@ -28,15 +29,16 @@ namespace MapView
 		private TabPage objectsTab;
 		private TabPage nWallsTab;
 		private TabPage wWallsTab;
-		private Settings settings;
 		private Hashtable brushes;
+        private readonly IMainWindowsShowAllManager _mainWindowsShowAllManager;
 
-		private static TileView myInstance;
-		private TileView()
+		public TileView()
 		{
 		    InitializeComponent();
 
             tabs.Selected += tabs_Selected;
+
+		    _mainWindowsShowAllManager = new MainWindowsShowAllManager();
 
 			all = new TilePanel(TileType.All);
 			var ground = new TilePanel(TileType.Ground);
@@ -77,7 +79,7 @@ namespace MapView
 
 		private void options_click(object sender,EventArgs e)
 		{
-            PropertyForm pf = new PropertyForm("tileViewOptions",settings);
+            PropertyForm pf = new PropertyForm("tileViewOptions",Settings);
 			pf.Text="Tile View Settings";
 			pf.Show();
 		}
@@ -108,17 +110,6 @@ namespace MapView
 	        page.Controls.Add(panel);
 	        panel.TileChanged += tileChanged;
 	    }
-
-	    public static TileView Instance
-		{
-			get
-			{
-				if(myInstance==null)
-					myInstance = new TileView();
-				return myInstance;
-			}
-		}
-
 	    private void tileChanged(TilePanel sender, ITile tile)
 	    {
 	        if (tile != null && tile.Info is McdEntry)
@@ -179,7 +170,7 @@ namespace MapView
 			}
 		}
 
-        private void EditPckMenuItem_Click(object sender, EventArgs e)
+	    private void EditPckMenuItem_Click(object sender, EventArgs e)
         {
             var dependencyName = GetSelectedDependencyName();
             if (dependencyName == null) return;
@@ -193,6 +184,8 @@ namespace MapView
                 return ;
             }
 
+            _mainWindowsShowAllManager.HideAll();
+             
             using (var editor = new PckViewForm())
             {
                 var pckFile = image.GetPckFile();
@@ -205,6 +198,8 @@ namespace MapView
                     
                 }
             }
+
+            _mainWindowsShowAllManager.RestoreAll();
         }
 
 	    private void mcdInfoTab_Click(object sender, System.EventArgs e)

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Windows.Forms;
 using System.Drawing;
 using System.Reflection;
+using MapView.Forms.MainWindow;
 using MapView.Forms.MapObservers.TopViewForm;
 using XCom;
 using XCom.Interfaces.Base;
@@ -66,7 +67,7 @@ namespace MapView.TopViewForm
 			if (btn == MouseButtons.Right && mapTile != null)
 			{
 				if (clicks == 1)
-                    mapTile[SelectedQuadrant] = TileView.Instance.SelectedTile;
+                    mapTile[SelectedQuadrant] = MainWindowsManager.TileView.SelectedTile;
 				else if (clicks == 2)
                     mapTile[SelectedQuadrant] = null;
 				Globals.MapChanged = true;
@@ -74,7 +75,7 @@ namespace MapView.TopViewForm
 			else if (btn == MouseButtons.Left && mapTile != null)
 			{
 				if (clicks == 2)
-                    TileView.Instance.SelectedTile = mapTile[SelectedQuadrant];
+                    MainWindowsManager.TileView.SelectedTile = mapTile[SelectedQuadrant];
 			}
 		}
 
