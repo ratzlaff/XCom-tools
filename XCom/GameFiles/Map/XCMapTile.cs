@@ -16,22 +16,22 @@ namespace XCom
             Content
         };
 
-        private RmpEntry rmpInfo;
-        private TileBase ground;
-        private TileBase north;
-        private TileBase west;
-        private TileBase content;
-        private bool blank;
+        private RmpEntry _rmpInfo;
+        private TileBase _ground;
+        private TileBase _north;
+        private TileBase _west;
+        private TileBase _content;
+        private bool _blank;
 
         internal XCMapTile(TileBase ground, TileBase west, TileBase north, TileBase content)
         {
-            this.ground = ground;
-            this.north = north;
-            this.west = west;
-            this.content = content;
+            _ground = ground;
+            _north = north;
+            _west = west;
+            _content = content;
 
             drawAbove = true;
-            blank = false;
+            _blank = false;
         }
 
         public static XCMapTile BlankTile
@@ -41,8 +41,8 @@ namespace XCom
 
         public bool Blank
         {
-            get { return blank; }
-            set { blank = value; }
+            get { return _blank; }
+            set { _blank = value; }
         }
 
         public TileBase this[MapQuadrant quad]
@@ -53,32 +53,32 @@ namespace XCom
 
         public TileBase North
         {
-            get { return north; }
+            get { return _north; }
             set { ChangeMapQuadrant(MapQuadrant.North, value); } 
         }
 
         public TileBase Content
         {
-            get { return content; }
+            get { return _content; }
             set { ChangeMapQuadrant(MapQuadrant.Content, value); }
         }
 
         public TileBase Ground
         {
-            get { return ground; }
+            get { return _ground; }
             set { ChangeMapQuadrant(MapQuadrant.Ground, value); }
         }
 
         public TileBase West
         {
-            get { return west; }
+            get { return _west; }
             set { ChangeMapQuadrant(MapQuadrant.West, value); }
         }
 
         public RmpEntry Rmp
         {
-            get { return rmpInfo; }
-            set { rmpInfo = value; }
+            get { return _rmpInfo; }
+            set { _rmpInfo = value; }
         }
 
         private TileBase GetQuadrantTile(MapQuadrant quad)
@@ -103,16 +103,16 @@ namespace XCom
             switch (quad)
             {
                 case MapQuadrant.Ground:
-                    Ground = value;
+                    _ground = value;
                     break;
                 case MapQuadrant.Content:
-                    Content = value;
+                    _content = value;
                     break;
                 case MapQuadrant.North:
-                    North = value;
+                    _north = value;
                     break;
                 case MapQuadrant.West:
-                    West = value;
+                    _west = value;
                     break;
             }
         }
@@ -120,7 +120,7 @@ namespace XCom
         private static XCMapTile CreateBlankTile()
         {
             var mt = new XCMapTile(null, null, null, null);
-            mt.blank = true;
+            mt._blank = true;
             return mt;
         }
     }

@@ -7,33 +7,36 @@ using XCom;
 
 namespace MapView.RmpViewForm
 {
-	public delegate void MapPanelClickDelegate(object sender, MapPanelClickEventArgs e);
+    public delegate void MapPanelClickDelegate(object sender, MapPanelClickEventArgs e);
 
     public class MapPanel : Panel
     {
-        protected XCMapFile map;
-        protected Point origin;
-        protected Point clickPoint;
-        protected Dictionary<string, Pen> pens;
-        protected Dictionary<string, SolidBrush> brushes;
+        private XCMapFile _map;
+        protected Point Origin;
 
-        protected int hWidth = 8, hHeight = 4;
+        protected int DrawAreaWidth = 8;
+        protected int DrawAreaHeight = 4;
+
+        protected Point ClickPoint;
 
         public event MapPanelClickDelegate MapPanelClicked;
 
+        public Dictionary<string, Pen> Pens;
+        public Dictionary<string, SolidBrush> Brushes;
+
         public MapPanel()
         {
-            pens = new Dictionary<string, Pen>();
-            brushes = new Dictionary<string, SolidBrush>();
+            Pens = new Dictionary<string, Pen>();
+            Brushes = new Dictionary<string, SolidBrush>();
             SetStyle(ControlStyles.AllPaintingInWmPaint | ControlStyles.DoubleBuffer | ControlStyles.UserPaint, true);
         }
 
         public XCMapFile Map
         {
-            get { return map; }
+            get { return _map; }
             set
             {
-                map = value;
+                _map = value;
                 OnResize(null);
             }
         }
@@ -46,44 +49,46 @@ namespace MapView.RmpViewForm
         /// <returns>null if (x,y) is an invalid location for a tile</returns>
         public XCMapTile GetTile(int x, int y)
         {
-            if (map == null) return null;
-            Point p = convertCoordsDiamond(x, y);
-            if (p.Y >= 0 && p.Y < map.MapSize.Rows &&
-                p.X >= 0 && p.X < map.MapSize.Cols)
-                return (XCMapTile) map[p.Y, p.X];
+            if (_map == null) return null;
+            Point p = ConvertCoordsDiamond(x, y);
+            if (p.Y >= 0 && p.Y < _map.MapSize.Rows &&
+                p.X >= 0 && p.X < _map.MapSize.Cols)
+                return (XCMapTile) _map[p.Y, p.X];
             return null;
         }
 
         public Point GetTileCoordinates(int x, int y)
         {
-            Point p = convertCoordsDiamond(x, y);
-            if (p.Y >= 0 && p.Y < map.MapSize.Rows && p.X >= 0 && p.X < map.MapSize.Cols)
+            Point p = ConvertCoordsDiamond(x, y);
+            if (p.Y >= 0 && p.Y < _map.MapSize.Rows && p.X >= 0 && p.X < _map.MapSize.Cols)
                 return p;
             return new Point(-1, -1);
         }
 
+        public void ClearSelected()
+        {
+            ClickPoint = new Point(-1, -1);
+        }
+
         protected override void OnMouseDown(MouseEventArgs e)
         {
-            if (map == null) return;
+            if (_map == null) return;
             if (MapPanelClicked != null)
             {
-                XCom.Interfaces.Base.IMapTile tile = null;
-
-                Point p = convertCoordsDiamond(e.X, e.Y);
-                if (p.Y >= 0 && p.Y < map.MapSize.Rows &&
-                    p.X >= 0 && p.X < map.MapSize.Cols)
-                    tile = map[p.Y, p.X];
-
-                if (tile != null)
+                var p = ConvertCoordsDiamond(e.X, e.Y);
+                if (p.Y >= 0 && p.Y < _map.MapSize.Rows &&
+                    p.X >= 0 && p.X < _map.MapSize.Cols)
                 {
-                    clickPoint.X = p.X;
-                    clickPoint.Y = p.Y;
+                    var tile = _map[p.Y, p.X];
+                    if (tile == null) return;
+                    ClickPoint.X = p.X;
+                    ClickPoint.Y = p.Y;
 
-                    map.SelectedTile = new MapLocation(clickPoint.Y, clickPoint.X, map.CurrentHeight);
-                    MapPanelClickEventArgs mpe = new MapPanelClickEventArgs();
+                    _map.SelectedTile = new MapLocation(ClickPoint.Y, ClickPoint.X, _map.CurrentHeight);
+                    var mpe = new MapPanelClickEventArgs();
                     mpe.ClickTile = tile;
                     mpe.MouseEventArgs = e;
-                    mpe.ClickLocation = new MapLocation(clickPoint.Y, clickPoint.X, map.CurrentHeight);
+                    mpe.ClickLocation = new MapLocation(ClickPoint.Y, ClickPoint.X, _map.CurrentHeight);
                     MapPanelClicked(this, mpe);
                 }
             }
@@ -93,67 +98,39 @@ namespace MapView.RmpViewForm
 
         protected override void OnResize(EventArgs e)
         {
-            if (map != null)
+            if (_map != null)
             {
                 if (Height > Width / 2)
                 {
                     //use width
-                    hWidth = (Width) / (map.MapSize.Rows + map.MapSize.Cols + 1);
+                    DrawAreaWidth = (Width) / (_map.MapSize.Rows + _map.MapSize.Cols + 1);
 
-                    if (hWidth % 2 != 0)
-                        hWidth--;
+                    if (DrawAreaWidth % 2 != 0)
+                        DrawAreaWidth--;
 
-                    hHeight = hWidth / 2;
+                    DrawAreaHeight = DrawAreaWidth / 2;
                 }
                 else
                 {
                     //use height
-                    hHeight = (Height) / (map.MapSize.Rows + map.MapSize.Cols);
-                    hWidth = hHeight * 2;
+                    DrawAreaHeight = (Height) / (_map.MapSize.Rows + _map.MapSize.Cols);
+                    DrawAreaWidth = DrawAreaHeight * 2;
                 }
 
-                origin = new Point((map.MapSize.Rows) * hWidth, 0);
+                Origin = new Point((_map.MapSize.Rows) * DrawAreaWidth, 0);
                 Refresh();
             }
         }
 
-        private Point convertCoordsDiamond(int xp, int yp)
+        private Point ConvertCoordsDiamond(int xp, int yp)
         {
-            int x = xp - origin.X;
-            int y = yp - origin.Y;
+            int x = xp - Origin.X;
+            int y = yp - Origin.Y;
 
-            double x1 = (x * 1.0 / (hWidth * 2)) + (y * 1.0 / (hHeight * 2));
-            double x2 = -(x * 1.0 - 2 * y * 1.0) / (hWidth * 2);
+            double x1 = (x * 1.0 / (DrawAreaWidth * 2)) + (y * 1.0 / (DrawAreaHeight * 2));
+            double x2 = -(x * 1.0 - 2 * y * 1.0) / (DrawAreaWidth * 2);
 
             return new Point((int) Math.Floor(x1), (int) Math.Floor(x2));
         }
     }
-
-    public class MapPanelClickEventArgs:EventArgs
-	{
-		private XCom.Interfaces.Base.IMapTile clickTile;
-		private MapLocation clickLocation;
-
-		public MapLocation ClickLocation
-		{
-			get { return clickLocation; }
-			set { clickLocation = value; }
-		}
-
-		public XCom.Interfaces.Base.IMapTile ClickTile
-		{
-		  get { return clickTile; }
-		  set { clickTile = value; }
-		}
-
-		private MouseEventArgs me;
-
-		public MouseEventArgs MouseEventArgs
-		{
-		  get { return me; }
-		  set { me = value; }
-		}
-
-		public MapPanelClickEventArgs(){}
-	}
 }

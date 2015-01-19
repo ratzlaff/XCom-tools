@@ -5,6 +5,7 @@ using System.Windows.Forms;
 using System.Data;
 using MapView.Forms.Error.WarningConsole;
 using MapView.Forms.MainWindow;
+using MapView.Forms.MapObservers.RmpViewForm;
 using XCom;
 using XCom.GameFiles.Map;
 using XCom.Interfaces;
@@ -35,10 +36,7 @@ namespace MapView
         private readonly IWarningHandler _warningHandler;
         private readonly IMainWindowsMenuItemManager _mainWindowsMenuItemManager;
         private readonly MainWindowsManager _mainWindowsManager;
-        
-		//private LoadOfType<IMapDesc> loadedTypes;
-
-		//public event StringDelegate SendMessage;
+	    private readonly ConnectNodeService _connectNodeService;
 
 		public MainWindow()
         {

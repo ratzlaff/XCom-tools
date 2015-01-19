@@ -50,7 +50,6 @@ namespace MapView.RmpViewForm
             this.gbNodeInfo = new System.Windows.Forms.GroupBox();
             this.pasteNode = new System.Windows.Forms.Button();
             this.copyNode = new System.Windows.Forms.Button();
-            this.AutoconnectNodes = new System.Windows.Forms.CheckBox();
             this.txtDist5 = new System.Windows.Forms.TextBox();
             this.txtDist4 = new System.Windows.Forms.TextBox();
             this.txtDist3 = new System.Windows.Forms.TextBox();
@@ -67,10 +66,11 @@ namespace MapView.RmpViewForm
             this.idxLabel2 = new System.Windows.Forms.Label();
             this.cbUsage = new System.Windows.Forms.ComboBox();
             this.lblMouseOver = new System.Windows.Forms.Label();
-            this.contentPane = new System.Windows.Forms.Panel();
+            this._contentPane = new System.Windows.Forms.Panel();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.miEdit = new System.Windows.Forms.ToolStripMenuItem();
             this.miOptions = new System.Windows.Forms.ToolStripMenuItem();
+            this.connectNodesYoolStripMenuItem = new System.Windows.Forms.ToolStripComboBox();
             this.gbNodeInfo.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -245,7 +245,6 @@ namespace MapView.RmpViewForm
             // 
             this.gbNodeInfo.Controls.Add(this.pasteNode);
             this.gbNodeInfo.Controls.Add(this.copyNode);
-            this.gbNodeInfo.Controls.Add(this.AutoconnectNodes);
             this.gbNodeInfo.Controls.Add(this.txtDist5);
             this.gbNodeInfo.Controls.Add(this.txtDist4);
             this.gbNodeInfo.Controls.Add(this.txtDist3);
@@ -307,16 +306,6 @@ namespace MapView.RmpViewForm
             this.copyNode.TabIndex = 34;
             this.copyNode.Text = "Copy Node";
             this.copyNode.Click += new System.EventHandler(this.copyNode_Click);
-            // 
-            // AutoconnectNodes
-            // 
-            this.AutoconnectNodes.AutoSize = true;
-            this.AutoconnectNodes.Location = new System.Drawing.Point(292, 160);
-            this.AutoconnectNodes.Name = "AutoconnectNodes";
-            this.AutoconnectNodes.Size = new System.Drawing.Size(125, 17);
-            this.AutoconnectNodes.TabIndex = 33;
-            this.AutoconnectNodes.Text = "Auto-Connect Nodes";
-            this.AutoconnectNodes.UseVisualStyleBackColor = true;
             // 
             // txtDist5
             // 
@@ -454,20 +443,21 @@ namespace MapView.RmpViewForm
             // 
             // contentPane
             // 
-            this.contentPane.AutoScroll = true;
-            this.contentPane.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.contentPane.Location = new System.Drawing.Point(0, 24);
-            this.contentPane.Name = "contentPane";
-            this.contentPane.Size = new System.Drawing.Size(536, 206);
-            this.contentPane.TabIndex = 2;
+            this._contentPane.AutoScroll = true;
+            this._contentPane.Dock = System.Windows.Forms.DockStyle.Fill;
+            this._contentPane.Location = new System.Drawing.Point(0, 27);
+            this._contentPane.Name = "_contentPane";
+            this._contentPane.Size = new System.Drawing.Size(536, 203);
+            this._contentPane.TabIndex = 2;
             // 
             // menuStrip1
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.miEdit});
+            this.miEdit,
+            this.connectNodesYoolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(536, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(536, 27);
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -476,21 +466,31 @@ namespace MapView.RmpViewForm
             this.miEdit.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.miOptions});
             this.miEdit.Name = "miEdit";
-            this.miEdit.Size = new System.Drawing.Size(39, 20);
+            this.miEdit.Size = new System.Drawing.Size(39, 23);
             this.miEdit.Text = "Edit";
             // 
             // miOptions
             // 
             this.miOptions.Name = "miOptions";
-            this.miOptions.Size = new System.Drawing.Size(152, 22);
+            this.miOptions.Size = new System.Drawing.Size(116, 22);
             this.miOptions.Text = "Options";
             this.miOptions.Click += new System.EventHandler(this.options_click);
+            // 
+            // connectNodesYoolStripMenuItem
+            // 
+            this.connectNodesYoolStripMenuItem.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.connectNodesYoolStripMenuItem.Items.AddRange(new object[] {
+            "Dont connect",
+            "Connect One way",
+            "Connect Two ways"});
+            this.connectNodesYoolStripMenuItem.Name = "connectNodesYoolStripMenuItem";
+            this.connectNodesYoolStripMenuItem.Size = new System.Drawing.Size(154, 23);
             // 
             // RmpView
             // 
             this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
             this.ClientSize = new System.Drawing.Size(536, 423);
-            this.Controls.Add(this.contentPane);
+            this.Controls.Add(this._contentPane);
             this.Controls.Add(this.menuStrip1);
             this.Controls.Add(this.gbNodeInfo);
             this.MainMenuStrip = this.menuStrip1;
@@ -546,9 +546,9 @@ namespace MapView.RmpViewForm
 		private System.Windows.Forms.Label lblMouseOver;
 		private System.Windows.Forms.MenuStrip menuStrip1;
 		private System.Windows.Forms.ToolStripMenuItem miEdit;
-		private System.Windows.Forms.ToolStripMenuItem miOptions;
-    private System.Windows.Forms.CheckBox AutoconnectNodes;
+        private System.Windows.Forms.ToolStripMenuItem miOptions;
     private System.Windows.Forms.Button pasteNode;
     private System.Windows.Forms.Button copyNode;
+    private System.Windows.Forms.ToolStripComboBox connectNodesYoolStripMenuItem;
 	}
 }

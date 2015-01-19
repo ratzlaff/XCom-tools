@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Windows.Forms;
@@ -12,20 +11,8 @@ namespace MapView.RmpViewForm
         public Point Position = new Point(-1, -1);
 
         private readonly Font _font = new Font("Arial", 12, FontStyle.Bold);
-
-        public Dictionary<string, SolidBrush> Brushes
-        {
-            get { return brushes; }
-            set { brushes = value; }
-        }
-
-        public Dictionary<string, Pen> Pens
-        {
-            get { return pens; }
-            set { pens = value; }
-        }
-
-        public void Calc()
+         
+        public void Calculate()
         {
             OnResize(null);
         }
@@ -35,7 +22,7 @@ namespace MapView.RmpViewForm
             var graphics = e.Graphics;
             try
             {
-                if (map == null) return;
+                if (Map == null) return;
                 var lower = new GraphicsPath();
                 var upper = new GraphicsPath();
 
@@ -56,7 +43,7 @@ namespace MapView.RmpViewForm
             catch (Exception ex)
             {
                 graphics.FillRectangle(new SolidBrush(Color.Black), graphics.ClipBounds);
-                graphics.DrawString(ex.Message, this.Font, new SolidBrush(Color.White), 8, 8);
+                graphics.DrawString(ex.Message, Font, new SolidBrush(Color.White), 8, 8);
             }
 
         }
@@ -65,20 +52,20 @@ namespace MapView.RmpViewForm
 
         private void DrawInformation(Graphics g)
         {
-            XCMapTile posT = GetTile(Position.X, Position.Y);
+            var posT = GetTile(Position.X, Position.Y);
             if (posT != null)
             {
-                Rectangle overlayPos = new Rectangle(Position.X + 18, Position.Y, 140,
-                    (int) g.MeasureString("X", this.Font).Height + 10);
+                var overlayPos = new Rectangle(Position.X + 18, Position.Y, 140,
+                    (int) g.MeasureString("X", Font).Height + 10);
                 if (posT.Rmp != null)
                 {
-                    overlayPos.Height += (int) g.MeasureString("X", this.Font).Height;
+                    overlayPos.Height += (int) g.MeasureString("X", Font).Height;
                 }
-                if (overlayPos.X + overlayPos.Width > this.ClientRectangle.Width)
+                if (overlayPos.X + overlayPos.Width > ClientRectangle.Width)
                 {
                     overlayPos.X = Position.X - overlayPos.Width - 8;
                 }
-                if (overlayPos.Y + overlayPos.Height > this.ClientRectangle.Height)
+                if (overlayPos.Y + overlayPos.Height > ClientRectangle.Height)
                 {
                     overlayPos.Y = Position.X - overlayPos.Height;
                 }
@@ -86,13 +73,13 @@ namespace MapView.RmpViewForm
                 g.FillRectangle(new SolidBrush(Color.FromArgb(192, 0, 0, 0)), overlayPos);
                 g.FillRectangle(new SolidBrush(Color.FromArgb(192, 255, 255, 255)), overlayPos.X + 3,
                     overlayPos.Y + 3, overlayPos.Width - 6, overlayPos.Height - 6);
-                g.DrawString("Tile " + GetTileCoordinates(Position.X, Position.Y).ToString(), this.Font,
+                g.DrawString("Tile " + GetTileCoordinates(Position.X, Position.Y), Font,
                     System.Drawing.Brushes.Black, overlayPos.X + 5, overlayPos.Y + 5);
                 if (posT.Rmp != null)
                 {
-                    g.DrawString("Spawns: " + RmpFile.UnitRankUFO[posT.Rmp.URank1].ToString(), this.Font,
+                    g.DrawString("Spawns: " + RmpFile.UnitRankUFO[posT.Rmp.URank1], Font,
                         System.Drawing.Brushes.Black, overlayPos.X + 5,
-                        overlayPos.Y + 5 + (int) g.MeasureString("X", this.Font).Height);
+                        overlayPos.Y + 5 + (int) g.MeasureString("X", Font).Height);
                 }
             }
         }
@@ -107,41 +94,43 @@ namespace MapView.RmpViewForm
 
         private void DrawGridLines(Graphics g)
         {
+            var map = Map;
             for (int i = 0; i <= map.MapSize.Rows; i++)
-                g.DrawLine(pens["GridLineColor"], origin.X - i * hWidth, origin.Y + i * hHeight,
-                    origin.X + ((map.MapSize.Cols - i) * hWidth), origin.Y + ((i + map.MapSize.Cols) * hHeight));
+                g.DrawLine(Pens["GridLineColor"], Origin.X - i * DrawAreaWidth, Origin.Y + i * DrawAreaHeight,
+                    Origin.X + ((map.MapSize.Cols - i) * DrawAreaWidth), Origin.Y + ((i + map.MapSize.Cols) * DrawAreaHeight));
             for (int i = 0; i <= map.MapSize.Cols; i++)
-                g.DrawLine(pens["GridLineColor"], origin.X + i * hWidth, origin.Y + i * hHeight,
-                    (origin.X + i * hWidth) - map.MapSize.Rows * hWidth,
-                    (origin.Y + i * hHeight) + map.MapSize.Rows * hHeight);
+                g.DrawLine(Pens["GridLineColor"], Origin.X + i * DrawAreaWidth, Origin.Y + i * DrawAreaHeight,
+                    (Origin.X + i * DrawAreaWidth) - map.MapSize.Rows * DrawAreaWidth,
+                    (Origin.Y + i * DrawAreaHeight) + map.MapSize.Rows * DrawAreaHeight);
         }
 
         private void DrawNodes(GraphicsPath upper, Graphics g)
         {
-            var startX = origin.X;
-            var startY = origin.Y;
+            var map = Map;
+            var startX = Origin.X;
+            var startY = Origin.Y;
             for (int row = 0; row < map.MapSize.Rows; row++)
             {
                 for (int col = 0, x = startX, y = startY;
                     col < map.MapSize.Cols;
-                    col++, x += hWidth, y += hHeight)
+                    col++, x += DrawAreaWidth, y += DrawAreaHeight)
                 {
                     var tile = (XCMapTile) map[row, col];
                     if (map[row, col] != null && tile.Rmp != null)
                     {
                         upper.Reset();
-                        upper.AddLine(x, y, x + hWidth, y + hHeight);
-                        upper.AddLine(x + hWidth, y + hHeight, x, y + 2 * hHeight);
-                        upper.AddLine(x, y + 2 * hHeight, x - hWidth, y + hHeight);
+                        upper.AddLine(x, y, x + DrawAreaWidth, y + DrawAreaHeight);
+                        upper.AddLine(x + DrawAreaWidth, y + DrawAreaHeight, x, y + 2 * DrawAreaHeight);
+                        upper.AddLine(x, y + 2 * DrawAreaHeight, x - DrawAreaWidth, y + DrawAreaHeight);
                         upper.CloseFigure();
 
                         //if clicked on, draw Blue
-                        if (row == clickPoint.Y && col == clickPoint.X)
-                            g.FillPath(brushes["SelectedNodeColor"], upper);
+                        if (row == ClickPoint.Y && col == ClickPoint.X)
+                            g.FillPath(Brushes["SelectedNodeColor"], upper);
                         else if (tile.Rmp.Usage != SpawnUsage.NoSpawn)
-                            g.FillPath(brushes["SpawnNodeColor"], upper);
+                            g.FillPath(Brushes["SpawnNodeColor"], upper);
                         else
-                            g.FillPath(brushes["UnselectedNodeColor"], upper);
+                            g.FillPath(Brushes["UnselectedNodeColor"], upper);
 
                         for (int rr = 0; rr < tile.Rmp.NumLinks; rr++)
                         {
@@ -158,50 +147,51 @@ namespace MapView.RmpViewForm
                                     if (map.Rmp[l.Index] != null &&
                                         map.Rmp[l.Index].Height < map.CurrentHeight)
                                     {
-                                        g.DrawLine(pens["UnselectedLinkColor"], x, y, x, y + hHeight * 2);
+                                        g.DrawLine(Pens["UnselectedLinkColor"], x, y, x, y + DrawAreaHeight * 2);
                                     }
                                     else if (map.Rmp[l.Index] != null &&
                                              map.Rmp[l.Index].Height > map.CurrentHeight)
                                     {
-                                        g.DrawLine(pens["UnselectedLinkColor"], x - hWidth, y + hHeight,
-                                            x + hWidth, y + hHeight);
+                                        g.DrawLine(Pens["UnselectedLinkColor"], x - DrawAreaWidth, y + DrawAreaHeight,
+                                            x + DrawAreaWidth, y + DrawAreaHeight);
                                     }
                                     break;
                             }
                         }
                     }
                 }
-                startX -= hWidth;
-                startY += hHeight;
+                startX -= DrawAreaWidth;
+                startY += DrawAreaHeight;
             }
         }
 
         private void DrawWallsAndContent(GraphicsPath lower, Graphics g)
         {
-            for (int row = 0, startX = origin.X, startY = origin.Y;
+            var map = Map;
+            for (int row = 0, startX = Origin.X, startY = Origin.Y;
                 row < map.MapSize.Rows;
-                row++, startX -= hWidth, startY += hHeight)
+                row++, startX -= DrawAreaWidth, startY += DrawAreaHeight)
             {
                 for (int col = 0, x = startX, y = startY;
                     col < map.MapSize.Cols;
-                    col++, x += hWidth, y += hHeight)
+                    col++, x += DrawAreaWidth, y += DrawAreaHeight)
                 {
                     if (map[row, col] != null)
                     {
                         lower.Reset();
-                        lower.AddLine(x, y + 2 * hHeight, x + hWidth, y + hHeight);
-                        lower.AddLine(x + hWidth, y + hHeight, x - hWidth, y + hHeight);
+                        lower.AddLine(x, y + 2 * DrawAreaHeight, x + DrawAreaWidth, y + DrawAreaHeight);
+                        lower.AddLine(x + DrawAreaWidth, y + DrawAreaHeight, x - DrawAreaWidth, y + DrawAreaHeight);
                         lower.CloseFigure();
                         XCMapTile tile = (XCMapTile) map[row, col];
 
                         if (tile.North != null)
-                            g.DrawLine(pens["WallColor"], x, y, x + hWidth, y + hHeight);
+                            g.DrawLine(Pens["WallColor"], x, y, x + DrawAreaWidth, y + DrawAreaHeight);
 
                         if (tile.West != null)
-                            g.DrawLine(pens["WallColor"], x, y, x - hWidth, y + hHeight);
+                            g.DrawLine(Pens["WallColor"], x, y, x - DrawAreaWidth, y + DrawAreaHeight);
 
                         if (tile.Content != null)
-                            g.FillPath(brushes["ContentTiles"], lower);
+                            g.FillPath(Brushes["ContentTiles"], lower);
                     }
                 }
             }
@@ -209,42 +199,43 @@ namespace MapView.RmpViewForm
 
         private void DrawUnselectedLink(GraphicsPath upper, Graphics graphics)
         {
-            for (int row = 0, startX = origin.X, startY = origin.Y;
+            var map = Map;
+            for (int row = 0, startX = Origin.X, startY = Origin.Y;
                 row < map.MapSize.Rows;
-                row++, startX -= hWidth, startY += hHeight)
+                row++, startX -= DrawAreaWidth, startY += DrawAreaHeight)
             {
                 for (int col = 0, x = startX, y = startY;
                     col < map.MapSize.Cols;
-                    col++, x += hWidth, y += hHeight)
+                    col++, x += DrawAreaWidth, y += DrawAreaHeight)
                 {
                     if (map[row, col] != null && ((XCMapTile) map[row, col]).Rmp != null)
                     {
                         RmpEntry f = ((XCMapTile) map[row, col]).Rmp;
                         upper.Reset();
-                        upper.AddLine(x, y, x + hWidth, y + hHeight);
-                        upper.AddLine(x + hWidth, y + hHeight, x, y + 2 * hHeight);
-                        upper.AddLine(x, y + 2 * hHeight, x - hWidth, y + hHeight);
+                        upper.AddLine(x, y, x + DrawAreaWidth, y + DrawAreaHeight);
+                        upper.AddLine(x + DrawAreaWidth, y + DrawAreaHeight, x, y + 2 * DrawAreaHeight);
+                        upper.AddLine(x, y + 2 * DrawAreaHeight, x - DrawAreaWidth, y + DrawAreaHeight);
                         upper.CloseFigure();
 
                         for (int rr = 0; rr < f.NumLinks; rr++)
                         {
                             Link l = f[rr];
-                            var pen = pens["UnselectedLinkColor"];
+                            var pen = Pens["UnselectedLinkColor"];
                             switch (l.Index)
                             {
                                 case Link.NotUsed:
                                     break;
                                 case Link.ExitEast:
-                                    graphics.DrawLine(pen, x, y + hHeight, Width, Height);
+                                    graphics.DrawLine(pen, x, y + DrawAreaHeight, Width, Height);
                                     break;
                                 case Link.ExitNorth:
-                                    graphics.DrawLine(pen, x, y + hHeight, Width, 0);
+                                    graphics.DrawLine(pen, x, y + DrawAreaHeight, Width, 0);
                                     break;
                                 case Link.ExitSouth:
-                                    graphics.DrawLine(pen, x, y + hHeight, 0, Height);
+                                    graphics.DrawLine(pen, x, y + DrawAreaHeight, 0, Height);
                                     break;
                                 case Link.ExitWest:
-                                    graphics.DrawLine(pen, x, y + hHeight, 0, 0);
+                                    graphics.DrawLine(pen, x, y + DrawAreaHeight, 0, 0);
                                     break;
                                 default:
                                     if (map.Rmp[l.Index] != null)
@@ -253,9 +244,9 @@ namespace MapView.RmpViewForm
                                         {
                                             int toRow = map.Rmp[l.Index].Row;
                                             int toCol = map.Rmp[l.Index].Col;
-                                            graphics.DrawLine(pen, x, y + hHeight,
-                                                origin.X + (toCol - toRow) * hWidth,
-                                                origin.Y + (toCol + toRow + 1) * hHeight);
+                                            graphics.DrawLine(pen, x, y + DrawAreaHeight,
+                                                Origin.X + (toCol - toRow) * DrawAreaWidth,
+                                                Origin.Y + (toCol + toRow + 1) * DrawAreaHeight);
                                         }
                                     }
                                     break;
@@ -268,15 +259,17 @@ namespace MapView.RmpViewForm
 
         private void DrawSelectedLink(Graphics g)
         {
-            if (((XCMapTile) map[clickPoint.Y, clickPoint.X]).Rmp == null) return;
+            var map = Map;
+            if (ClickPoint.X < 0 || ClickPoint.Y < 0) return;
+            if (((XCMapTile)map[ClickPoint.Y, ClickPoint.X]).Rmp == null) return;
 
-            var pen = pens["SelectedLinkColor"];
-            var r = clickPoint.Y;
-            var c = clickPoint.X;
+            var pen = Pens["SelectedLinkColor"];
+            var r = ClickPoint.Y;
+            var c = ClickPoint.X;
             RmpEntry f = ((XCMapTile) map[r, c]).Rmp;
 
-            var unknownLocationX = origin.X + (c - r) * hWidth;
-            var unknownLocationY = origin.Y + (c + r + 1) * hHeight;
+            var unknownLocationX = Origin.X + (c - r) * DrawAreaWidth;
+            var unknownLocationY = Origin.Y + (c + r + 1) * DrawAreaHeight;
             for (int rr = 0; rr < f.NumLinks; rr++)
             {
                 Link l = f[rr];
@@ -306,8 +299,8 @@ namespace MapView.RmpViewForm
                             int toRow = map.Rmp[l.Index].Row;
                             int toCol = map.Rmp[l.Index].Col;
                             g.DrawLine(pen, unknownLocationX,
-                                unknownLocationY, origin.X + (toCol - toRow) * hWidth,
-                                origin.Y + (toCol + toRow + 1) * hHeight);
+                                unknownLocationY, Origin.X + (toCol - toRow) * DrawAreaWidth,
+                                Origin.Y + (toCol + toRow + 1) * DrawAreaHeight);
                         }
                         break;
                 }
