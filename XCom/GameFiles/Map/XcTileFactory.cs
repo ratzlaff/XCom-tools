@@ -22,8 +22,8 @@ namespace XCom.GameFiles.Map
                  file.Read(info, 0, TILE_SIZE);
                  var mcdEntry = factory.Create(info);
 
-                 var dead = GetDeadValue(i, mcdEntry, tiles);
-                 var alternate = GetAlternate(i, mcdEntry, tiles);
+                 var dead = GetDeadValue(basename, i, mcdEntry, tiles);
+                 var alternate = GetAlternate(basename, i, mcdEntry, tiles);
                  var tile = new XCTile(i, pckFile, mcdEntry, tiles);
                  tile.Dead = dead;
                  tile.Alternate = alternate;
@@ -35,16 +35,15 @@ namespace XCom.GameFiles.Map
              return tiles;
          }
 
-
-         private XCTile GetAlternate(int index, McdEntry info, XCTile[] tiles)
+         private XCTile GetAlternate(string basename, int index, McdEntry info, XCTile[] tiles)
          {
              if (info.UFODoor || info.HumanDoor || info.Alt_MCD != 0)
              {
                  if (tiles.Length < info.Alt_MCD)
                  {
                      OnHandleWarning(string.Format(
-                         "The tile entry {0} have an invalid alternative (# {1} of {2} tiles) in the MCD file",
-                         index, info.Alt_MCD, tiles.Length));
+                         "In the MCD file {3}, the tile entry {0} have an invalid alternative tile (# {1} of {2} tiles)",
+                         index, info.Alt_MCD, tiles.Length, basename));
                      return null;
                  }
                  return tiles[info.Alt_MCD];
@@ -52,7 +51,7 @@ namespace XCom.GameFiles.Map
              return null;
          }
 
-         private XCTile GetDeadValue(int index, McdEntry info, XCTile[] tiles)
+         private XCTile GetDeadValue(string basename, int index, McdEntry info, XCTile[] tiles)
          {
              try
              {
@@ -64,8 +63,8 @@ namespace XCom.GameFiles.Map
              catch
              {
                  OnHandleWarning(string.Format(
-                     @"Error, could not set dead tile: {0}",
-                     info.DieTile, index));
+                     "In the MCD file {3}, the tile entry {0} have an invalid dead tile (# {1} of {2} tiles)",
+                     index, info.Alt_MCD, tiles.Length, basename));
              }
              return null;
          }
