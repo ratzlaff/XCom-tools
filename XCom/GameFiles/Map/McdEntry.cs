@@ -57,8 +57,7 @@ struct MCD
 
 namespace XCom
 {
-	public enum SpecialType{Tile=0,StartPoint,IonBeamAccel,DestroyObjective,MagneticNav,AlienCryo,AlienClon,AlienLearn,AlienImplant,Unknown9,AlienPlastics,ExamRoom,DeadTile,EndPoint,MustDestroy};
-	public enum TileType{Ground=0,WestWall=1,NorthWall=2,Object=3,All=-1};
+    public enum TileType{Ground=0,WestWall=1,NorthWall=2,Object=3,All=-1};
 
 	public class McdEntry:XCom.Interfaces.Base.IInfo
 	{
