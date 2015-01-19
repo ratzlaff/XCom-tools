@@ -418,7 +418,6 @@ namespace MapView
 			{
 				_mapView.Map.Save();
 				xConsole.AddLine("Saved: " + _mapView.Map.Name);
-				Globals.MapChanged = false;
 			}
 		}
 
@@ -515,25 +514,28 @@ namespace MapView
 	        }
 	    }
 
-		public DialogResult NotifySave()
-		{
-			if (_mapView.Map != null && Globals.MapChanged)
-				switch (MessageBox.Show(this, "Map changed, do you wish to save?", "Save map?", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1))
-				{
-					case DialogResult.No: //dont save 
-						break;
-					case DialogResult.Yes: //save
-						_mapView.Map.Save();
-						break;					
-					case DialogResult.Cancel://do nothing
-						return DialogResult.Cancel;
-				}
+	    public DialogResult NotifySave()
+	    {
+            if (_mapView.Map != null && _mapView.Map.MapChanged)
+	        {
+	            switch (
+	                MessageBox.Show(this, "Map changed, do you wish to save?", "Save map?",
+	                    MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1))
+	            {
+	                case DialogResult.No: //dont save 
+	                    break;
+	                case DialogResult.Yes: //save
+	                    _mapView.Map.Save();
+	                    break;
+	                case DialogResult.Cancel: //do nothing
+	                    return DialogResult.Cancel;
+	            }
+	        }
 
-			Globals.MapChanged = false;
-			return DialogResult.OK;			
-		}
+	        return DialogResult.OK;
+	    }
 
-		private void miOptions_Click(object sender, System.EventArgs e)
+	    private void miOptions_Click(object sender, System.EventArgs e)
 		{
 			PropertyForm pf = new PropertyForm("MainViewSettings", _settingsHash["MainWindow"]);
 			pf.Text = "MainWindow Options";

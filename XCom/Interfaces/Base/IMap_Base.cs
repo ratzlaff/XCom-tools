@@ -17,28 +17,20 @@ namespace XCom.Interfaces.Base
 		protected MapLocation selected;
 		protected MapSize mapSize;
 		protected IMapTile[] mapData;
-		protected List<ITile> tiles;
-		protected string name;
+	    public bool MapChanged { get; set; }
 
-		protected IMap_Base(string name, List<ITile> tiles)
+	    protected IMap_Base(string name, List<TileBase> tiles)
 		{
-			this.name = name;
-			this.tiles = tiles;
+			Name = name;
+			Tiles = tiles;
 		}
 
-		public string Name
-		{
-			get { return name; }
-		}
+	    public string Name { get; protected set; }
 
-		public List<ITile> Tiles
-		{
-			get { return tiles; }
-		}
+	    public List<TileBase> Tiles { get; protected set; }
 
-		public virtual void Save() { throw new Exception("Save() is not yet implemented"); }
-		public virtual void Save(System.IO.FileStream s) { throw new Exception("Save(Filestream s) is not yet implemented"); }
-
+	    public virtual void Save() { throw new Exception("Save() is not yet implemented"); }
+		
 		public event HeightChangedDelegate HeightChanged;
 		public event SelectedTileChangedDelegate SelectedTileChanged;
 
@@ -109,7 +101,8 @@ namespace XCom.Interfaces.Base
 					value.Col >= 0 && value.Col < this.mapSize.Cols)
 				{
 					selected = value;
-					SelectedTileChangedEventArgs stc = new SelectedTileChangedEventArgs(value,this[selected.Row,selected.Col]);
+				    var tile = this[selected.Row,selected.Col];
+				    var stc = new SelectedTileChangedEventArgs(value,tile);
 					if (SelectedTileChanged != null)
 						SelectedTileChanged(this, stc);
 				}

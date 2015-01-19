@@ -10,7 +10,7 @@ namespace MapView
 {
     public class TilePanel : Panel
     {
-        private ITile[] tiles;
+        private TileBase[] tiles;
 
         private int space=2;
         private int height = 40,width=32;
@@ -100,7 +100,7 @@ namespace MapView
             }
         }
 
-        public System.Collections.Generic.List<ITile> Tiles
+        public System.Collections.Generic.List<TileBase> Tiles
         {
             set
             {
@@ -109,23 +109,25 @@ namespace MapView
                     if (type == TileType.All)
                     {
                         //tiles=value;
-                        tiles = new ITile[value.Count + 1];
+                        tiles = new TileBase[value.Count + 1];
                         tiles[0] = null;
                         for (int i = 0; i < value.Count; i++)
                             tiles[i + 1] = value[i];
                     }
                     else
                     {
-                        var list = new List<ITile>();
+                        var list = new List<TileBase>();
                         for (int i = 0; i < value.Count; i++)
                             if (value[i].Info.TileType == type)
                                 list.Add(value[i]);
                         tiles = list.ToArray();
                     }
+                    if (selectedNum >= tiles.Length) selectedNum = 0;
                 }
                 else
                 {
                     tiles = null;
+                    selectedNum = 0;
                 }
                 OnResize(null);
             }
@@ -180,50 +182,63 @@ namespace MapView
             if (tiles == null) return;
             Graphics g = e.Graphics;
 
-            int i = 0, j = 0;
-            foreach (ITile t in tiles)
+            int x = 0, y = 0;
+            var bottomWidth = width + 2 * space;
+            var bottomHeight = height + 2 * space;
+            foreach (var tile in tiles)
             {
-                if (t != null && (type == TileType.All || t.Info.TileType == type))
+                var bottomTop = startY + y * bottomHeight;
+                var bottomLeft = x * bottomWidth;
+                var rect = new Rectangle(bottomLeft, bottomTop, bottomWidth, bottomHeight);
+
+                if (tile != null && (type == TileType.All || tile.Info.TileType == type))
                 {
-                    g.FillRectangle(
-                        (SolidBrush) brushes[t.Info.TargetType.ToString()], i*(width + 2*space),
-                        startY + j*(height + 2*space), width + 2*space, height + 2*space);
-                    g.DrawImage(t[MapViewPanel.Current].Image, i*(width + 2*space),
-                        startY + j*(height + 2*space) - t.Info.TileOffset);
+                    // Target Type 
+                    var targetType = tile.Info.TargetType.ToString();
+                    if (brushes.ContainsKey(targetType))
+                    {
+                        g.FillRectangle((SolidBrush) brushes[targetType], rect);
+                    }
 
-                    if (t.Info.HumanDoor || t.Info.UFODoor)
-                        g.DrawString("Door", this.Font, Brushes.Black, i*(width + 2*space),
-                            startY + j*(height + 2*space) + PckImage.Height - Font.Height);
+                    // Image 
+                    g.DrawImage(tile[MapViewPanel.Current].Image, bottomLeft,
+                        bottomTop - tile.Info.TileOffset);
 
-                    i = (i + 1)%numAcross;
-                    if (i == 0)
-                        j++;
+                    // Door text 
+                    if (tile.Info.HumanDoor || tile.Info.UFODoor)
+                        g.DrawString("Door", this.Font, Brushes.Black, bottomLeft,
+                            bottomTop + PckImage.Height - Font.Height);
+
+                    x = (x + 1) % numAcross;
+                    if (x == 0) y++;
                 }
-                else if (t == null)
+                else if (tile == null)
                 {
-                    g.FillRectangle(
-                        Brushes.AliceBlue, i * (width + 2 * space),
-                        startY + j * (height + 2 * space), width + 2 * space, height + 2 * space);
+                    g.FillRectangle(Brushes.AliceBlue, rect);
+
                     if (Globals.ExtraTiles != null)
-                        g.DrawImage(Globals.ExtraTiles[0].Image, i*(width + 2*space), startY + j*(height + 2*space));
-                    i = (i + 1)%numAcross;
-                    if (i == 0)
-                        j++;
+                    {
+                        g.DrawImage(Globals.ExtraTiles[0].Image, bottomLeft,
+                            bottomTop);
+                    }
+
+                    x = (x + 1) % numAcross;
+                    if (x == 0) y++;
                 }
             }
 
             //g.DrawRectangle(brush,(selectedNum%numAcross)*(width+2*space),startY+(selectedNum/numAcross)*(height+2*space),width+2*space,height+2*space)				
 
             for (int k = 0; k <= numAcross + 1; k++)
-                g.DrawLine(Pens.Black, k*(width + 2*space), startY, k*(width + 2*space), startY + PreferredHeight);
-            for (int k = 0; k <= PreferredHeight; k += (height + 2*space))
-                g.DrawLine(Pens.Black, 0, startY + k, numAcross*(width + 2*space), startY + k);
+                g.DrawLine(Pens.Black, k * bottomWidth, startY, k * bottomWidth, startY + PreferredHeight);
+            for (int k = 0; k <= PreferredHeight; k += bottomHeight)
+                g.DrawLine(Pens.Black, 0, startY + k, numAcross * bottomWidth, startY + k);
 
-            g.DrawRectangle(pen, (selectedNum%numAcross)*(width + 2*space),
-                startY + (selectedNum/numAcross)*(height + 2*space), width + 2*space, height + 2*space);
+            g.DrawRectangle(pen, (selectedNum % numAcross) * bottomWidth,
+                startY + (selectedNum / numAcross) * bottomHeight, bottomWidth, bottomHeight);
         }
 
-        public ITile SelectedTile
+        public TileBase SelectedTile
         {
             get
             {

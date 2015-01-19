@@ -12,7 +12,7 @@ using XCom.Interfaces.Base;
 
 namespace MapView
 {
-	public delegate void SelectedTileChanged(TilePanel sender,ITile newTile);
+	public delegate void SelectedTileChanged(TilePanel sender,TileBase newTile);
 	public partial class TileView : Map_Observer_Form
 	{
 		private IContainer components;
@@ -122,7 +122,7 @@ namespace MapView
 	        page.Controls.Add(panel);
 	        panel.TileChanged += tileChanged;
 	    }
-	    private void tileChanged(TilePanel sender, ITile tile)
+	    private void tileChanged(TilePanel sender, TileBase tile)
 	    {
 	        if (tile != null && tile.Info is McdEntry)
 	        {
@@ -158,7 +158,7 @@ namespace MapView
 			}
 		}
         
-        public System.Collections.Generic.List<ITile> Tiles
+        public System.Collections.Generic.List<TileBase> Tiles
 		{
 			set
 			{
@@ -168,7 +168,7 @@ namespace MapView
 			}
 		}
         
-		public ITile SelectedTile
+		public TileBase SelectedTile
 		{
 			get
 			{

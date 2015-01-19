@@ -120,7 +120,7 @@ namespace MapView
 			groupAnalyze.Visible=false;
 		}
 
-		private void count(Hashtable img, Hashtable mcd, ITile tile)
+		private void count(Hashtable img, Hashtable mcd, TileBase tile)
 		{
 			if(tile!=null)
 			{

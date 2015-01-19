@@ -4,7 +4,7 @@ using XCom.Interfaces;
 
 namespace XCom
 {
-    public class XCTile : XCom.Interfaces.Base.ITile
+    public class XCTile : XCom.Interfaces.Base.TileBase
     {
         private readonly PckFile _myFile;
         private readonly McdEntry _info;

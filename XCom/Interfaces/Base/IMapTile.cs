@@ -7,13 +7,13 @@ namespace XCom.Interfaces.Base
 	/// </summary>
 	public class IMapTile
 	{
-		protected ITile[] usedTiles;
+		protected TileBase[] usedTiles;
 
 		/// <summary>
 		/// A list of ITiles in the correct draw order. You should iterate over this array when drawing to the screen
 		/// This list does not include IUnits
 		/// </summary>
-		public ITile[] UsedTiles
+		public TileBase[] UsedTiles
 		{
 			get { return usedTiles; }
 		}

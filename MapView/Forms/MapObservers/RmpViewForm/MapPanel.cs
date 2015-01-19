@@ -64,7 +64,6 @@ namespace MapView.RmpViewForm
 
         protected override void OnMouseDown(MouseEventArgs e)
         {
-            //Point pt = convertCoordsDiamond(e.X, e.Y);
             if (map == null) return;
             if (MapPanelClicked != null)
             {
@@ -86,8 +85,6 @@ namespace MapView.RmpViewForm
                     mpe.MouseEventArgs = e;
                     mpe.ClickLocation = new MapLocation(clickPoint.Y, clickPoint.X, map.CurrentHeight);
                     MapPanelClicked(this, mpe);
-
-                    //RmpSquareClicked(clickPoint.Y, clickPoint.X, e.Button);
                 }
             }
 

@@ -221,7 +221,9 @@ namespace MapView.TopViewForm
 	        for (int c = s.X; c <= e.X; c++)
 	            for (int r = s.Y; r <= e.Y; r++)
 	                ((XCMapTile) map[r, c])[bottom.SelectedQuadrant] = MainWindowsManager.TileView.SelectedTile;
-	        Globals.MapChanged = true;
+	       
+            map.MapChanged = true;
+         
 	        MapViewPanel.Instance.Refresh();
 	        Refresh();
 	    }

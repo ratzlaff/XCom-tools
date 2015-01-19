@@ -15,7 +15,7 @@ namespace XCom
 	    private RmpFile rmpFile;
 		private string[] dependencies;
 
-		public XCMapFile(string baseName, string basePath, string blankPath, List<ITile> tiles, string[] depList)
+		public XCMapFile(string baseName, string basePath, string blankPath, List<TileBase> tiles, string[] depList)
 			: base(baseName, tiles)
 		{
 			this.BaseName = baseName;
@@ -136,48 +136,47 @@ namespace XCom
 			bw.Close();
 		}
 
-		public override void Save()
-		{
-			Save(File.Create(BasePath + BaseName + ".MAP"));
-		}
+	    public override void Save()
+	    {
+	        using (var s = File.Create(BasePath + BaseName + ".MAP"))
+	        {
+	            rmpFile.Save();
+	            s.WriteByte((byte) mapSize.Rows);
+	            s.WriteByte((byte) mapSize.Cols);
+	            s.WriteByte((byte) mapSize.Height);
 
-		public override void Save(FileStream s)
-		{
-			rmpFile.Save();
-			s.WriteByte((byte)mapSize.Rows);
-			s.WriteByte((byte)mapSize.Cols);
-			s.WriteByte((byte)mapSize.Height);
+	            for (int h = 0; h < mapSize.Height; h++)
+	                for (int r = 0; r < mapSize.Rows; r++)
+	                    for (int c = 0; c < mapSize.Cols; c++)
+	                    {
+	                        var xcmt = (XCMapTile) this[r, c, h];
+	                        if (xcmt.Ground == null)
+	                            s.WriteByte(0);
+	                        else
+	                            s.WriteByte((byte) (xcmt.Ground.MapId + 2));
 
-			for (int h = 0; h < mapSize.Height; h++)
-				for (int r = 0; r < mapSize.Rows; r++)
-					for (int c = 0; c < mapSize.Cols; c++)
-					{
-						XCMapTile xcmt = (XCMapTile)this[r, c, h];
-						if (xcmt.Ground == null)
-							s.WriteByte(0);
-						else
-							s.WriteByte((byte)(((XCTile)xcmt.Ground).MapId + 2));
+	                        if (xcmt.West == null)
+	                            s.WriteByte(0);
+	                        else
+	                            s.WriteByte((byte) (xcmt.West.MapId + 2));
 
-						if (xcmt.West == null)
-							s.WriteByte(0);
-						else
-							s.WriteByte((byte)(((XCTile)xcmt.West).MapId + 2));
+	                        if (xcmt.North == null)
+	                            s.WriteByte(0);
+	                        else
+	                            s.WriteByte((byte) (xcmt.North.MapId + 2));
 
-						if (xcmt.North == null)
-							s.WriteByte(0);
-						else
-							s.WriteByte((byte)(((XCTile)xcmt.North).MapId + 2));
+	                        if (xcmt.Content == null)
+	                            s.WriteByte(0);
+	                        else
+	                            s.WriteByte((byte) (xcmt.Content.MapId + 2));
 
-						if (xcmt.Content == null)
-							s.WriteByte(0);
-						else
-							s.WriteByte((byte)(((XCTile)xcmt.Content).MapId + 2));
+	                    }
+	            s.Close();
+	        }
+	        MapChanged = false;
+	    }
 
-					}
-			s.Close();
-		}
-
-		public RmpFile Rmp
+	    public RmpFile Rmp
 		{
 			get { return rmpFile; }
 			set
@@ -192,7 +191,7 @@ namespace XCom
 			}
 		}
 
-		private void readMap(Stream s, List<ITile> tiles)
+		private void readMap(Stream s, List<TileBase> tiles)
 		{
 			BufferedStream input = new BufferedStream(s);
 			int rows = input.ReadByte();
@@ -218,7 +217,7 @@ namespace XCom
 			input.Close();
 		}
 
-		private XCMapTile createTile(List<ITile> tiles, int q1, int q2, int q3, int q4)
+		private XCMapTile createTile(List<TileBase> tiles, int q1, int q2, int q3, int q4)
 		{
 			try
 			{
@@ -242,7 +241,7 @@ namespace XCom
 			}
 		}
 
-	    public string GetDependecyName(ITile selectedTile)
+	    public string GetDependecyName(TileBase selectedTile)
 	    {
 	        var dependencyId = -1;
 	        foreach (var tile in Tiles)

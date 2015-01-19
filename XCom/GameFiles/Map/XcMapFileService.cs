@@ -22,7 +22,7 @@ namespace XCom
 		    if (!File.Exists(filePath)) return null;
 			ImageInfo images = GameInfo.ImageInfo;
 
-			var tiles = new List<ITile>();
+			var tiles = new List<TileBase>();
 
             foreach (string dependency in imd.Dependencies)
 			{

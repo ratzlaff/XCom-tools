@@ -5,7 +5,6 @@ using System.ComponentModel;
 using System.Windows.Forms;
 using XCom;
 using XCom.Interfaces;
-using System.Drawing.Drawing2D;
 using XCom.Interfaces.Base;
 
 namespace MapView.RmpViewForm
@@ -35,6 +34,14 @@ namespace MapView.RmpViewForm
         private Panel contentPane;
          
         private bool loadingGUI = false;
+
+        private readonly List<object> _byteList = new List<object>();
+
+        private readonly object[] _items2 =
+        {
+            LinkTypes.ExitEast, LinkTypes.ExitNorth, LinkTypes.ExitSouth, LinkTypes.ExitWest,
+            LinkTypes.NotUsed
+        };
 
         public RmpView()
         {
@@ -116,7 +123,7 @@ namespace MapView.RmpViewForm
 
         private void options_click(object sender, EventArgs e)
         {
-            PropertyForm pf = new PropertyForm("rmpViewOptions", Settings);
+            var pf = new PropertyForm("rmpViewOptions", Settings);
             pf.Text = "RmpView Settings";
             pf.Show();
         }
@@ -150,8 +157,8 @@ namespace MapView.RmpViewForm
             {
                 lblMouseOver.Text = "";
             }
-            rmpPanel.ptrPosition.X = e.X;
-            rmpPanel.ptrPosition.Y = e.Y;
+            rmpPanel.Position.X = e.X;
+            rmpPanel.Position.Y = e.Y;
             rmpPanel.Refresh();
         }
 
@@ -165,56 +172,16 @@ namespace MapView.RmpViewForm
                     RmpEntry selEntry = ((XCMapTile) e.ClickTile).Rmp;
                     if (selEntry != null)
                     {
-                        bool ExistingLink = false;
-                        bool SpaceAvailable = false;
-                        int SpaceAt = 512;
-                        for (int i = 0; i < 5; i++)
+                        var spaceAt = CompareLinks(currEntry, selEntry.Index);
+                        if (spaceAt.HasValue)
                         {
-                            if (currEntry[i].Index == selEntry.Index)
-                            {
-                                ExistingLink = true;
-                                break;
-                            }
-                            if (currEntry[i].Index == (byte) LinkTypes.NotUsed)
-                            {
-                                SpaceAvailable = true;
-                                if (i < SpaceAt)
-                                    SpaceAt = i;
-                            }
+                            currEntry[spaceAt.Value].Index = selEntry.Index;
+                            currEntry[spaceAt.Value].Distance = calcLinkDistance(currEntry, selEntry, null);
                         }
-                        if (!ExistingLink && SpaceAvailable)
-                        {
-                            currEntry[SpaceAt].Index = selEntry.Index;
-                            currEntry[SpaceAt].Distance = calcLinkDistance(currEntry, selEntry, null);
-                        }
+                         
+                        ExecuteAutoconnectNodes(selEntry);
 
-                        if (AutoconnectNodes.Checked)
-                        {
-                            ExistingLink = false;
-                            SpaceAvailable = false;
-                            SpaceAt = 512;
-                            for (int i = 0; i < 5; i++)
-                            {
-                                if (selEntry[i].Index == currEntry.Index)
-                                {
-                                    ExistingLink = true;
-                                    break;
-                                }
-                                if (selEntry[i].Index == (byte) LinkTypes.NotUsed)
-                                {
-                                    SpaceAvailable = true;
-                                    if (i < SpaceAt)
-                                        SpaceAt = i;
-                                }
-                            }
-                            if (!ExistingLink && SpaceAvailable)
-                            {
-                                selEntry[SpaceAt].Index = currEntry.Index;
-                                selEntry[SpaceAt].Distance = calcLinkDistance(selEntry, currEntry, null);
-                            }
-                        }
-
-                        fillGUI();
+                        FillGui();
                         Refresh();
                         return;
                     }
@@ -222,7 +189,6 @@ namespace MapView.RmpViewForm
 
 
                 currEntry = ((XCMapTile) e.ClickTile).Rmp;
-
                 if (currEntry == null && e.MouseEventArgs.Button == MouseButtons.Right)
                 {
                     if (map is XCMapFile)
@@ -259,18 +225,44 @@ namespace MapView.RmpViewForm
                 return;
             }
 
-            fillGUI();
+            FillGui();
         }
 
-        private List<object> byteList = new List<object>();
-
-        private object[] itms2 =
+        private void ExecuteAutoconnectNodes(RmpEntry selEntry)
         {
-            LinkTypes.ExitEast, LinkTypes.ExitNorth, LinkTypes.ExitSouth, LinkTypes.ExitWest,
-            LinkTypes.NotUsed
-        };
+            if (!AutoconnectNodes.Checked) return;
+            var spaceAt = CompareLinks(selEntry, currEntry.Index);
+            if (spaceAt.HasValue)
+            {
+                selEntry[spaceAt.Value].Index = currEntry.Index;
+                selEntry[spaceAt.Value].Distance = calcLinkDistance(selEntry, currEntry, null);
+            }
+        }
 
-        private void fillGUI()
+        private int? CompareLinks(RmpEntry list, int index)
+        {
+            var existingLink = false;
+            var spaceAvailable = false;
+            var spaceAt = 512;
+            for (int i = 0; i < 5; i++)
+            {
+                if (list[i].Index == index)
+                {
+                    existingLink = true;
+                    break;
+                }
+                if (list[i].Index == (byte) LinkTypes.NotUsed)
+                {
+                    spaceAvailable = true;
+                    if (i < spaceAt)
+                        spaceAt = i;
+                }
+            }
+            if (existingLink || !spaceAvailable) return 0;
+            return spaceAt;
+        }
+
+        private void FillGui()
         {
             if (currEntry == null)
             {
@@ -282,7 +274,7 @@ namespace MapView.RmpViewForm
 
             loadingGUI = true;
 
-            byteList.Clear();
+            _byteList.Clear();
 
             cbLink1.Items.Clear();
             cbLink2.Items.Clear();
@@ -290,17 +282,17 @@ namespace MapView.RmpViewForm
             cbLink4.Items.Clear();
             cbLink5.Items.Clear();
 
-            for (byte i = 0; i < ((XCMapFile) map).Rmp.Length; i++)
+            for (byte i = 0; i < map.Rmp.Length; i++)
             {
                 if (i == currEntry.Index)
                     continue;
 
-                byteList.Add(i);
+                _byteList.Add(i);
             }
 
-            byteList.AddRange(itms2);
+            _byteList.AddRange(_items2);
 
-            object[] bArr = byteList.ToArray();
+            object[] bArr = _byteList.ToArray();
 
             cbLink1.Items.AddRange(bArr);
             cbLink2.Items.AddRange(bArr);
@@ -380,7 +372,7 @@ namespace MapView.RmpViewForm
                 if (rmpPanel.Map != null)
                 {
                     currEntry = ((XCMapTile) map[clickRow, clickCol]).Rmp;
-                    fillGUI();
+                    FillGui();
                     cbRank1.Items.Clear();
 
                     if (map.Tiles[0][0].Palette == Palette.UFOBattle)
@@ -438,7 +430,7 @@ namespace MapView.RmpViewForm
         public override void HeightChanged(IMap_Base sender, HeightChangedEventArgs e)
         {
             currEntry = ((XCMapTile) map[clickRow, clickCol]).Rmp;
-            fillGUI();
+            FillGui();
             Refresh();
         }
 
@@ -526,14 +518,8 @@ namespace MapView.RmpViewForm
                 }
             }
             catch (Exception ex)
-            {
-                /*** I don't like this. 
-        currEntry[senderIndex].Index = (byte)(LinkTypes)sender.SelectedItem;
-        if (currEntry[senderIndex].Index < 0xFB)
-          calcLinkDistance(currEntry, map.Rmp[currEntry[senderIndex].Index], senderOut);
-        */
+            { 
                 MessageBox.Show("Error: " + ex.Message);
-
             }
             Refresh();
         }
@@ -545,29 +531,12 @@ namespace MapView.RmpViewForm
 
             if (AutoconnectNodes.Checked)
             {
-                RmpEntry connected = map.Rmp[currEntry[senderIndex].Index];
-                bool ExistingLink = false;
-                bool SpaceAvailable = false;
-                int SpaceAt = 512;
-                for (int i = 0; i < 5; i++)
+                RmpEntry connected = map.Rmp[currEntry[senderIndex].Index]; 
+                var spaceAt = CompareLinks(connected, (byte)sender.SelectedItem);
+                if (spaceAt.HasValue)
                 {
-                    if (connected[i].Index == (byte) sender.SelectedItem)
-                    {
-                        ExistingLink = true;
-                        break;
-                    }
-                    if (connected[i].Index == (byte) LinkTypes.NotUsed)
-                    {
-                        SpaceAvailable = true;
-                        if (i < SpaceAt)
-                            SpaceAt = i;
-                    }
-                }
-
-                if (!ExistingLink && SpaceAvailable)
-                {
-                    connected[SpaceAt].Index = currEntry.Index;
-                    connected[SpaceAt].Distance = calcLinkDistance(connected, currEntry, null);
+                    connected[spaceAt.Value].Index = currEntry.Index;
+                    connected[spaceAt.Value].Distance = calcLinkDistance(connected, currEntry, null);
                 }
                 Refresh();
 
@@ -891,293 +860,5 @@ namespace MapView.RmpViewForm
             }
         }
 
-    }
-
-    public class RmpPanel : MapPanel
-    {
-        //private static Dictionary<string,Pen> pens;
-        //private static Dictionary<string, SolidBrush> brushes;
-
-        public Point ptrPosition = new Point(-1, -1);
-
-        private Font myFont = new Font("Arial", 12, FontStyle.Bold);
-
-        //public event RmpClick RmpSquareClicked;
-
-        public RmpPanel()
-        {
-        }
-
-        public Dictionary<string, SolidBrush> Brushes
-        {
-            get { return brushes; }
-            set { brushes = value; }
-        }
-
-        public Dictionary<string, Pen> Pens
-        {
-            get { return pens; }
-            set { pens = value; }
-        }
-
-        public void Calc()
-        {
-            OnResize(null);
-        }
-
-        //protected override void OnMouseMove(MouseEventArgs e)
-        //{
-        //  ptrPosition.X = e.X;
-        //  ptrPosition.Y = e.Y;
-        //}
-
-        protected override void OnPaint(PaintEventArgs e)
-        {
-            Graphics g = e.Graphics;
-            try
-            {
-                if (map != null)
-                {
-                    GraphicsPath lower = new GraphicsPath();
-                    GraphicsPath upper = new GraphicsPath();
-
-                    for (int row = 0, startX = origin.X, startY = origin.Y;
-                        row < map.MapSize.Rows;
-                        row++, startX -= hWidth, startY += hHeight)
-                    {
-                        for (int col = 0, x = startX, y = startY;
-                            col < map.MapSize.Cols;
-                            col++, x += hWidth, y += hHeight)
-                        {
-                            if (map[row, col] != null)
-                            {
-                                lower.Reset();
-                                lower.AddLine(x, y + 2 * hHeight, x + hWidth, y + hHeight);
-                                lower.AddLine(x + hWidth, y + hHeight, x - hWidth, y + hHeight);
-                                lower.CloseFigure();
-                                XCMapTile tile = (XCMapTile) map[row, col];
-
-                                if (tile.North != null)
-                                    g.DrawLine(pens["WallColor"], x, y, x + hWidth, y + hHeight);
-
-                                if (tile.West != null)
-                                    g.DrawLine(pens["WallColor"], x, y, x - hWidth, y + hHeight);
-
-                                if (tile.Content != null)
-                                    g.FillPath(brushes["ContentTiles"], lower);
-                            }
-                        }
-                    }
-
-                    for (int row = 0, startX = origin.X, startY = origin.Y;
-                        row < map.MapSize.Rows;
-                        row++, startX -= hWidth, startY += hHeight)
-                    {
-                        for (int col = 0, x = startX, y = startY;
-                            col < map.MapSize.Cols;
-                            col++, x += hWidth, y += hHeight)
-                        {
-                            if (map[row, col] != null && ((XCMapTile) map[row, col]).Rmp != null)
-                            {
-                                RmpEntry f = ((XCMapTile) map[row, col]).Rmp;
-                                upper.Reset();
-                                upper.AddLine(x, y, x + hWidth, y + hHeight);
-                                upper.AddLine(x + hWidth, y + hHeight, x, y + 2 * hHeight);
-                                upper.AddLine(x, y + 2 * hHeight, x - hWidth, y + hHeight);
-                                upper.CloseFigure();
-
-                                for (int rr = 0; rr < f.NumLinks; rr++)
-                                {
-                                    Link l = f[rr];
-                                    switch (l.Index)
-                                    {
-                                        case Link.NotUsed:
-                                            break;
-                                        case Link.ExitEast:
-                                            g.DrawLine(pens["UnselectedLinkColor"], x, y + hHeight, Width, Height);
-                                            break;
-                                        case Link.ExitNorth:
-                                            g.DrawLine(pens["UnselectedLinkColor"], x, y + hHeight, Width, 0);
-                                            break;
-                                        case Link.ExitSouth:
-                                            g.DrawLine(pens["UnselectedLinkColor"], x, y + hHeight, 0, Height);
-                                            break;
-                                        case Link.ExitWest:
-                                            g.DrawLine(pens["UnselectedLinkColor"], x, y + hHeight, 0, 0);
-                                            break;
-                                        default:
-                                            if (map.Rmp[l.Index] != null)
-                                            {
-                                                if (map.Rmp[l.Index].Height == map.CurrentHeight)
-                                                {
-                                                    int toRow = map.Rmp[l.Index].Row;
-                                                    int toCol = map.Rmp[l.Index].Col;
-                                                    g.DrawLine(pens["UnselectedLinkColor"], x, y + hHeight,
-                                                        origin.X + (toCol - toRow) * hWidth,
-                                                        origin.Y + (toCol + toRow + 1) * hHeight);
-                                                }
-                                            }
-                                            break;
-                                    }
-                                }
-                            }
-                        }
-                    }
-
-                    if (((XCMapTile) map[clickPoint.Y, clickPoint.X]).Rmp != null)
-                    {
-                        int r = clickPoint.Y;
-                        int c = clickPoint.X;
-                        RmpEntry f = ((XCMapTile) map[r, c]).Rmp;
-
-                        for (int rr = 0; rr < f.NumLinks; rr++)
-                        {
-                            Link l = f[rr];
-                            switch (l.Index)
-                            {
-                                case Link.NotUsed:
-                                    break;
-                                case Link.ExitEast:
-                                    g.DrawLine(pens["SelectedLinkColor"], origin.X + (c - r) * hWidth,
-                                        origin.Y + (c + r + 1) * hHeight, Width, Height);
-                                    break;
-                                case Link.ExitNorth:
-                                    g.DrawLine(pens["SelectedLinkColor"], origin.X + (c - r) * hWidth,
-                                        origin.Y + (c + r + 1) * hHeight, Width, 0);
-                                    break;
-                                case Link.ExitSouth:
-                                    g.DrawLine(pens["SelectedLinkColor"], origin.X + (c - r) * hWidth,
-                                        origin.Y + (c + r + 1) * hHeight, 0, Height);
-                                    break;
-                                case Link.ExitWest:
-                                    g.DrawLine(pens["SelectedLinkColor"], origin.X + (c - r) * hWidth,
-                                        origin.Y + (c + r + 1) * hHeight, 0, 0);
-                                    break;
-                                default:
-                                    if (map.Rmp[l.Index] != null && map.Rmp[l.Index].Height == map.CurrentHeight)
-                                    {
-                                        int toRow = map.Rmp[l.Index].Row;
-                                        int toCol = map.Rmp[l.Index].Col;
-                                        g.DrawLine(pens["SelectedLinkColor"], origin.X + (c - r) * hWidth,
-                                            origin.Y + (c + r + 1) * hHeight, origin.X + (toCol - toRow) * hWidth,
-                                            origin.Y + (toCol + toRow + 1) * hHeight);
-                                    }
-                                    break;
-                            }
-                        }
-                    }
-
-                    for (int row = 0, startX = origin.X, startY = origin.Y;
-                        row < map.MapSize.Rows;
-                        row++, startX -= hWidth, startY += hHeight)
-                    {
-                        for (int col = 0, x = startX, y = startY;
-                            col < map.MapSize.Cols;
-                            col++, x += hWidth, y += hHeight)
-                        {
-                            XCMapTile tile = (XCMapTile) map[row, col];
-                            if (map[row, col] != null && tile.Rmp != null)
-                            {
-                                upper.Reset();
-                                upper.AddLine(x, y, x + hWidth, y + hHeight);
-                                upper.AddLine(x + hWidth, y + hHeight, x, y + 2 * hHeight);
-                                upper.AddLine(x, y + 2 * hHeight, x - hWidth, y + hHeight);
-                                upper.CloseFigure();
-
-                                //if clicked on, draw Blue
-                                if (row == clickPoint.Y && col == clickPoint.X)
-                                    g.FillPath(brushes["SelectedNodeColor"], upper);
-                                else if (tile.Rmp.Usage != SpawnUsage.NoSpawn)
-                                    g.FillPath(brushes["SpawnNodeColor"], upper);
-                                else
-                                    g.FillPath(brushes["UnselectedNodeColor"], upper);
-
-                                for (int rr = 0; rr < tile.Rmp.NumLinks; rr++)
-                                {
-                                    Link l = tile.Rmp[rr];
-                                    switch (l.Index)
-                                    {
-                                        case Link.NotUsed:
-                                            break;
-                                        case Link.ExitEast:
-                                            break;
-                                        case Link.ExitNorth:
-                                            break;
-                                        case Link.ExitSouth:
-                                            break;
-                                        case Link.ExitWest:
-                                            break;
-                                        default:
-                                            if (map.Rmp[l.Index] != null && map.Rmp[l.Index].Height < map.CurrentHeight)
-                                            {
-                                                g.DrawLine(pens["UnselectedLinkColor"], x, y, x, y + hHeight * 2);
-                                            }
-                                            else if (map.Rmp[l.Index] != null &&
-                                                     map.Rmp[l.Index].Height > map.CurrentHeight)
-                                            {
-                                                g.DrawLine(pens["UnselectedLinkColor"], x - hWidth, y + hHeight,
-                                                    x + hWidth, y + hHeight);
-                                            }
-                                            break;
-                                    }
-                                }
-                            }
-                        }
-                    }
-
-                    for (int i = 0; i <= map.MapSize.Rows; i++)
-                        g.DrawLine(pens["GridLineColor"], origin.X - i * hWidth, origin.Y + i * hHeight,
-                            origin.X + ((map.MapSize.Cols - i) * hWidth), origin.Y + ((i + map.MapSize.Cols) * hHeight));
-                    for (int i = 0; i <= map.MapSize.Cols; i++)
-                        g.DrawLine(pens["GridLineColor"], origin.X + i * hWidth, origin.Y + i * hHeight,
-                            (origin.X + i * hWidth) - map.MapSize.Rows * hWidth,
-                            (origin.Y + i * hHeight) + map.MapSize.Rows * hHeight);
-
-                    g.DrawString("W", myFont, System.Drawing.Brushes.Black, 0, 0);
-                    g.DrawString("N", myFont, System.Drawing.Brushes.Black, Width - 30, 0);
-                    g.DrawString("S", myFont, System.Drawing.Brushes.Black, 0, Height - myFont.Height);
-                    g.DrawString("E", myFont, System.Drawing.Brushes.Black, Width - 30, Height - myFont.Height);
-
-                    XCMapTile posT = GetTile(ptrPosition.X, ptrPosition.Y);
-                    if (posT != null)
-                    {
-                        Rectangle overlayPos = new Rectangle(ptrPosition.X + 18, ptrPosition.Y, 140,
-                            (int) g.MeasureString("X", this.Font).Height + 10);
-                        if (posT.Rmp != null)
-                        {
-                            overlayPos.Height += (int) g.MeasureString("X", this.Font).Height;
-                        }
-                        if (overlayPos.X + overlayPos.Width > this.ClientRectangle.Width)
-                        {
-                            overlayPos.X = ptrPosition.X - overlayPos.Width - 8;
-                        }
-                        if (overlayPos.Y + overlayPos.Height > this.ClientRectangle.Height)
-                        {
-                            overlayPos.Y = ptrPosition.X - overlayPos.Height;
-                        }
-
-                        g.FillRectangle(new SolidBrush(Color.FromArgb(192, 0, 0, 0)), overlayPos);
-                        g.FillRectangle(new SolidBrush(Color.FromArgb(192, 255, 255, 255)), overlayPos.X + 3,
-                            overlayPos.Y + 3, overlayPos.Width - 6, overlayPos.Height - 6);
-                        g.DrawString("Tile " + GetTileCoordinates(ptrPosition.X, ptrPosition.Y).ToString(), this.Font,
-                            System.Drawing.Brushes.Black, overlayPos.X + 5, overlayPos.Y + 5);
-                        if (posT.Rmp != null)
-                        {
-                            g.DrawString("Spawns: " + RmpFile.UnitRankUFO[posT.Rmp.URank1].ToString(), this.Font,
-                                System.Drawing.Brushes.Black, overlayPos.X + 5,
-                                overlayPos.Y + 5 + (int) g.MeasureString("X", this.Font).Height);
-                        }
-
-                    }
-
-                }
-            }
-            catch (Exception ex)
-            {
-                g.FillRectangle(new SolidBrush(Color.Black), g.ClipBounds);
-                g.DrawString(ex.Message, this.Font, new SolidBrush(Color.White), 8, 8);
-            }
-
-        }
     }
 }

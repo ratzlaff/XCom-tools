@@ -5,15 +5,15 @@ namespace XCom.Interfaces.Base
 	/// <summary>
 	/// This class provides all the necessary information to draw an animated sprite
 	/// </summary>
-	public class ITile
+	public class TileBase
 	{
 		protected XCImage[] image;
 	    protected IInfo info;
 
-		public ITile(int id) { this.Id = id; MapId = -1; info = null; }
+		public TileBase(int id) { this.Id = id; MapId = -1; info = null; }
 
 	    /// <summary>
-	    /// This is the ID unique to this ITile after it has been loaded
+	    /// This is the ID unique to this TileBase after it has been loaded
 	    /// </summary>
 	    public int Id { get; protected set; }
 

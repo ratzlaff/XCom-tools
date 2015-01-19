@@ -13,15 +13,15 @@ namespace MapView.TopViewForm
 {
 	public class BottomPanel : Map_Observer_Control
 	{
-		private XCMapTile mapTile;
-		private MapLocation lastLoc;
+		private XCMapTile _mapTile;
+		private MapLocation _lastLoc;
 
 	    private readonly BottomPanelDrawService _drawService;
 		public event EventHandler PanelClicked;
 
 		public BottomPanel()
 		{
-			mapTile = null;
+			_mapTile = null;
 			SetStyle(ControlStyles.AllPaintingInWmPaint | ControlStyles.DoubleBuffer | ControlStyles.UserPaint, true);
 			SelectedQuadrant = XCMapTile.MapQuadrant.Ground;
             
@@ -51,45 +51,38 @@ namespace MapView.TopViewForm
 		{
 			get { return _drawService.Brush; }
             set { _drawService.Brush = value; Refresh(); }
-		}
-
-		[Browsable(false)]
-		public XCMapTile Tile
-		{
-			get { return mapTile; }
-			set { mapTile = value; Refresh(); }
-		}
+		} 
 
 		public XCMapTile.MapQuadrant SelectedQuadrant { get; private set; }
 
 		public void SetSelected(MouseButtons btn, int clicks)
 		{
-			if (btn == MouseButtons.Right && mapTile != null)
+			if (btn == MouseButtons.Right && _mapTile != null)
 			{
 				if (clicks == 1)
-                    mapTile[SelectedQuadrant] = MainWindowsManager.TileView.SelectedTile;
+                    _mapTile[SelectedQuadrant] = MainWindowsManager.TileView.SelectedTile;
 				else if (clicks == 2)
-                    mapTile[SelectedQuadrant] = null;
-				Globals.MapChanged = true;
+                    _mapTile[SelectedQuadrant] = null;  
 			}
-			else if (btn == MouseButtons.Left && mapTile != null)
+			else if (btn == MouseButtons.Left && _mapTile != null)
 			{
 				if (clicks == 2)
-                    MainWindowsManager.TileView.SelectedTile = mapTile[SelectedQuadrant];
+                    MainWindowsManager.TileView.SelectedTile = _mapTile[SelectedQuadrant];
 			}
+		    map.MapChanged = true;
 		}
 
 		public override void HeightChanged(IMap_Base sender, HeightChangedEventArgs e)
 		{
-			lastLoc.Height = e.NewHeight;
-			mapTile = (XCMapTile)map[lastLoc.Row, lastLoc.Col];
+			_lastLoc.Height = e.NewHeight;
+			_mapTile = (XCMapTile)map[_lastLoc.Row, _lastLoc.Col];
 			Refresh();
 		}
 
 		public override void SelectedTileChanged(IMap_Base sender, SelectedTileChangedEventArgs e)
 		{
-			mapTile = (XCMapTile)e.SelectedTile;
-			lastLoc = e.MapLocation;
+			_mapTile = (XCMapTile)e.SelectedTile;
+			_lastLoc = e.MapLocation;
 			Refresh();
 		}
 
@@ -113,7 +106,7 @@ namespace MapView.TopViewForm
 
 		protected override void Render(Graphics g)
 		{
-            _drawService.Draw(g, mapTile, SelectedQuadrant);
+            _drawService.Draw(g, _mapTile, SelectedQuadrant);
 		}
 	}
 }

@@ -96,7 +96,6 @@ namespace MapView.TopViewForm
             this.bottom.Size = new System.Drawing.Size(492, 71);
             this.bottom.TabIndex = 0;
             this.bottom.Text = "bottom";
-            this.bottom.Tile = null;
             // 
             // TopView
             // 

@@ -85,7 +85,7 @@ namespace MapView
                         tile.North = copyTile.North;
 					}
 
-				Globals.MapChanged = true;
+                map.MapChanged = true;
 				Refresh();
 			}
 		}
@@ -111,8 +111,8 @@ namespace MapView
 			for(int c=s.X;c<=e.X;c++)
 				for(int r=s.Y;r<=e.Y;r++)
 					map[r,c]=XCMapTile.BlankTile;
-			Globals.MapChanged = true;
-			Refresh();
+            map.MapChanged = true;
+            Refresh();
 		}
 
 		public void Copy()
