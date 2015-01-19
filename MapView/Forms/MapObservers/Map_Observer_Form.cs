@@ -7,11 +7,10 @@ using XCom;
 
 namespace MapView
 {
-	public class Map_Observer_Form: Form, IMap_Observer
+    public class Map_Observer_Form : Form, IMap_Observer, IMenuItem
 	{
         private IMap_Base map;
 		private DSShared.Windows.RegistryInfo registryInfo;
-		private MenuItem menuItem;
         private readonly Settings _settings;
 		private readonly Dictionary<string, IMap_Observer> _moreObservers;
 
@@ -39,13 +38,9 @@ namespace MapView
 			get { return _moreObservers; }
 		}
 
-		public MenuItem MenuItem
-		{
-			get { return menuItem; }
-			set { menuItem = value; }
-		}
+        public MenuItem MenuItem { get; set; }
 
-		public DSShared.Windows.RegistryInfo RegistryInfo
+        public DSShared.Windows.RegistryInfo RegistryInfo
 		{
 			get { return registryInfo; }
 			set

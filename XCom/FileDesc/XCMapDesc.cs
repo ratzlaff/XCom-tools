@@ -5,66 +5,48 @@ using XCom.Interfaces.Base;
 
 namespace XCom
 {
-	public class XCMapDesc:IMapDesc
-	{
-		protected Palette myPal;
-		protected bool isStatic;
-		protected string[] dependencies;
-		protected string basename, basePath, rmpPath, blankPath;
-		//protected string tileset;
+    public class XCMapDesc : IMapDesc
+    {
+        public XCMapDesc(
+            string basename,
+            string basePath,
+            string blankPath,
+            //string tileset,
+            string rmpPath,
+            string[] dependencies,
+            Palette palette) : base(basename)
+        {
+            Palette = palette;
+            Basename = basename;
+            BasePath = basePath;
+            RmpPath = rmpPath;
+            BlankPath = blankPath;
+            //this.tileset = tileset;
+            Dependencies = dependencies;
+            IsStatic = false;
+        }
 
-		public XCMapDesc(
-			string basename,
-			string basePath,
-			string blankPath,
-			//string tileset,
-			string rmpPath,
-			string[] dependencies,
-			Palette myPal):base(basename)
-		{
-			this.myPal = myPal;
-			this.basename = basename;
-			this.basePath = basePath;
-			this.rmpPath = rmpPath;
-			this.blankPath = blankPath;
-			//this.tileset = tileset;
-			this.dependencies = dependencies;
-			isStatic = false;
-		}
+        public string[] Dependencies { get; set; }
+        public Palette Palette { get; protected set; }
+        public string Basename { get; protected set; }
+        public string BasePath { get; protected set; }
+        public string RmpPath { get; protected set; }
+        public string BlankPath { get; protected set; }
 
-		public override IMap_Base GetMapFile() 
-		{
-            var filePath = basePath + basename + ".MAP";
-		    if (!File.Exists(filePath)) return null;
-			ImageInfo images = GameInfo.ImageInfo;
+        public bool IsStatic { get; set; }
 
-			var tiles = new List<ITile>();
+        public string FilePath
+        {
+            get { return BasePath + Basename + ".MAP"; }
+        }
 
-			foreach (string dependency in dependencies)
-			{
-			    var image = images[dependency];
-				if (image != null)
-				{
-					McdFile mcd = image.GetMcdFile(myPal);
-					foreach (XCTile t in mcd)
-						tiles.Add(t);
-				}
-			}
-
-            XCMapFile map = new XCMapFile(basename, basePath, blankPath, tiles, dependencies);
-			map.Rmp = new RmpFile(basename, rmpPath);
-			return map;
-		}
-
-		public string[] Dependencies { get { return dependencies; } set { dependencies = value; } }
-		public bool IsStatic { get { return isStatic; } set { isStatic = value; } }
-		public int CompareTo(object other)
-		{
-			if (other is XCMapDesc)
-			{
-				return basename.CompareTo(((XCMapDesc)other).basename);
-			}
-			return 1;
-		}
-	}
+        public int CompareTo(object other)
+        {
+            if (other is XCMapDesc)
+            {
+                return Basename.CompareTo(((XCMapDesc) other).Basename);
+            }
+            return 1;
+        }
+    }
 }

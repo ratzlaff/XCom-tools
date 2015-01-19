@@ -17,10 +17,6 @@ namespace XCom.Interfaces.Base
 
 		public override string ToString() { return name; }
 		public string Name { get { return name; } }
-		public virtual IMap_Base GetMapFile()
-		{
-			throw new Exception("GetMapFile() is not overridden");
-		}
 
 		public virtual void Unload(){}
 

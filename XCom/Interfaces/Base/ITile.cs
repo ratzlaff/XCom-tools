@@ -8,29 +8,21 @@ namespace XCom.Interfaces.Base
 	public class ITile
 	{
 		protected XCImage[] image;
-		protected int id,mapID;
-		protected IInfo info;
+	    protected IInfo info;
 
-		public ITile(int id) { this.id = id; mapID = -1; info = null; }
+		public ITile(int id) { this.Id = id; MapId = -1; info = null; }
 
-		/// <summary>
-		/// This is the ID unique to this ITile after it has been loaded
-		/// </summary>
-		public int ID
-		{
-			get { return id; }
-		}
+	    /// <summary>
+	    /// This is the ID unique to this ITile after it has been loaded
+	    /// </summary>
+	    public int Id { get; protected set; }
 
-		/// <summary>
-		/// This is the ID by which the map knows this tile by
-		/// </summary>
-		public int MapID
-		{
-			get { return mapID; }
-			set { mapID = value; }
-		}
+	    /// <summary>
+	    /// This is the ID by which the map knows this tile by
+	    /// </summary>
+	    public int MapId { get; set; }
 
-		/// <summary>
+	    /// <summary>
 		/// Gets an image at the specified animation frame
 		/// </summary>
 		/// <param name="i"></param>

@@ -6,24 +6,25 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 using DSShared.Windows;
+using XCom.Interfaces.Base;
 
 namespace XCom
 {
-	public partial class ConsoleForm : Form
+    public partial class ConsoleForm : Form, IMenuItem
 	{
 		public ConsoleForm()
 		{
 			InitializeComponent();
 
 			XCom.xConsole.Init(100);
-			XCom.xConsole.BufferChanged += new BufferChangedDelegate(xConsole_BufferChanged);
+			XCom.xConsole.BufferChanged += xConsole_BufferChanged;
 
 			new RegistryInfo(this);
 
 			SetStyle(ControlStyles.OptimizedDoubleBuffer | ControlStyles.AllPaintingInWmPaint, true);
 		}
 
-		void xConsole_BufferChanged(Node current)
+        private void xConsole_BufferChanged(Node current)
 		{			
 			
 			string buffer = current.str+"\n";
@@ -37,13 +38,13 @@ namespace XCom
 
 			consoleText.Text = buffer;
 			Refresh();
-			
-			//consoleText.Text += current.str+"\n";
 		}
 
 		private void miClose_Click(object sender, EventArgs e)
 		{
 			Close();
 		}
+
+        public MenuItem MenuItem { get; set; }
 	}
 }

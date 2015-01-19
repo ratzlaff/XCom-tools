@@ -30,7 +30,7 @@ namespace XCom
 		    }
 
 		    for (int i = 0; i < tiles.Count; i++)
-				tiles[i].MapID = i;
+				tiles[i].MapId = i;
 
             readMap(File.OpenRead(filePath), tiles);
 
@@ -156,22 +156,22 @@ namespace XCom
 						if (xcmt.Ground == null)
 							s.WriteByte(0);
 						else
-							s.WriteByte((byte)(((XCTile)xcmt.Ground).MapID + 2));
+							s.WriteByte((byte)(((XCTile)xcmt.Ground).MapId + 2));
 
 						if (xcmt.West == null)
 							s.WriteByte(0);
 						else
-							s.WriteByte((byte)(((XCTile)xcmt.West).MapID + 2));
+							s.WriteByte((byte)(((XCTile)xcmt.West).MapId + 2));
 
 						if (xcmt.North == null)
 							s.WriteByte(0);
 						else
-							s.WriteByte((byte)(((XCTile)xcmt.North).MapID + 2));
+							s.WriteByte((byte)(((XCTile)xcmt.North).MapId + 2));
 
 						if (xcmt.Content == null)
 							s.WriteByte(0);
 						else
-							s.WriteByte((byte)(((XCTile)xcmt.Content).MapID + 2));
+							s.WriteByte((byte)(((XCTile)xcmt.Content).MapId + 2));
 
 					}
 			s.Close();
@@ -247,7 +247,7 @@ namespace XCom
 	        var dependencyId = -1;
 	        foreach (var tile in Tiles)
 	        {
-	            if (tile.ID == 0) dependencyId ++;
+	            if (tile.Id == 0) dependencyId ++;
 	            if (tile == selectedTile) break;
 	        }
 	        if (dependencyId == -1 ||

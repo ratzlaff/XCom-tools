@@ -1,4 +1,7 @@
+using System.Collections.Generic;
 using System.Windows.Forms;
+using XCom;
+using XCom.Interfaces.Base;
 
 namespace MapView.Forms.MainWindow
 {
@@ -10,41 +13,46 @@ namespace MapView.Forms.MainWindow
 
     public class MainWindowsShowAllManager : IMainWindowsShowAllManager
     {
-        private bool _topViewVisible;
-        private bool _tileViewVisible;
-        private bool _rmpViewVisible;
-         
+        public MainWindowsShowAllManager(ConsoleSharedSpace consoleSharedSpace)
+        {
+            _consoleSharedSpace = consoleSharedSpace;
+        }
+
+        private readonly ConsoleSharedSpace _consoleSharedSpace;
+        private List<Form> _formList;
+
         public void HideAll()
         {
-            _topViewVisible = MainWindowsManager.TopView.Visible;
-            _tileViewVisible = MainWindowsManager.TileView.Visible;
-            _rmpViewVisible = MainWindowsManager.RmpView.Visible;
+            var tempFormList = new List<Form>()
+            {
+                MainWindowsManager.TopView,
+                MainWindowsManager.TileView,
+                MainWindowsManager.RmpView,
+            };
+            var console =_consoleSharedSpace.GetConsole();
+            if (console != null) tempFormList.Add(console);
 
-            if (_topViewVisible) MainWindowsManager.TopView.Close();
-            if (_tileViewVisible) MainWindowsManager.TileView.Close();
-            if (_rmpViewVisible) MainWindowsManager.RmpView.Close();
+            _formList = new List<Form>();
+            foreach (var form in tempFormList)
+            {
+                if (!form.Visible) continue;
+                form.Close();
+                _formList.Add(form);
+            } 
         }
 
         public void RestoreAll()
         {
-            if (_topViewVisible)
+            foreach (var form in _formList)
             {
-                MainWindowsManager.TopView.Show();
-                MainWindowsManager.TopView.WindowState = FormWindowState.Normal;
-                MainWindowsManager.TopView.MenuItem.Checked = true;
-            }
-            if (_tileViewVisible)
-            {
-                MainWindowsManager.TileView.Show();
-                MainWindowsManager.TileView.WindowState = FormWindowState.Normal;
-                MainWindowsManager.TileView.MenuItem.Checked = true;
-            }
-            if (_rmpViewVisible)
-            {
-                MainWindowsManager.RmpView.Show();
-                MainWindowsManager.RmpView.WindowState = FormWindowState.Normal;
-                MainWindowsManager.RmpView.MenuItem.Checked = true;
-            }
+                form.Show();
+                form.WindowState = FormWindowState.Normal;
+                var mapObserverForm = form as IMenuItem;
+                if (mapObserverForm != null)
+                {
+                    mapObserverForm.MenuItem.Checked = true;
+                }
+            } 
         }
     } 
 }

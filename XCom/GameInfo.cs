@@ -17,6 +17,7 @@ namespace XCom
 
 		private static ImageInfo imageInfo;
 		private static TilesetDesc tileInfo;
+        private static IWarningHandler WarningHandler;
 
 		private static Dictionary<Palette,Dictionary<string,PckFile>> pckHash;
 
@@ -40,7 +41,7 @@ namespace XCom
 				{					
 		/* mapedit */case "mapdata":
 						tileInfo = new TilesetDesc(kv.Rest, vars);
-						break;
+						break; 
 		/* mapedit */case "images": 
 						imageInfo = new ImageInfo(kv.Rest, vars); 
 						break;
@@ -83,22 +84,7 @@ namespace XCom
 		public static PckFile GetPckFile(string imageSet)
 		{
 			return GetPckFile(imageSet,currentPalette);
-		}		
-
-		public static McdFile GetMcdFile(string imageSet)
-		{
-			return imageInfo.Images[imageSet].GetMcdFile(currentPalette);
-		}
-
-		public static McdFile GetMcdFile(string imageSet,Palette p)
-		{
-			return imageInfo.Images[imageSet].GetMcdFile(p);
-		}
-
-		public static XCMapFile GetMap(string tileset, string file)
-		{
-			return (XCMapFile)tileInfo.Tilesets[tileset][file].GetMapFile();
-		}
+		}		 
 
 		public static PckFile CachePck(string basePath,string basename,int bpp, Palette p)		
 		{

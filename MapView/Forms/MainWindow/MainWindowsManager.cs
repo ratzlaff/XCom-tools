@@ -6,6 +6,8 @@ namespace MapView.Forms.MainWindow
 {
     public class MainWindowsManager
     {
+        public static IMainWindowsShowAllManager MainWindowsShowAllManager;
+
         private static TileView _tileView;
         private static TopView _topView;
         private static RmpView _rmpView;
@@ -17,7 +19,7 @@ namespace MapView.Forms.MainWindow
             get
             {
                 if (_tileView == null)
-                    _tileView = new TileView();
+                    _tileView = new TileView(MainWindowsShowAllManager);
                 return _tileView;
             }
         }

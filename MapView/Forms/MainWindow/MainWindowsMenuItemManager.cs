@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Text;
 using System.Windows.Forms;
+using XCom;
 using XCom.Interfaces.Base;
 
 namespace MapView.Forms.MainWindow
@@ -17,14 +18,17 @@ namespace MapView.Forms.MainWindow
     {
         private readonly Dictionary<string, Form> _registeredForms;
         private readonly Dictionary<string, Settings> _settingsHash;
-        private readonly MenuItem _showMenu;  
+        private readonly MenuItem _showMenu;
         private readonly MenuItem _miHelp;
         private readonly MapViewPanel _mapView;
+        private readonly ConsoleSharedSpace _consoleSharedSpace;
 
         public MainWindowsMenuItemManager(
-            MenuItem showMenu, MenuItem miHelp, MapViewPanel mapView, Dictionary<string, Settings> settingsHash)
+            MenuItem showMenu, MenuItem miHelp, MapViewPanel mapView, 
+            Dictionary<string, Settings> settingsHash, ConsoleSharedSpace consoleSharedSpace)
         {
             _settingsHash = settingsHash;
+            _consoleSharedSpace = consoleSharedSpace;
             _registeredForms = new Dictionary<string, Form>();
             _showMenu = showMenu;
             _miHelp = miHelp;
@@ -39,32 +43,37 @@ namespace MapView.Forms.MainWindow
 
             if (XCom.Globals.UseBlanks)
                 RegisterForm(_mapView.BlankForm, "Blank Info", _showMenu);
+            RegisterForm(_consoleSharedSpace.GetNewConsole(), "Console", _showMenu);
 
             RegisterForm(MainWindowsManager.HelpScreen, "Quick Help", _miHelp);
             RegisterForm(MainWindowsManager.AboutWindow, "About", _miHelp);
         }
 
-        private void RegisterForm(Form f, string title, MenuItem parent)
+        private void RegisterForm(Form form, string title, MenuItem parent)
         {
-            f.Closing += FormClosing;
+            form.Closing += FormClosing;
 
-            f.Text = title;
+            form.Text = title;
             MenuItem mi = new MenuItem(title);
-            mi.Tag = f;
+            mi.Tag = form;
 
-            if (f is Map_Observer_Form)
+            if (form is IMenuItem)
             {
-                ((Map_Observer_Form)f).MenuItem = mi;
-                ((Map_Observer_Form)f).RegistryInfo = new DSShared.Windows.RegistryInfo(f, title);
-                _settingsHash.Add(title, ((Map_Observer_Form)f).Settings);
+                ((IMenuItem) form).MenuItem = mi;
             }
 
-            f.ShowInTaskbar = false;
-            f.FormBorderStyle = FormBorderStyle.SizableToolWindow;
+            if (form is Map_Observer_Form)
+            {
+                ((Map_Observer_Form)form).RegistryInfo = new DSShared.Windows.RegistryInfo(form, title);
+                _settingsHash.Add(title, ((Map_Observer_Form)form).Settings);
+            }
+
+            form.ShowInTaskbar = false;
+            form.FormBorderStyle = FormBorderStyle.SizableToolWindow;
 
             parent.MenuItems.Add(mi);
             mi.Click += FormMiClick;
-            _registeredForms.Add(title, f);
+            _registeredForms.Add(title, form);
         }
 
         private static void FormMiClick(object sender, EventArgs e)
@@ -92,8 +101,8 @@ namespace MapView.Forms.MainWindow
         private static void FormClosing(object sender, CancelEventArgs e)
         {
             e.Cancel = true;
-            if (sender is Map_Observer_Form)
-                ((Map_Observer_Form)sender).MenuItem.Checked = false;
+            if (sender is IMenuItem)
+                ((IMenuItem)sender).MenuItem.Checked = false;
             ((Form)sender).Hide();
         }
 

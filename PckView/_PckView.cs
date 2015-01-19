@@ -3,6 +3,7 @@ using System.Drawing;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Text;
 using System.Windows.Forms;
 using System.Data;
 using System.IO;
@@ -50,21 +51,18 @@ namespace PckView
 			InitializeComponent();
 
 			#region shared space information
-			sharedSpace = SharedSpace.Instance;
 
-            if (sharedSpace.GetObj("xConsole") == null || console == null)
+            var consoleSharedSpace = new ConsoleSharedSpace(new SharedSpace());
+            console = consoleSharedSpace.GetNewConsole();
+            console.FormClosing += delegate(object sender, FormClosingEventArgs e)
             {
-                console = (ConsoleForm) sharedSpace.GetObj("xConsole", new ConsoleForm());
-                console.FormClosing += delegate(object sender, FormClosingEventArgs e)
-                {
-                    e.Cancel = true;
-                    console.Hide();
-                };
-                FormClosed += (sender, e) => console.Close();
-            }
-            console.Show();
+                e.Cancel = true;
+                console.Hide();
+            };
+            FormClosed += (sender, e) => console.Close();
 
-			sharedSpace.GetObj("PckView",this);
+            sharedSpace = SharedSpace.Instance;
+            sharedSpace.GetObj("PckView", this);
 			sharedSpace.GetObj("AppDir", Environment.CurrentDirectory);
 			sharedSpace.GetObj("CustomDir", Environment.CurrentDirectory + "\\custom");
 			sharedSpace.GetObj("SettingsDir", Environment.CurrentDirectory + "\\settings");	
@@ -758,6 +756,11 @@ namespace PckView
             MapViewIntegrationMenuItem.Checked = false;
             Settings.Default.MapViewIntegrationHelpShown ++;
             Settings.Default.Save();
+        }
+
+        private void PckViewForm_Shown(object sender, EventArgs e)
+        {
+            console.Show();
         }
 	}
 }

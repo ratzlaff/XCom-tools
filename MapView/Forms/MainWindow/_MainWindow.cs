@@ -3,8 +3,10 @@ using System.Drawing;
 using System.ComponentModel;
 using System.Windows.Forms;
 using System.Data;
+using MapView.Forms.Error.WarningConsole;
 using MapView.Forms.MainWindow;
 using XCom;
+using XCom.GameFiles.Map;
 using XCom.Interfaces;
 using System.Drawing.Drawing2D;
 using System.IO;
@@ -26,9 +28,11 @@ namespace MapView
 
 	public partial class MainWindow : Form
 	{
-		private MapView.MapViewPanel mapView;
-		private LoadingForm lf;
-		private static Dictionary<string, Settings> settingsHash; 
+		private static Dictionary<string, Settings> _settingsHash;
+
+        private readonly MapViewPanel _mapView;
+        private readonly LoadingForm _lf;
+        private readonly IWarningHandler _warningHandler;
         private readonly IMainWindowsMenuItemManager _mainWindowsMenuItemManager;
         private readonly MainWindowsManager _mainWindowsManager;
         
@@ -42,13 +46,9 @@ namespace MapView
             InitializeComponent();
             /***********************/
 
-            mapView = MapViewPanel.Instance;
+            _mapView = MapViewPanel.Instance;
             
-            settingsHash = new Dictionary<string, Settings>();
-
-            _mainWindowsManager = new MainWindowsManager();
-            _mainWindowsMenuItemManager = new MainWindowsMenuItemManager(
-                showMenu, miHelp, mapView, settingsHash);
+            _settingsHash = new Dictionary<string, Settings>();
              
             loadDefaults();
 
@@ -58,16 +58,26 @@ namespace MapView
             Palette.UFOBattle.Grayscale.SetTransparent(true);
 
 			#region Setup SharedSpace information and paths
-			SharedSpace sharedSpace = SharedSpace.Instance;
+
+            SharedSpace sharedSpace = SharedSpace.Instance;
+		    var consoleSharedSpace = new ConsoleSharedSpace(sharedSpace);
+            _warningHandler = new ConsoleWarningHandler(consoleSharedSpace);
+
+            MainWindowsManager.MainWindowsShowAllManager = new MainWindowsShowAllManager(consoleSharedSpace);
+
+            _mainWindowsManager = new MainWindowsManager();
+            _mainWindowsMenuItemManager = new MainWindowsMenuItemManager(
+                showMenu, miHelp, _mapView, _settingsHash, consoleSharedSpace);
+
 			sharedSpace.GetObj("MapView", this);
 			sharedSpace.GetObj("AppDir", Environment.CurrentDirectory);
 			sharedSpace.GetObj("CustomDir", Environment.CurrentDirectory + "\\custom");
 			sharedSpace.GetObj("SettingsDir", Environment.CurrentDirectory + "\\settings");
 
-			PathInfo pathsFile = new PathInfo(SharedSpace.Instance.GetString("SettingsDir"), "Paths", "pth");
-			PathInfo settingsFile = new PathInfo(SharedSpace.Instance.GetString("SettingsDir"), "MVSettings", "dat");
-			PathInfo mapeditFile = new PathInfo(SharedSpace.Instance.GetString("SettingsDir"), "MapEdit", "dat");
-			PathInfo imagesFile = new PathInfo(SharedSpace.Instance.GetString("SettingsDir"), "Images", "dat");
+			var pathsFile = new PathInfo(SharedSpace.Instance.GetString("SettingsDir"), "Paths", "pth");
+			var settingsFile = new PathInfo(SharedSpace.Instance.GetString("SettingsDir"), "MVSettings", "dat");
+			var mapeditFile = new PathInfo(SharedSpace.Instance.GetString("SettingsDir"), "MapEdit", "dat");
+			var imagesFile = new PathInfo(SharedSpace.Instance.GetString("SettingsDir"), "Images", "dat");
 
 			sharedSpace.GetObj("MV_PathsFile", pathsFile);
 			sharedSpace.GetObj("MV_SettingsFile", settingsFile);
@@ -83,9 +93,10 @@ namespace MapView
 					Environment.Exit(-1);
 			}
 
-			GameInfo.ParseLine += new ParseLineDelegate(parseLine);
-			GameInfo.Init(Palette.TFTDBattle, pathsFile);
-			LogFile.Instance.WriteLine("GameInfo.Init done");
+			GameInfo.ParseLine += parseLine;
+
+			InitGameInfo(pathsFile);
+		    LogFile.Instance.WriteLine("GameInfo.Init done");
 
             _mainWindowsMenuItemManager.Register();
             MainWindowsManager.TileView.MapChanged += TileView_MapChanged;
@@ -94,13 +105,13 @@ namespace MapView
 
 			MapViewPanel.ImageUpdate += new EventHandler(update);
 
-			mapView.Dock = DockStyle.Fill;
+			_mapView.Dock = DockStyle.Fill;
 
 			instance = this;
 
 			mapList.TreeViewNodeSorter = new System.Collections.CaseInsensitiveComparer();
 
-			toolStripContainer1.ContentPanel.Controls.Add(mapView);
+			toolStripContainer1.ContentPanel.Controls.Add(_mapView);
 		    var mainToolStripButtonsFactory = new MainToolStripButtonsFactory();
             mainToolStripButtonsFactory.MakeToolstrip(toolStrip);
 			toolStrip.Items.Add(new ToolStripSeparator());
@@ -111,15 +122,15 @@ namespace MapView
 
 			try
 			{
-				mapView.View.Cursor = new Cursor(GameInfo.CachePck(SharedSpace.Instance.GetString("cursorFile"), "", 4, Palette.TFTDBattle));
+				_mapView.View.Cursor = new Cursor(GameInfo.CachePck(SharedSpace.Instance.GetString("cursorFile"), "", 4, Palette.TFTDBattle));
 			}
 			catch
 			{
 				try
 				{
-					mapView.View.Cursor = new Cursor(GameInfo.CachePck(SharedSpace.Instance.GetString("cursorFile"), "", 2, Palette.UFOBattle));
+					_mapView.View.Cursor = new Cursor(GameInfo.CachePck(SharedSpace.Instance.GetString("cursorFile"), "", 2, Palette.UFOBattle));
 				}
-				catch { mapView.Cursor = null; }
+				catch { _mapView.Cursor = null; }
 			}
 
 			LogFile.Instance.WriteLine("Cursor loaded");
@@ -144,8 +155,8 @@ namespace MapView
 			OnResize(null);
 			this.Closing += new CancelEventHandler(closing);
 
-			lf = new LoadingForm();
-			Bmp.LoadingEvent += new LoadingDelegate(lf.Update);
+			_lf = new LoadingForm();
+			Bmp.LoadingEvent += new LoadingDelegate(_lf.Update);
 
 			//I should rewrite the hq2x wrapper for .net sometime (not the code, its pretty insane)
 			//if(!File.Exists("hq2xa.dll"))
@@ -177,7 +188,12 @@ namespace MapView
 			LogFile.Instance.Close();			
 		}
 
-		private static MainWindow instance;
+	    private static void InitGameInfo(PathInfo pathsFile)
+	    {
+	        GameInfo.Init(Palette.TFTDBattle, pathsFile); 
+	    }
+
+	    private static MainWindow instance;
 		public static MainWindow Instance
 		{
 			get { return instance; }
@@ -215,7 +231,7 @@ namespace MapView
 			{
 				try
 				{
-					Settings.ReadSettings(vc, kv, settingsHash[kv.Keyword]);
+					Settings.ReadSettings(vc, kv, _settingsHash[kv.Keyword]);
 				}
 				catch { }
 			}
@@ -225,7 +241,7 @@ namespace MapView
 
 		private void changeSetting(object sender, string key, object val)
 		{
-			settingsHash["MainWindow"][key].Value = val;
+			_settingsHash["MainWindow"][key].Value = val;
 			switch (key)
 			{
 				case "Animation":
@@ -337,9 +353,9 @@ namespace MapView
 			}
 
 			StreamWriter sw = new StreamWriter(SharedSpace.Instance["MV_SettingsFile"].ToString());
-			foreach (string s in settingsHash.Keys)
-				if (settingsHash[s] != null)
-					settingsHash[s].Save(s, sw);
+			foreach (string s in _settingsHash.Keys)
+				if (_settingsHash[s] != null)
+					_settingsHash[s].Save(s, sw);
 			sw.Flush();
 			sw.Close();
 
@@ -372,7 +388,7 @@ namespace MapView
 			settings.AddSetting("GridLineWidth", MapViewPanel.Instance.View.GridLineWidth, "Width of the grid lines in pixels", "MapView", null, true, MapViewPanel.Instance.View);
 			settings.AddSetting("SelectGrayscale", MapViewPanel.Instance.View.SelectGrayscale, "If true, the selection area will show up in gray", "MapView", null, true, MapViewPanel.Instance.View);
 			//settings.AddSetting("SaveOnExit",true,"If true, these settings will be saved on program exit","Main",null,false,null);
-			settingsHash["MainWindow"] = settings;
+			_settingsHash["MainWindow"] = settings;
 		}
 
 		private void update(object sender, EventArgs e)
@@ -398,10 +414,10 @@ namespace MapView
 
 		private void saveItem_Click(object sender, System.EventArgs e)
 		{
-			if (mapView.Map != null)
+			if (_mapView.Map != null)
 			{
-				mapView.Map.Save();
-				xConsole.AddLine("Saved: " + mapView.Map.Name);
+				_mapView.Map.Save();
+				xConsole.AddLine("Saved: " + _mapView.Map.Name);
 				Globals.MapChanged = false;
 			}
 		}
@@ -417,7 +433,8 @@ namespace MapView
 			PathsEditor p = new PathsEditor(SharedSpace.Instance["MV_PathsFile"].ToString());
 			p.ShowDialog();
 
-			GameInfo.Init(Palette.TFTDBattle, (PathInfo)SharedSpace.Instance["MV_PathsFile"]);
+		    var pathInfo = (PathInfo) SharedSpace.Instance["MV_PathsFile"];
+		    InitGameInfo(pathInfo);
 			initList();
 		}
 
@@ -456,13 +473,17 @@ namespace MapView
 	        if (imd != null)
 	        {
 	            miExport.Enabled = true;
-	            var map = imd.GetMapFile();
-	            mapView.SetMap(map);
+
+	            var xcTileFactory = new XcTileFactory();
+	            xcTileFactory.HandleWarning += _warningHandler.HandleWarning;
+	            var mapService = new XcMapFileService(xcTileFactory);
+                var map = mapService.Load(imd as XCMapDesc);
+	            _mapView.SetMap(map);
 
 	            statusMapName.Text = "Map:" + imd.Name;
 	            if (map != null)
 	            {
-	                tsMapSize.Text = "Size: " + map.MapSize.ToString();
+	                tsMapSize.Text = "Size: " + map.MapSize;
 	            }
 	            else
 	            {
@@ -496,13 +517,13 @@ namespace MapView
 
 		public DialogResult NotifySave()
 		{
-			if (mapView.Map != null && Globals.MapChanged)
+			if (_mapView.Map != null && Globals.MapChanged)
 				switch (MessageBox.Show(this, "Map changed, do you wish to save?", "Save map?", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1))
 				{
 					case DialogResult.No: //dont save 
 						break;
 					case DialogResult.Yes: //save
-						mapView.Map.Save();
+						_mapView.Map.Save();
 						break;					
 					case DialogResult.Cancel://do nothing
 						return DialogResult.Cancel;
@@ -514,31 +535,31 @@ namespace MapView
 
 		private void miOptions_Click(object sender, System.EventArgs e)
 		{
-			PropertyForm pf = new PropertyForm("MainViewSettings", settingsHash["MainWindow"]);
+			PropertyForm pf = new PropertyForm("MainViewSettings", _settingsHash["MainWindow"]);
 			pf.Text = "MainWindow Options";
 			pf.Show();
 		}
 
 		private void miSaveImage_Click(object sender, System.EventArgs e)
 		{
-			if (mapView.Map != null)
+			if (_mapView.Map != null)
 			{
-				saveFile.FileName = mapView.Map.Name;
+				saveFile.FileName = _mapView.Map.Name;
 				if (saveFile.ShowDialog() == DialogResult.OK)
 				{
-					lf.Show();
-					mapView.Map.SaveGif(saveFile.FileName);
-					lf.Hide();
+					_lf.Show();
+					_mapView.Map.SaveGif(saveFile.FileName);
+					_lf.Hide();
 				}
 			}
 		}
 
 		private void miHq_Click(object sender, System.EventArgs e)
 		{
-			if (mapView.Map is XCMapFile)
+			if (_mapView.Map is XCMapFile)
 			{
-				((XCMapFile)mapView.Map).Hq2x();
-				mapView.View.Resize();
+				((XCMapFile)_mapView.Map).Hq2x();
+				_mapView.View.Resize();
 			}
 		}
 
@@ -546,7 +567,7 @@ namespace MapView
 		{
 			miDoors.Checked = !miDoors.Checked;
 
-			foreach (XCTile t in mapView.Map.Tiles)
+			foreach (XCTile t in _mapView.Map.Tiles)
 				if (t.Info.UFODoor || t.Info.HumanDoor)
 				{
 					if (miDoors.Checked)
@@ -560,11 +581,11 @@ namespace MapView
 		{
 		    using (var cmf = new ChangeMapSizeForm())
 		    {
-		        cmf.Map = mapView.View.Map;
+		        cmf.Map = _mapView.View.Map;
 		        if (cmf.ShowDialog(this) == DialogResult.OK)
 		        {
 		            cmf.Map.ResizeTo(cmf.NewRows, cmf.NewCols, cmf.NewHeight);
-		            mapView.ForceResize();
+		            _mapView.ForceResize();
 		        }
 		    }
 		}
@@ -587,10 +608,10 @@ namespace MapView
 
 		private void miInfo_Click(object sender, System.EventArgs e)
 		{
-            if (mapView.Map == null) return;
+            if (_mapView.Map == null) return;
 			MapInfoForm mif = new MapInfoForm();
 			mif.Show();
-			mif.Map = mapView.Map;
+			mif.Map = _mapView.Map;
 		}
 
 

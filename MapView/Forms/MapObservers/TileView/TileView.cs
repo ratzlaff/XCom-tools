@@ -33,13 +33,13 @@ namespace MapView
 
 	    private readonly IMainWindowsShowAllManager _mainWindowsShowAllManager;
 
-		public TileView()
+        public TileView(IMainWindowsShowAllManager mainWindowsShowAllManager)
 		{
 		    InitializeComponent();
 
             tabs.Selected += tabs_Selected;
 
-		    _mainWindowsShowAllManager = new MainWindowsShowAllManager();
+            _mainWindowsShowAllManager = mainWindowsShowAllManager;
 
 			all = new TilePanel(TileType.All);
 			var ground = new TilePanel(TileType.Ground);
@@ -84,7 +84,7 @@ namespace MapView
             if (tile != null && tile.Info is McdEntry)
             {
                 var info = (McdEntry)tile.Info;
-                Text = "TileView: mapID:" + tile.MapID + " mcdID: " + tile.ID;
+                Text = "TileView: mapID:" + tile.MapId + " mcdID: " + tile.Id;
                 UpdateMcdText(info);
             }
         }
@@ -127,7 +127,7 @@ namespace MapView
 	        if (tile != null && tile.Info is McdEntry)
 	        {
 	            var info = (McdEntry) tile.Info;
-                Text = "TileView: mapID:" + tile.MapID + " mcdID: " + tile.ID + " Name: " + GetSelectedDependencyName();
+                Text = "TileView: mapID:" + tile.MapId + " mcdID: " + tile.Id + " Name: " + GetSelectedDependencyName();
 	            UpdateMcdText(info);
 	        }
 	        else
@@ -231,7 +231,7 @@ namespace MapView
 		        if (tile != null && tile.Info is McdEntry)
 		        {
 		            var info = (McdEntry) tile.Info;
-		            Text = "TileView: mapID:" + tile.MapID + " mcdID: " + tile.ID;
+		            Text = "TileView: mapID:" + tile.MapId + " mcdID: " + tile.Id;
 		            UpdateMcdText(info);
 		        }
 		    }

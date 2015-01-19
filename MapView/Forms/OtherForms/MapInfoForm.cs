@@ -65,7 +65,7 @@ namespace MapView
 						lblPckFiles.Text+=",";
 
 					totalImages+=GameInfo.ImageInfo[s].GetPckFile().Count;
-					totalMcd+=GameInfo.ImageInfo[s].GetMcdFile().Length;
+                    totalMcd += GameInfo.ImageInfo[s].GetMcdFile().Count;
 					lblPckFiles.Text+=s;
 				}
 

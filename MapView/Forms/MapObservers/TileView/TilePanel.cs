@@ -235,7 +235,7 @@ namespace MapView
                     selectedNum=0;
                 else
                 {
-                    selectedNum = value.MapID+1;
+                    selectedNum = value.MapId+1;
 
                     if(TileChanged!=null)
                         TileChanged(this,SelectedTile);

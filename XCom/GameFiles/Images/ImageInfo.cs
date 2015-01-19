@@ -7,68 +7,71 @@ namespace XCom
 {
 	public class ImageInfo:FileDesc
 	{
-		private Dictionary<string,ImageDescriptor> images;
+		private readonly Dictionary<string,ImageDescriptor> _images;
 
-		public ImageInfo():base("")
-		{
-			images = new Dictionary<string, ImageDescriptor>();
-		}
+        public ImageInfo(string inFile, VarCollection v)
+            : base(inFile)
+        {
+            _images = new Dictionary<string, ImageDescriptor>();
+            Load(inFile, v);
+        }
 
-		public ImageDescriptor this[string name]
+	    public ImageDescriptor this[string name]
 		{
 		    get
 		    {
 		        var key = name.ToUpper();
-		        if (!images.ContainsKey(key)) return null;
-                return images[key];
+		        if (!_images.ContainsKey(key)) return null;
+                return _images[key];
 		    }
-			set{images[name.ToUpper()]=value;}
+			set{_images[name.ToUpper()]=value;}
 		}
 
-		public ImageInfo(string inFile,VarCollection v):base(inFile)
-		{
-			images = new Dictionary<string, ImageDescriptor>();
-			StreamReader sr = new StreamReader(File.OpenRead(inFile));
-			VarCollection vars = new VarCollection(sr,v);
-
-			KeyVal kv = null;
-
-			while((kv=vars.ReadLine())!=null)
-			{
-				ImageDescriptor img = new ImageDescriptor(kv.Keyword.ToUpper(),kv.Rest);
-				images[kv.Keyword.ToUpper()] = img;
-			}
-			sr.Close();
-		}
-
-		public override void Save(string outFile)
-		{
-			StreamWriter sw = new StreamWriter(outFile);
-
-			List<string> a = new List<string>(images.Keys);
-			a.Sort();
-			Dictionary<string, Variable> vars = new Dictionary<string, Variable>();
-
-			foreach(string str in a)
+        public void Load(string inFile, VarCollection v)
+        {
+            using (var sr = new StreamReader(File.OpenRead(inFile)))
             {
-                if (images[str] == null) continue;
-                ImageDescriptor id = images[str];
-                if(!vars.ContainsKey(id.BasePath))
-                    vars[id.BasePath]=new Variable(id.BaseName+":",id.BasePath);
-                else
-                    vars[id.BasePath].Inc(id.BaseName+":");
+                var vars = new VarCollection(sr, v);
+
+                KeyVal kv;
+                while ((kv = vars.ReadLine()) != null)
+                {
+                    var img = new ImageDescriptor(kv.Keyword.ToUpper(), kv.Rest);
+                    _images[kv.Keyword.ToUpper()] = img;
+                }
+                sr.Close();
             }
+        }
 
-			foreach(string basePath in vars.Keys)
-				vars[basePath].Write(sw);
+	    public override void Save(string outFile)
+		{
+	        using (var sw = new StreamWriter(outFile))
+	        {
+	            var a = new List<string>(_images.Keys);
+	            a.Sort();
+	            var vars = new Dictionary<string, Variable>();
 
-			sw.Flush();
-			sw.Close();
+	            foreach(string str in a)
+	            {
+	                if (_images[str] == null) continue;
+	                var id = _images[str];
+	                if(!vars.ContainsKey(id.BasePath))
+	                    vars[id.BasePath]=new Variable(id.BaseName+":",id.BasePath);
+	                else
+	                    vars[id.BasePath].Inc(id.BaseName+":");
+	            }
+
+	            foreach(string basePath in vars.Keys)
+	                vars[basePath].Write(sw);
+
+	            sw.Flush();
+	            sw.Close();
+	        }
 		}
 
         public ImagesAccessor Images
 		{
-			get{return new ImagesAccessor(images);}
+			get{return new ImagesAccessor(_images);}
 		}
 
         /// <summary>
@@ -83,10 +86,14 @@ namespace XCom
 	            _images = images;
 	        }
 
-	        public IEnumerable Keys
-	        {
-	            get { return _images.Keys; }
-	        }
+            public IEnumerable<string> Keys
+            {
+                get { return _images.Keys; }
+            }
+            public IEnumerable<ImageDescriptor> ImageDescriptors
+            {
+                get { return _images.Values; }
+            }
 
 	        public void Remove(string toString)
 	        {

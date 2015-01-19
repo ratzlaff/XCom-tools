@@ -214,7 +214,7 @@ namespace PckView
             this.DrawPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.DrawPanel.Location = new System.Drawing.Point(0, 107);
             this.DrawPanel.Name = "DrawPanel";
-            this.DrawPanel.Size = new System.Drawing.Size(494, 102);
+            this.DrawPanel.Size = new System.Drawing.Size(494, 82);
             this.DrawPanel.TabIndex = 1;
             // 
             // MapViewIntegrationHelpPanel
@@ -251,7 +251,7 @@ namespace PckView
             // PckViewForm
             // 
             this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
-            this.ClientSize = new System.Drawing.Size(494, 209);
+            this.ClientSize = new System.Drawing.Size(494, 189);
             this.Controls.Add(this.DrawPanel);
             this.Controls.Add(this.MapViewIntegrationHelpPanel);
             this.Location = new System.Drawing.Point(50, 50);
@@ -259,6 +259,7 @@ namespace PckView
             this.Name = "PckViewForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "PckView";
+            this.Shown += new System.EventHandler(this.PckViewForm_Shown);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.PckView_KeyDown);
             this.MapViewIntegrationHelpPanel.ResumeLayout(false);
             this.ResumeLayout(false);

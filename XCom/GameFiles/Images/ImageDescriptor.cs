@@ -12,18 +12,13 @@ namespace XCom
 	{
 		//private PckFile myPck;
 		//private McdFile myMcd;
-		private readonly Hashtable mcdTab;
-
-		public ImageDescriptor(string baseName)
+        private readonly Hashtable _mcdTab;
+         
+		public ImageDescriptor(string baseName, string path) 
 		{
-			BaseName = baseName;
-			BasePath="";
-			mcdTab = new Hashtable(3);
-		}
-
-		public ImageDescriptor(string baseName, string path):this(baseName)
-		{
-			BasePath=path;
+		    BaseName = baseName;
+            BasePath = path;
+            _mcdTab = new Hashtable(3);
 		}
 
 		public PckFile GetPckFile(Palette p)
@@ -36,20 +31,19 @@ namespace XCom
 			return GetPckFile(GameInfo.DefaultPalette);
 		}
 
-		public McdFile GetMcdFile(Palette p)
+        public McdFile GetMcdFile(Palette p, XcTileFactory _xcTileFactory)
 		{
-		    if (mcdTab[p] == null)
+		    if (_mcdTab[p] == null)
 		    {
-                var xcTileFactory = new XcTileFactory();
-		        var tiles = xcTileFactory.CreateTiles(BaseName, BasePath, GetPckFile(p));
-                mcdTab[p] = new McdFile(tiles);
+                var tiles = _xcTileFactory.CreateTiles(BaseName, BasePath, GetPckFile(p));
+                _mcdTab[p] = new McdFile(tiles);
 		    }
-		    return (McdFile)mcdTab[p];
+		    return (McdFile)_mcdTab[p];
 		}
 
 		public McdFile GetMcdFile()
 		{
-			return GetMcdFile(GameInfo.DefaultPalette);
+			return GetMcdFile(GameInfo.DefaultPalette, new XcTileFactory() );
 		}
 
 		public override string ToString()
@@ -68,7 +62,7 @@ namespace XCom
 
 	    public void ClearMcd()
 	    {
-	        mcdTab.Clear();
+	        _mcdTab.Clear();
 	    }
 	}
 }

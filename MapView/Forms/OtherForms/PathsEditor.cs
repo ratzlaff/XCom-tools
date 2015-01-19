@@ -6,6 +6,7 @@ using System.ComponentModel;
 using System.Windows.Forms;
 using System.IO;
 using XCom;
+using XCom.GameFiles.Map;
 using XCom.Interfaces;
 using Microsoft.Win32;
 using XCom.Interfaces.Base;
@@ -1085,29 +1086,29 @@ namespace MapView
 			GameInfo.ImageInfo[(string)lstImages.SelectedItem].BasePath = txtImagePath.Text;
 		}
 
-		private void addImageset_Click(object sender, System.EventArgs e)
-		{
-			openFile.Title="Add images";
-			openFile.Multiselect=true;
-			openFile.FilterIndex=2;
-			if(openFile.ShowDialog(this)==DialogResult.OK)
-			{
-				foreach(string s in openFile.FileNames)
-				{
-					string path = s.Substring(0,s.LastIndexOf(@"\")+1);
-					string file = s.Substring(s.LastIndexOf(@"\")+1);
-					file = file.Substring(0,file.IndexOf("."));
-					GameInfo.ImageInfo[file] = new ImageDescriptor(file,path);
-				}
+	    private void addImageset_Click(object sender, System.EventArgs e)
+	    {
+	        openFile.Title = "Add images";
+	        openFile.Multiselect = true;
+	        openFile.FilterIndex = 2;
+	        if (openFile.ShowDialog(this) == DialogResult.OK)
+	        {
+	            foreach (string s in openFile.FileNames)
+	            {
+	                string path = s.Substring(0, s.LastIndexOf(@"\") + 1);
+	                string file = s.Substring(s.LastIndexOf(@"\") + 1);
+	                file = file.Substring(0, file.IndexOf("."));
+	                GameInfo.ImageInfo[file] = new ImageDescriptor(file, path);
+	            }
 
-				lstImages.Items.Clear();
-				listAllImages.Items.Clear();
+	            lstImages.Items.Clear();
+	            listAllImages.Items.Clear();
 
-				populateImageList();
-			}
-		}
+	            populateImageList();
+	        }
+	    }
 
-		private void delImageset_Click(object sender, System.EventArgs e)
+	    private void delImageset_Click(object sender, System.EventArgs e)
 		{
 			GameInfo.ImageInfo.Images.Remove(lstImages.SelectedItem.ToString());
 
