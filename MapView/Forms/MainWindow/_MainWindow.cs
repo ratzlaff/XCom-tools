@@ -154,7 +154,7 @@ namespace MapView
 			this.Closing += new CancelEventHandler(closing);
 
 			_lf = new LoadingForm();
-			Bmp.LoadingEvent += new LoadingDelegate(_lf.Update);
+			Bmp.LoadingEvent += _lf.Update;
 
 			//I should rewrite the hq2x wrapper for .net sometime (not the code, its pretty insane)
 			//if(!File.Exists("hq2xa.dll"))
@@ -548,8 +548,14 @@ namespace MapView
 				if (saveFile.ShowDialog() == DialogResult.OK)
 				{
 					_lf.Show();
-					_mapView.Map.SaveGif(saveFile.FileName);
-					_lf.Hide();
+				    try
+				    {
+                        _mapView.Map.SaveGif(saveFile.FileName);
+				    }
+				    finally
+				    {
+                        _lf.Hide();
+                    }
 				}
 			}
 		}

@@ -204,7 +204,7 @@ namespace MapView.TopViewForm
 			//return new Point((int)Math.Floor(x1), (int)Math.Floor(x2));
 		}
 
-		protected virtual void RenderCell(IMapTile tile, System.Drawing.Graphics g, int x, int y) { }
+		protected virtual void RenderCell(MapTileBase tile, System.Drawing.Graphics g, int x, int y) { }
 
 		protected GraphicsPath UpperPath(int x, int y)
 		{
@@ -244,7 +244,7 @@ namespace MapView.TopViewForm
 				{
 					for (int col = 0, x = startX, y = startY; col < map.MapSize.Cols; col++, x += hWidth, y += hHeight)
 					{
-						IMapTile mapTile = map[row, col];
+						MapTileBase mapTile = map[row, col];
 
 						if (mapTile != null)
 							RenderCell(mapTile, g, x, y);

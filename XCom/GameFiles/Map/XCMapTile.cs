@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Collections;
 using XCom.Interfaces;
@@ -6,7 +7,7 @@ using XCom.Interfaces.Base;
 
 namespace XCom
 {
-    public class XCMapTile : IMapTile
+    public class XCMapTile : MapTileBase
     {
         public enum MapQuadrant
         {
@@ -30,7 +31,7 @@ namespace XCom
             _west = west;
             _content = content;
 
-            drawAbove = true;
+            DrawAbove = true;
             _blank = false;
         }
 
@@ -79,6 +80,19 @@ namespace XCom
         {
             get { return _rmpInfo; }
             set { _rmpInfo = value; }
+        }
+
+        public override TileBase[] UsedTiles
+        {
+            get
+            {
+                var list = new List<TileBase>();
+                if (Ground != null) list.Add(Ground);
+                if (West != null) list.Add(West);
+                if (North != null) list.Add(North);
+                if (Content != null) list.Add(Content);
+                return list.ToArray();
+            }
         }
 
         private TileBase GetQuadrantTile(MapQuadrant quad)

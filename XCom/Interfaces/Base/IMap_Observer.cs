@@ -39,9 +39,9 @@ namespace XCom.Interfaces.Base
 	public class SelectedTileChangedEventArgs : EventArgs
 	{
 		private MapLocation newSelected;
-		private IMapTile selectedTile;
+		private MapTileBase selectedTile;
 
-		public SelectedTileChangedEventArgs(MapLocation newSelected, IMapTile selectedTile)
+		public SelectedTileChangedEventArgs(MapLocation newSelected, MapTileBase selectedTile)
 		{
 			this.newSelected = newSelected;
 			this.selectedTile = selectedTile;
@@ -52,7 +52,7 @@ namespace XCom.Interfaces.Base
 			get { return newSelected; }
 		}
 
-		public IMapTile SelectedTile
+		public MapTileBase SelectedTile
 		{
 			get { return selectedTile; }
 		}

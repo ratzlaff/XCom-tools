@@ -55,7 +55,7 @@ namespace MapView.TopViewForm
 			set { minHeight = value; ParentSize(Width, Height); }
 		}
 
-		protected override void RenderCell(IMapTile tile, System.Drawing.Graphics g, int x, int y)
+		protected override void RenderCell(MapTileBase tile, System.Drawing.Graphics g, int x, int y)
 		{
 			XCMapTile mapTile = (XCMapTile)tile;
 			if (!blank)

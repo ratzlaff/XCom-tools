@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Drawing.Imaging;
 using System.Text;
 using System.Drawing;
 
@@ -16,7 +17,7 @@ namespace XCom.Interfaces.Base
         protected byte currentHeight = 0;
         protected MapLocation selected;
         protected MapSize mapSize;
-        protected IMapTile[] mapData;
+        protected MapTileBase[] mapData;
         public bool MapChanged { get; set; }
 
         protected IMap_Base(string name, List<TileBase> tiles)
@@ -24,7 +25,7 @@ namespace XCom.Interfaces.Base
             Name = name;
             Tiles = tiles;
         }
-
+         
         public string Name { get; protected set; }
 
         public List<TileBase> Tiles { get; protected set; }
@@ -119,7 +120,7 @@ namespace XCom.Interfaces.Base
         /// <param name="col"></param>
         /// <param name="height"></param>
         /// <returns></returns>
-        public IMapTile this[int row, int col, int height]
+        public MapTileBase this[int row, int col, int height]
         {
             get
             {
@@ -140,7 +141,7 @@ namespace XCom.Interfaces.Base
         /// <param name="row"></param>
         /// <param name="col"></param>
         /// <returns></returns>
-        public IMapTile this[int row, int col]
+        public MapTileBase this[int row, int col]
         {
             get { return this[row, col, currentHeight]; }
             set { this[row, col, currentHeight] = value; }
@@ -151,7 +152,7 @@ namespace XCom.Interfaces.Base
         /// </summary>
         /// <param name="location"></param>
         /// <returns></returns>
-        public IMapTile this[MapLocation location]
+        public MapTileBase this[MapLocation location]
         {
             get { return this[location.Row, location.Col, location.Height]; }
             set { this[location.Row, location.Col, location.Height] = value; }
@@ -159,7 +160,7 @@ namespace XCom.Interfaces.Base
 
         public void ResizeTo(int r, int c, int h)
         {
-            IMapTile[] newMap = new IMapTile[r * c * h];
+            MapTileBase[] newMap = new MapTileBase[r * c * h];
 
             for (int hc = 0; hc < h; hc++)
                 for (int rc = 0; rc < r; rc++)
@@ -175,60 +176,79 @@ namespace XCom.Interfaces.Base
             mapSize = new MapSize(r, c, h);
             currentHeight = (byte) (mapSize.Height - 1);
         }
-
-        private static int hWid = Globals.HalfWidth, hHeight = Globals.HalfHeight;
-
         /// <summary>
         /// Not yet generic enough to call with custom derived classes other than XCMapFile
         /// </summary>
         /// <param name="file"></param>
         public void SaveGif(string file)
         {
-            Palette curPal = null;
+            var palette = GetFirstGroundPalette();
+            if (palette == null) throw new ApplicationException("At least 1 ground tile is required");
+            var rowPlusCols = mapSize.Rows + mapSize.Cols;
+            var b = Bmp.MakeBitmap(rowPlusCols * (PckImage.Width / 2),
+                (mapSize.Height - currentHeight) * 24 + rowPlusCols * 8, palette.Colors);
 
-            for (int h = 0; h < mapSize.Height; h++)
-                for (int r = 0; r < mapSize.Rows; r++)
-                    for (int c = 0; c < mapSize.Cols; c++)
-                        if (((XCMapTile) this[r, c, h]).Ground != null)
-                        {
-                            curPal = ((XCMapTile) this[r, c, h]).Ground[0].Palette;
-                            goto outLoop;
-                        }
-            outLoop:
-
-            Bitmap b = Bmp.MakeBitmap((mapSize.Rows + mapSize.Cols) * (PckImage.Width / 2),
-                (mapSize.Height - currentHeight) * 24 + (mapSize.Rows + mapSize.Cols) * 8, curPal.Colors);
-
-            Point start = new Point((mapSize.Rows - 1) * (PckImage.Width / 2), -(24 * currentHeight));
+            var start = new Point((mapSize.Rows - 1) * (PckImage.Width / 2), -(24 * currentHeight));
 
             int curr = 0;
 
             if (mapData != null)
+            {
+                var hWid = Globals.HalfWidth;
+                var hHeight = Globals.HalfHeight;
                 for (int h = mapSize.Height - 1; h >= currentHeight; h--)
+                {
                     for (int row = 0, startX = start.X, startY = start.Y + (24 * h);
                         row < mapSize.Rows;
                         row++, startX -= hWid, startY += hHeight)
+                    {
                         for (int col = 0, x = startX, y = startY;
                             col < mapSize.Cols;
                             col++, x += hWid, y += hHeight, curr++)
                         {
-                            foreach (XCTile t in this[row, col, h].UsedTiles)
+                            var tiles = this[row, col, h].UsedTiles;
+                            foreach (var tileBase in tiles)
+                            {
+                                var t = (XCTile) tileBase;
                                 Bmp.Draw(t[0].Image, b, x, y - t.Info.TileOffset);
+                            }
 
                             Bmp.FireLoadingEvent(curr, (mapSize.Height - currentHeight) * mapSize.Rows * mapSize.Cols);
                         }
+                    }
+                }
+            }
             try
             {
-                Rectangle rect = Bmp.GetBoundsRect(b, Bmp.DefaultTransparentIndex);
+                var rect = Bmp.GetBoundsRect(b, Bmp.DefaultTransparentIndex);
 
-                Bitmap b2 = Bmp.Crop(b, rect);
+                var b2 = Bmp.Crop(b, rect);
 
-                b2.Save(file, System.Drawing.Imaging.ImageFormat.Gif);
+                b2.Save(file, ImageFormat.Gif);
             }
             catch
             {
-                b.Save(file, System.Drawing.Imaging.ImageFormat.Gif);
+                b.Save(file, ImageFormat.Gif);
             }
+        }
+
+        private Palette GetFirstGroundPalette()
+        {
+            for (int h = 0; h < mapSize.Height; h++)
+            {
+                for (int r = 0; r < mapSize.Rows; r++)
+                {
+                    for (int c = 0; c < mapSize.Cols; c++)
+                    {
+                        var tile = ((XCMapTile) this[r, c, h]);
+                        if (tile.Ground == null) continue;
+                        var curPal = tile.Ground[0].Palette;
+                        return curPal;
+                    }
+                }
+            }
+
+            return null;
         }
 
         private int GetIndex(int row, int col, int height)

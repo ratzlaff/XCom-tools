@@ -9,7 +9,7 @@ namespace MapView.RmpViewForm
     {
         public MapLocation ClickLocation { get; set; }
 
-        public IMapTile ClickTile { get; set; }
+        public MapTileBase ClickTile { get; set; }
 
         public MouseEventArgs MouseEventArgs { get; set; }
     }

@@ -44,7 +44,7 @@ namespace MapView
         private Brush transBrush;
         private Color gridColor;
         private bool useGrid = true;
-        private IMapTile[,] copied;
+        private MapTileBase[,] copied;
 
         public event EventHandler DragChanged;
         //public event HeightChangedDelegate HeightChanged;
