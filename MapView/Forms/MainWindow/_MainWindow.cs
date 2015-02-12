@@ -2,7 +2,6 @@ using System;
 using System.Drawing;
 using System.ComponentModel;
 using System.Windows.Forms;
-using System.Data;
 using MapView.Forms.Error.WarningConsole;
 using MapView.Forms.MainWindow;
 using MapView.Forms.MapObservers.RmpViewForm;
@@ -10,17 +9,11 @@ using MapView.SettingServices;
 using XCom;
 using XCom.GameFiles.Map;
 using XCom.Interfaces;
-using System.Drawing.Drawing2D;
 using System.IO;
 using Microsoft.Win32;
-using System.Reflection;
 using DSShared;
-using DSShared.Windows;
-using DSShared.Loadable;
 using XCom.Interfaces.Base;
 using System.Collections.Generic;
-using MapView.RmpViewForm;
-using MapView.TopViewForm;
 
 namespace MapView
 {

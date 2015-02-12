@@ -232,6 +232,7 @@ namespace MapView.RmpViewForm
 
         private int? CompareLinks(RmpEntry list, int index)
         {
+            if (list == null) return null;
             var existingLink = false;
             var spaceAvailable = false;
             var spaceAt = 512;
@@ -550,6 +551,7 @@ namespace MapView.RmpViewForm
         {
             _map.Rmp.RemoveEntry(_currEntry);
             ((XCMapTile) _map[_currEntry.Row, _currEntry.Col, _currEntry.Height]).Rmp = null;
+            _map.MapChanged = true;
             ClearSelected();
             gbNodeInfo.Enabled = false;
             LinkGroupBox.Enabled = false;
