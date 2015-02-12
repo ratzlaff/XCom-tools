@@ -1,5 +1,6 @@
 using System;
 using System.Reflection;
+using System.Windows.Forms;
 
 namespace MapView
 {
@@ -8,7 +9,7 @@ namespace MapView
 
 		[STAThread]
 		public static void Main()
-		{ 
+		{
 #if RELEASE
             ReleaseRun();
 #else

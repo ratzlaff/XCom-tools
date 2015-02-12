@@ -6,6 +6,7 @@ using System.Data;
 using MapView.Forms.Error.WarningConsole;
 using MapView.Forms.MainWindow;
 using MapView.Forms.MapObservers.RmpViewForm;
+using MapView.SettingServices;
 using XCom;
 using XCom.GameFiles.Map;
 using XCom.Interfaces;
@@ -29,7 +30,7 @@ namespace MapView
 
 	public partial class MainWindow : Form
 	{
-		private static Dictionary<string, Settings> _settingsHash;
+		private Dictionary<string, Settings> _settingsHash;
 
         private readonly MapViewPanel _mapView;
         private readonly LoadingForm _lf;
@@ -78,7 +79,7 @@ namespace MapView
 			var imagesFile = new PathInfo(SharedSpace.Instance.GetString("SettingsDir"), "Images", "dat");
 
 			sharedSpace.GetObj("MV_PathsFile", pathsFile);
-			sharedSpace.GetObj("MV_SettingsFile", settingsFile);
+			sharedSpace.GetObj(SettingsService.FILE_NAME, settingsFile);
 			sharedSpace.GetObj("MV_MapEditFile", mapeditFile);
 			sharedSpace.GetObj("MV_ImagesFile", imagesFile);
 			#endregion
@@ -142,13 +143,15 @@ namespace MapView
 
 			LogFile.Instance.WriteLine("Quick help and About created");
 
-			if (settingsFile.Exists())
-			{
-				readMapViewSettings(new StreamReader(settingsFile.ToString()));
-				LogFile.Instance.WriteLine("User settings loaded");
-			}
-			else
-				LogFile.Instance.WriteLine("User settings NOT loaded - no settings file to load");
+            if (settingsFile.Exists())
+            {
+                readMapViewSettings(new StreamReader(settingsFile.ToString()));
+                LogFile.Instance.WriteLine("User settings loaded");
+            }
+            else
+            {
+                LogFile.Instance.WriteLine("User settings NOT loaded - no settings file to load");
+            }
 
 			OnResize(null);
 			this.Closing += new CancelEventHandler(closing);
@@ -222,19 +225,16 @@ namespace MapView
 
 		private void readMapViewSettings(StreamReader sr)
 		{
-			XCom.VarCollection vc = new XCom.VarCollection(sr);
-			XCom.KeyVal kv = null;
+			var vc = new XCom.VarCollection(sr);
+			var kv = vc.ReadLine();
 
-			while ((kv = vc.ReadLine()) != null)
-			{
-				try
-				{
-					Settings.ReadSettings(vc, kv, _settingsHash[kv.Keyword]);
-				}
-				catch { }
-			}
+            while (kv != null)
+		    {
+		        Settings.ReadSettings(vc, kv, _settingsHash[kv.Keyword]);
+                kv = vc.ReadLine();
+            }
 
-			sr.Close();
+		    sr.Close();
 		}
 
 		private void changeSetting(object sender, string key, object val)
@@ -350,12 +350,8 @@ namespace MapView
 				swKey.Close();
 			}
 
-			StreamWriter sw = new StreamWriter(SharedSpace.Instance["MV_SettingsFile"].ToString());
-			foreach (string s in _settingsHash.Keys)
-				if (_settingsHash[s] != null)
-					_settingsHash[s].Save(s, sw);
-			sw.Flush();
-			sw.Close();
+		    var settingsService = new SettingsService();
+            settingsService.Save(_settingsHash);
 
 		}
 

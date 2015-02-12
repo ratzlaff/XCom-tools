@@ -1,11 +1,14 @@
 using System;
+using System.Diagnostics;
 using System.Drawing;
 using System.Collections;
 using System.ComponentModel;
 using System.IO;
 using System.Windows.Forms;
+using DSShared.Windows;
 using MapView.Forms.MainWindow;
 using MapView.Forms.McdViewer;
+using MapView.SettingServices;
 using PckView;
 using XCom;
 using XCom.Interfaces.Base;
@@ -49,17 +52,12 @@ namespace MapView
 
 			panels = new[]{all,ground,wWalls,nWalls,objects};
 
-			addPanel(all,allTab);
-			addPanel(ground,groundTab);
-			addPanel(wWalls,wWallsTab);
-			addPanel(nWalls,nWallsTab);
-			addPanel(objects,objectsTab);
-
-//
-//			tp = new TilePanel();
-//			this.Controls.Add(tp);
-//			tp.TileChanged+=new SelectedTileChanged(tileChanged);
-
+			AddPanel(all,allTab);
+			AddPanel(ground,groundTab);
+			AddPanel(wWalls,wWallsTab);
+			AddPanel(nWalls,nWallsTab);
+			AddPanel(objects,objectsTab);
+             
 			OnResize(null);
 
 			MenuItem edit = new MenuItem("Edit");
@@ -96,33 +94,35 @@ namespace MapView
 			pf.Show();
 		}
 
-		private void brushChanged(object sender,string key, object val)
+		private void BrushChanged(object sender,string key, object val)
 		{
 			((SolidBrush)brushes[key]).Color=(Color)val;
 			Refresh();
 		}
 
-		protected override void LoadDefaultSettings(Settings settings)
+		public override void LoadDefaultSettings(   )
 		{
 			brushes = new Hashtable();
 
-			ValueChangedDelegate bc = new ValueChangedDelegate(brushChanged);
-
+			ValueChangedDelegate bc = BrushChanged;
+		    var settings = Settings;
 			foreach(string s in Enum.GetNames(typeof(SpecialType)))
 			{
 				brushes[s]=new SolidBrush(TilePanel.tileTypes[(int)Enum.Parse(typeof(SpecialType),s)]);
 				settings.AddSetting(s,((SolidBrush)brushes[s]).Color,"Color of specified tile type","TileView",bc,false,null);
 			}
+		    VolutarSettingService.LoadDefaultSettings(settings);
+
 			TilePanel.Colors=brushes;
 		}
 
-	    private void addPanel(TilePanel panel, TabPage page)
+	    private void AddPanel(TilePanel panel, TabPage page)
 	    {
 	        panel.Dock = DockStyle.Fill;
 	        page.Controls.Add(panel);
-	        panel.TileChanged += tileChanged;
+	        panel.TileChanged += TileChanged;
 	    }
-	    private void tileChanged(TilePanel sender, TileBase tile)
+	    private void TileChanged(TilePanel sender, TileBase tile)
 	    {
 	        if (tile != null && tile.Info is McdEntry)
 	        {
@@ -259,6 +259,19 @@ namespace MapView
             var dependencyName = map.GetDependecyName(selectedTile);
 
             return dependencyName;
+        }
+
+        private void VolutarMcdEditMenuItem_Click(object sender, EventArgs e)
+        {
+            var map = Map as XCMapFile;
+            if (map == null) return;
+
+            var pathService = new VolutarSettingService(Settings);
+            var path = pathService.GetEditorFilePath();
+            if (!string.IsNullOrEmpty(path))
+            {
+                Process.Start(path);
+            }
         }
 	}
 }

@@ -62,9 +62,12 @@ namespace MapView.Forms.MainWindow
                 ((IMenuItem) form).MenuItem = mi;
             }
 
-            if (form is Map_Observer_Form)
+            var observerForm = form as Map_Observer_Form;
+            if (observerForm != null)
             {
-                ((Map_Observer_Form)form).RegistryInfo = new DSShared.Windows.RegistryInfo(form, title);
+                observerForm.LoadDefaultSettings();
+                observerForm.RegistryInfo = new DSShared.Windows.RegistryInfo(form, title);
+
                 _settingsHash.Add(title, ((Map_Observer_Form)form).Settings);
             }
 

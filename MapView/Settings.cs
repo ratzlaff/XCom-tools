@@ -49,7 +49,7 @@ namespace MapView
 					case "{"://starting out
 						break;
 					default:
-						if(currSettings[kv.Keyword]!=null)
+						if(currSettings [kv.Keyword]!=null)
 						{
 							currSettings[kv.Keyword].Value=kv.Rest;
 							currSettings[kv.Keyword].FireUpdate(kv.Keyword);
@@ -120,10 +120,11 @@ namespace MapView
 		/// <returns>The Setting object tied to the string</returns>
 		public Setting GetSetting(string key, object defaultvalue)
 		{
-			if(settings[key]==null)
+			if(!settings.ContainsKey(key))
 			{
-				settings[key]=new Setting(defaultvalue,null,null);
-				settings[key].Name=key;
+                var item = new Setting(defaultvalue, null, null);
+				settings.Add(key ,item);
+                item.Name = key;
 			}
 
 			return settings[key];
@@ -219,13 +220,25 @@ namespace MapView
 		public object Value
 		{
 			get{return val;}
-			set
-			{
-				if(val!=null && converters[val.GetType()]!=null && value.GetType()==typeof(string))
-					val=converters[val.GetType()]((string)value);
-				else
-					val=value;
-			}
+		    set
+		    {
+		        if (val != null)
+		        {
+		            var type = val.GetType();
+                    if (converters.ContainsKey(type) && value is string)
+		            {
+                        val = converters[type]((string)value);
+		            }
+		            else
+		            {
+		                val = value;
+		            }
+		        }
+		        else
+		        {
+		            val = value;
+		        }
+		    }
 		}
 
 		public string Description

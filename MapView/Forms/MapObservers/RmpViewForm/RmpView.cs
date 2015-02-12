@@ -733,7 +733,7 @@ namespace MapView.RmpViewForm
             Refresh();
         }
 
-        protected override void LoadDefaultSettings(Settings settings)
+        public override void LoadDefaultSettings( )
         {
             var brushes = _rmpPanel.Brushes;
             var pens = _rmpPanel.Pens;
@@ -742,6 +742,7 @@ namespace MapView.RmpViewForm
             var pc = new ValueChangedDelegate(PenColorChanged);
             var pw = new ValueChangedDelegate(PenWidthChanged);
 
+            var settings = Settings;
             var redPen = new Pen(new SolidBrush(Color.Red), 2);
             pens["UnselectedLinkColor"] = redPen;
             pens["UnselectedLinkWidth"] = redPen;

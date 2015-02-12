@@ -6,6 +6,10 @@ namespace MapView.Forms.MainWindow
 {
     public class MainWindowsManager
     {
+        public MainWindowsManager()
+        {
+            
+        }
         public static IMainWindowsShowAllManager MainWindowsShowAllManager;
 
         private static TileView _tileView;

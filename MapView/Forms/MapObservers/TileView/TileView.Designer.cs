@@ -17,14 +17,15 @@ namespace MapView
             this.menu = new System.Windows.Forms.MainMenu(this.components);
             this.menuItem1 = new System.Windows.Forms.MenuItem();
             this.mcdInfoTab = new System.Windows.Forms.MenuItem();
+            this.menuItem2 = new System.Windows.Forms.MenuItem();
+            this.EditPckMenuItem = new System.Windows.Forms.MenuItem();
             this.tabs = new System.Windows.Forms.TabControl();
             this.allTab = new System.Windows.Forms.TabPage();
             this.groundTab = new System.Windows.Forms.TabPage();
             this.wWallsTab = new System.Windows.Forms.TabPage();
             this.nWallsTab = new System.Windows.Forms.TabPage();
             this.objectsTab = new System.Windows.Forms.TabPage();
-            this.menuItem2 = new System.Windows.Forms.MenuItem();
-            this.EditPckMenuItem = new System.Windows.Forms.MenuItem();
+            this.VolutarMcdEditMenuItem = new System.Windows.Forms.MenuItem();
             this.tabs.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -38,7 +39,8 @@ namespace MapView
             // 
             this.menuItem1.Index = 0;
             this.menuItem1.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
-            this.mcdInfoTab});
+            this.mcdInfoTab,
+            this.VolutarMcdEditMenuItem});
             this.menuItem1.Text = "MCD";
             // 
             // mcdInfoTab
@@ -46,6 +48,19 @@ namespace MapView
             this.mcdInfoTab.Index = 0;
             this.mcdInfoTab.Text = "MCD Info";
             this.mcdInfoTab.Click += new System.EventHandler(this.mcdInfoTab_Click);
+            // 
+            // menuItem2
+            // 
+            this.menuItem2.Index = 1;
+            this.menuItem2.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
+            this.EditPckMenuItem});
+            this.menuItem2.Text = "PCK";
+            // 
+            // EditPckMenuItem
+            // 
+            this.EditPckMenuItem.Index = 0;
+            this.EditPckMenuItem.Text = "Edit PCK";
+            this.EditPckMenuItem.Click += new System.EventHandler(this.EditPckMenuItem_Click);
             // 
             // tabs
             // 
@@ -101,18 +116,11 @@ namespace MapView
             this.objectsTab.TabIndex = 3;
             this.objectsTab.Text = "Objects";
             // 
-            // menuItem2
+            // VolutarMcdEditMenuItem
             // 
-            this.menuItem2.Index = 1;
-            this.menuItem2.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
-            this.EditPckMenuItem});
-            this.menuItem2.Text = "PCK";
-            // 
-            // EditPckMenuItem
-            // 
-            this.EditPckMenuItem.Index = 0;
-            this.EditPckMenuItem.Text = "Edit PCK";
-            this.EditPckMenuItem.Click += new System.EventHandler(this.EditPckMenuItem_Click);
+            this.VolutarMcdEditMenuItem.Index = 1;
+            this.VolutarMcdEditMenuItem.Text = "Volutar MCD Edit";
+            this.VolutarMcdEditMenuItem.Click += new System.EventHandler(this.VolutarMcdEditMenuItem_Click);
             // 
             // TileView
             // 
@@ -143,6 +151,7 @@ namespace MapView
 
         private System.Windows.Forms.MenuItem menuItem2;
         private System.Windows.Forms.MenuItem EditPckMenuItem;
+        private System.Windows.Forms.MenuItem VolutarMcdEditMenuItem;
 
     }
 }

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Windows.Forms;
+using DSShared.Windows;
 using XCom.Interfaces.Base;
 using XCom;
 
@@ -10,7 +11,7 @@ namespace MapView
     public class Map_Observer_Form : Form, IMap_Observer, IMenuItem
 	{
         private IMap_Base map;
-		private DSShared.Windows.RegistryInfo registryInfo;
+		private RegistryInfo registryInfo;
         private readonly Settings _settings;
 		private readonly Dictionary<string, IMap_Observer> _moreObservers;
 
@@ -18,15 +19,14 @@ namespace MapView
 		{
 			_moreObservers = new Dictionary<string, IMap_Observer>();
 			_settings = new Settings();
-			Load += new EventHandler(Map_Observer_Form_Load);			
-		}
+			Load += Map_Observer_Form_Load;
+        }
 
 		private void Map_Observer_Form_Load(object sender, EventArgs e)
 		{
-			LoadDefaultSettings(_settings);
-		}
+        }
 
-		protected virtual void LoadDefaultSettings(Settings settings){}
+		public virtual void LoadDefaultSettings(   ){}
 
 		public Settings Settings
 		{
@@ -40,25 +40,19 @@ namespace MapView
 
         public MenuItem MenuItem { get; set; }
 
-        public DSShared.Windows.RegistryInfo RegistryInfo
+        public RegistryInfo RegistryInfo
 		{
 			get { return registryInfo; }
 			set
 			{
 				registryInfo = value;
-				value.Loading+=delegate(object sender, DSShared.Windows.RegistrySaveLoadEventArgs e)
-				{
-					OnRISettingsLoad(e);
-				};
-				value.Saving += delegate(object sender, DSShared.Windows.RegistrySaveLoadEventArgs e)
-				{
-					OnRISettingsSave(e);
-				};
+				value.Loading+= (sender, e) => OnRISettingsLoad(e);
+				value.Saving += (sender, e) => OnRISettingsSave(e);
 			}
 		}
 
-		protected virtual void OnRISettingsSave(DSShared.Windows.RegistrySaveLoadEventArgs e) { }
-		protected virtual void OnRISettingsLoad(DSShared.Windows.RegistrySaveLoadEventArgs e) { }
+		protected virtual void OnRISettingsSave(RegistrySaveLoadEventArgs e) { }
+		protected virtual void OnRISettingsLoad(RegistrySaveLoadEventArgs e) { }
 
 		public virtual IMap_Base Map
 		{
