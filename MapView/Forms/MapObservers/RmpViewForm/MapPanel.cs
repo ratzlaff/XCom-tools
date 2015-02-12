@@ -21,13 +21,13 @@ namespace MapView.RmpViewForm
 
         public event MapPanelClickDelegate MapPanelClicked;
 
-        public Dictionary<string, Pen> Pens;
-        public Dictionary<string, SolidBrush> Brushes;
+        public Dictionary<string, Pen> MapPens;
+        public Dictionary<string, SolidBrush> MapBrushes;
 
         public MapPanel()
         {
-            Pens = new Dictionary<string, Pen>();
-            Brushes = new Dictionary<string, SolidBrush>();
+            MapPens = new Dictionary<string, Pen>();
+            MapBrushes = new Dictionary<string, SolidBrush>();
             SetStyle(ControlStyles.AllPaintingInWmPaint | ControlStyles.DoubleBuffer | ControlStyles.UserPaint, true);
         }
 

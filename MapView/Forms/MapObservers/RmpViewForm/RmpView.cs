@@ -101,19 +101,19 @@ namespace MapView.RmpViewForm
 
         private void BrushChanged(object sender, string key, object val)
         {
-            _rmpPanel.Brushes[key].Color = (Color) val;
+            _rmpPanel.MapBrushes[key].Color = (Color) val;
             Refresh();
         }
 
         private void PenColorChanged(object sender, string key, object val)
         {
-            _rmpPanel.Pens[key].Color = (Color) val;
+            _rmpPanel.MapPens[key].Color = (Color) val;
             Refresh();
         }
 
         private void PenWidthChanged(object sender, string key, object val)
         {
-            _rmpPanel.Pens[key].Width = (int) val;
+            _rmpPanel.MapPens[key].Width = (int) val;
             Refresh();
         }
         
@@ -258,10 +258,13 @@ namespace MapView.RmpViewForm
             if (_currEntry == null)
             {
                 gbNodeInfo.Enabled = false;
+                LinkGroupBox.Enabled = false;
                 return;
             }
             gbNodeInfo.Enabled = true;
             gbNodeInfo.SuspendLayout();
+            LinkGroupBox.Enabled = true;
+            LinkGroupBox.SuspendLayout();
 
             _loadingGui = true;
 
@@ -342,6 +345,7 @@ namespace MapView.RmpViewForm
             txtDist5.Text = _currEntry[4].Distance + "";
 
             gbNodeInfo.ResumeLayout();
+            LinkGroupBox.ResumeLayout();
 
             _loadingGui = false;
         }
@@ -548,6 +552,7 @@ namespace MapView.RmpViewForm
             ((XCMapTile) _map[_currEntry.Row, _currEntry.Col, _currEntry.Height]).Rmp = null;
             ClearSelected();
             gbNodeInfo.Enabled = false;
+            LinkGroupBox.Enabled = false;
             Refresh();
         }
 
@@ -735,8 +740,8 @@ namespace MapView.RmpViewForm
 
         public override void LoadDefaultSettings( )
         {
-            var brushes = _rmpPanel.Brushes;
-            var pens = _rmpPanel.Pens;
+            var brushes = _rmpPanel.MapBrushes;
+            var pens = _rmpPanel.MapPens;
              
             var bc = new ValueChangedDelegate(BrushChanged);
             var pc = new ValueChangedDelegate(PenColorChanged);

@@ -55,11 +55,12 @@ namespace MapView.RmpViewForm
             var posT = GetTile(Position.X, Position.Y);
             if (posT != null)
             {
+                var textHeight = (int)g.MeasureString("X", Font).Height;
                 var overlayPos = new Rectangle(Position.X + 18, Position.Y, 140,
-                    (int) g.MeasureString("X", Font).Height + 10);
+                    textHeight + 10);
                 if (posT.Rmp != null)
                 {
-                    overlayPos.Height += (int) g.MeasureString("X", Font).Height;
+                    overlayPos.Height += textHeight * 2;
                 }
                 if (overlayPos.X + overlayPos.Width > ClientRectangle.Width)
                 {
@@ -73,33 +74,43 @@ namespace MapView.RmpViewForm
                 g.FillRectangle(new SolidBrush(Color.FromArgb(192, 0, 0, 0)), overlayPos);
                 g.FillRectangle(new SolidBrush(Color.FromArgb(192, 255, 255, 255)), overlayPos.X + 3,
                     overlayPos.Y + 3, overlayPos.Width - 6, overlayPos.Height - 6);
-                g.DrawString("Tile " + GetTileCoordinates(Position.X, Position.Y), Font,
-                    System.Drawing.Brushes.Black, overlayPos.X + 5, overlayPos.Y + 5);
+
+                var textLeft = overlayPos.X + 5;
+                {
+                    var text = "Tile " + GetTileCoordinates(Position.X, Position.Y);
+                    g.DrawString(text, Font, Brushes.Black, textLeft, overlayPos.Y + 5);
+                }
+
                 if (posT.Rmp != null)
                 {
-                    g.DrawString("Spawns: " + RmpFile.UnitRankUFO[posT.Rmp.URank1], Font,
-                        System.Drawing.Brushes.Black, overlayPos.X + 5,
-                        overlayPos.Y + 5 + (int) g.MeasureString("X", Font).Height);
+                    {
+                        var text = "Spawns: " + RmpFile.UnitRankUFO[posT.Rmp.URank1];
+                        g.DrawString(text, Font, Brushes.Black, textLeft, overlayPos.Y + 5 + textHeight);
+                    }
+                    {
+                        var text = "Over: " + posT.Rmp.Index;
+                        g.DrawString(text, Font, Brushes.Black, textLeft, overlayPos.Y + 5 + (textHeight * 2));
+                    }
                 }
             }
         }
 
         private void DrawPoles(Graphics g)
         {
-            g.DrawString("W", _font, System.Drawing.Brushes.Black, 0, 0);
-            g.DrawString("N", _font, System.Drawing.Brushes.Black, Width - 30, 0);
-            g.DrawString("S", _font, System.Drawing.Brushes.Black, 0, Height - _font.Height);
-            g.DrawString("E", _font, System.Drawing.Brushes.Black, Width - 30, Height - _font.Height);
+            g.DrawString("W", _font, Brushes.Black, 0, 0);
+            g.DrawString("N", _font, Brushes.Black, Width - 30, 0);
+            g.DrawString("S", _font, Brushes.Black, 0, Height - _font.Height);
+            g.DrawString("E", _font, brush: System.Drawing.Brushes.Black, x: Width - 30, y: Height - _font.Height);
         }
 
         private void DrawGridLines(Graphics g)
         {
             var map = Map;
             for (int i = 0; i <= map.MapSize.Rows; i++)
-                g.DrawLine(Pens["GridLineColor"], Origin.X - i * DrawAreaWidth, Origin.Y + i * DrawAreaHeight,
+                g.DrawLine(MapPens["GridLineColor"], Origin.X - i * DrawAreaWidth, Origin.Y + i * DrawAreaHeight,
                     Origin.X + ((map.MapSize.Cols - i) * DrawAreaWidth), Origin.Y + ((i + map.MapSize.Cols) * DrawAreaHeight));
             for (int i = 0; i <= map.MapSize.Cols; i++)
-                g.DrawLine(Pens["GridLineColor"], Origin.X + i * DrawAreaWidth, Origin.Y + i * DrawAreaHeight,
+                g.DrawLine(MapPens["GridLineColor"], Origin.X + i * DrawAreaWidth, Origin.Y + i * DrawAreaHeight,
                     (Origin.X + i * DrawAreaWidth) - map.MapSize.Rows * DrawAreaWidth,
                     (Origin.Y + i * DrawAreaHeight) + map.MapSize.Rows * DrawAreaHeight);
         }
@@ -126,11 +137,11 @@ namespace MapView.RmpViewForm
 
                         //if clicked on, draw Blue
                         if (row == ClickPoint.Y && col == ClickPoint.X)
-                            g.FillPath(Brushes["SelectedNodeColor"], upper);
+                            g.FillPath(MapBrushes["SelectedNodeColor"], upper);
                         else if (tile.Rmp.Usage != SpawnUsage.NoSpawn)
-                            g.FillPath(Brushes["SpawnNodeColor"], upper);
+                            g.FillPath(MapBrushes["SpawnNodeColor"], upper);
                         else
-                            g.FillPath(Brushes["UnselectedNodeColor"], upper);
+                            g.FillPath(MapBrushes["UnselectedNodeColor"], upper);
 
                         for (int rr = 0; rr < tile.Rmp.NumLinks; rr++)
                         {
@@ -147,12 +158,12 @@ namespace MapView.RmpViewForm
                                     if (map.Rmp[l.Index] != null &&
                                         map.Rmp[l.Index].Height < map.CurrentHeight)
                                     {
-                                        g.DrawLine(Pens["UnselectedLinkColor"], x, y, x, y + DrawAreaHeight * 2);
+                                        g.DrawLine(MapPens["UnselectedLinkColor"], x, y, x, y + DrawAreaHeight * 2);
                                     }
                                     else if (map.Rmp[l.Index] != null &&
                                              map.Rmp[l.Index].Height > map.CurrentHeight)
                                     {
-                                        g.DrawLine(Pens["UnselectedLinkColor"], x - DrawAreaWidth, y + DrawAreaHeight,
+                                        g.DrawLine(MapPens["UnselectedLinkColor"], x - DrawAreaWidth, y + DrawAreaHeight,
                                             x + DrawAreaWidth, y + DrawAreaHeight);
                                     }
                                     break;
@@ -185,13 +196,13 @@ namespace MapView.RmpViewForm
                         XCMapTile tile = (XCMapTile) map[row, col];
 
                         if (tile.North != null)
-                            g.DrawLine(Pens["WallColor"], x, y, x + DrawAreaWidth, y + DrawAreaHeight);
+                            g.DrawLine(MapPens["WallColor"], x, y, x + DrawAreaWidth, y + DrawAreaHeight);
 
                         if (tile.West != null)
-                            g.DrawLine(Pens["WallColor"], x, y, x - DrawAreaWidth, y + DrawAreaHeight);
+                            g.DrawLine(MapPens["WallColor"], x, y, x - DrawAreaWidth, y + DrawAreaHeight);
 
                         if (tile.Content != null)
-                            g.FillPath(Brushes["ContentTiles"], lower);
+                            g.FillPath(MapBrushes["ContentTiles"], lower);
                     }
                 }
             }
@@ -220,7 +231,7 @@ namespace MapView.RmpViewForm
                         for (int rr = 0; rr < f.NumLinks; rr++)
                         {
                             Link l = f[rr];
-                            var pen = Pens["UnselectedLinkColor"];
+                            var pen = MapPens["UnselectedLinkColor"];
                             switch (l.Index)
                             {
                                 case Link.NotUsed:
@@ -263,7 +274,7 @@ namespace MapView.RmpViewForm
             if (ClickPoint.X < 0 || ClickPoint.Y < 0) return;
             if (((XCMapTile)map[ClickPoint.Y, ClickPoint.X]).Rmp == null) return;
 
-            var pen = Pens["SelectedLinkColor"];
+            var pen = MapPens["SelectedLinkColor"];
             var r = ClickPoint.Y;
             var c = ClickPoint.X;
             RmpEntry f = ((XCMapTile) map[r, c]).Rmp;
