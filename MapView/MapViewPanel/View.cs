@@ -46,7 +46,7 @@ namespace MapView
         private bool useGrid = true;
         private MapTileBase[,] copied;
 
-        public event EventHandler DragChanged;
+        public event MouseEventHandler DragChanged;
         //public event HeightChangedDelegate HeightChanged;
 
         public View()
@@ -264,7 +264,7 @@ namespace MapView
                     {
                         EndDrag = temp;
                         if (DragChanged != null)
-                            DragChanged(null, null);
+                            DragChanged(this, e);
                     }
 
                     Refresh();

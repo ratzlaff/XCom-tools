@@ -10,8 +10,8 @@ namespace MapView
 {
     public class Map_Observer_Form : Form, IMap_Observer, IMenuItem
 	{
-        private IMap_Base map;
-		private RegistryInfo registryInfo;
+        private IMap_Base _map;
+		private RegistryInfo _registryInfo;
         private readonly Settings _settings;
 		private readonly Dictionary<string, IMap_Observer> _moreObservers;
 
@@ -42,10 +42,10 @@ namespace MapView
 
         public RegistryInfo RegistryInfo
 		{
-			get { return registryInfo; }
+			get { return _registryInfo; }
 			set
 			{
-				registryInfo = value;
+				_registryInfo = value;
 				value.Loading+= (sender, e) => OnRISettingsLoad(e);
 				value.Saving += (sender, e) => OnRISettingsSave(e);
 			}
@@ -56,17 +56,17 @@ namespace MapView
 
 		public virtual IMap_Base Map
 		{
-			get { return map; }
-			set { map = value; Refresh(); }
+			get { return _map; }
+			set { _map = value; Refresh(); }
 		}
 
         protected override void OnMouseWheel(MouseEventArgs e)
         {
             base.OnMouseWheel(e);
             if (e.Delta > 0)
-                map.Up();
+                _map.Up();
             else
-                map.Down();
+                _map.Down();
         }
 
 		public virtual void HeightChanged(IMap_Base sender, HeightChangedEventArgs e) { Refresh(); }

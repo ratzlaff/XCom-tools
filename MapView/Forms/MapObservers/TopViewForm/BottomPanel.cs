@@ -70,7 +70,8 @@ namespace MapView.TopViewForm
                     MainWindowsManager.TileView.SelectedTile = _mapTile[SelectedQuadrant];
 			}
 		    map.MapChanged = true;
-		}
+            Refresh();
+        }
 
 		public override void HeightChanged(IMap_Base sender, HeightChangedEventArgs e)
 		{

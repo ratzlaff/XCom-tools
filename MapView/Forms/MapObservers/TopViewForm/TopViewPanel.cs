@@ -10,66 +10,44 @@ namespace MapView.TopViewForm
 {
 	public class TopViewPanel : SimpleMapPanel
 	{
-		private bool blank = false;
-		private MenuItem g, n, w, c;
-		private BottomPanel bottomPanel;
+	    private const bool BLANK = false;
 
-		public TopViewPanel()
+	    public TopViewPanel()
+	    {
+	        MapViewPanel.Instance.View.DragChanged += ViewDrag;
+	    }
+
+	    public MenuItem Ground { get; set; }
+
+	    public MenuItem North { get; set; }
+
+	    public MenuItem West { get; set; }
+
+	    public MenuItem Content { get; set; }
+
+	    public BottomPanel BottomPanel { get; set; }
+
+	    public int MinHeight
 		{
-			MapViewPanel.Instance.View.DragChanged+=new EventHandler(viewDrag);
+			get { return MinimunHeight; }
+			set { MinimunHeight = value; ParentSize(Width, Height); }
 		}
 
-		public MenuItem Ground
-		{
-			get { return g; }
-			set { g = value; }
-		}
-
-		public MenuItem North
-		{
-			get { return n; }
-			set { n = value; }
-		}
-
-		public MenuItem West
-		{
-			get { return w; }
-			set { w = value; }
-		}
-
-		public MenuItem Content
-		{
-			get { return c; }
-			set { c = value; }
-		}
-
-		public BottomPanel BottomPanel
-		{
-			get { return bottomPanel; }
-			set { bottomPanel = value; }
-		}
-
-		public int MinHeight
-		{
-			get { return minHeight; }
-			set { minHeight = value; ParentSize(Width, Height); }
-		}
-
-		protected override void RenderCell(MapTileBase tile, System.Drawing.Graphics g, int x, int y)
+		protected override void RenderCell(MapTileBase tile, Graphics g, int x, int y)
 		{
 			XCMapTile mapTile = (XCMapTile)tile;
-			if (!blank)
+			if (!BLANK)
 			{
-				if (mapTile.Ground != null && this.g.Checked)
+				if (mapTile.Ground != null && this.Ground.Checked)
 					g.FillPath(Brushes["GroundColor"], UpperPath(x,y));
 
-				if (mapTile.North != null && n.Checked)
-					g.DrawLine(Pens["NorthColor"], x, y, x + hWidth, y + hHeight);
+				if (mapTile.North != null && North.Checked)
+					g.DrawLine(Pens["NorthColor"], x, y, x + HWidth, y + HHeight);
 
-				if (mapTile.West != null && w.Checked)
-					g.DrawLine(Pens["WestColor"], x, y, x - hWidth, y + hHeight);
+				if (mapTile.West != null && West.Checked)
+					g.DrawLine(Pens["WestColor"], x, y, x - HWidth, y + HHeight);
 
-				if (mapTile.Content != null && c.Checked)
+				if (mapTile.Content != null && Content.Checked)
 					g.FillPath(Brushes["ContentColor"], LowerPath(x,y));
 			}
 			else
@@ -93,10 +71,11 @@ namespace MapView.TopViewForm
 		{
 			base.OnMouseDown(e);
 
-			if (e.Button == MouseButtons.Right)
-				bottomPanel.SetSelected(e.Button, 1);
-			else if (e.Button == MouseButtons.Left)
-			    viewDrag(null, null);
+            ViewDrag(null, e);
+            if (e.Button == MouseButtons.Right)
+		    {
+		        BottomPanel.SetSelected(e.Button, 1);
+            }
 		}
 	}
 }

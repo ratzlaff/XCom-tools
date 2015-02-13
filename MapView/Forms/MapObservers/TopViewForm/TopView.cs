@@ -1,86 +1,73 @@
 using System;
 using System.Drawing;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Windows.Forms;
 using MapView.Forms.MainWindow;
 using XCom;
-using XCom.Interfaces;
-using System.Drawing.Drawing2D;
 using Microsoft.Win32;
-using XCom.Interfaces.Base;
-using System.Reflection;
 
 namespace MapView.TopViewForm
 {
 	public partial class TopView : Map_Observer_Form
     {
-		private Dictionary<MenuItem, int> visibleHash;
-		private Dictionary<string, SolidBrush> brushes;
-		private Dictionary<string, Pen> pens;
+		private readonly Dictionary<MenuItem, int> _visibleHash;
+		private Dictionary<string, SolidBrush> _brushes;
+		private Dictionary<string, Pen> _pens;
 
-		private TopViewPanel topViewPanel;
+		private readonly TopViewPanel _topViewPanel;
 	    private readonly MainToolStripButtonsFactory _mainToolStripButtonsFactory;
 
 		public event EventHandler VisibleTileChanged;
          
         public TopView(MainToolStripButtonsFactory mainToolStripButtonsFactory)
 		{
-			//LogFile.Instance.WriteLine("Start TopView window creation");		
-
 			InitializeComponent();
 
             _mainToolStripButtonsFactory = mainToolStripButtonsFactory;
 
             Load += TopView_Load;
 			SuspendLayout();
-			topViewPanel = new TopViewPanel();
-			topViewPanel.Width = 100;
-			topViewPanel.Height = 100;
+			_topViewPanel = new TopViewPanel();
+			_topViewPanel.Width = 100;
+			_topViewPanel.Height = 100;
 
 			center.AutoScroll = true;
-			center.Controls.Add(topViewPanel);
+			center.Controls.Add(_topViewPanel);
 
 			center.Resize += delegate(object sender, EventArgs e)
 			{
-				topViewPanel.ParentSize(center.Width, center.Height);
+				_topViewPanel.ParentSize(center.Width, center.Height);
 			};
 
-			//bottom.PanelClicked += new EventHandler(bottomClick);
-
-			this.Menu = new MainMenu();
+			Menu = new MainMenu();
 			MenuItem vis = Menu.MenuItems.Add("Visible");
 
-			visibleHash = new Dictionary<MenuItem, int>();
+			_visibleHash = new Dictionary<MenuItem, int>();
 
-			topViewPanel.Ground = vis.MenuItems.Add("Ground", new EventHandler(visibleClick));
-			visibleHash[topViewPanel.Ground] = 0;
-			topViewPanel.Ground.Shortcut = Shortcut.F1;
+			_topViewPanel.Ground = vis.MenuItems.Add("Ground", VisibleClick);
+			_visibleHash[_topViewPanel.Ground] = 0;
+			_topViewPanel.Ground.Shortcut = Shortcut.F1;
 
-			topViewPanel.West = vis.MenuItems.Add("West", new EventHandler(visibleClick));
-			visibleHash[topViewPanel.West] = 1;
-			topViewPanel.West.Shortcut = Shortcut.F2;
+			_topViewPanel.West = vis.MenuItems.Add("West", VisibleClick);
+			_visibleHash[_topViewPanel.West] = 1;
+			_topViewPanel.West.Shortcut = Shortcut.F2;
 
-			topViewPanel.North = vis.MenuItems.Add("North", new EventHandler(visibleClick));
-			visibleHash[topViewPanel.North] = 2;
-			topViewPanel.North.Shortcut = Shortcut.F3;
+			_topViewPanel.North = vis.MenuItems.Add("North", VisibleClick);
+			_visibleHash[_topViewPanel.North] = 2;
+			_topViewPanel.North.Shortcut = Shortcut.F3;
 
-			topViewPanel.Content = vis.MenuItems.Add("Content", new EventHandler(visibleClick));
-			visibleHash[topViewPanel.Content] = 3;
-			topViewPanel.Content.Shortcut = Shortcut.F4;
+			_topViewPanel.Content = vis.MenuItems.Add("Content", VisibleClick);
+			_visibleHash[_topViewPanel.Content] = 3;
+			_topViewPanel.Content.Shortcut = Shortcut.F4;
 
 			MenuItem edit = Menu.MenuItems.Add("Edit");
 			edit.MenuItems.Add("Options", new EventHandler(options_click));
 			edit.MenuItems.Add("Fill", Fill_Click);
 
-			//mapView.BlankChanged += new BoolDelegate(blankMode);
-
-			//Controls.Add(bottom);
-
-			topViewPanel.BottomPanel = bottom;
+			_topViewPanel.BottomPanel = bottom;
 
 			MoreObservers.Add("BottomPanel", bottom);
-			MoreObservers.Add("TopViewPanel", topViewPanel);
+			MoreObservers.Add("TopViewPanel", _topViewPanel);
 
 			ResumeLayout();
 		}
@@ -95,7 +82,7 @@ namespace MapView.TopViewForm
 			get { return bottom; }
 		}
 
-		private void visibleClick(object sender, EventArgs e)
+		private void VisibleClick(object sender, EventArgs e)
 		{
 			((MenuItem)sender).Checked = !((MenuItem)sender).Checked;
 
@@ -107,9 +94,9 @@ namespace MapView.TopViewForm
 			Refresh();
 		}
 
-		private void diamondHeight(object sender, string keyword, object val)
+		private void DiamondHeight(object sender, string keyword, object val)
 		{
-			topViewPanel.MinHeight = (int)val;
+			_topViewPanel.MinHeight = (int)val;
 		}
 
 		protected override void OnRISettingsLoad(DSShared.Windows.RegistrySaveLoadEventArgs e)
@@ -117,52 +104,52 @@ namespace MapView.TopViewForm
 			bottom.Height = 74;
 			RegistryKey riKey = e.OpenKey;
 
-			foreach (MenuItem mi in visibleHash.Keys)
-				mi.Checked = bool.Parse((string)riKey.GetValue("vis" + visibleHash[mi].ToString(), "true"));
+			foreach (MenuItem mi in _visibleHash.Keys)
+				mi.Checked = bool.Parse((string)riKey.GetValue("vis" + _visibleHash[mi].ToString(), "true"));
 		}
 
 		protected override void OnRISettingsSave(DSShared.Windows.RegistrySaveLoadEventArgs e)
 		{
 			RegistryKey riKey = e.OpenKey;
-			foreach (MenuItem mi in visibleHash.Keys)
-				riKey.SetValue("vis" + visibleHash[mi].ToString(), mi.Checked);
+			foreach (MenuItem mi in _visibleHash.Keys)
+				riKey.SetValue("vis" + _visibleHash[mi].ToString(), mi.Checked);
 		}
 
 		public override void LoadDefaultSettings()
 		{ 
             var settings = Settings;
 
-			brushes = new Dictionary<string, SolidBrush>();
-			pens = new Dictionary<string, Pen>();
+			_brushes = new Dictionary<string, SolidBrush>();
+			_pens = new Dictionary<string, Pen>();
 
-			brushes.Add("GroundColor", new SolidBrush(Color.Orange));
-			brushes.Add("ContentColor", new SolidBrush(Color.Green));
-			brushes.Add("SelectTileColor", bottom.SelectColor);
+			_brushes.Add("GroundColor", new SolidBrush(Color.Orange));
+			_brushes.Add("ContentColor", new SolidBrush(Color.Green));
+			_brushes.Add("SelectTileColor", bottom.SelectColor);
 
-			Pen northPen = new Pen(new SolidBrush(Color.Red), 4);
-			pens.Add("NorthColor", northPen);
-			pens.Add("NorthWidth", northPen);
+            var northPen = new Pen(new SolidBrush(Color.Red), 4);
+			_pens.Add("NorthColor", northPen);
+			_pens.Add("NorthWidth", northPen);
 
-			Pen westPen = new Pen(new SolidBrush(Color.Red), 4);
-			pens.Add("WestColor", westPen);
-			pens.Add("WestWidth", westPen);
+            var westPen = new Pen(new SolidBrush(Color.Red), 4);
+			_pens.Add("WestColor", westPen);
+			_pens.Add("WestWidth", westPen);
 
-			Pen selPen = new Pen(new SolidBrush(Color.Black), 2);
-			pens.Add("SelectColor", selPen);
-			pens.Add("SelectWidth", selPen);
+            var selPen = new Pen(new SolidBrush(Color.Black), 2);
+			_pens.Add("SelectColor", selPen);
+			_pens.Add("SelectWidth", selPen);
 
-			Pen gridPen = new Pen(new SolidBrush(Color.Black), 1);
-			pens.Add("GridColor", gridPen);
-			pens.Add("GridWidth", gridPen);
+            var gridPen = new Pen(new SolidBrush(Color.Black), 1);
+			_pens.Add("GridColor", gridPen);
+			_pens.Add("GridWidth", gridPen);
 
-			Pen mousePen = new Pen(new SolidBrush(Color.Blue), 2);
-			pens.Add("MouseColor", mousePen);
-			pens.Add("MouseWidth", mousePen);
+			var mousePen = new Pen(new SolidBrush(Color.Blue), 2);
+			_pens.Add("MouseColor", mousePen);
+			_pens.Add("MouseWidth", mousePen);
 
-			ValueChangedDelegate bc = new ValueChangedDelegate(brushChanged);
-			ValueChangedDelegate pc = new ValueChangedDelegate(penColorChanged);
-			ValueChangedDelegate pw = new ValueChangedDelegate(penWidthChanged);
-			ValueChangedDelegate dh = new ValueChangedDelegate(diamondHeight);
+			ValueChangedDelegate bc = BrushChanged;
+			ValueChangedDelegate pc = PenColorChanged;
+			ValueChangedDelegate pw = PenWidthChanged;
+			ValueChangedDelegate dh = DiamondHeight;
 
 			settings.AddSetting("GroundColor", Color.Orange, "Color of the ground tile indicator", "Tile", bc, false, null);
 			settings.AddSetting("NorthColor", Color.Red, "Color of the north tile indicator", "Tile", pc, false, null);
@@ -176,22 +163,22 @@ namespace MapView.TopViewForm
 			settings.AddSetting("GridWidth", 1, "Width of the grid lines", "Grid", pw, false, null);
 			settings.AddSetting("MouseWidth", 2, "Width of the mouse-over indicatior", "Grid", pw, false, null);
 			settings.AddSetting("MouseColor", Color.Blue, "Color of the mouse-over indicator", "Grid", pc, false, null);
-			settings.AddSetting("SelectTileColor", Color.Lavender, "Background color of the selected tile piece", "Other", bc, false, null);
-			settings.AddSetting("DiamondMinHeight", topViewPanel.MinHeight, "Minimum height of the grid tiles", "Tile", dh, false, null);
+			settings.AddSetting("SelectTileColor", Color.LightBlue, "Background color of the selected tile piece", "Other", bc, false, null);
+			settings.AddSetting("DiamondMinHeight", _topViewPanel.MinHeight, "Minimum height of the grid tiles", "Tile", dh, false, null);
 
-			topViewPanel.Brushes = brushes;
-			topViewPanel.Pens = pens;
+			_topViewPanel.Brushes = _brushes;
+			_topViewPanel.Pens = _pens;
 
-			bottom.Brushes = brushes;
-			bottom.Pens = pens;
+			bottom.Brushes = _brushes;
+			bottom.Pens = _pens;
 		}
 
 		public void Fill_Click(object sender, EventArgs evt)
 		{ 
 	        var map = MapViewPanel.Instance.View.Map;
 	        if (map == null) return;
-	        Point s = new Point(0, 0);
-	        Point e = new Point(0, 0);
+	        var s = new Point(0, 0);
+	        var e = new Point(0, 0);
 
 	        s.X = Math.Min(MapViewPanel.Instance.View.StartDrag.X, MapViewPanel.Instance.View.EndDrag.X);
 	        s.Y = Math.Min(MapViewPanel.Instance.View.StartDrag.Y, MapViewPanel.Instance.View.EndDrag.Y);
@@ -213,59 +200,49 @@ namespace MapView.TopViewForm
 
 	    private void options_click(object sender, EventArgs e)
 		{
-			PropertyForm pf = new PropertyForm("TopViewType", Settings);
+			var pf = new PropertyForm("TopViewType", Settings);
 			pf.Text = "TopView Options";
 			pf.Show();
 		}
 
-		private void brushChanged(object sender, string key, object val)
+		private void BrushChanged(object sender, string key, object val)
 		{
-			((SolidBrush)brushes[key]).Color = (Color)val;
+			_brushes[key].Color = (Color)val;
 			if (key == "SelectTileColor")
-				bottom.SelectColor = (SolidBrush)brushes[key];
+				bottom.SelectColor = _brushes[key];
 			Refresh();
 		}
 
-		private void penColorChanged(object sender, string key, object val)
+		private void PenColorChanged(object sender, string key, object val)
 		{
-			((Pen)pens[key]).Color = (Color)val;
+			_pens[key].Color = (Color)val;
 			Refresh();
 		}
 
-		private void penWidthChanged(object sender, string key, object val)
+		private void PenWidthChanged(object sender, string key, object val)
 		{
-			((Pen)pens[key]).Width = (int)val;
+			_pens[key].Width = (int)val;
 			Refresh();
 		}
 
 		public bool GroundVisible
 		{
-			get { return topViewPanel.Ground.Checked; }
+			get { return _topViewPanel.Ground.Checked; }
 		}
 
 		public bool NorthVisible
 		{
-			get { return topViewPanel.North.Checked; }
+			get { return _topViewPanel.North.Checked; }
 		}
 
 		public bool WestVisible
 		{
-			get { return topViewPanel.West.Checked; }
+			get { return _topViewPanel.West.Checked; }
 		}
 
 		public bool ContentVisible
 		{
-			get { return topViewPanel.Content.Checked; }
-		}
-
-		private void btnUp_Click(object sender, EventArgs e)
-		{
-			Map.Up();
-		}
-
-		private void btnDown_Click(object sender, EventArgs e)
-		{
-			Map.Down();
+			get { return _topViewPanel.Content.Checked; }
 		}
          
         private void TopView_KeyDown(object sender, KeyEventArgs e)
