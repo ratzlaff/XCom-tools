@@ -46,7 +46,7 @@ namespace MapView.TopViewForm
             // toolStripContainer2.ContentPanel
             // 
             this.toolStripContainer2.ContentPanel.Controls.Add(this.center);
-            this.toolStripContainer2.ContentPanel.Size = new System.Drawing.Size(467, 229);
+            this.toolStripContainer2.ContentPanel.Size = new System.Drawing.Size(484, 238);
             this.toolStripContainer2.Dock = System.Windows.Forms.DockStyle.Fill;
             // 
             // toolStripContainer2.LeftToolStripPanel
@@ -59,7 +59,7 @@ namespace MapView.TopViewForm
             // toolStripContainer2.RightToolStripPanel
             // 
             this.toolStripContainer2.RightToolStripPanel.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
-            this.toolStripContainer2.Size = new System.Drawing.Size(492, 254);
+            this.toolStripContainer2.Size = new System.Drawing.Size(509, 263);
             this.toolStripContainer2.TabIndex = 4;
             this.toolStripContainer2.Text = "toolStripContainer2";
             // 
@@ -72,7 +72,7 @@ namespace MapView.TopViewForm
             this.center.Dock = System.Windows.Forms.DockStyle.Fill;
             this.center.Location = new System.Drawing.Point(0, 0);
             this.center.Name = "center";
-            this.center.Size = new System.Drawing.Size(467, 229);
+            this.center.Size = new System.Drawing.Size(484, 238);
             this.center.TabIndex = 2;
             // 
             // toolStrip
@@ -90,23 +90,25 @@ namespace MapView.TopViewForm
             // 
             this.bottom.Brushes = null;
             this.bottom.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.bottom.Location = new System.Drawing.Point(0, 254);
+            this.bottom.Location = new System.Drawing.Point(0, 263);
             this.bottom.Name = "bottom";
             this.bottom.Pens = null;
-            this.bottom.Size = new System.Drawing.Size(492, 71);
+            this.bottom.Size = new System.Drawing.Size(509, 71);
             this.bottom.TabIndex = 0;
             this.bottom.Text = "bottom";
             // 
             // TopView
             // 
             this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
-            this.ClientSize = new System.Drawing.Size(492, 325);
+            this.ClientSize = new System.Drawing.Size(509, 334);
             this.Controls.Add(this.toolStripContainer2);
             this.Controls.Add(this.bottom);
+            this.KeyPreview = true;
             this.Name = "TopView";
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "TopView";
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.TopView_KeyDown);
             this.toolStripContainer2.ContentPanel.ResumeLayout(false);
             this.toolStripContainer2.LeftToolStripPanel.ResumeLayout(false);
             this.toolStripContainer2.LeftToolStripPanel.PerformLayout();
@@ -120,6 +122,6 @@ namespace MapView.TopViewForm
 		private BottomPanel bottom;
 		private System.Windows.Forms.ToolStrip toolStrip;
 		private System.Windows.Forms.Panel center;
-		private System.Windows.Forms.ToolStripContainer toolStripContainer2;
+        private System.Windows.Forms.ToolStripContainer toolStripContainer2;
 	}
 }

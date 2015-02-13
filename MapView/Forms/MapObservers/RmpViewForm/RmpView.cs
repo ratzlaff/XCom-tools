@@ -549,13 +549,7 @@ namespace MapView.RmpViewForm
 
         private void btnRemove_Click(object sender, EventArgs e)
         {
-            _map.Rmp.RemoveEntry(_currEntry);
-            ((XCMapTile) _map[_currEntry.Row, _currEntry.Col, _currEntry.Height]).Rmp = null;
-            _map.MapChanged = true;
-            ClearSelected();
-            gbNodeInfo.Enabled = false;
-            LinkGroupBox.Enabled = false;
-            Refresh();
+            RemoveSelected();
         }
 
         private void cbUse1_SelectedIndexChanged(object sender, EventArgs e)
@@ -831,6 +825,30 @@ namespace MapView.RmpViewForm
         {
             _currEntry = null;
             _rmpPanel.ClearSelected();
+        }
+         
+        private void RemoveSelected()
+        {
+            if (_currEntry == null) return;
+            _map.Rmp.RemoveEntry(_currEntry);
+            ((XCMapTile)_map[_currEntry.Row, _currEntry.Col, _currEntry.Height]).Rmp = null;
+            _map.MapChanged = true;
+            ClearSelected();
+            gbNodeInfo.Enabled = false;
+            LinkGroupBox.Enabled = false;
+            Refresh();
+        }
+
+        private void RmpView_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Control && e.KeyCode == Keys.S)
+            {
+                if (_map != null)
+                {
+                    _map.Save();
+                    e.Handled = true;
+                }
+            }
         }
 
     }

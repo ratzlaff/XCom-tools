@@ -242,6 +242,7 @@ namespace MapView
         {
             get
             {
+                if (selectedNum < 0 || selectedNum >= tiles.Length) return null;
                 return tiles[selectedNum];
             }
             set

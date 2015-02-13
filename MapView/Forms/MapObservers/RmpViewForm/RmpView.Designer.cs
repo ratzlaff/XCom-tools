@@ -302,7 +302,7 @@ namespace MapView.RmpViewForm
             this.btnRemove.Location = new System.Drawing.Point(192, 156);
             this.btnRemove.Name = "btnRemove";
             this.btnRemove.Size = new System.Drawing.Size(88, 23);
-            this.btnRemove.TabIndex = 2;
+            this.btnRemove.TabIndex = 36;
             this.btnRemove.Text = "Delete Node";
             this.btnRemove.Click += new System.EventHandler(this.btnRemove_Click);
             // 
@@ -319,7 +319,7 @@ namespace MapView.RmpViewForm
             this.cbUsage.Location = new System.Drawing.Point(48, 128);
             this.cbUsage.Name = "cbUsage";
             this.cbUsage.Size = new System.Drawing.Size(104, 21);
-            this.cbUsage.TabIndex = 2;
+            this.cbUsage.TabIndex = 10;
             this.cbUsage.SelectedIndexChanged += new System.EventHandler(this.cbUsage_SelectedIndexChanged);
             // 
             // txtDist5
@@ -518,10 +518,12 @@ namespace MapView.RmpViewForm
             this.Controls.Add(this.panel1);
             this.Controls.Add(this._contentPane);
             this.Controls.Add(this.menuStrip1);
+            this.KeyPreview = true;
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "RmpView";
             this.ShowInTaskbar = false;
             this.Text = "RmpView";
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.RmpView_KeyDown);
             this.gbNodeInfo.ResumeLayout(false);
             this.gbNodeInfo.PerformLayout();
             this.menuStrip1.ResumeLayout(false);

@@ -7,7 +7,7 @@ using XCom;
 namespace MapView.RmpViewForm
 {
     public class RmpPanel : MapPanel
-    {
+    { 
         public Point Position = new Point(-1, -1);
 
         private readonly Font _font = new Font("Arial", 12, FontStyle.Bold);

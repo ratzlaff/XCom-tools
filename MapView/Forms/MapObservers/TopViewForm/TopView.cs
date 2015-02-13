@@ -14,7 +14,7 @@ using System.Reflection;
 namespace MapView.TopViewForm
 {
 	public partial class TopView : Map_Observer_Form
-	{
+    {
 		private Dictionary<MenuItem, int> visibleHash;
 		private Dictionary<string, SolidBrush> brushes;
 		private Dictionary<string, Pen> pens;
@@ -275,6 +275,18 @@ namespace MapView.TopViewForm
 		{
 			Map.Down();
 		}
+         
+        private void TopView_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Control && e.KeyCode == Keys.S)
+            {
+                if (Map != null)
+                {
+                    Map.Save();
+                    e.Handled = true;
+                }
+            }
+        }
 	}
 }
 
