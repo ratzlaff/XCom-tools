@@ -380,7 +380,7 @@ namespace MapView.RmpViewForm
 
         public override void SelectedTileChanged(IMap_Base sender, SelectedTileChangedEventArgs e)
         {
-            Text = string.Format("Waypoint view: r:{0} c:{1} ", e.MapLocation.Row, e.MapLocation.Col);
+            Text = string.Format("Waypoint view: r:{0} c:{1} ", e.MapPosition.Row, e.MapPosition.Col);
         }
 
         public override void HeightChanged(IMap_Base sender, HeightChangedEventArgs e)

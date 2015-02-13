@@ -42,9 +42,9 @@ namespace XCom
 				}
 				catch
 				{
-					for (int h = 0; h < mapSize.Height; h++)
-						for (int r = 0; r < mapSize.Rows; r++)
-							for (int c = 0; c < mapSize.Cols; c++)
+					for (int h = 0; h < MapSize.Height; h++)
+						for (int r = 0; r < MapSize.Rows; r++)
+							for (int c = 0; c < MapSize.Cols; c++)
 								((XCMapTile)this[r, c, h]).DrawAbove = true;
 				}
 			}
@@ -88,10 +88,10 @@ namespace XCom
 
 		public void CalcDrawAbove()
 		{
-			for (int h = mapSize.Height - 1; h >= 0; h--)
-				for (int row = 0; row < mapSize.Rows; row++)
+			for (int h = MapSize.Height - 1; h >= 0; h--)
+				for (int row = 0; row < MapSize.Rows; row++)
 				{
-					for (int col = 0; col < mapSize.Cols; col++)
+					for (int col = 0; col < MapSize.Cols; col++)
 					{
 						if (this[row, col, h] == null)
 							continue;
@@ -141,13 +141,13 @@ namespace XCom
 	        using (var s = File.Create(BasePath + BaseName + ".MAP"))
 	        {
 	            rmpFile.Save();
-	            s.WriteByte((byte) mapSize.Rows);
-	            s.WriteByte((byte) mapSize.Cols);
-	            s.WriteByte((byte) mapSize.Height);
+	            s.WriteByte((byte) MapSize.Rows);
+	            s.WriteByte((byte) MapSize.Cols);
+	            s.WriteByte((byte) MapSize.Height);
 
-	            for (int h = 0; h < mapSize.Height; h++)
-	                for (int r = 0; r < mapSize.Rows; r++)
-	                    for (int c = 0; c < mapSize.Cols; c++)
+	            for (int h = 0; h < MapSize.Height; h++)
+	                for (int r = 0; r < MapSize.Rows; r++)
+	                    for (int c = 0; c < MapSize.Cols; c++)
 	                    {
 	                        var xcmt = (XCMapTile) this[r, c, h];
 	                        if (xcmt.Ground == null)
@@ -198,10 +198,10 @@ namespace XCom
 			int cols = input.ReadByte();
 			int height = input.ReadByte();
 
-			mapSize = new MapSize(rows, cols, height);
+			MapSize = new MapSize(rows, cols, height);
 
 			//map = new MapTile[rows,cols,height];
-			mapData = new XCMapTile[rows * cols * height];
+            MapData = new MapTileList(rows , cols , height);
 
 			for (int h = 0; h < height; h++)
 				for (int r = 0; r < rows; r++)

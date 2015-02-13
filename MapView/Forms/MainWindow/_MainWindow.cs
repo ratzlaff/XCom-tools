@@ -575,12 +575,13 @@ namespace MapView
 
 		private void miResize_Click(object sender, System.EventArgs e)
 		{
+		    if (_mapView.View.Map == null) return;
 		    using (var cmf = new ChangeMapSizeForm())
 		    {
 		        cmf.Map = _mapView.View.Map;
 		        if (cmf.ShowDialog(this) == DialogResult.OK)
 		        {
-		            cmf.Map.ResizeTo(cmf.NewRows, cmf.NewCols, cmf.NewHeight);
+		            cmf.Map.ResizeTo(cmf.NewRows, cmf.NewCols, cmf.NewHeight, cmf.AddHeightToCelling);
 		            _mapView.ForceResize();
 		        }
 		    }

@@ -92,7 +92,7 @@ namespace MapView.TopViewForm
 		public override void SelectedTileChanged(IMap_Base sender, SelectedTileChangedEventArgs e)
 		{
 			_mapTile = (XCMapTile)e.SelectedTile;
-			_lastLoc = e.MapLocation;
+			_lastLoc = e.MapPosition;
 			Refresh();
 		}
 

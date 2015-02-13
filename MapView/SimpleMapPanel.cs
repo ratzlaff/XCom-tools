@@ -164,7 +164,7 @@ namespace MapView.TopViewForm
 
 	    public override void SelectedTileChanged(IMap_Base sender, SelectedTileChangedEventArgs e)
 		{
-			MapLocation pt = e.MapLocation;
+			MapLocation pt = e.MapPosition;
 
 			Text = "r: " + pt.Row + " c: " + pt.Col;
 

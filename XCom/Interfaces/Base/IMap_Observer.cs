@@ -38,16 +38,16 @@ namespace XCom.Interfaces.Base
 	/// </summary>
 	public class SelectedTileChangedEventArgs : EventArgs
 	{
-		private MapLocation newSelected;
+        private MapLocation newSelected;
 		private MapTileBase selectedTile;
 
-		public SelectedTileChangedEventArgs(MapLocation newSelected, MapTileBase selectedTile)
+        public SelectedTileChangedEventArgs(MapLocation newSelected, MapTileBase selectedTile)
 		{
 			this.newSelected = newSelected;
 			this.selectedTile = selectedTile;
 		}
 
-		public MapLocation MapLocation
+        public MapLocation MapPosition
 		{
 			get { return newSelected; }
 		}

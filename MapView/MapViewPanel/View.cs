@@ -350,7 +350,7 @@ namespace MapView
 
         private void tileChange(IMap_Base mapFile, SelectedTileChangedEventArgs e) // MapLocation newCoords)
         {
-            MapLocation newCoords = e.MapLocation;
+            MapLocation newCoords = e.MapPosition;
             clickPointx = new Point(newCoords.Col, newCoords.Row);
 
             flipLock = true;
