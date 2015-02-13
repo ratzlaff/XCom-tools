@@ -256,6 +256,25 @@ namespace MapView.TopViewForm
                 }
             }
         }
-	}
+
+	    public void SetSelectedQuadrantFrom(TileType tileType)
+	    {
+	        switch (tileType)
+	        {
+	            case TileType.Ground:
+	                BottomPanel.SelectedQuadrant = XCMapTile.MapQuadrant.Ground;
+	                break;
+	            case TileType.WestWall:
+	                BottomPanel.SelectedQuadrant = XCMapTile.MapQuadrant.West;
+	                break;
+	            case TileType.NorthWall:
+	                BottomPanel.SelectedQuadrant = XCMapTile.MapQuadrant.North;
+	                break;
+	            case TileType.Object:
+	                BottomPanel.SelectedQuadrant = XCMapTile.MapQuadrant.Content;
+	                break;
+	        }
+	    }
+    }
 }
 

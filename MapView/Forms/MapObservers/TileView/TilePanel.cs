@@ -12,22 +12,26 @@ namespace MapView
     {
         private TileBase[] tiles;
 
-        private int space=2;
-        private int height = 40,width=32;
-        private SolidBrush brush = new SolidBrush(Color.FromArgb(204,204,255));
-        private Pen pen = new Pen(Brushes.Red,3);
-        private int startY=0;
+        private int space = 2;
+        private int height = 40, width = 32;
+        private SolidBrush brush = new SolidBrush(Color.FromArgb(204, 204, 255));
+        private Pen pen = new Pen(Brushes.Red, 3);
+        private int startY = 0;
         private int selectedNum;
         private VScrollBar vert;
-        private int numAcross=1;
+        private int numAcross = 1;
 
-        public static readonly Color[] tileTypes={Color.Cornsilk,Color.Lavender,Color.DarkRed,Color.Fuchsia,Color.Aqua,
-            Color.DarkOrange,Color.DeepPink,Color.LightBlue,Color.Lime,
-            Color.LightGreen,Color.MediumPurple,Color.LightCoral,Color.LightCyan,
-            Color.Yellow,Color.Blue};
+        public static readonly Color[] tileTypes =
+        {
+            Color.Cornsilk, Color.Lavender, Color.DarkRed, Color.Fuchsia, Color.Aqua,
+            Color.DarkOrange, Color.DeepPink, Color.LightBlue, Color.Lime,
+            Color.LightGreen, Color.MediumPurple, Color.LightCoral, Color.LightCyan,
+            Color.Yellow, Color.Blue
+        };
+
         private TileType type;
 
-        public event SelectedTileChanged TileChanged;
+        public event SelectedTileTypeChanged TileChanged;
         //private static PckFile extraFile;
         private static Hashtable brushes;
 
@@ -39,8 +43,8 @@ namespace MapView
 
         public static Hashtable Colors
         {
-            get{return brushes;}
-            set{brushes=value;}
+            get { return brushes; }
+            set { brushes = value; }
         }
 
         public TilePanel(TileType type)
@@ -49,7 +53,7 @@ namespace MapView
             vert = new VScrollBar();
             vert.ValueChanged += valChange;
             vert.Location = new Point(Width - vert.Width, 0);
-            
+
             Controls.Add(vert);
             MapViewPanel.ImageUpdate += tick;
 
@@ -67,34 +71,38 @@ namespace MapView
 
         protected override void OnResize(EventArgs e)
         {
-            numAcross = (Width-(vert.Visible?vert.Width:0))/(width+2*space);
-            vert.Location = new Point(Width-vert.Width,0);
-            vert.Height=Height;
-            vert.Maximum = Math.Max((PreferredHeight-Height)+10,vert.Minimum);	
-		
-            if(vert.Maximum==vert.Minimum)
-                vert.Visible=false;
+            numAcross = (Width - (vert.Visible ? vert.Width : 0)) / (width + 2 * space);
+            vert.Location = new Point(Width - vert.Width, 0);
+            vert.Height = Height;
+            vert.Maximum = Math.Max((PreferredHeight - Height) + 10, vert.Minimum);
+
+            if (vert.Maximum == vert.Minimum)
+                vert.Visible = false;
             else
-                vert.Visible=true;
+                vert.Visible = true;
             Refresh();
         }
 
         public int StartY
         {
-            get{return startY;}
-            set{startY=value;Refresh();}
+            get { return startY; }
+            set
+            {
+                startY = value;
+                Refresh();
+            }
         }
 
         public int PreferredHeight
         {
             get
             {
-                if(tiles!=null && numAcross>0)
+                if (tiles != null && numAcross > 0)
                 {
-                    if(tiles.Length%numAcross==0)
-                        return (tiles.Length/numAcross)*(height+2*space);
+                    if (tiles.Length % numAcross == 0)
+                        return (tiles.Length / numAcross) * (height + 2 * space);
 
-                    return (1+tiles.Length/numAcross)*(height+2*space);
+                    return (1 + tiles.Length / numAcross) * (height + 2 * space);
                 }
                 return 0;
             }
@@ -133,7 +141,7 @@ namespace MapView
             }
         }
 
-        private int scrollAmount=20;
+        private int scrollAmount = 20;
 
         protected override void OnMouseWheel(MouseEventArgs e)
         {
@@ -142,14 +150,14 @@ namespace MapView
             {
                 handledMouseEventArgs.Handled = true;
             }
-            if(e.Delta<0)
-                if(vert.Value+scrollAmount<vert.Maximum)
-                    vert.Value+=scrollAmount;
+            if (e.Delta < 0)
+                if (vert.Value + scrollAmount < vert.Maximum)
+                    vert.Value += scrollAmount;
                 else
                     vert.Value = vert.Maximum;
-            else if(e.Delta>0)
-                if(vert.Value-scrollAmount>vert.Minimum)
-                    vert.Value-=scrollAmount;
+            else if (e.Delta > 0)
+                if (vert.Value - scrollAmount > vert.Minimum)
+                    vert.Value -= scrollAmount;
                 else
                     vert.Value = vert.Minimum;
         }
@@ -158,17 +166,17 @@ namespace MapView
         {
             this.Focus();
             if (tiles == null) return;
-            int x = e.X/(width+2*space);
-            int y = (e.Y-startY)/(height+2*space);
+            int x = e.X / (width + 2 * space);
+            int y = (e.Y - startY) / (height + 2 * space);
 
-            if(x>=numAcross)
-                x=numAcross-1;
+            if (x >= numAcross)
+                x = numAcross - 1;
 
-            selectedNum = y*numAcross+x;
+            selectedNum = y * numAcross + x;
 
-            selectedNum = (selectedNum<tiles.Length)?selectedNum:tiles.Length-1;
-            if(TileChanged!=null)
-                TileChanged(this,SelectedTile);
+            selectedNum = (selectedNum < tiles.Length) ? selectedNum : tiles.Length - 1;
+            if (TileChanged != null)
+                TileChanged(SelectedTile);
             Refresh();
         }
 
@@ -247,21 +255,21 @@ namespace MapView
             }
             set
             {
-                if(value==null)
-                    selectedNum=0;
+                if (value == null)
+                    selectedNum = 0;
                 else
                 {
-                    selectedNum = value.MapId+1;
+                    selectedNum = value.MapId + 1;
 
-                    if(TileChanged!=null)
-                        TileChanged(this,SelectedTile);
+                    if (TileChanged != null)
+                        TileChanged(SelectedTile);
 
-                    int y = startY+(selectedNum/numAcross)*(height+2*space);
-                    int val = -(startY-y);
+                    int y = startY + (selectedNum / numAcross) * (height + 2 * space);
+                    int val = -(startY - y);
 
-                    if(val > vert.Minimum)
+                    if (val > vert.Minimum)
                     {
-                        if(val < vert.Maximum)
+                        if (val < vert.Maximum)
                             vert.Value = val;
                         else
                             vert.Value = vert.Maximum;

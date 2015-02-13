@@ -17,7 +17,8 @@ namespace MapView.TopViewForm
 		private MapLocation _lastLoc;
 
 	    private readonly BottomPanelDrawService _drawService;
-		public event EventHandler PanelClicked;
+	    private XCMapTile.MapQuadrant _selectedQuadrant;
+	    public event EventHandler PanelClicked;
 
 		public BottomPanel()
 		{
@@ -51,11 +52,19 @@ namespace MapView.TopViewForm
 		{
 			get { return _drawService.Brush; }
             set { _drawService.Brush = value; Refresh(); }
-		} 
+		}
 
-		public XCMapTile.MapQuadrant SelectedQuadrant { get; private set; }
+	    public XCMapTile.MapQuadrant SelectedQuadrant
+	    {
+	        get { return _selectedQuadrant; }
+	        set
+	        {
+	            _selectedQuadrant = value;
+                Refresh();
+	        }
+	    }
 
-		public void SetSelected(MouseButtons btn, int clicks)
+	    public void SetSelected(MouseButtons btn, int clicks)
 		{
 			if (btn == MouseButtons.Right && _mapTile != null)
 			{

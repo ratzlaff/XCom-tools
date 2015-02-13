@@ -15,7 +15,7 @@ using XCom.Interfaces.Base;
 
 namespace MapView
 {
-	public delegate void SelectedTileChanged(TilePanel sender,TileBase newTile);
+	public delegate void SelectedTileTypeChanged(TileBase newTile);
 	public partial class TileView : Map_Observer_Form
 	{
 		private IContainer components;
@@ -35,8 +35,14 @@ namespace MapView
 		private Hashtable brushes;
 
 	    private readonly IMainWindowsShowAllManager _mainWindowsShowAllManager;
+	    public event SelectedTileTypeChanged SelectedTileTypeChanged;
+        private void OnSelectedTileTypeChanged(TileBase newtile)
+	    {
+	        var handler = SelectedTileTypeChanged;
+	        if (handler != null) handler(newtile);
+	    }
 
-        public TileView(IMainWindowsShowAllManager mainWindowsShowAllManager)
+	    public TileView(IMainWindowsShowAllManager mainWindowsShowAllManager)
 		{
 		    InitializeComponent();
 
@@ -122,7 +128,7 @@ namespace MapView
 	        page.Controls.Add(panel);
 	        panel.TileChanged += TileChanged;
 	    }
-	    private void TileChanged(TilePanel sender, TileBase tile)
+	    private void TileChanged(TileBase tile)
 	    {
 	        if (tile != null && tile.Info is McdEntry)
 	        {
@@ -134,6 +140,7 @@ namespace MapView
 	        {
                 Text = "TileView";
 	        }
+	        OnSelectedTileTypeChanged(tile);
 	    }
 
 	    private void UpdateMcdText(McdEntry info)

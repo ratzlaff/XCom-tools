@@ -1,5 +1,7 @@
+using System;
 using MapView.RmpViewForm;
 using MapView.TopViewForm;
+using XCom;
 using XCom.Interfaces.Base;
 
 namespace MapView.Forms.MainWindow
@@ -20,7 +22,10 @@ namespace MapView.Forms.MainWindow
             get
             {
                 if (_tileView == null)
+                {
                     _tileView = new TileView(MainWindowsShowAllManager);
+                    _tileView.SelectedTileTypeChanged += _tileView_SelectedTileTypeChanged;
+                }
                 return _tileView;
             }
         }
@@ -77,6 +82,15 @@ namespace MapView.Forms.MainWindow
                 }
             }
             MapViewPanel.Instance.View.Refresh();
+        }
+
+        private static void _tileView_SelectedTileTypeChanged(TileBase newTile)
+        {
+            if (newTile != null &&  
+                newTile.Info != null )
+            {
+                TopView.SetSelectedQuadrantFrom(newTile.Info.TileType);
+            }
         }
 
         private void SetMap(IMap_Base newMap, IMap_Observer observer)
