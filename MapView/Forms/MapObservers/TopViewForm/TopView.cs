@@ -20,32 +20,19 @@ namespace MapView.TopViewForm
 		private Dictionary<string, Pen> pens;
 
 		private TopViewPanel topViewPanel;
+	    private readonly MainToolStripButtonsFactory _mainToolStripButtonsFactory;
 
 		public event EventHandler VisibleTileChanged;
-
-
-		public TopView()
+         
+        public TopView(MainToolStripButtonsFactory mainToolStripButtonsFactory)
 		{
 			//LogFile.Instance.WriteLine("Start TopView window creation");		
 
 			InitializeComponent();
-         
-            var mainToolStripButtonsFactory = new MainToolStripButtonsFactory();
-            mainToolStripButtonsFactory.MakeToolstrip(toolStrip);
 
-            var btnFill = new ToolStripButton();
-            toolStrip.Items.Add(  btnFill);
-            // 
-            // btnFill
-            // 
-            btnFill.AutoSize = false;
-            btnFill.DisplayStyle = ToolStripItemDisplayStyle.Text;
-            btnFill.Name = "btnFill";
-            btnFill.Size = new Size(25, 25);
-            btnFill.Text = "Fill";
-            btnFill.ToolTipText = "Fill";
-            btnFill.Click += fill_click;
+            _mainToolStripButtonsFactory = mainToolStripButtonsFactory;
 
+            Load += TopView_Load;
 			SuspendLayout();
 			topViewPanel = new TopViewPanel();
 			topViewPanel.Width = 100;
@@ -84,7 +71,7 @@ namespace MapView.TopViewForm
 
 			MenuItem edit = Menu.MenuItems.Add("Edit");
 			edit.MenuItems.Add("Options", new EventHandler(options_click));
-			edit.MenuItems.Add("Fill", new EventHandler(fill_click));
+			edit.MenuItems.Add("Fill", Fill_Click);
 
 			//mapView.BlankChanged += new BoolDelegate(blankMode);
 
@@ -97,6 +84,11 @@ namespace MapView.TopViewForm
 
 			ResumeLayout();
 		}
+
+        private void TopView_Load(object sender, EventArgs e)
+        {
+            _mainToolStripButtonsFactory.MakeToolstrip(toolStrip);
+        }
 
 		public BottomPanel BottomPanel
 		{
@@ -194,7 +186,7 @@ namespace MapView.TopViewForm
 			bottom.Pens = pens;
 		}
 
-		private void fill_click(object sender, EventArgs evt)
+		public void Fill_Click(object sender, EventArgs evt)
 		{ 
 	        var map = MapViewPanel.Instance.View.Map;
 	        if (map == null) return;

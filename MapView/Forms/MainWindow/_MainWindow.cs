@@ -104,8 +104,8 @@ namespace MapView
 			mapList.TreeViewNodeSorter = new System.Collections.CaseInsensitiveComparer();
 
 			toolStripContainer1.ContentPanel.Controls.Add(_mapView);
-		    var mainToolStripButtonsFactory = new MainToolStripButtonsFactory();
-            mainToolStripButtonsFactory.MakeToolstrip(toolStrip);
+            MainWindowsManager.MainToolStripButtonsFactory.MakeToolstrip(toolStrip);
+		    toolStrip.Enabled = false;
 			toolStrip.Items.Add(new ToolStripSeparator());
 
 			LogFile.Instance.WriteLine("Main view window created");
@@ -465,6 +465,7 @@ namespace MapView
 	            var mapService = new XcMapFileService(xcTileFactory);
                 var map = mapService.Load(imd as XCMapDesc);
 	            _mapView.SetMap(map);
+	            toolStrip.Enabled = true;
 
 	            statusMapName.Text = "Map:" + imd.Name;
 	            if (map != null)

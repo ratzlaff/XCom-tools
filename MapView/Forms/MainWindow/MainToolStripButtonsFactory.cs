@@ -9,17 +9,21 @@ namespace MapView.Forms.MainWindow
 {
     public class MainToolStripButtonsFactory
     {
+        private readonly List<ToolStripButton> _pasteButtons = new List<ToolStripButton>();
+ 
         /// <summary>
         /// Adds buttons for Up,Down,Cut,Copy and Paste to a toolstrip as well as sets some properties for the toolstrip
         /// </summary>
         /// <param name="toolStrip"></param>
         public void MakeToolstrip(ToolStrip toolStrip)
         {
-            ToolStripButton btnUp = new ToolStripButton();
-            ToolStripButton btnDown = new ToolStripButton();
-            ToolStripButton btnCut = new ToolStripButton();
-            ToolStripButton btnCopy = new ToolStripButton();
-            ToolStripButton btnPaste = new ToolStripButton();
+            var btnUp = new ToolStripButton();
+            var btnDown = new ToolStripButton();
+            var btnCut = new ToolStripButton();
+            var btnCopy = new ToolStripButton();
+            var btnPaste = new ToolStripButton();
+            var btnFill = new ToolStripButton();
+
             // 
             // toolStrip1
             // 
@@ -31,11 +35,24 @@ namespace MapView.Forms.MainWindow
             btnDown,
             btnCut,
             btnCopy,
-            btnPaste});
+            btnPaste,
+            btnFill});
             //toolStrip1.LayoutStyle = ToolStripLayoutStyle.VerticalStackWithOverflow;
             toolStrip.Padding = new Padding(0);
             toolStrip.RenderMode = ToolStripRenderMode.System;
             toolStrip.TabIndex = 1;
+
+            // 
+            // btnFill
+            // 
+            btnFill.AutoSize = false;
+            btnFill.DisplayStyle = ToolStripItemDisplayStyle.Text;
+            btnFill.Name = "btnFill";
+            btnFill.Size = new Size(25, 25);
+            btnFill.Text = "Fill";
+            btnFill.ToolTipText = "Fill";
+            btnFill.Click += MainWindowsManager.TopView.Fill_Click;
+
             // 
             // btnUp
             // 
@@ -71,7 +88,12 @@ namespace MapView.Forms.MainWindow
             btnCut.Size = new System.Drawing.Size(25, 25);
             btnCut.Text = "toolStripButton3";
             btnCut.ToolTipText = "Cut";
-            btnCut.Click += new EventHandler(MapViewPanel.Instance.Cut_click);
+            btnCut.Click += (o, args) =>
+            {
+                ActivatePasteButtons();
+                MapViewPanel.Instance.Cut_click(o, args);
+            };
+
             // 
             // btnCopy
             // 
@@ -83,7 +105,12 @@ namespace MapView.Forms.MainWindow
             btnCopy.Size = new System.Drawing.Size(25, 25);
             btnCopy.Text = "toolStripButton4";
             btnCopy.ToolTipText = "Copy";
-            btnCopy.Click += new EventHandler(MapViewPanel.Instance.Copy_click);
+            btnCopy.Click += (o, args) =>
+            {
+                ActivatePasteButtons();
+                MapViewPanel.Instance.Copy_click(o, args);
+            };
+
             // 
             // btnPaste
             // 
@@ -95,7 +122,9 @@ namespace MapView.Forms.MainWindow
             btnPaste.Size = new System.Drawing.Size(25, 25);
             btnPaste.Text = "toolStripButton5";
             btnPaste.ToolTipText = "Paste";
-            btnPaste.Click += new EventHandler(MapViewPanel.Instance.Paste_click);
+            btnPaste.Click += MapViewPanel.Instance.Paste_click;
+            btnPaste.Enabled = false;
+            _pasteButtons.Add(btnPaste);
 
             Assembly a = Assembly.GetExecutingAssembly();
             btnCut.Image = Bitmap.FromStream(a.GetManifestResourceStream("MapView._Embedded.cut.gif"));
@@ -103,6 +132,14 @@ namespace MapView.Forms.MainWindow
             btnCopy.Image = Bitmap.FromStream(a.GetManifestResourceStream("MapView._Embedded.copy.gif"));
             btnUp.Image = Bitmap.FromStream(a.GetManifestResourceStream("MapView._Embedded.up.gif"));
             btnDown.Image = Bitmap.FromStream(a.GetManifestResourceStream("MapView._Embedded.down.gif"));
+        }
+
+        private void ActivatePasteButtons()
+        {
+            foreach (var pasteButton in _pasteButtons)
+            {
+                pasteButton.Enabled = true;
+            }
         }
 
         private void btnDown_Click(object sender, EventArgs e)

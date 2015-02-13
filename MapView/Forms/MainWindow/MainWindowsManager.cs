@@ -6,11 +6,8 @@ namespace MapView.Forms.MainWindow
 {
     public class MainWindowsManager
     {
-        public MainWindowsManager()
-        {
-            
-        }
         public static IMainWindowsShowAllManager MainWindowsShowAllManager;
+        public static readonly MainToolStripButtonsFactory MainToolStripButtonsFactory = new MainToolStripButtonsFactory();
 
         private static TileView _tileView;
         private static TopView _topView;
@@ -33,7 +30,7 @@ namespace MapView.Forms.MainWindow
             get
             {
                 if (_topView == null)
-                    _topView = new TopView();
+                    _topView = new TopView(MainToolStripButtonsFactory);
 
                 return _topView;
             }
