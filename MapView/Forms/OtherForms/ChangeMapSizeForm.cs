@@ -109,7 +109,7 @@ namespace MapView
             // 
             // oldC
             // 
-            this.oldC.Location = new System.Drawing.Point(48, 32);
+            this.oldC.Location = new System.Drawing.Point(60, 41);
             this.oldC.Name = "oldC";
             this.oldC.ReadOnly = true;
             this.oldC.Size = new System.Drawing.Size(40, 20);
@@ -117,7 +117,7 @@ namespace MapView
             // 
             // oldR
             // 
-            this.oldR.Location = new System.Drawing.Point(0, 32);
+            this.oldR.Location = new System.Drawing.Point(12, 41);
             this.oldR.Name = "oldR";
             this.oldR.ReadOnly = true;
             this.oldR.Size = new System.Drawing.Size(40, 20);
@@ -125,7 +125,7 @@ namespace MapView
             // 
             // oldH
             // 
-            this.oldH.Location = new System.Drawing.Point(96, 32);
+            this.oldH.Location = new System.Drawing.Point(108, 41);
             this.oldH.Name = "oldH";
             this.oldH.ReadOnly = true;
             this.oldH.Size = new System.Drawing.Size(40, 20);
@@ -133,7 +133,7 @@ namespace MapView
             // 
             // label1
             // 
-            this.label1.Location = new System.Drawing.Point(0, 0);
+            this.label1.Location = new System.Drawing.Point(12, 9);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(56, 16);
             this.label1.TabIndex = 0;
@@ -141,14 +141,14 @@ namespace MapView
             // 
             // txtR
             // 
-            this.txtR.Location = new System.Drawing.Point(0, 80);
+            this.txtR.Location = new System.Drawing.Point(12, 89);
             this.txtR.Name = "txtR";
             this.txtR.Size = new System.Drawing.Size(40, 20);
             this.txtR.TabIndex = 1;
             // 
             // label2
             // 
-            this.label2.Location = new System.Drawing.Point(0, 64);
+            this.label2.Location = new System.Drawing.Point(12, 73);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(56, 16);
             this.label2.TabIndex = 5;
@@ -156,7 +156,7 @@ namespace MapView
             // 
             // label3
             // 
-            this.label3.Location = new System.Drawing.Point(56, 16);
+            this.label3.Location = new System.Drawing.Point(68, 25);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(24, 16);
             this.label3.TabIndex = 6;
@@ -165,7 +165,7 @@ namespace MapView
             // 
             // label4
             // 
-            this.label4.Location = new System.Drawing.Point(8, 16);
+            this.label4.Location = new System.Drawing.Point(20, 25);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(24, 16);
             this.label4.TabIndex = 7;
@@ -174,7 +174,7 @@ namespace MapView
             // 
             // label5
             // 
-            this.label5.Location = new System.Drawing.Point(104, 16);
+            this.label5.Location = new System.Drawing.Point(116, 25);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(24, 16);
             this.label5.TabIndex = 8;
@@ -183,32 +183,33 @@ namespace MapView
             // 
             // txtC
             // 
-            this.txtC.Location = new System.Drawing.Point(48, 80);
+            this.txtC.Location = new System.Drawing.Point(60, 89);
             this.txtC.Name = "txtC";
             this.txtC.Size = new System.Drawing.Size(40, 20);
             this.txtC.TabIndex = 2;
             // 
             // txtH
             // 
-            this.txtH.Location = new System.Drawing.Point(96, 80);
+            this.txtH.Location = new System.Drawing.Point(108, 89);
             this.txtH.Name = "txtH";
             this.txtH.Size = new System.Drawing.Size(40, 20);
             this.txtH.TabIndex = 3;
+            this.txtH.TextChanged += new System.EventHandler(this.txtH_TextChanged);
             // 
             // btnOk
             // 
-            this.btnOk.Location = new System.Drawing.Point(96, 128);
+            this.btnOk.Location = new System.Drawing.Point(110, 128);
             this.btnOk.Name = "btnOk";
-            this.btnOk.Size = new System.Drawing.Size(48, 23);
+            this.btnOk.Size = new System.Drawing.Size(75, 32);
             this.btnOk.TabIndex = 4;
             this.btnOk.Text = "OK";
             this.btnOk.Click += new System.EventHandler(this.btnOk_Click);
             // 
             // btnCancel
             // 
-            this.btnCancel.Location = new System.Drawing.Point(144, 128);
+            this.btnCancel.Location = new System.Drawing.Point(191, 128);
             this.btnCancel.Name = "btnCancel";
-            this.btnCancel.Size = new System.Drawing.Size(48, 23);
+            this.btnCancel.Size = new System.Drawing.Size(75, 32);
             this.btnCancel.TabIndex = 5;
             this.btnCancel.Text = "Cancel";
             this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
@@ -216,17 +217,18 @@ namespace MapView
             // AddHeightToCellingCheckBox
             // 
             this.AddHeightToCellingCheckBox.AutoSize = true;
-            this.AddHeightToCellingCheckBox.Location = new System.Drawing.Point(96, 106);
+            this.AddHeightToCellingCheckBox.Location = new System.Drawing.Point(154, 92);
             this.AddHeightToCellingCheckBox.Name = "AddHeightToCellingCheckBox";
             this.AddHeightToCellingCheckBox.Size = new System.Drawing.Size(90, 17);
             this.AddHeightToCellingCheckBox.TabIndex = 9;
             this.AddHeightToCellingCheckBox.Text = "Add to celling";
             this.AddHeightToCellingCheckBox.UseVisualStyleBackColor = true;
+            this.AddHeightToCellingCheckBox.Visible = false;
             // 
             // ChangeMapSizeForm
             // 
             this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
-            this.ClientSize = new System.Drawing.Size(204, 163);
+            this.ClientSize = new System.Drawing.Size(278, 172);
             this.ControlBox = false;
             this.Controls.Add(this.AddHeightToCellingCheckBox);
             this.Controls.Add(this.btnCancel);
@@ -270,5 +272,27 @@ namespace MapView
 		{
 			Close();
 		}
+
+        private void txtH_TextChanged(object sender, EventArgs e)
+        { 
+            int current;
+            int.TryParse(txtH.Text, out current);
+            if (current == map.MapSize.Height)
+            {
+                AddHeightToCellingCheckBox.Visible = false;
+            }
+            else
+            {
+                AddHeightToCellingCheckBox.Visible = true;
+                if (current > map.MapSize.Height)
+                {
+                    AddHeightToCellingCheckBox.Text = @"Add to celling";
+                }
+                else
+                {
+                    AddHeightToCellingCheckBox.Text = @"Remove from celling";
+                }
+            }
+        }
 	}
 }

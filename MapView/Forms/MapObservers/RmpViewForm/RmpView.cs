@@ -176,7 +176,7 @@ namespace MapView.RmpViewForm
         {
             var connectType = GetConnectNodeTypes();
             if (connectType == ConnectNodeTypes.DontConnect) return;
-
+            if (_currEntry.Equals(selEntry)) return;
             {
                 var spaceAt = CompareLinks(_currEntry, selEntry.Index);
                 if (spaceAt.HasValue)

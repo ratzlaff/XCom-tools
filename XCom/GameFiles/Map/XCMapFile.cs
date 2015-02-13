@@ -6,6 +6,7 @@ using System.Windows.Forms;
 using System.Collections.Generic;
 //using XCom.Interfaces;
 using XCom.Interfaces.Base;
+using XCom.Services;
 
 namespace XCom
 {
@@ -32,7 +33,7 @@ namespace XCom
 		    for (int i = 0; i < tiles.Count; i++)
 				tiles[i].MapId = i;
 
-            readMap(File.OpenRead(filePath), tiles);
+            ReadMap(File.OpenRead(filePath), tiles);
 
 			if (File.Exists(blankPath + baseName + BlankFile.Extension))
 			{
@@ -191,12 +192,43 @@ namespace XCom
 			}
 		}
 
-		private void readMap(Stream s, List<TileBase> tiles)
+        public override void ResizeTo(int newR, int newC, int newH, bool addHeightToCelling)
+        {
+            var mapResizeService = new MapResizeService();
+            var newMap = mapResizeService.ResizeMap(newR, newC, newH, MapSize, MapData, addHeightToCelling);
+            if (newMap == null) return;
+
+            // update Routes /
+            if (addHeightToCelling && newH != MapSize.Height)
+            {
+                var heighDif = (newH - MapSize.Height); 
+                foreach (RmpEntry rmp in rmpFile)
+                {
+                    if (newH < MapSize.Height)
+                        rmp.Height = (byte)(rmp.Height + heighDif);
+                    else
+                        rmp.Height += (byte)heighDif;
+                }
+            }
+
+            // Remove routes outside the range 
+            if (newH < MapSize.Height)
+            {
+                rmpFile.TrimHeightTo(newH);
+            }
+
+            MapData = newMap;
+            MapSize = new MapSize(newR, newC, newH);
+            CurrentHeight = (byte)(MapSize.Height - 1);
+            MapChanged = true;
+        }
+
+		private void ReadMap(Stream s, List<TileBase> tiles)
 		{
-			BufferedStream input = new BufferedStream(s);
-			int rows = input.ReadByte();
-			int cols = input.ReadByte();
-			int height = input.ReadByte();
+			var input = new BufferedStream(s);
+			var rows = input.ReadByte();
+			var cols = input.ReadByte();
+			var height = input.ReadByte();
 
 			MapSize = new MapSize(rows, cols, height);
 

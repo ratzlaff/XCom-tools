@@ -15,7 +15,7 @@ namespace XCom.Interfaces.Base
     /// </summary>
     public class IMap_Base
     {
-        private byte _currentHeight;
+        protected byte _currentHeight;
         protected MapLocation Selected;
         protected MapTileList MapData;
         public bool MapChanged { get; set; }
@@ -151,7 +151,7 @@ namespace XCom.Interfaces.Base
             set { this[position.Row, position.Col, position.Height] = value; }
         }
 
-        public void ResizeTo(int newR, int newC, int newH, bool addHeightToCelling)
+        public virtual void ResizeTo(int newR, int newC, int newH, bool addHeightToCelling)
         {
             var mapResizeService = new MapResizeService();
             var newMap = mapResizeService.ResizeMap(newR, newC, newH, MapSize, MapData, addHeightToCelling);
@@ -160,6 +160,7 @@ namespace XCom.Interfaces.Base
             MapData = newMap;
             MapSize = new MapSize(newR, newC, newH);
             _currentHeight = (byte) (MapSize.Height - 1);
+            MapChanged = true;
         }
 
         /// <summary>

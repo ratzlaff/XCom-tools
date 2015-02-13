@@ -148,11 +148,11 @@ namespace MapView.RmpViewForm
                             Link l = tile.Rmp[rr];
                             switch (l.Index)
                             {
-                                case Link.NotUsed:
-                                case Link.ExitEast:
-                                case Link.ExitNorth:
-                                case Link.ExitSouth:
-                                case Link.ExitWest:
+                                case Link.NOT_USED:
+                                case Link.EXIT_EAST:
+                                case Link.EXIT_NORTH:
+                                case Link.EXIT_SOUTH:
+                                case Link.EXIT_WEST:
                                     break;
                                 default:
                                     if (map.Rmp[l.Index] != null &&
@@ -234,18 +234,18 @@ namespace MapView.RmpViewForm
                             var pen = MapPens["UnselectedLinkColor"];
                             switch (l.Index)
                             {
-                                case Link.NotUsed:
+                                case Link.NOT_USED:
                                     break;
-                                case Link.ExitEast:
+                                case Link.EXIT_EAST:
                                     graphics.DrawLine(pen, x, y + DrawAreaHeight, Width, Height);
                                     break;
-                                case Link.ExitNorth:
+                                case Link.EXIT_NORTH:
                                     graphics.DrawLine(pen, x, y + DrawAreaHeight, Width, 0);
                                     break;
-                                case Link.ExitSouth:
+                                case Link.EXIT_SOUTH:
                                     graphics.DrawLine(pen, x, y + DrawAreaHeight, 0, Height);
                                     break;
-                                case Link.ExitWest:
+                                case Link.EXIT_WEST:
                                     graphics.DrawLine(pen, x, y + DrawAreaHeight, 0, 0);
                                     break;
                                 default:
@@ -286,21 +286,21 @@ namespace MapView.RmpViewForm
                 Link l = f[rr];
                 switch (l.Index)
                 {
-                    case Link.NotUsed:
+                    case Link.NOT_USED:
                         break;
-                    case Link.ExitEast:
+                    case Link.EXIT_EAST:
                         g.DrawLine(pen, unknownLocationX,
                             unknownLocationY, Width, Height);
                         break;
-                    case Link.ExitNorth:
+                    case Link.EXIT_NORTH:
                         g.DrawLine(pen, unknownLocationX,
                             unknownLocationY, Width, 0);
                         break;
-                    case Link.ExitSouth:
+                    case Link.EXIT_SOUTH:
                         g.DrawLine(pen, unknownLocationX,
                             unknownLocationY, 0, Height);
                         break;
-                    case Link.ExitWest:
+                    case Link.EXIT_WEST:
                         g.DrawLine(pen, unknownLocationX,
                             unknownLocationY, 0, 0);
                         break;
