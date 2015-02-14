@@ -37,6 +37,7 @@ namespace XCom
 
             var map = new XCMapFile(imd.Basename, imd.BasePath, imd.BlankPath, tiles, imd.Dependencies);
             map.Rmp = new RmpFile(imd.Basename, imd.RmpPath);
+
 			return map;
         }
     }

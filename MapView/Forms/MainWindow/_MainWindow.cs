@@ -8,6 +8,7 @@ using MapView.Forms.MapObservers.RmpViewForm;
 using MapView.SettingServices;
 using XCom;
 using XCom.GameFiles.Map;
+using XCom.GameFiles.Map.RmpData;
 using XCom.Interfaces;
 using System.IO;
 using Microsoft.Win32;
@@ -466,6 +467,9 @@ namespace MapView
                 var map = mapService.Load(imd as XCMapDesc);
 	            _mapView.SetMap(map);
 	            toolStrip.Enabled = true;
+
+	            var rmpService = new RmpService();
+                rmpService.ReviewRouteEntries(map);
 
 	            statusMapName.Text = "Map:" + imd.Name;
 	            if (map != null)

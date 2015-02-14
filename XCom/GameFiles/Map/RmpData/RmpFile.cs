@@ -207,14 +207,14 @@ namespace XCom
             int oldIdx = r.Index;
 
             _entries.Remove(r);
-            foreach (RmpEntry rr in _entries)
+            foreach (var rr in _entries)
             {
                 if (rr.Index > oldIdx)
                     rr.Index--;
 
                 for (int i = 0; i < 5; i++)
                 {
-                    Link l = rr[i];
+                    var l = rr[i];
                     if (l.Index == oldIdx)
                         l.Index = Link.NOT_USED;
                     else if (l.Index > oldIdx && l.Index < 0xFB)
@@ -235,13 +235,18 @@ namespace XCom
             var toDelete = new List<RmpEntry>();
             foreach (var entry in _entries)
             {
-                if (entry.Height >= newH || 
-                    entry.Height < 0) toDelete.Add(entry);
+                if (IsOutsideHeight(entry, newH)) toDelete.Add(entry);
             }
             foreach (var entry in toDelete)
             {
-                _entries.Remove(entry);
+                RemoveEntry(entry); 
             }
+        }
+
+        public static bool IsOutsideHeight(RmpEntry entry, int height)
+        {
+            return entry.Height >= height || 
+                   entry.Height < 0;
         }
     }
 }
