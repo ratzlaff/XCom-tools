@@ -266,7 +266,7 @@ namespace MapView.TopViewForm
 			mDown = true;
 
 			Point p = new Point(col, row);
-
+		    ;
 			MapViewPanel.Instance.View.StartDrag = p;
 			MapViewPanel.Instance.View.EndDrag = p;
 		}

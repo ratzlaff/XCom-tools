@@ -429,7 +429,7 @@ namespace MapView.RmpViewForm
             this._contentPane.Dock = System.Windows.Forms.DockStyle.Fill;
             this._contentPane.Location = new System.Drawing.Point(0, 27);
             this._contentPane.Name = "_contentPane";
-            this._contentPane.Size = new System.Drawing.Size(536, 396);
+            this._contentPane.Size = new System.Drawing.Size(536, 206);
             this._contentPane.TabIndex = 2;
             // 
             // menuStrip1
@@ -515,8 +515,8 @@ namespace MapView.RmpViewForm
             // 
             this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
             this.ClientSize = new System.Drawing.Size(536, 423);
-            this.Controls.Add(this.panel1);
             this.Controls.Add(this._contentPane);
+            this.Controls.Add(this.panel1);
             this.Controls.Add(this.menuStrip1);
             this.KeyPreview = true;
             this.MainMenuStrip = this.menuStrip1;
