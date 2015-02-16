@@ -2,6 +2,8 @@ using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Windows.Forms;
+using MapView.Forms.MapObservers.RmpViewForm;
+using MapView.TopViewForm;
 using XCom;
 
 namespace MapView.RmpViewForm
@@ -11,6 +13,8 @@ namespace MapView.RmpViewForm
         public Point Position = new Point(-1, -1);
 
         private readonly Font _font = new Font("Arial", 12, FontStyle.Bold);
+        private readonly DrawContentService _drawContentService = new DrawContentService();
+        private SolidPenBrush _wallColor;
          
         public void Calculate()
         {
@@ -23,10 +27,9 @@ namespace MapView.RmpViewForm
             try
             {
                 if (Map == null) return;
-                var lower = new GraphicsPath();
                 var upper = new GraphicsPath();
 
-                DrawWallsAndContent(lower, graphics);
+                DrawWallsAndContent(graphics);
 
                 DrawUnselectedLink(upper, graphics);
 
@@ -120,6 +123,14 @@ namespace MapView.RmpViewForm
             var map = Map;
             var startX = Origin.X;
             var startY = Origin.Y;
+            var selectedNodeColor = MapBrushes["SelectedNodeColor"];
+            var spawnNodeColor = MapBrushes["SpawnNodeColor"];
+            var unselectedNodeColor = MapBrushes["UnselectedNodeColor"];
+
+            selectedNodeColor.Color = Color.FromArgb(200, selectedNodeColor.Color);
+            spawnNodeColor.Color = Color.FromArgb(200, spawnNodeColor.Color);
+            unselectedNodeColor.Color = Color.FromArgb(200, unselectedNodeColor.Color);
+           
             for (int row = 0; row < map.MapSize.Rows; row++)
             {
                 for (int col = 0, x = startX, y = startY;
@@ -137,11 +148,17 @@ namespace MapView.RmpViewForm
 
                         //if clicked on, draw Blue
                         if (row == ClickPoint.Y && col == ClickPoint.X)
-                            g.FillPath(MapBrushes["SelectedNodeColor"], upper);
+                        {
+                            g.FillPath(selectedNodeColor, upper);
+                        }
                         else if (tile.Rmp.Usage != SpawnUsage.NoSpawn)
-                            g.FillPath(MapBrushes["SpawnNodeColor"], upper);
+                        {
+                            g.FillPath(spawnNodeColor, upper);
+                        }
                         else
-                            g.FillPath(MapBrushes["UnselectedNodeColor"], upper);
+                        {
+                            g.FillPath(unselectedNodeColor, upper);
+                        }
 
                         for (int rr = 0; rr < tile.Rmp.NumLinks; rr++)
                         {
@@ -176,8 +193,13 @@ namespace MapView.RmpViewForm
             }
         }
 
-        private void DrawWallsAndContent(GraphicsPath lower, Graphics g)
+        private void DrawWallsAndContent(Graphics g)
         {
+            if (_wallColor== null)
+                _wallColor = new SolidPenBrush(MapPens["WallColor"] );
+            _drawContentService.HWidth = DrawAreaWidth;
+            _drawContentService.HHeight = DrawAreaHeight; 
+
             var map = Map;
             for (int row = 0, startX = Origin.X, startY = Origin.Y;
                 row < map.MapSize.Rows;
@@ -189,20 +211,16 @@ namespace MapView.RmpViewForm
                 {
                     if (map[row, col] != null)
                     {
-                        lower.Reset();
-                        lower.AddLine(x, y + 2 * DrawAreaHeight, x + DrawAreaWidth, y + DrawAreaHeight);
-                        lower.AddLine(x + DrawAreaWidth, y + DrawAreaHeight, x - DrawAreaWidth, y + DrawAreaHeight);
-                        lower.CloseFigure();
                         XCMapTile tile = (XCMapTile) map[row, col];
 
                         if (tile.North != null)
-                            g.DrawLine(MapPens["WallColor"], x, y, x + DrawAreaWidth, y + DrawAreaHeight);
-
+                            _drawContentService.DrawContent(g, _wallColor, x, y, tile.North);
+                      
                         if (tile.West != null)
-                            g.DrawLine(MapPens["WallColor"], x, y, x - DrawAreaWidth, y + DrawAreaHeight);
+                            _drawContentService.DrawContent(g, _wallColor, x, y, tile.West);
 
                         if (tile.Content != null)
-                            g.FillPath(MapBrushes["ContentTiles"], lower);
+                            _drawContentService.DrawContent(g, _wallColor, x, y, tile.Content);
                     }
                 }
             }

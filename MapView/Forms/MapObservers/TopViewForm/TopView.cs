@@ -34,10 +34,7 @@ namespace MapView.TopViewForm
 			center.AutoScroll = true;
 			center.Controls.Add(_topViewPanel);
 
-			center.Resize += delegate(object sender, EventArgs e)
-			{
-				_topViewPanel.ParentSize(center.Width, center.Height);
-			};
+			center.Resize += (sender, e) => _topViewPanel.ParentSize(center.Width, center.Height);
 
 			Menu = new MainMenu();
 			MenuItem vis = Menu.MenuItems.Add("Visible");

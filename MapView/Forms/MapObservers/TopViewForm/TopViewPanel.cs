@@ -27,6 +27,10 @@ namespace MapView.TopViewForm
 
 	    public BottomPanel BottomPanel { get; set; }
 
+        private SolidPenBrush _northColor;
+        private SolidPenBrush _westColor;
+        private SolidPenBrush _contentColor;
+
 	    public int MinHeight
 		{
 			get { return MinimunHeight; }
@@ -36,31 +40,37 @@ namespace MapView.TopViewForm
 		protected override void RenderCell(MapTileBase tile, Graphics g, int x, int y)
 		{
 			XCMapTile mapTile = (XCMapTile)tile;
-			if (!BLANK)
-			{
-				if (mapTile.Ground != null && this.Ground.Checked)
-					g.FillPath(Brushes["GroundColor"], UpperPath(x,y));
+		    if (!BLANK)
+		    {
+		        if (mapTile.Ground != null && this.Ground.Checked)
+		            DrawContentService.DrawFloor(g, Brushes["GroundColor"],x,y);
 
-				if (mapTile.North != null && North.Checked)
-					g.DrawLine(Pens["NorthColor"], x, y, x + HWidth, y + HHeight);
+		        if (_northColor == null)
+		            _northColor = new SolidPenBrush(Pens["NorthColor"] );
+		        if (mapTile.North != null && North.Checked)
+                    DrawContentService.DrawContent(g, _northColor, x, y, mapTile.North);
 
-				if (mapTile.West != null && West.Checked)
-					g.DrawLine(Pens["WestColor"], x, y, x - HWidth, y + HHeight);
+		        if (_westColor == null)
+		            _westColor = new SolidPenBrush(Pens["WestColor"] );
+		        if (mapTile.West != null && West.Checked)
+                    DrawContentService.DrawContent(g, _westColor, x, y, mapTile.West);
 
-				if (mapTile.Content != null && Content.Checked)
-					g.FillPath(Brushes["ContentColor"], LowerPath(x,y));
-			}
-			else
-			{
-				if (!mapTile.DrawAbove)
-				{
-					g.FillPath(System.Drawing.Brushes.DarkGray, UpperPath(x, y));
-					g.FillPath(System.Drawing.Brushes.DarkGray, LowerPath(x, y));
-				}
-			}
+		        if (_contentColor == null)
+                    _contentColor = new SolidPenBrush(Brushes["ContentColor"], _northColor.Pen.Width);
+		        if (mapTile.Content != null && Content.Checked)
+                    DrawContentService.DrawContent(g, _contentColor, x, y, mapTile.Content);
+		    }
+		    else
+		    {
+		        if (!mapTile.DrawAbove)
+		        {
+                    DrawContentService.DrawFloor(g, Brushes["GroundColor"], x, y);
+                    DrawContentService.DrawContent(g, _contentColor, x, y, mapTile.Content);
+		        }
+		    }
 		}
 
-		protected override void OnPaint(PaintEventArgs e)
+	    protected override void OnPaint(PaintEventArgs e)
 		{
 			base.OnPaint(e);
 
@@ -79,3 +89,4 @@ namespace MapView.TopViewForm
 		}
 	}
 }
+

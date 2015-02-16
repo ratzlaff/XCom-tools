@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Drawing;
 using XCom.Interfaces;
 
@@ -152,5 +153,23 @@ namespace XCom
 
 	    public string Reference0To30 { get; set; }
 	    public string Reference30To62 { get; set; }
+
+	    public List<byte> GetLoftList()
+	    {
+	        var list = new List<byte>();
+            list.Add(Loft1);
+            list.Add(Loft2);
+            list.Add(Loft3);
+            list.Add(Loft4);
+            list.Add(Loft5);
+            list.Add(Loft6);
+            list.Add(Loft7);
+            list.Add(Loft8);
+            list.Add(Loft9);
+            list.Add(Loft10);
+            list.Add(Loft11);
+            list.Add(Loft12);
+	        return list;
+	    }
 	}
 }

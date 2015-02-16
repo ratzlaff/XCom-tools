@@ -85,7 +85,7 @@ namespace MapView.TopViewForm
 		public override void HeightChanged(IMap_Base sender, HeightChangedEventArgs e)
 		{
 			_lastLoc.Height = e.NewHeight;
-			_mapTile = (XCMapTile)map[_lastLoc.Row, _lastLoc.Col];
+            _mapTile = map[_lastLoc.Row, _lastLoc.Col] as XCMapTile;
 			Refresh();
 		}
 
