@@ -25,13 +25,14 @@ namespace XCom.GameFiles.Map.RmpData
             {
                 var result = MessageBox.Show(
                     "There are route entries outside the vertical limits of this map. Do you want to remove them?",
-                    "Incorrect Routes");
+                    "Incorrect Routes", MessageBoxButtons.YesNo);
                 if (result == DialogResult.Yes)
                 {
                     foreach (var rmpEntry in entryOutside)
                     {
                         xMap.Rmp.RemoveEntry(rmpEntry);
                     }
+                    xMap.MapChanged = true;
                 }
             }
         }
