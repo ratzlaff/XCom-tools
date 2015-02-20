@@ -71,6 +71,8 @@ namespace MapView.RmpViewForm
             this.miEdit = new System.Windows.Forms.ToolStripMenuItem();
             this.miOptions = new System.Windows.Forms.ToolStripMenuItem();
             this.connectNodesYoolStripMenuItem = new System.Windows.Forms.ToolStripComboBox();
+            this.extraHeightToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.HeightDifTextbox = new System.Windows.Forms.ToolStripTextBox();
             this.LinkGroupBox = new System.Windows.Forms.GroupBox();
             this.panel1 = new System.Windows.Forms.Panel();
             this.gbNodeInfo.SuspendLayout();
@@ -436,7 +438,9 @@ namespace MapView.RmpViewForm
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.miEdit,
-            this.connectNodesYoolStripMenuItem});
+            this.connectNodesYoolStripMenuItem,
+            this.extraHeightToolStripMenuItem,
+            this.HeightDifTextbox});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(536, 27);
@@ -467,6 +471,22 @@ namespace MapView.RmpViewForm
             "Connect Two ways"});
             this.connectNodesYoolStripMenuItem.Name = "connectNodesYoolStripMenuItem";
             this.connectNodesYoolStripMenuItem.Size = new System.Drawing.Size(154, 23);
+            // 
+            // extraHeightToolStripMenuItem
+            // 
+            this.extraHeightToolStripMenuItem.Enabled = false;
+            this.extraHeightToolStripMenuItem.ForeColor = System.Drawing.Color.Black;
+            this.extraHeightToolStripMenuItem.Name = "extraHeightToolStripMenuItem";
+            this.extraHeightToolStripMenuItem.Size = new System.Drawing.Size(86, 23);
+            this.extraHeightToolStripMenuItem.Text = "Extra Height:";
+            // 
+            // HeightDifTextbox
+            // 
+            this.HeightDifTextbox.Name = "HeightDifTextbox";
+            this.HeightDifTextbox.Size = new System.Drawing.Size(100, 23);
+            this.HeightDifTextbox.ToolTipText = "This amount will be added to the link\'s vertical position. Helps in UFO maps, whe" +
+    "n the UFO terrain maps have basements floors.";
+            this.HeightDifTextbox.TextChanged += new System.EventHandler(this.HeightDifTextbox_TextChanged);
             // 
             // LinkGroupBox
             // 
@@ -582,5 +602,7 @@ namespace MapView.RmpViewForm
     private System.Windows.Forms.ToolStripComboBox connectNodesYoolStripMenuItem;
     private System.Windows.Forms.GroupBox LinkGroupBox;
     private System.Windows.Forms.Panel panel1;
+    private System.Windows.Forms.ToolStripMenuItem extraHeightToolStripMenuItem;
+    private System.Windows.Forms.ToolStripTextBox HeightDifTextbox;
 	}
 }

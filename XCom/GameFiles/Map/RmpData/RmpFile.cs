@@ -202,6 +202,8 @@ namespace XCom
             get { return _entries.Count; }
         }
 
+        public byte ExtraHeight { get; set; }
+
         public void RemoveEntry(RmpEntry r)
         {
             int oldIdx = r.Index;

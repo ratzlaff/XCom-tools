@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.Drawing;
 using System.Collections.Generic;
 using System.Windows.Forms;
@@ -25,8 +26,9 @@ namespace MapView.RmpViewForm
         private XCMapFile _map;
         private RmpEntry _currEntry;
         private Panel _contentPane;
-         
-        private bool _loadingGui; 
+
+        private bool _loadingGui;
+        private bool _loadingMap; 
        
         private readonly List<object> _byteList = new List<object>();
 
@@ -361,19 +363,31 @@ namespace MapView.RmpViewForm
             set
             {
                 base.Map = value;
-                _map = (XCMapFile) value;
+                _map = (XCMapFile)value;
 
-                _rmpPanel.Map = _map;
-                if (_rmpPanel.Map != null)
+                _loadingMap = true;
+                try
                 {
-                    ClearSelected();
-                    FillGui();
-                    cbRank1.Items.Clear();
+                    HeightDifTextbox.Text = _map.Rmp.ExtraHeight.ToString();
 
-                    if (_map.Tiles[0][0].Palette == Palette.UFOBattle)
-                        cbRank1.Items.AddRange(RmpFile.UnitRankUFO);
-                    else
-                        cbRank1.Items.AddRange(RmpFile.UnitRankTFTD); 
+                    _currEntry = null;
+                    ClearSelected();
+
+                    _rmpPanel.Map = _map;
+                    if (_rmpPanel.Map != null)
+                    {
+                        FillGui();
+                        cbRank1.Items.Clear();
+
+                        if (_map.Tiles[0][0].Palette == Palette.UFOBattle)
+                            cbRank1.Items.AddRange(RmpFile.UnitRankUFO);
+                        else
+                            cbRank1.Items.AddRange(RmpFile.UnitRankTFTD);
+                    }
+                }
+                finally
+                {
+                    _loadingMap = false;
                 }
             }
         }
@@ -851,5 +865,19 @@ namespace MapView.RmpViewForm
             }
         }
 
+        private void HeightDifTextbox_TextChanged(object sender, EventArgs e)
+        {
+            byte byt;
+            if (byte.TryParse(HeightDifTextbox.Text, out byt))
+            {
+                _map.Rmp.ExtraHeight = byt;
+            }
+            else
+            {
+                _map.Rmp.ExtraHeight = 0;
+                HeightDifTextbox.Text = _map.Rmp.ExtraHeight.ToString();
+            }
+            if (!_loadingMap) _map.MapChanged = true;
+        }
     }
 }
