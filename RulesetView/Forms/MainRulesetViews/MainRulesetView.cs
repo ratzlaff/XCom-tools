@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Windows.Forms;
-using DSShared.Windows;
 using RulesetView.Models;
 using RulesetView.Services;
 using YamlDotNet.Serialization;
