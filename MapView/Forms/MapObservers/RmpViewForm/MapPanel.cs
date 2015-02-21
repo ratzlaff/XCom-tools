@@ -17,7 +17,7 @@ namespace MapView.RmpViewForm
         protected int DrawAreaWidth = 8;
         protected int DrawAreaHeight = 4;
 
-        protected Point ClickPoint;
+        public Point ClickPoint;
 
         public event MapPanelClickDelegate MapPanelClicked;
 

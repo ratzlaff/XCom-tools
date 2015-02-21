@@ -59,11 +59,11 @@ namespace MapView.RmpViewForm
             if (posT != null)
             {
                 var textHeight = (int)g.MeasureString("X", Font).Height;
-                var overlayPos = new Rectangle(Position.X + 18, Position.Y, 140,
+                var overlayPos = new Rectangle(Position.X + 18, Position.Y, 200,
                     textHeight + 10);
                 if (posT.Rmp != null)
                 {
-                    overlayPos.Height += textHeight * 2;
+                    overlayPos.Height += textHeight * 3;
                 }
                 if (overlayPos.X + overlayPos.Width > ClientRectangle.Width)
                 {
@@ -87,12 +87,16 @@ namespace MapView.RmpViewForm
                 if (posT.Rmp != null)
                 {
                     {
-                        var text = "Spawns: " + RmpFile.UnitRankUFO[posT.Rmp.URank1];
-                        g.DrawString(text, Font, Brushes.Black, textLeft, overlayPos.Y + 5 + textHeight);
+                        var text = "Over: " + posT.Rmp.Index;
+                        g.DrawString(text, Font, Brushes.Black, textLeft, overlayPos.Y + 5 + (textHeight ));
                     }
                     {
-                        var text = "Over: " + posT.Rmp.Index;
-                        g.DrawString(text, Font, Brushes.Black, textLeft, overlayPos.Y + 5 + (textHeight * 2));
+                        var text = "Spawns: " + RmpFile.UnitRankUFO[posT.Rmp.URank1];
+                        g.DrawString(text, Font, Brushes.Black, textLeft, overlayPos.Y + 5 + textHeight * 2);
+                    }
+                    {
+                        var text = "Importance: " + posT.Rmp.NodeImportance;
+                        g.DrawString(text, Font, Brushes.Black, textLeft, overlayPos.Y + 5 + (textHeight * 3));
                     }
                 }
             }
@@ -103,7 +107,7 @@ namespace MapView.RmpViewForm
             g.DrawString("W", _font, Brushes.Black, 0, 0);
             g.DrawString("N", _font, Brushes.Black, Width - 30, 0);
             g.DrawString("S", _font, Brushes.Black, 0, Height - _font.Height);
-            g.DrawString("E", _font, brush: System.Drawing.Brushes.Black, x: Width - 30, y: Height - _font.Height);
+            g.DrawString("E", _font, brush: Brushes.Black, x: Width - 30, y: Height - _font.Height);
         }
 
         private void DrawGridLines(Graphics g)
@@ -138,7 +142,8 @@ namespace MapView.RmpViewForm
                     col++, x += DrawAreaWidth, y += DrawAreaHeight)
                 {
                     var tile = (XCMapTile) map[row, col];
-                    if (map[row, col] != null && tile.Rmp != null)
+                    var rmpEntry = tile.Rmp;
+                    if (map[row, col] != null && rmpEntry != null)
                     {
                         upper.Reset();
                         upper.AddLine(x, y, x + DrawAreaWidth, y + DrawAreaHeight);
@@ -151,7 +156,7 @@ namespace MapView.RmpViewForm
                         {
                             g.FillPath(selectedNodeColor, upper);
                         }
-                        else if (tile.Rmp.Usage != SpawnUsage.NoSpawn)
+                        else if (rmpEntry.Usage != SpawnUsage.NoSpawn)
                         {
                             g.FillPath(spawnNodeColor, upper);
                         }
@@ -160,9 +165,9 @@ namespace MapView.RmpViewForm
                             g.FillPath(unselectedNodeColor, upper);
                         }
 
-                        for (int rr = 0; rr < tile.Rmp.NumLinks; rr++)
+                        for (int rr = 0; rr < rmpEntry.NumLinks; rr++)
                         {
-                            Link l = tile.Rmp[rr];
+                            Link l = rmpEntry[rr];
                             switch (l.Index)
                             {
                                 case Link.NOT_USED:
@@ -184,6 +189,19 @@ namespace MapView.RmpViewForm
                                             x + DrawAreaWidth, y + DrawAreaHeight);
                                     }
                                     break;
+                            }
+                        }
+
+                        if (DrawAreaHeight >= 10)
+                        {
+                            var importanceX = x - (DrawAreaWidth / 2);
+                            var importanceY = y + (DrawAreaHeight / 3 * 2);
+                            g.FillRectangle(Brushes.Gray, importanceX, importanceY, 3, 11);
+
+                            var nodeImportance = (int) rmpEntry.NodeImportance;
+                            if (nodeImportance > 0)
+                            {
+                                g.FillRectangle(Brushes.Red, importanceX + 1, importanceY + 1 + (8 - nodeImportance), 2, 1 + nodeImportance);
                             }
                         }
                     }

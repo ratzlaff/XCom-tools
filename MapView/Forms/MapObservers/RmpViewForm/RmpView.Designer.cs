@@ -27,6 +27,7 @@ namespace MapView.RmpViewForm
 		/// </summary>
 		private void InitializeComponent()
 		{
+            this.components = new System.ComponentModel.Container();
             this.cbLink5 = new System.Windows.Forms.ComboBox();
             this.cbLink4 = new System.Windows.Forms.ComboBox();
             this.cbLink3 = new System.Windows.Forms.ComboBox();
@@ -37,12 +38,10 @@ namespace MapView.RmpViewForm
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
-            this.tbZero = new System.Windows.Forms.TextBox();
             this.cbRank2 = new System.Windows.Forms.ComboBox();
             this.cbRank1 = new System.Windows.Forms.ComboBox();
             this.cbType = new System.Windows.Forms.ComboBox();
             this.lblUsage = new System.Windows.Forms.Label();
-            this.lblZero = new System.Windows.Forms.Label();
             this.lblRank2 = new System.Windows.Forms.Label();
             this.lblRank1 = new System.Windows.Forms.Label();
             this.rankLabel = new System.Windows.Forms.Label();
@@ -75,6 +74,7 @@ namespace MapView.RmpViewForm
             this.HeightDifTextbox = new System.Windows.Forms.ToolStripTextBox();
             this.LinkGroupBox = new System.Windows.Forms.GroupBox();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.gbNodeInfo.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.LinkGroupBox.SuspendLayout();
@@ -166,79 +166,66 @@ namespace MapView.RmpViewForm
             this.label5.TabIndex = 11;
             this.label5.Text = "Link1";
             // 
-            // tbZero
-            // 
-            this.tbZero.Location = new System.Drawing.Point(48, 104);
-            this.tbZero.Name = "tbZero";
-            this.tbZero.ReadOnly = true;
-            this.tbZero.Size = new System.Drawing.Size(104, 20);
-            this.tbZero.TabIndex = 9;
-            this.tbZero.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbZero_KeyDown);
-            this.tbZero.Leave += new System.EventHandler(this.tbZero_Leave);
-            // 
             // cbRank2
             // 
-            this.cbRank2.Location = new System.Drawing.Point(48, 80);
+            this.cbRank2.Location = new System.Drawing.Point(86, 80);
             this.cbRank2.Name = "cbRank2";
-            this.cbRank2.Size = new System.Drawing.Size(104, 21);
+            this.cbRank2.Size = new System.Drawing.Size(91, 21);
             this.cbRank2.TabIndex = 8;
+            this.toolTip1.SetToolTip(this.cbRank2, "How likely is an alien to go to this location");
             this.cbRank2.SelectedIndexChanged += new System.EventHandler(this.cbRank2_SelectedIndexChanged);
             // 
             // cbRank1
             // 
-            this.cbRank1.Location = new System.Drawing.Point(48, 56);
+            this.cbRank1.Location = new System.Drawing.Point(86, 56);
             this.cbRank1.Name = "cbRank1";
-            this.cbRank1.Size = new System.Drawing.Size(104, 21);
+            this.cbRank1.Size = new System.Drawing.Size(91, 21);
             this.cbRank1.TabIndex = 7;
             this.cbRank1.SelectedIndexChanged += new System.EventHandler(this.cbRank1_SelectedIndexChanged);
             // 
             // cbType
             // 
-            this.cbType.Location = new System.Drawing.Point(48, 32);
+            this.cbType.Location = new System.Drawing.Point(86, 32);
             this.cbType.Name = "cbType";
-            this.cbType.Size = new System.Drawing.Size(104, 21);
+            this.cbType.Size = new System.Drawing.Size(91, 21);
             this.cbType.TabIndex = 6;
             this.cbType.SelectedIndexChanged += new System.EventHandler(this.cbType_SelectedIndexChanged);
             // 
             // lblUsage
             // 
-            this.lblUsage.Location = new System.Drawing.Point(8, 128);
+            this.lblUsage.Location = new System.Drawing.Point(8, 107);
             this.lblUsage.Name = "lblUsage";
-            this.lblUsage.Size = new System.Drawing.Size(40, 21);
+            this.lblUsage.Size = new System.Drawing.Size(72, 21);
             this.lblUsage.TabIndex = 5;
             this.lblUsage.Text = "Spawn:";
-            // 
-            // lblZero
-            // 
-            this.lblZero.Location = new System.Drawing.Point(8, 104);
-            this.lblZero.Name = "lblZero";
-            this.lblZero.Size = new System.Drawing.Size(40, 21);
-            this.lblZero.TabIndex = 4;
-            this.lblZero.Text = "Zero:";
+            this.lblUsage.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // lblRank2
             // 
             this.lblRank2.Location = new System.Drawing.Point(8, 80);
             this.lblRank2.Name = "lblRank2";
-            this.lblRank2.Size = new System.Drawing.Size(40, 21);
+            this.lblRank2.Size = new System.Drawing.Size(72, 21);
             this.lblRank2.TabIndex = 3;
-            this.lblRank2.Text = "Flags:";
+            this.lblRank2.Text = "Importance:";
+            this.lblRank2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // lblRank1
             // 
             this.lblRank1.Location = new System.Drawing.Point(8, 56);
             this.lblRank1.Name = "lblRank1";
-            this.lblRank1.Size = new System.Drawing.Size(40, 21);
+            this.lblRank1.Size = new System.Drawing.Size(72, 21);
             this.lblRank1.TabIndex = 2;
             this.lblRank1.Text = "Rank:";
+            this.lblRank1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // rankLabel
             // 
             this.rankLabel.Location = new System.Drawing.Point(8, 32);
             this.rankLabel.Name = "rankLabel";
-            this.rankLabel.Size = new System.Drawing.Size(40, 21);
+            this.rankLabel.Size = new System.Drawing.Size(72, 21);
             this.rankLabel.TabIndex = 1;
             this.rankLabel.Text = "Type:";
+            this.rankLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // idxLabel
             // 
@@ -258,9 +245,7 @@ namespace MapView.RmpViewForm
             this.gbNodeInfo.Controls.Add(this.lblRank1);
             this.gbNodeInfo.Controls.Add(this.cbType);
             this.gbNodeInfo.Controls.Add(this.rankLabel);
-            this.gbNodeInfo.Controls.Add(this.tbZero);
             this.gbNodeInfo.Controls.Add(this.lblUsage);
-            this.gbNodeInfo.Controls.Add(this.lblZero);
             this.gbNodeInfo.Controls.Add(this.lblRank2);
             this.gbNodeInfo.Controls.Add(this.btnRemove);
             this.gbNodeInfo.Controls.Add(this.idxLabel2);
@@ -285,9 +270,9 @@ namespace MapView.RmpViewForm
             // lblMouseOver
             // 
             this.lblMouseOver.ForeColor = System.Drawing.Color.Red;
-            this.lblMouseOver.Location = new System.Drawing.Point(160, 35);
+            this.lblMouseOver.Location = new System.Drawing.Point(183, 35);
             this.lblMouseOver.Name = "lblMouseOver";
-            this.lblMouseOver.Size = new System.Drawing.Size(120, 16);
+            this.lblMouseOver.Size = new System.Drawing.Size(97, 16);
             this.lblMouseOver.TabIndex = 2;
             // 
             // copyNode
@@ -318,9 +303,9 @@ namespace MapView.RmpViewForm
             // 
             // cbUsage
             // 
-            this.cbUsage.Location = new System.Drawing.Point(48, 128);
+            this.cbUsage.Location = new System.Drawing.Point(86, 107);
             this.cbUsage.Name = "cbUsage";
-            this.cbUsage.Size = new System.Drawing.Size(104, 21);
+            this.cbUsage.Size = new System.Drawing.Size(91, 21);
             this.cbUsage.TabIndex = 10;
             this.cbUsage.SelectedIndexChanged += new System.EventHandler(this.cbUsage_SelectedIndexChanged);
             // 
@@ -545,7 +530,6 @@ namespace MapView.RmpViewForm
             this.Text = "RmpView";
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.RmpView_KeyDown);
             this.gbNodeInfo.ResumeLayout(false);
-            this.gbNodeInfo.PerformLayout();
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.LinkGroupBox.ResumeLayout(false);
@@ -561,11 +545,9 @@ namespace MapView.RmpViewForm
 		private System.Windows.Forms.Label rankLabel;
 		private System.Windows.Forms.ComboBox cbType;
 		private System.Windows.Forms.ComboBox cbRank1;
-		private System.Windows.Forms.ComboBox cbRank2;
-		private System.Windows.Forms.TextBox tbZero;
+        private System.Windows.Forms.ComboBox cbRank2;
 		private System.Windows.Forms.Label lblRank1;
-		private System.Windows.Forms.Label lblRank2;
-		private System.Windows.Forms.Label lblZero;
+        private System.Windows.Forms.Label lblRank2;
 		private System.Windows.Forms.Label lblUsage;
 		private System.Windows.Forms.Label label1;
 		private System.Windows.Forms.Label label2;
@@ -604,5 +586,6 @@ namespace MapView.RmpViewForm
     private System.Windows.Forms.Panel panel1;
     private System.Windows.Forms.ToolStripMenuItem extraHeightToolStripMenuItem;
     private System.Windows.Forms.ToolStripTextBox HeightDifTextbox;
+    private System.Windows.Forms.ToolTip toolTip1;
 	}
 }

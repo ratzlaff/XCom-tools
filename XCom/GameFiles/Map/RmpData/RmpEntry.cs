@@ -52,7 +52,7 @@ namespace XCom
 
             UType = (UnitType) data[19];
             URank1 = data[20];
-            URank2 = (UnitRankNum) data[21];
+            NodeImportance = (NodeImportance) data[21];
             Zero1 = data[22];
             Usage = (SpawnUsage) data[23];
         }
@@ -70,7 +70,7 @@ namespace XCom
             }
             UType = 0;
             URank1 = 0;
-            URank2 = 0;
+            NodeImportance = 0;
             Zero1 = 0;
             Usage = 0;
         }
@@ -106,7 +106,7 @@ namespace XCom
             }
             fs.WriteByte((byte) UType);
             fs.WriteByte((byte) URank1);
-            fs.WriteByte((byte) URank2);
+            fs.WriteByte((byte) NodeImportance);
             fs.WriteByte(Zero1);
             fs.WriteByte((byte) Usage);
         }
@@ -138,7 +138,7 @@ namespace XCom
 
         public byte URank1 { get; set; }
 
-        public UnitRankNum URank2 { get; set; }
+        public NodeImportance NodeImportance { get; set; }
 
         public byte Zero1 { get; set; }
 

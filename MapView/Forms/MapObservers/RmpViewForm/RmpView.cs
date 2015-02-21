@@ -68,15 +68,14 @@ namespace MapView.RmpViewForm
             cbUse4.DropDownStyle = ComboBoxStyle.DropDownList;
             cbUse5.DropDownStyle = ComboBoxStyle.DropDownList;
 
-            object[] itms2 =
-            {
-                UnitRankNum.Zero, UnitRankNum.One, UnitRankNum.Two, UnitRankNum.Three, UnitRankNum.Four,
-                UnitRankNum.Five, UnitRankNum.Six, UnitRankNum.Seven, UnitRankNum.Eight
-            };
-
             cbRank1.Items.AddRange(RmpFile.UnitRankUFO);
             cbRank1.DropDownStyle = ComboBoxStyle.DropDownList;
 
+            object[] itms2 =
+            {
+                NodeImportance.Zero, NodeImportance.One, NodeImportance.Two, NodeImportance.Three, NodeImportance.Four,
+                NodeImportance.Five, NodeImportance.Six, NodeImportance.Seven, NodeImportance.Eight
+            };
             cbRank2.Items.AddRange(itms2);
             cbRank2.DropDownStyle = ComboBoxStyle.DropDownList;
 
@@ -304,8 +303,7 @@ namespace MapView.RmpViewForm
             else
                 cbRank1.SelectedItem = RmpFile.UnitRankTFTD[_currEntry.URank1];
 
-            cbRank2.SelectedItem = _currEntry.URank2;
-            tbZero.Text = _currEntry.Zero1 + "";
+            cbRank2.SelectedItem = _currEntry.NodeImportance;
             cbUsage.SelectedItem = RmpFile.SpawnUsage[(byte) _currEntry.Usage];
 
             idxLabel2.Text = "Index: " + _currEntry.Index;
@@ -355,7 +353,7 @@ namespace MapView.RmpViewForm
 
         public void SetMap(object sender, SetMapEventArgs e)
         {
-            Map = (XCMapFile) e.Map;
+            Map = e.Map;
         }
 
         public override IMap_Base Map
@@ -369,9 +367,16 @@ namespace MapView.RmpViewForm
                 try
                 {
                     HeightDifTextbox.Text = _map.Rmp.ExtraHeight.ToString();
-
-                    _currEntry = null;
+                     
                     ClearSelected();
+                    
+                    var route = _map.Rmp.GetEntryAtHeight(_map.CurrentHeight);
+                    if (route != null)
+                    {
+                        _currEntry = route;
+                        _rmpPanel.ClickPoint.X = _currEntry.Row;
+                        _rmpPanel.ClickPoint.Y = _currEntry.Col;
+                    }
 
                     _rmpPanel.Map = _map;
                     if (_rmpPanel.Map != null)
@@ -391,7 +396,7 @@ namespace MapView.RmpViewForm
                 }
             }
         }
-
+         
         public override void SelectedTileChanged(IMap_Base sender, SelectedTileChangedEventArgs e)
         {
             Text = string.Format("Waypoint view: r:{0} c:{1} ", e.MapPosition.Row, e.MapPosition.Col);
@@ -416,36 +421,7 @@ namespace MapView.RmpViewForm
 
         private void cbRank2_SelectedIndexChanged(object sender, EventArgs e)
         {
-            _currEntry.URank2 = (UnitRankNum) cbRank2.SelectedItem;
-        }
-
-        private void tbZero_Leave(object sender, EventArgs e)
-        {
-            try
-            {
-                _currEntry.Zero1 = byte.Parse(tbZero.Text);
-            }
-            catch
-            {
-                tbZero.Text = _currEntry.Zero1 + "";
-            }
-        }
-
-        private void tbZero_KeyDown(object sender, System.Windows.Forms.KeyEventArgs e)
-        {
-            switch (e.KeyCode)
-            {
-                case Keys.Enter:
-                    try
-                    {
-                        _currEntry.Zero1 = byte.Parse(tbZero.Text);
-                    }
-                    catch
-                    {
-                        tbZero.Text = _currEntry.Zero1 + "";
-                    }
-                    break;
-            }
+            _currEntry.NodeImportance = (NodeImportance) cbRank2.SelectedItem;
         }
 
         private byte calcLinkDistance(RmpEntry from, RmpEntry to, TextBox result)
@@ -807,9 +783,8 @@ namespace MapView.RmpViewForm
 
         private void copyNode_Click(object sender, EventArgs e)
         {
-            var nodeText = string.Format("MVNode|{0}|{1}|{2}|{3}|{4}",
-                cbType.SelectedIndex, cbRank1.SelectedIndex, cbRank2.SelectedIndex, 
-                tbZero.Text, cbUsage.SelectedIndex);
+            var nodeText = string.Format("MVNode|{0}|{1}|{2}|{3}",
+                cbType.SelectedIndex, cbRank1.SelectedIndex, cbRank2.SelectedIndex, cbUsage.SelectedIndex);
             Clipboard.SetText(nodeText);
         }
 
@@ -821,8 +796,7 @@ namespace MapView.RmpViewForm
                 cbType.SelectedIndex = Int32.Parse(nodeData[1]);
                 cbRank1.SelectedIndex = Int32.Parse(nodeData[2]);
                 cbRank2.SelectedIndex = Int32.Parse(nodeData[3]);
-                tbZero.Text = nodeData[4];
-                cbUsage.SelectedIndex = Int32.Parse(nodeData[5]);
+                cbUsage.SelectedIndex = Int32.Parse(nodeData[4]);
             }
         }
 
