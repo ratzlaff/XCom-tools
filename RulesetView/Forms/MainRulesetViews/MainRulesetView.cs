@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Windows.Forms;
 using RulesetView.Models;
@@ -11,6 +12,9 @@ namespace RulesetView.Forms.MainRulesetViews
 {
     public partial class MainRulesetView : Form
     {
+        private readonly BindingList<CostGridModel> _costList = new BindingList<CostGridModel>();
+        private string _file;
+
         public MainRulesetView()
         {
             InitializeComponent();
@@ -19,6 +23,7 @@ namespace RulesetView.Forms.MainRulesetViews
         private void MainRulesetView_Load(object sender, System.EventArgs e)
         {
             RuleTree.Nodes.Clear();
+            CostBindingSource.DataSource = _costList;
         }
 
         private void MainRulesetView_Shown(object sender, EventArgs e)
@@ -26,80 +31,35 @@ namespace RulesetView.Forms.MainRulesetViews
             var file = AskFile();
             if (file != null)
             {
-                LoadFile(file);
+                _file = file;
+                LoadFile(_file);
             }
         }
 
         private void LoadFile(string file)
         {
-            var reader = File.OpenText(file);
-            var deserializer = new Deserializer(
-                namingConvention: new CamelCaseNamingConvention(),
-                ignoreUnmatched: true);
-            var ruleset = deserializer.Deserialize<RuleSet>(reader);
-
-            var nodeService = new NodeService();
-            var roots = nodeService.GetNodes(ruleset);
-
-            foreach (var root in roots)
+            var ruleset = ReadRuleSet(file);
+            var rulesetToTreeConverter = new RulesetToTreeConverter();
+            rulesetToTreeConverter.Convert(ruleset, RuleTree);
+            var costGridModelConverter = new CostGridModelConverter();
+            var items = costGridModelConverter.Convert(ruleset);
+            items.Sort((x, y) => (int)((y.ProfitPerHour - x.ProfitPerHour)*10M));
+            _costList.Clear();
+            foreach (var item in items)
             {
-                var treeNode = RuleTree.Nodes.Add(Guid.NewGuid().ToString());
-                SetupTreeNode(treeNode, root, null);
+                _costList.Add(item);
             }
         }
 
-        private void SetupTreeNode(TreeNode treeNode, Node node, Node parentNode)
+        private static RuleSet ReadRuleSet(string file)
         {
-            var name = GetName(node, parentNode);
-            treeNode.Text = name;
-            treeNode.Expand();
-            foreach (var childNode in node.ChildList)
+            using (var reader = File.OpenText(file))
             {
-                var childTreeNode = treeNode.Nodes.Add(Guid.NewGuid().ToString());
-                SetupTreeNode(childTreeNode, childNode, node);
+                var deserializer = new Deserializer(
+                    namingConvention: new CamelCaseNamingConvention(),
+                    ignoreUnmatched: true);
+                return  deserializer.Deserialize<RuleSet>(reader);
             }
-        }
-
-        private static string GetName(Node node, Node parentNode)
-        {
-            var name = GetSimpleName(node.Name);
-            var manu = node as Node<ManufactureItem>;
-            if (manu != null)
-            {
-                var otherDepend = GetOtherDepend(parentNode, manu.Data.Requirements);
-                name = "(Manufacture) " + name + otherDepend;
-            }
-            var rese = node as Node<ResearchItem>;
-            if (rese != null)
-            {
-                var otherDepend = GetOtherDepend(parentNode, rese.Data.Dependencies);
-                name = "(Research) " + name + otherDepend;
-            }
-            return name;
-        }
-
-        private static string GetSimpleName(string name)
-        {
-            if (string.IsNullOrEmpty(name)) name = "Without name";
-            name = name.Replace("STR_", "");
-            name = name.Replace("_", " ");
-            return name;
-        }
-
-        private static string GetOtherDepend(Node parent, string[] requirements)
-        {
-            var otherDepend = string.Empty;
-            if (requirements == null) return null;
-            if (parent == null) return null;
-            foreach (var dependency in requirements)
-            {
-                if (dependency == parent.Name) continue;
-                var dependName = GetSimpleName(dependency);
-                if (!string.IsNullOrEmpty(otherDepend)) otherDepend += ",  ";
-                otherDepend += dependName;
-            }
-            if (string.IsNullOrEmpty(otherDepend)) return null;
-            return "  [ Also requires:  " + otherDepend + " ]";
         }
 
         private string AskFile()
@@ -110,6 +70,11 @@ namespace RulesetView.Forms.MainRulesetViews
                 return form.FileName;
             }
             return null;
+        }
+
+        private void RefreshButton_Click(object sender, EventArgs e)
+        {
+            LoadFile(_file);
         }
     }
 }

@@ -7,9 +7,9 @@ namespace RulesetView.Models
         [YamlMember(Alias = "name")]
         public string Name { get; set; }
 
-        public string Cost { get; set; }
+        public int Cost { get; set; }
 
-        public string Points { get; set; }
+        public int Points { get; set; }
 
         [YamlMember(Alias = "dependencies")]
         public string[] Dependencies { get; set; }

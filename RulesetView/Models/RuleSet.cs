@@ -9,5 +9,11 @@ namespace RulesetView.Models
 
         [YamlMember(Alias = "research")]
         public ResearchItem[] ResearchItems { get; set; }
+
+        [YamlMember(Alias = "items")]
+        public Item[] Items { get; set; }
+
+        [YamlMember(Alias = "crafts")]
+        public CraftItem[] Crafts { get; set; }
     }
 }
