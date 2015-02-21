@@ -381,13 +381,13 @@ namespace MapView.RmpViewForm
                     _rmpPanel.Map = _map;
                     if (_rmpPanel.Map != null)
                     {
-                        FillGui();
                         cbRank1.Items.Clear();
-
                         if (_map.Tiles[0][0].Palette == Palette.UFOBattle)
                             cbRank1.Items.AddRange(RmpFile.UnitRankUFO);
                         else
                             cbRank1.Items.AddRange(RmpFile.UnitRankTFTD);
+                     
+                        FillGui();
                     }
                 }
                 finally
