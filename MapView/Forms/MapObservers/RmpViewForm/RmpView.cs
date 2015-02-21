@@ -374,8 +374,8 @@ namespace MapView.RmpViewForm
                     if (route != null)
                     {
                         _currEntry = route;
-                        _rmpPanel.ClickPoint.X = _currEntry.Row;
-                        _rmpPanel.ClickPoint.Y = _currEntry.Col;
+                        _rmpPanel.ClickPoint.X = _currEntry.Col;
+                        _rmpPanel.ClickPoint.Y = _currEntry.Row;
                     }
 
                     _rmpPanel.Map = _map;

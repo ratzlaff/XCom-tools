@@ -199,12 +199,13 @@ namespace MapView.RmpViewForm
                             g.FillRectangle(Brushes.Gray, importanceX, importanceY, 3, 10);
                             g.DrawRectangle(Pens.Black, importanceX, importanceY, 3, 10);
 
-                            var maxNodeImportance = 8;
+                            const int MAX_NODE_IMPORTANCE = 8;
                             var nodeImportance = (int) rmpEntry.NodeImportance;
+                            if (nodeImportance > MAX_NODE_IMPORTANCE) nodeImportance = MAX_NODE_IMPORTANCE;
                             if (nodeImportance > 0)
                             {
                                 g.FillRectangle(Brushes.Red, 
-                                    importanceX + 1, importanceY + 1 + (maxNodeImportance - nodeImportance), 
+                                    importanceX + 1, importanceY + 1 + (MAX_NODE_IMPORTANCE - nodeImportance), 
                                     2, 1 + nodeImportance);
                             }
                         }

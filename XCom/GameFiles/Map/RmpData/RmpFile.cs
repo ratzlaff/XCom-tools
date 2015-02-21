@@ -94,7 +94,7 @@ namespace XCom
 	public enum UnitRankTFTD:byte{Civilian=0,XCom,Soldier,SquadLeader,LeaderCommander,Medic,Misc1,Technician,Misc2};
 	public enum SpawnUsage:byte{NoSpawn=0,Spawn1=1,Spawn2=2,Spawn3=3,Spawn4=4,Spawn5=5,Spawn6=6,Spawn7=7,Spawn8=8,Spawn9=9,Spawn10=10};
 
-	public enum NodeImportance:byte{Zero=0,One,Two,Three,Four,Five,Six,Seven,Eight};
+	public enum NodeImportance:byte{Zero=0,One,Two,Three,Four,Five,Six,Seven,Eight,Nine,Ten};
 	public enum LinkTypes:byte{NotUsed=0xFF,ExitNorth=0xFE,ExitEast=0xFD,ExitSouth=0xFC,ExitWest=0xFB};
 
 
