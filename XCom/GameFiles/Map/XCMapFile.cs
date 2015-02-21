@@ -302,7 +302,11 @@ namespace XCom
 
             // Set tile
             foreach (RmpEntry re in rmp)
-                ((XCMapTile)this[re.Row, re.Col, re.Height]).Rmp = re;
+            {
+                var tile = this[re.Row, re.Col, re.Height];
+                if (tile == null) continue;
+                ((XCMapTile)tile).Rmp = re;
+            }
         }
 	}
 }

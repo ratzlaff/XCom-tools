@@ -196,12 +196,16 @@ namespace MapView.RmpViewForm
                         {
                             var importanceX = x - (DrawAreaWidth / 2);
                             var importanceY = y + (DrawAreaHeight / 3 * 2);
-                            g.FillRectangle(Brushes.Gray, importanceX, importanceY, 3, 11);
+                            g.FillRectangle(Brushes.Gray, importanceX, importanceY, 3, 10);
+                            g.DrawRectangle(Pens.Black, importanceX, importanceY, 3, 10);
 
+                            var maxNodeImportance = 8;
                             var nodeImportance = (int) rmpEntry.NodeImportance;
                             if (nodeImportance > 0)
                             {
-                                g.FillRectangle(Brushes.Red, importanceX + 1, importanceY + 1 + (8 - nodeImportance), 2, 1 + nodeImportance);
+                                g.FillRectangle(Brushes.Red, 
+                                    importanceX + 1, importanceY + 1 + (maxNodeImportance - nodeImportance), 
+                                    2, 1 + nodeImportance);
                             }
                         }
                     }
