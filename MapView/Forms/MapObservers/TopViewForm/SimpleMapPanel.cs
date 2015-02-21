@@ -137,16 +137,16 @@ namespace MapView.TopViewForm
 	    private static Point GetDragEnd()
 	    {
 	        var e = new Point(0, 0);
-	        e.X = Math.Max(MapViewPanel.Instance.View.StartDrag.X, MapViewPanel.Instance.View.EndDrag.X);
-	        e.Y = Math.Max(MapViewPanel.Instance.View.StartDrag.Y, MapViewPanel.Instance.View.EndDrag.Y);
+	        e.X = Math.Max(MapViewPanel.Instance.View.DragStart.X, MapViewPanel.Instance.View.DragEnd.X);
+	        e.Y = Math.Max(MapViewPanel.Instance.View.DragStart.Y, MapViewPanel.Instance.View.DragEnd.Y);
 	        return e;
 	    }
 
 	    private static Point GetDragStart()
 	    {
 	        var s = new Point(0, 0);
-	        s.X = Math.Min(MapViewPanel.Instance.View.StartDrag.X, MapViewPanel.Instance.View.EndDrag.X);
-	        s.Y = Math.Min(MapViewPanel.Instance.View.StartDrag.Y, MapViewPanel.Instance.View.EndDrag.Y);
+	        s.X = Math.Min(MapViewPanel.Instance.View.DragStart.X, MapViewPanel.Instance.View.DragEnd.X);
+	        s.Y = Math.Min(MapViewPanel.Instance.View.DragStart.Y, MapViewPanel.Instance.View.DragEnd.Y);
 	        return s;
 	    }
 
@@ -267,8 +267,8 @@ namespace MapView.TopViewForm
 
 			Point p = new Point(col, row);
 		    ;
-			MapViewPanel.Instance.View.StartDrag = p;
-			MapViewPanel.Instance.View.EndDrag = p;
+			MapViewPanel.Instance.View.DragStart = p;
+			MapViewPanel.Instance.View.DragEnd = p;
 		}
 
 		private bool mDown = false;
@@ -290,7 +290,7 @@ namespace MapView.TopViewForm
 
 				if (mDown)
 				{
-					MapViewPanel.Instance.View.EndDrag = new Point(col,row);
+					MapViewPanel.Instance.View.DragEnd = new Point(col,row);
 					MapViewPanel.Instance.View.Refresh();
 				    if (e.Button == MouseButtons.Left)
 				    {

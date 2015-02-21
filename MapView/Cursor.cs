@@ -32,17 +32,19 @@ namespace MapView
 			get{return cursorFile;}
 		}
 
-		public void DrawHigh(Graphics g, int x, int y, int i,bool over,bool top)
+		public void DrawHigh(Graphics g, int x, int y, bool over,bool top)
 		{
-			if(top && state!=CursorState.Aim)
-			{
-				if(over)				
-					g.DrawImage(cursorFile[1].Image,x,y);
-				else
-					g.DrawImage(cursorFile[0].Image,x,y);
-			}
-			else
-				g.DrawImage(cursorFile[2].Image,x,y);
+		    if (top && state != CursorState.Aim)
+		    {
+		        if (over)
+		            g.DrawImage(cursorFile[1].Image, x, y);
+		        else
+		            g.DrawImage(cursorFile[0].Image, x, y);
+		    }
+		    else
+		    {
+		        g.DrawImage(cursorFile[2].Image, x, y);
+		    }
 		}
 
 		public void DrawLow(Graphics g, int x, int y, int i,bool over,bool top)

@@ -44,10 +44,7 @@ namespace XCom
 						break; 
 		/* mapedit */case "images": 
 						imageInfo = new ImageInfo(kv.Rest, vars); 
-						break;
-					case "useBlanks":
-						Globals.UseBlanks = bool.Parse(kv.Rest);
-						break;
+						break; 
 					default:
 						if (ParseLine != null)
 							ParseLine(kv, vars);

@@ -6,7 +6,6 @@ namespace MapView
 	{
 		public static int PckImageScale=1;
 
-		public static bool UseGray{get{return true;}}
 		public static readonly string RegistryKey = "MapView";
 
 		private static XCom.PckFile extraTiles = null;

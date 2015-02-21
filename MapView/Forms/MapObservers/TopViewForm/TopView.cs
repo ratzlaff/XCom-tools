@@ -177,11 +177,11 @@ namespace MapView.TopViewForm
 	        var s = new Point(0, 0);
 	        var e = new Point(0, 0);
 
-	        s.X = Math.Min(MapViewPanel.Instance.View.StartDrag.X, MapViewPanel.Instance.View.EndDrag.X);
-	        s.Y = Math.Min(MapViewPanel.Instance.View.StartDrag.Y, MapViewPanel.Instance.View.EndDrag.Y);
+	        s.X = Math.Min(MapViewPanel.Instance.View.DragStart.X, MapViewPanel.Instance.View.DragEnd.X);
+	        s.Y = Math.Min(MapViewPanel.Instance.View.DragStart.Y, MapViewPanel.Instance.View.DragEnd.Y);
 
-	        e.X = Math.Max(MapViewPanel.Instance.View.StartDrag.X, MapViewPanel.Instance.View.EndDrag.X);
-	        e.Y = Math.Max(MapViewPanel.Instance.View.StartDrag.Y, MapViewPanel.Instance.View.EndDrag.Y);
+	        e.X = Math.Max(MapViewPanel.Instance.View.DragStart.X, MapViewPanel.Instance.View.DragEnd.X);
+	        e.Y = Math.Max(MapViewPanel.Instance.View.DragStart.Y, MapViewPanel.Instance.View.DragEnd.Y);
 
 	        //row   col
 	        //y     x

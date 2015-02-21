@@ -41,8 +41,6 @@ namespace MapView.Forms.MainWindow
             RegisterForm(MainWindowsManager.TileView, "TileView", _showMenu);
             RegisterForm(MainWindowsManager.RmpView, "RmpView", _showMenu);
 
-            if (XCom.Globals.UseBlanks)
-                RegisterForm(_mapView.BlankForm, "Blank Info", _showMenu);
             RegisterForm(_consoleSharedSpace.GetNewConsole(), "Console", _showMenu);
 
             RegisterForm(MainWindowsManager.HelpScreen, "Quick Help", _miHelp);

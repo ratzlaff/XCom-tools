@@ -48,10 +48,10 @@ namespace XCom
 					for (int h = 0; h < MapSize.Height; h++)
 						for (int r = 0; r < MapSize.Rows; r++)
 							for (int c = 0; c < MapSize.Cols; c++)
-								((XCMapTile)this[r, c, h]).DrawAbove = true;
+								this[r, c, h].DrawAbove = true;
 				}
 			}
-			else if (blankPath != "" && Globals.UseBlanks)
+            else if (!string.IsNullOrEmpty(blankPath))
 			{
 				CalcDrawAbove();
 				SaveBlanks();

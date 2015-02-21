@@ -556,14 +556,15 @@ namespace MapView
 
 		private void miHq_Click(object sender, System.EventArgs e)
 		{
-			if (_mapView.Map is XCMapFile)
+		    var map = _mapView.Map as XCMapFile;
+		    if (map != null)
 			{
-				((XCMapFile)_mapView.Map).Hq2x();
-				_mapView.View.Resize();
+				map.Hq2x();
+                _mapView.View.OnResize();
 			}
 		}
 
-		private void miDoors_Click(object sender, System.EventArgs e)
+	    private void miDoors_Click(object sender, System.EventArgs e)
 		{
 			miDoors.Checked = !miDoors.Checked;
 

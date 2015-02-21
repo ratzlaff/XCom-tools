@@ -8,19 +8,12 @@ namespace XCom
 
 	public static class Globals
 	{
-		private static bool useBlanks=false;
 		public static int HalfWidth = 16;
 	    public static int HalfHeight = 8;
 
 	    public static string RegistryKey
 		{
 			get{return "ViewSuite";}
-		}
-
-		public static bool UseBlanks
-		{
-			get{return useBlanks;}
-			set{useBlanks=value;}
 		}
 
 		/// <summary>
