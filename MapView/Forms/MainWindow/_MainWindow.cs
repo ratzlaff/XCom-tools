@@ -106,6 +106,7 @@ namespace MapView
 
 			toolStripContainer1.ContentPanel.Controls.Add(_mapView);
             MainWindowsManager.MainToolStripButtonsFactory.MakeToolstrip(toolStrip);
+		    AddDrawSelectionBoxButton();
 		    toolStrip.Enabled = false;
 			toolStrip.Items.Add(new ToolStripSeparator());
 
@@ -182,6 +183,29 @@ namespace MapView
 			Show();
 			LogFile.Instance.Close();			
 		}
+
+	    private void AddDrawSelectionBoxButton()
+	    {
+	        toolStrip.Items.Add(new ToolStripSeparator());
+	        var drawSelectionBoxButton = new ToolStripButton();
+	        toolStrip.Items.Add(drawSelectionBoxButton);
+
+	        // 
+	        // btnFill
+	        // 
+	        drawSelectionBoxButton.AutoSize = false;
+	        drawSelectionBoxButton.DisplayStyle = ToolStripItemDisplayStyle.Text;
+	        drawSelectionBoxButton.Name = "btnFill";
+	        drawSelectionBoxButton.Size = new Size(75, 25);
+	        drawSelectionBoxButton.Text = @"Selection Box";
+	        drawSelectionBoxButton.ToolTipText = @"Draws a selection box in the floor";
+	        drawSelectionBoxButton.Click +=
+	            (sender, args) =>
+	            {
+	                _mapView.View.DrawSelectionBox = !_mapView.View.DrawSelectionBox;
+                    drawSelectionBoxButton.Checked = !drawSelectionBoxButton.Checked;
+	            };
+	    }
 
 	    private static void InitGameInfo(PathInfo pathsFile)
 	    {
