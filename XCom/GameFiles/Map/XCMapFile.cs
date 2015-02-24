@@ -91,30 +91,28 @@ namespace XCom
 
 		public void CalcDrawAbove()
 		{
-			for (int h = MapSize.Height - 1; h >= 0; h--)
-				for (int row = 0; row < MapSize.Rows; row++)
-				{
-					for (int col = 0; col < MapSize.Cols; col++)
-					{
-						if (this[row, col, h] == null)
-							continue;
-
-						try
-						{
-							if (((XCMapTile)this[row, col, h - 1]).Ground != null && //top
-								((XCMapTile)this[row + 1, col, h - 1]).Ground != null && //south
-								((XCMapTile)this[row + 2, col, h - 1]).Ground != null &&
-								((XCMapTile)this[row + 1, col + 1, h - 1]).Ground != null && //southeast
-								((XCMapTile)this[row + 2, col + 1, h - 1]).Ground != null &&
-								((XCMapTile)this[row + 2, col + 2, h - 1]).Ground != null &&
-								((XCMapTile)this[row, col + 1, h - 1]).Ground != null && //east
-								((XCMapTile)this[row, col + 2, h - 1]).Ground != null &&
-								((XCMapTile)this[row + 1, col + 2, h - 1]).Ground != null)
-								((XCMapTile)this[row, col, h]).DrawAbove = false;
-						}
-						catch { }
-					}
-				}
+            for (int h = MapSize.Height - 1; h >= 0; h--)
+            {
+                for (int row = 0; row < MapSize.Rows - 2; row++)
+                {
+                    for (int col = 0; col < MapSize.Cols -2; col++)
+                    {
+                        if (this[row, col, h] == null) continue;
+                        if (h - 1 < 0) continue;
+                        var mapTileHl1 = (XCMapTile)this[row, col, h - 1];
+                        if (mapTileHl1 != null && mapTileHl1.Ground != null && //top
+                            ((XCMapTile)this[row + 1, col, h - 1]).Ground != null && //south
+                            ((XCMapTile)this[row + 2, col, h - 1]).Ground != null &&
+                            ((XCMapTile)this[row + 1, col + 1, h - 1]).Ground != null && //southeast
+                            ((XCMapTile)this[row + 2, col + 1, h - 1]).Ground != null &&
+                            ((XCMapTile)this[row + 2, col + 2, h - 1]).Ground != null &&
+                            ((XCMapTile)this[row, col + 1, h - 1]).Ground != null && //east
+                            ((XCMapTile)this[row, col + 2, h - 1]).Ground != null &&
+                            ((XCMapTile)this[row + 1, col + 2, h - 1]).Ground != null)
+                            this[row, col, h].DrawAbove = false;
+                    }
+                }
+            }
 		}
          
 		/// <summary>

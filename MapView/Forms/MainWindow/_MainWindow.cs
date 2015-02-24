@@ -4,7 +4,7 @@ using System.ComponentModel;
 using System.Windows.Forms;
 using MapView.Forms.Error.WarningConsole;
 using MapView.Forms.MainWindow;
-using MapView.Forms.MapObservers.RmpViewForm;
+using MapView.Forms.MapObservers.RmpViews;
 using MapView.SettingServices;
 using XCom;
 using XCom.GameFiles.Map;
@@ -92,7 +92,7 @@ namespace MapView
 		    LogFile.Instance.WriteLine("GameInfo.Init done");
 
             _mainWindowsMenuItemManager.Register();
-            MainWindowsManager.TileView.MapChanged += TileView_MapChanged;
+            MainWindowsManager.TileView.TileViewControl.MapChanged += TileView_MapChanged;
 
 			LogFile.Instance.WriteLine("Palette transparencies set");
 
@@ -405,7 +405,7 @@ namespace MapView
 
 		private void update(object sender, EventArgs e)
 		{
-			MainWindowsManager.TopView.BottomPanel.Refresh();
+			MainWindowsManager.TopView.TopViewControl.BottomPanel.Refresh();
 		}
 
 		private static void myQuit(object sender, string command)

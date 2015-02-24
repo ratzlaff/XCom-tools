@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Text;
 using System.Windows.Forms;
+using MapView.Forms.MapObservers;
 using XCom;
 using XCom.Interfaces.Base;
 
@@ -52,7 +53,7 @@ namespace MapView.Forms.MainWindow
             form.Closing += FormClosing;
 
             form.Text = title;
-            MenuItem mi = new MenuItem(title);
+            var mi = new MenuItem(title);
             mi.Tag = form;
 
             if (form is IMenuItem)
@@ -60,13 +61,14 @@ namespace MapView.Forms.MainWindow
                 ((IMenuItem) form).MenuItem = mi;
             }
 
-            var observerForm = form as Map_Observer_Form;
+            var observerForm = form as IMapObserverFormProvider;
             if (observerForm != null)
             {
-                observerForm.LoadDefaultSettings();
-                observerForm.RegistryInfo = new DSShared.Windows.RegistryInfo(form, title);
+                var observer = observerForm.MapObserver;
+                observer.LoadDefaultSettings();
+                observer.RegistryInfo = new DSShared.Windows.RegistryInfo(form, title);
 
-                _settingsHash.Add(title, ((Map_Observer_Form)form).Settings);
+                _settingsHash.Add(title, observer.Settings);
             }
 
             form.ShowInTaskbar = false;

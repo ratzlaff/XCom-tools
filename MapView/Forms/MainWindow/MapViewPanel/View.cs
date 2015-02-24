@@ -7,7 +7,6 @@ using XCom;
 using XCom.Interfaces;
 using System.Collections;
 using XCom.Interfaces.Base;
-using MapView.TopViewForm;
 
 namespace MapView
 {
@@ -433,7 +432,7 @@ namespace MapView
 
         private void drawTile(Graphics g, XCMapTile mt, int x, int y)
         {
-            var topView = MainWindowsManager.TopView;
+            var topView = MainWindowsManager.TopView.TopViewControl;
             if (mt.Ground != null && topView.GroundVisible)
                 g.DrawImage(mt.Ground[MapViewPanel.Current].Image, x, y - mt.Ground.Info.TileOffset);
 
@@ -449,7 +448,7 @@ namespace MapView
 
         private void DrawTileGray(Graphics g, XCMapTile mt, int x, int y)
         {
-            var topView = MainWindowsManager.TopView;
+            var topView = MainWindowsManager.TopView.TopViewControl ;
             if (mt.Ground != null && topView.GroundVisible)
                 g.DrawImage(mt.Ground[MapViewPanel.Current].Gray, x, y - mt.Ground.Info.TileOffset);
 

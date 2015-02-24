@@ -416,7 +416,7 @@ namespace MapView.Forms.MapObservers.RmpViews
             this._contentPane.Dock = System.Windows.Forms.DockStyle.Fill;
             this._contentPane.Location = new System.Drawing.Point(0, 27);
             this._contentPane.Name = "_contentPane";
-            this._contentPane.Size = new System.Drawing.Size(536, 206);
+            this._contentPane.Size = new System.Drawing.Size(502, 174);
             this._contentPane.TabIndex = 2;
             // 
             // menuStrip1
@@ -428,12 +428,9 @@ namespace MapView.Forms.MapObservers.RmpViews
             this.HeightDifTextbox});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(536, 27);
+            this.menuStrip1.Size = new System.Drawing.Size(502, 27);
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
-            this.Controls.Add(this.menuStrip1);
-            this.menuStrip1.ResumeLayout(false);
-            this.menuStrip1.PerformLayout();
             // 
             // miEdit
             // 
@@ -503,7 +500,7 @@ namespace MapView.Forms.MapObservers.RmpViews
             this.LinkGroupBox.Dock = System.Windows.Forms.DockStyle.Fill;
             this.LinkGroupBox.Location = new System.Drawing.Point(293, 3);
             this.LinkGroupBox.Name = "LinkGroupBox";
-            this.LinkGroupBox.Size = new System.Drawing.Size(243, 187);
+            this.LinkGroupBox.Size = new System.Drawing.Size(209, 187);
             this.LinkGroupBox.TabIndex = 3;
             this.LinkGroupBox.TabStop = false;
             this.LinkGroupBox.Text = "Node Link Information";
@@ -513,20 +510,23 @@ namespace MapView.Forms.MapObservers.RmpViews
             this.panel1.Controls.Add(this.LinkGroupBox);
             this.panel1.Controls.Add(this.gbNodeInfo);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel1.Location = new System.Drawing.Point(0, 233);
+            this.panel1.Location = new System.Drawing.Point(0, 201);
             this.panel1.Name = "panel1";
             this.panel1.Padding = new System.Windows.Forms.Padding(0, 3, 0, 0);
-            this.panel1.Size = new System.Drawing.Size(536, 190);
+            this.panel1.Size = new System.Drawing.Size(502, 190);
             this.panel1.TabIndex = 4;
             // 
             // RmpView
             // 
             this.Controls.Add(this._contentPane);
             this.Controls.Add(this.panel1);
+            this.Controls.Add(this.menuStrip1);
             this.Name = "RmpView";
-            this.Text = "RmpView";
+            this.Size = new System.Drawing.Size(502, 391);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.RmpView_KeyDown);
             this.gbNodeInfo.ResumeLayout(false);
+            this.menuStrip1.ResumeLayout(false);
+            this.menuStrip1.PerformLayout();
             this.LinkGroupBox.ResumeLayout(false);
             this.LinkGroupBox.PerformLayout();
             this.panel1.ResumeLayout(false);

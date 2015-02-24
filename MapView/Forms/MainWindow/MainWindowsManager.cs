@@ -1,7 +1,6 @@
-using System;
-using MapView.RmpViewForm;
-using MapView.TopViewForm;
-using XCom;
+using MapView.Forms.MapObservers.RmpViews;
+using MapView.Forms.MapObservers.TileViews;
+using MapView.Forms.MapObservers.TopViews;
 using XCom.Interfaces.Base;
 
 namespace MapView.Forms.MainWindow
@@ -11,42 +10,46 @@ namespace MapView.Forms.MainWindow
         public static IMainWindowsShowAllManager MainWindowsShowAllManager;
         public static readonly MainToolStripButtonsFactory MainToolStripButtonsFactory = new MainToolStripButtonsFactory();
 
-        private static TileView _tileView;
-        private static TopView _topView;
-        private static RmpView _rmpView;
+        private static TileViewForm _tileView;
+        private static TopViewForm _topView;
+        private static RmpViewForm _rmpView;
         private static HelpScreen _helpScreen;
         private static AboutWindow _aboutWindow;
 
-        public static TileView TileView
+        public static TileViewForm TileView
         {
             get
             {
                 if (_tileView == null)
                 {
-                    _tileView = new TileView(MainWindowsShowAllManager);
-                    _tileView.SelectedTileTypeChanged += _tileView_SelectedTileTypeChanged;
+                    _tileView = new TileViewForm();
+                    _tileView.TileViewControl.Initialize(MainWindowsShowAllManager);
+                    _tileView.TileViewControl.SelectedTileTypeChanged += _tileView_SelectedTileTypeChanged;
                 }
                 return _tileView;
             }
         }
 
-        public static TopView TopView
+        public static TopViewForm TopView
         {
             get
             {
                 if (_topView == null)
-                    _topView = new TopView(MainToolStripButtonsFactory);
+                {
+                    _topView = new TopViewForm();
+                    _topView.TopViewControl.Initialize(MainToolStripButtonsFactory);
+                }
 
                 return _topView;
             }
         }
 
-        public static RmpView RmpView
+        public static RmpViewForm RmpView
         {
             get
             {
                 if (_rmpView == null)
-                    _rmpView = new RmpView();
+                    _rmpView = new RmpViewForm();
                 return _rmpView;
             }
         }
@@ -73,7 +76,12 @@ namespace MapView.Forms.MainWindow
 
         public void SetMap(IMap_Base map)
         {
-            var maps = new Map_Observer_Form[] {TileView ,TopView, RmpView};
+            var maps = new[]
+            {
+                TileView.MapObserver, 
+                TopView.MapObserver,
+                RmpView.MapObserver
+            };
             foreach (var frm in maps)
             {
                 if (frm != null)
@@ -89,7 +97,7 @@ namespace MapView.Forms.MainWindow
             if (newTile != null &&  
                 newTile.Info != null )
             {
-                TopView.SetSelectedQuadrantFrom(newTile.Info.TileType);
+                TopView.TopViewControl.SetSelectedQuadrantFrom(newTile.Info.TileType);
             }
         }
 

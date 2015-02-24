@@ -51,7 +51,7 @@ namespace MapView.Forms.MainWindow
             btnFill.Size = new Size(25, 25);
             btnFill.Text = "Fill";
             btnFill.ToolTipText = "Fill";
-            btnFill.Click += MainWindowsManager.TopView.Fill_Click;
+            btnFill.Click += MainWindowsManager.TopView.TopViewControl.Fill_Click;
 
             // 
             // btnUp
@@ -59,9 +59,9 @@ namespace MapView.Forms.MainWindow
             btnUp.AutoSize = false;
             btnUp.DisplayStyle = ToolStripItemDisplayStyle.Image;
             btnUp.ImageScaling = ToolStripItemImageScaling.None;
-            btnUp.ImageTransparentColor = System.Drawing.Color.Magenta;
+            btnUp.ImageTransparentColor = Color.Magenta;
             btnUp.Name = "btnUp";
-            btnUp.Size = new System.Drawing.Size(25, 25);
+            btnUp.Size = new Size(25, 25);
             btnUp.Text = "toolStripButton1";
             btnUp.ToolTipText = "Level Up";
             btnUp.Click += btnUp_Click;
