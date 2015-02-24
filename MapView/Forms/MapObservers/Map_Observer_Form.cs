@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Text;
 using System.Windows.Forms;
 using DSShared.Windows;
@@ -8,7 +9,7 @@ using XCom;
 
 namespace MapView
 {
-    public class Map_Observer_Form : Form, IMap_Observer, IMenuItem
+    public class Map_Observer_Form  : UserControl,  IMap_Observer, IMenuItem
 	{
         private IMap_Base _map;
 		private RegistryInfo _registryInfo;
@@ -19,12 +20,7 @@ namespace MapView
 		{
 			_moreObservers = new Dictionary<string, IMap_Observer>();
 			_settings = new Settings();
-			Load += Map_Observer_Form_Load;
-        }
-
-		private void Map_Observer_Form_Load(object sender, EventArgs e)
-		{
-        }
+        } 
 
 		public virtual void LoadDefaultSettings(   ){}
 
@@ -38,8 +34,10 @@ namespace MapView
 			get { return _moreObservers; }
 		}
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public MenuItem MenuItem { get; set; }
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public RegistryInfo RegistryInfo
 		{
 			get { return _registryInfo; }
@@ -54,7 +52,8 @@ namespace MapView
 		protected virtual void OnRISettingsSave(RegistrySaveLoadEventArgs e) { }
 		protected virtual void OnRISettingsLoad(RegistrySaveLoadEventArgs e) { }
 
-		public virtual IMap_Base Map
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public virtual IMap_Base Map
 		{
 			get { return _map; }
 			set { _map = value; Refresh(); }
