@@ -4,7 +4,7 @@ namespace MapView
 {	
 	public class Globals
 	{
-		public static int PckImageScale=1;
+		public static double PckImageScale=1;
 
 		public static readonly string RegistryKey = "MapView";
 

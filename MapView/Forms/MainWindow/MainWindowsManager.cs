@@ -5,10 +5,10 @@ using XCom.Interfaces.Base;
 
 namespace MapView.Forms.MainWindow
 {
-    public class MainWindowsManager
+    public class MainWindowsManager   
     {
         public static IMainWindowsShowAllManager MainWindowsShowAllManager;
-        public static readonly MainToolStripButtonsFactory MainToolStripButtonsFactory = new MainToolStripButtonsFactory();
+        public static MainToolStripButtonsFactory MainToolStripButtonsFactory;
 
         private static TileViewForm _tileView;
         private static TopViewForm _topView;

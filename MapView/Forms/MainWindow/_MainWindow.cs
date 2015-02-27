@@ -57,6 +57,7 @@ namespace MapView
             _warningHandler = new ConsoleWarningHandler(consoleSharedSpace);
 
             MainWindowsManager.MainWindowsShowAllManager = new MainWindowsShowAllManager(consoleSharedSpace);
+            MainWindowsManager.MainToolStripButtonsFactory = new MainToolStripButtonsFactory(_mapView);
 
             _mainWindowsManager = new MainWindowsManager();
             _mainWindowsMenuItemManager = new MainWindowsMenuItemManager(
@@ -106,7 +107,6 @@ namespace MapView
 
 			toolStripContainer1.ContentPanel.Controls.Add(_mapView);
             MainWindowsManager.MainToolStripButtonsFactory.MakeToolstrip(toolStrip);
-		    AddDrawSelectionBoxButton();
 		    toolStrip.Enabled = false;
 			toolStrip.Items.Add(new ToolStripSeparator());
 
@@ -183,30 +183,7 @@ namespace MapView
 			Show();
 			LogFile.Instance.Close();			
 		}
-
-	    private void AddDrawSelectionBoxButton()
-	    {
-	        toolStrip.Items.Add(new ToolStripSeparator());
-	        var drawSelectionBoxButton = new ToolStripButton();
-	        toolStrip.Items.Add(drawSelectionBoxButton);
-
-	        // 
-	        // btnFill
-	        // 
-	        drawSelectionBoxButton.AutoSize = false;
-	        drawSelectionBoxButton.DisplayStyle = ToolStripItemDisplayStyle.Text;
-	        drawSelectionBoxButton.Name = "btnFill";
-	        drawSelectionBoxButton.Size = new Size(75, 25);
-	        drawSelectionBoxButton.Text = @"Selection Box";
-	        drawSelectionBoxButton.ToolTipText = @"Draws a selection box in the floor";
-	        drawSelectionBoxButton.Click +=
-	            (sender, args) =>
-	            {
-	                _mapView.View.DrawSelectionBox = !_mapView.View.DrawSelectionBox;
-                    drawSelectionBoxButton.Checked = !drawSelectionBoxButton.Checked;
-	            };
-	    }
-
+         
 	    private static void InitGameInfo(PathInfo pathsFile)
 	    {
 	        GameInfo.Init(Palette.TFTDBattle, pathsFile); 
@@ -663,5 +640,31 @@ namespace MapView
 		{
 
 		}
+
+        private void drawSelectionBoxButton_Click(object sender, EventArgs e)
+        {
+            _mapView.View.DrawSelectionBox = !_mapView.View.DrawSelectionBox;
+            drawSelectionBoxButton.Checked = !drawSelectionBoxButton.Checked;
+        }
+
+        private void ZoomInButton_Click(object sender, EventArgs e)
+        {
+            if (Globals.PckImageScale < 2)
+            {
+                Globals.PckImageScale += 0.125;
+                _mapView.SetupMapSize();
+                Refresh();
+            }
+        }
+
+        private void ZoomOutButton_Click(object sender, EventArgs e)
+        {
+            if (Globals.PckImageScale > .3)
+            {
+                Globals.PckImageScale -= 0.125;
+                _mapView.SetupMapSize();
+                Refresh();
+            }
+        }
 	}
 }

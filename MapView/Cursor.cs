@@ -32,50 +32,56 @@ namespace MapView
 			get{return cursorFile;}
 		}
 
-		public void DrawHigh(Graphics g, int x, int y, bool over,bool top)
-		{
-		    if (top && state != CursorState.Aim)
-		    {
-		        if (over)
-		            g.DrawImage(cursorFile[1].Image, x, y);
-		        else
-		            g.DrawImage(cursorFile[0].Image, x, y);
-		    }
-		    else
-		    {
-		        g.DrawImage(cursorFile[2].Image, x, y);
-		    }
-		}
+	    public void DrawHigh(Graphics g, int x, int y, bool over, bool top)
+	    {
+	        Bitmap image;
+	        if (top && state != CursorState.Aim)
+	        {
+	            if (over)
+	                image = cursorFile[1].Image;
+	            else
+	                image = cursorFile[0].Image;
+	        }
+	        else
+	        {
+	            image = cursorFile[2].Image;
+	        }
+            g.DrawImage(image, x, y,
+                (int)(image.Width * Globals.PckImageScale), (int)(image.Height * Globals.PckImageScale));
+	    }
 
-		public void DrawLow(Graphics g, int x, int y, int i,bool over,bool top)
+	    public void DrawLow(Graphics g, int x, int y, int i,bool over,bool top)
 		{
-			if(top && state!=CursorState.Aim)
+            Bitmap image;
+            if (top && state != CursorState.Aim)
 			{
 				if(over)				
-					g.DrawImage(cursorFile[4].Image,x,y);
+	                image = cursorFile[4].Image;
 				else
-					g.DrawImage(cursorFile[3].Image,x,y);
+                    image = cursorFile[3].Image;
 				switch(state)
 				{
 					case CursorState.SelectMControl:
-						g.DrawImage(cursorFile[11+i%2].Image,x,y);
+                        image = cursorFile[11 + i % 2].Image;
 						break;
 					case CursorState.Throw:
-						g.DrawImage(cursorFile[15+i%2].Image,x,y);
+                        image = cursorFile[15 + i % 2].Image;
 						break;
 					case CursorState.Waypoint:
-						g.DrawImage(cursorFile[13+i%2].Image,x,y);
+                        image = cursorFile[13 + i % 2].Image;
 						break;
 				}
 			}
 			else if(top) //top and aim
 			{
-				g.DrawImage(cursorFile[7+i%4].Image,x,y);
-			}
+                image = cursorFile[7 + i % 4].Image;
+            }
 			else
 			{
-				g.DrawImage(cursorFile[5].Image,x,y);
-			}
+                image = cursorFile[5].Image;
+            }
+            g.DrawImage(image, x, y,
+                (int)(image.Width * Globals.PckImageScale), (int)(image.Height * Globals.PckImageScale));
 		}
 	}
 }

@@ -279,16 +279,23 @@ namespace MapView
                 map = value;
                 if (map != null)
                 {
-                    _origin = new Point((map.MapSize.Rows - 1) * H_WIDTH * Globals.PckImageScale, 0);
                     map.HeightChanged += MapHeight;
                     map.SelectedTileChanged += TileChange;
-                    Width = (map.MapSize.Rows + map.MapSize.Cols) * H_WIDTH * Globals.PckImageScale;
-                    Height = map.MapSize.Height * 25 * Globals.PckImageScale +
-                             (map.MapSize.Rows + map.MapSize.Cols) * H_HEIGHT * Globals.PckImageScale;
+                    SetupMapSize();
                     DragStart = DragStart;
                     DragEnd = DragEnd;
                 }
             }
+        }
+
+        public void SetupMapSize()
+        {
+            var halfWidth = (int) (H_WIDTH * Globals.PckImageScale);
+            var halfHeight = (int) (H_HEIGHT * Globals.PckImageScale);
+            _origin = new Point((map.MapSize.Rows - 1) * halfWidth, 0);
+            Width = (map.MapSize.Rows + map.MapSize.Cols) * halfWidth;
+            Height = map.MapSize.Height * (halfHeight * 3) +
+                     (map.MapSize.Rows + map.MapSize.Cols) * halfHeight;
         }
 
         public Size Viewable
@@ -326,19 +333,21 @@ namespace MapView
                 insideDragRect.Width -= 2;
                 insideDragRect.Height -= 2;
 
+                var halfHeight = (int)(H_HEIGHT * Globals.PckImageScale);
+                var halfWidth = (int)(H_WIDTH * Globals.PckImageScale);
                 for (var h = map.MapSize.Height - 1; h >= 0; h--)
                 {
                     if (h < map.CurrentHeight) continue;
 
                     DrawGrid(h, g);
 
-                    for (int row = 0, startX = _origin.X, startY = _origin.Y + (24 * h * Globals.PckImageScale);
-                        row < map.MapSize.Rows;
-                        row++, startX -= H_WIDTH * Globals.PckImageScale, startY += H_HEIGHT * Globals.PckImageScale)
+                    var startY = _origin.Y + (halfHeight * 3 * h);
+                    var startX = _origin.X;
+                    for (var row = 0; row < map.MapSize.Rows; row++)
                     {
-                        for (int col = 0, x = startX, y = startY;
-                            col < map.MapSize.Cols;
-                            col++, x += H_WIDTH * Globals.PckImageScale, y += H_HEIGHT * Globals.PckImageScale)
+                        var x = startX;
+                        var y = startY;
+                        for (var col = 0; col < map.MapSize.Cols; col++)
                         {
                             var isClickedLocation = IsDragEndOrStart(row, col);
                             var tileRect = new Rectangle(col, row, 1, 1);
@@ -353,7 +362,7 @@ namespace MapView
                                 var tile = (XCMapTile) map[row, col, h];
                                 if (!selectGrayscale)
                                 {
-                                    drawTile(g, tile, x, y);
+                                    DrawTile(g, tile, x, y);
                                 }
                                 else if (isClickedLocation)
                                 {
@@ -365,13 +374,19 @@ namespace MapView
                                 }
                                 else
                                 {
-                                    drawTile(g, tile, x, y);
+                                    DrawTile(g, tile, x, y);
                                 }
                             }
 
                             if (isClickedLocation && cursor != null)
                                 cursor.DrawLow(g, x, y, MapViewPanel.Current, false, map.CurrentHeight == h);
+
+                            x += halfWidth;
+                            y += halfHeight;
                         }
+
+                        startY += halfHeight;
+                        startX -= halfWidth;
                     }
                 }
 
@@ -402,76 +417,103 @@ namespace MapView
         {
             if (h == map.CurrentHeight && useGrid)
             {
+                var hWidth = (int) (H_WIDTH * Globals.PckImageScale);
+                var hHeight = (int) (H_HEIGHT * Globals.PckImageScale);
+                var x = hWidth + _origin.X;
+                var y = ((map.CurrentHeight + 1) * (hHeight * 3)) + _origin.Y;
+                var xMax = map.MapSize.Rows * hWidth;
+                var yMax = map.MapSize.Rows * hHeight;
+
                 underGrid = new GraphicsPath();
-                var pt0 = new Point(_origin.X + H_WIDTH, _origin.Y + (map.CurrentHeight + 1) * 24);
-                var pt1 = new Point(_origin.X + map.MapSize.Cols * H_WIDTH + H_WIDTH,
-                    _origin.Y + map.MapSize.Cols * H_HEIGHT + (map.CurrentHeight + 1) * 24);
-                var pt2 = new Point(_origin.X + H_WIDTH + (map.MapSize.Cols - map.MapSize.Rows) * H_WIDTH,
-                    _origin.Y + (map.MapSize.Rows + map.MapSize.Cols) * H_HEIGHT + (map.CurrentHeight + 1) * 24);
-                var pt3 = new Point(_origin.X - map.MapSize.Rows * H_WIDTH + H_WIDTH,
-                    _origin.Y + map.MapSize.Rows * H_HEIGHT + (map.CurrentHeight + 1) * 24);
+                var pt0 = new Point(x, y);
+                var pt1 = new Point(x + map.MapSize.Cols * hWidth,
+                    map.MapSize.Cols * hHeight + y);
+                var pt2 = new Point(x + (map.MapSize.Cols - map.MapSize.Rows) * hWidth,
+                    (map.MapSize.Rows + map.MapSize.Cols) * hHeight + y);
+                var pt3 = new Point(x - xMax, yMax + y);
                 underGrid.AddLine(pt0, pt1);
                 underGrid.AddLine(pt1, pt2);
                 underGrid.AddLine(pt2, pt3);
                 underGrid.CloseFigure();
-
                 g.FillPath(transBrush, underGrid);
 
-                for (int i = 0; i <= map.MapSize.Rows; i++)
-                    g.DrawLine(dashPen, _origin.X - i * H_WIDTH + H_WIDTH,
-                        _origin.Y + i * H_HEIGHT + (map.CurrentHeight + 1) * 24,
-                        _origin.X + ((map.MapSize.Cols - i) * H_WIDTH) + H_WIDTH,
-                        _origin.Y + (map.CurrentHeight + 1) * 24 + ((i + map.MapSize.Cols) * H_HEIGHT));
+                for (var i = 0; i <= map.MapSize.Rows; i++)
+                    g.DrawLine(dashPen,
+                        x - (i * hWidth),
+                        y + (i * hHeight),
+                        x + ((map.MapSize.Cols - i) * hWidth),
+                        y + ((map.MapSize.Cols + i) * hHeight));
                 for (int i = 0; i <= map.MapSize.Cols; i++)
-                    g.DrawLine(dashPen, _origin.X + i * H_WIDTH + H_WIDTH,
-                        _origin.Y + i * H_HEIGHT + (map.CurrentHeight + 1) * 24,
-                        (_origin.X + i * H_WIDTH + H_WIDTH) - map.MapSize.Rows * H_WIDTH,
-                        (_origin.Y + i * H_HEIGHT) + map.MapSize.Rows * H_HEIGHT + (map.CurrentHeight + 1) * 24);
+                    g.DrawLine(dashPen,
+                        x + i * hWidth,
+                        y + i * hHeight,
+                        (i * hWidth) - xMax + x,
+                        (i * hHeight) + yMax + y);
             }
-        } 
+        }
 
-        private void drawTile(Graphics g, XCMapTile mt, int x, int y)
+        private static void DrawTile(Graphics g, XCMapTile mt, int x, int y)
         {
             var topView = MainWindowsManager.TopView.TopViewControl;
             if (mt.Ground != null && topView.GroundVisible)
-                g.DrawImage(mt.Ground[MapViewPanel.Current].Image, x, y - mt.Ground.Info.TileOffset);
+                DrawTile(g, x, y, mt.Ground);
 
             if (mt.North != null && topView.NorthVisible)
-                g.DrawImage(mt.North[MapViewPanel.Current].Image, x, y - mt.North.Info.TileOffset);
+                DrawTile(g, x, y, mt.North);
 
             if (mt.West != null && topView.WestVisible)
-                g.DrawImage(mt.West[MapViewPanel.Current].Image, x, y - mt.West.Info.TileOffset);
+                DrawTile(g, x, y, mt.West);
 
             if (mt.Content != null && topView.ContentVisible)
-                g.DrawImage(mt.Content[MapViewPanel.Current].Image, x, y - mt.Content.Info.TileOffset);
+                DrawTile(g, x, y, mt.Content); 
         }
 
         private void DrawTileGray(Graphics g, XCMapTile mt, int x, int y)
         {
             var topView = MainWindowsManager.TopView.TopViewControl ;
             if (mt.Ground != null && topView.GroundVisible)
-                g.DrawImage(mt.Ground[MapViewPanel.Current].Gray, x, y - mt.Ground.Info.TileOffset);
+                DrawTileGray(g, x, y, mt.Ground);
 
             if (mt.North != null && topView.NorthVisible)
-                g.DrawImage(mt.North[MapViewPanel.Current].Gray, x, y - mt.North.Info.TileOffset);
+                DrawTileGray(g, x, y, mt.North);
 
             if (mt.West != null && topView.WestVisible)
-                g.DrawImage(mt.West[MapViewPanel.Current].Gray, x, y - mt.West.Info.TileOffset);
+                DrawTileGray(g, x, y, mt.West);
 
             if (mt.Content != null && topView.ContentVisible)
-                g.DrawImage(mt.Content[MapViewPanel.Current].Gray, x, y - mt.Content.Info.TileOffset);
+                DrawTileGray(g, x, y, mt.Content);
         }
+
+        private static void DrawTile(Graphics g, int x, int y, TileBase tile)
+        {
+            Bitmap image = tile[MapViewPanel.Current].Image;
+            DrawTile(g, x, y, tile, image);
+        }
+        private static void DrawTileGray(Graphics g, int x, int y, TileBase tile)
+        {
+            Bitmap image = tile[MapViewPanel.Current].Gray;
+            DrawTile(g, x, y, tile, image);
+        }
+
+        private static void DrawTile(Graphics g, int x, int y, TileBase tile, Bitmap image)
+        {
+            g.DrawImage(image, x, y - tile.Info.TileOffset,
+                (int) (image.Width * Globals.PckImageScale),
+                (int) (image.Height * Globals.PckImageScale));
+        }
+
 
         private void DrawSelection(Graphics g, int h, Rectangle dragRect)
         {
+            var hWidth = (int)(H_WIDTH * Globals.PckImageScale); 
             var top = ConvertCoordsRect(new Point(dragRect.X, dragRect.Y),h+1);
             var right = ConvertCoordsRect(new Point(dragRect.Right, dragRect.Y),h+1);
             var bottom = ConvertCoordsRect(new Point(dragRect.Right, dragRect.Bottom),h+1);
             var left = ConvertCoordsRect(new Point(dragRect.Left, dragRect.Bottom),h+1);
-            top.X += H_WIDTH;
-            right.X += H_WIDTH;
-            bottom.X += H_WIDTH;
-            left.X += H_WIDTH;
+            top.X += hWidth;
+            right.X += hWidth;
+            bottom.X += hWidth;
+            left.X += hWidth;
             var pen = new Pen(Color.FromArgb(70, Color.Red));
             pen.Width = 3;
             g.DrawLine(pen, top, right);
@@ -489,25 +531,29 @@ namespace MapView
         /// <returns></returns>
         private Point ConvertCoordsDiamond(int xp, int yp, int level)
         {
-            int x = xp - (_origin.X) - (H_WIDTH * Globals.PckImageScale); //16 is half the width of the diamond
-            int y = yp - (_origin.Y) - (24 * Globals.PckImageScale) * (level + 1);
+            var halfWidth = H_WIDTH * Globals.PckImageScale;
+            var halfHeight = H_HEIGHT * Globals.PckImageScale;
+            var x = (int) (xp - (_origin.X) - halfWidth); //16 is half the width of the diamond
+            var y = (int)(yp - (_origin.Y) - (halfHeight * 3) * (level + 1));
                 //24 is the distance from the top of the diamond to the very top of the image
 
-            double x1 = (x * 1.0 / (2 * (H_WIDTH * Globals.PckImageScale))) +
-                        (y * 1.0 / (2 * (H_HEIGHT * Globals.PckImageScale)));
-            double x2 = -(x * 1.0 - 2 * y * 1.0) / (2 * (H_WIDTH * Globals.PckImageScale));
+            var x1 = (x * 1.0 / (2 * halfWidth)) +
+                        (y * 1.0 / (2 * halfHeight));
+            var x2 = -(x * 1.0 - 2 * y * 1.0) / (2 * halfWidth);
 
             return new Point((int) Math.Floor(x1), (int) Math.Floor(x2));
         }
 
         private Point ConvertCoordsRect(Point p, int h)
         {
+            var hWidth = (int)(H_WIDTH * Globals.PckImageScale);
+            var hHeight = (int)(H_HEIGHT * Globals.PckImageScale);
             int x = p.X;
             int y = p.Y;
-            var heightAdjust = (H_HEIGHT * 3 * h);
+            var heightAdjust = (hHeight * 3 * h);
             return new Point(
-                _origin.X + (H_WIDTH * (x - y)),
-                (_origin.Y + (H_HEIGHT * (x + y))) + heightAdjust);
+                _origin.X + (hWidth * (x - y)),
+                (_origin.Y + (hHeight * (x + y))) + heightAdjust);
         }
 
         private Point GetDragEnd()

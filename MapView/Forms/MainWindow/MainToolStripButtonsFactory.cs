@@ -4,13 +4,20 @@ using System.Drawing;
 using System.Reflection;
 using System.Text;
 using System.Windows.Forms;
+using MapView.Forms.MapObservers.TopViews;
 
 namespace MapView.Forms.MainWindow
 {
     public class MainToolStripButtonsFactory
     {
+        private readonly MapViewPanel _mapViewPanel;
         private readonly List<ToolStripButton> _pasteButtons = new List<ToolStripButton>();
- 
+
+        public MainToolStripButtonsFactory(MapViewPanel mapViewPanel)
+        {
+            _mapViewPanel = mapViewPanel;
+        }
+
         /// <summary>
         /// Adds buttons for Up,Down,Cut,Copy and Paste to a toolstrip as well as sets some properties for the toolstrip
         /// </summary>
@@ -51,7 +58,11 @@ namespace MapView.Forms.MainWindow
             btnFill.Size = new Size(25, 25);
             btnFill.Text = "Fill";
             btnFill.ToolTipText = "Fill";
-            btnFill.Click += MainWindowsManager.TopView.TopViewControl.Fill_Click;
+            btnFill.Click += delegate(object sender, EventArgs e)
+            {
+                MainWindowsManager.TopView.TopViewControl.Fill_Click(sender, e);
+                Refresh();
+            };
 
             // 
             // btnUp
@@ -71,9 +82,9 @@ namespace MapView.Forms.MainWindow
             btnDown.AutoSize = false;
             btnDown.DisplayStyle = ToolStripItemDisplayStyle.Image;
             btnDown.ImageScaling = ToolStripItemImageScaling.None;
-            btnDown.ImageTransparentColor = System.Drawing.Color.Magenta;
+            btnDown.ImageTransparentColor = Color.Magenta;
             btnDown.Name = "btnDown";
-            btnDown.Size = new System.Drawing.Size(25, 25);
+            btnDown.Size = new Size(25, 25);
             btnDown.Text = "toolStripButton2";
             btnDown.ToolTipText = "Level Down";
             btnDown.Click += btnDown_Click;
@@ -83,15 +94,16 @@ namespace MapView.Forms.MainWindow
             btnCut.AutoSize = false;
             btnCut.DisplayStyle = ToolStripItemDisplayStyle.Image;
             btnCut.ImageScaling = ToolStripItemImageScaling.None;
-            btnCut.ImageTransparentColor = System.Drawing.Color.Magenta;
+            btnCut.ImageTransparentColor = Color.Magenta;
             btnCut.Name = "btnCut";
-            btnCut.Size = new System.Drawing.Size(25, 25);
+            btnCut.Size = new Size(25, 25);
             btnCut.Text = "toolStripButton3";
             btnCut.ToolTipText = "Cut";
             btnCut.Click += (o, args) =>
             {
                 ActivatePasteButtons();
-                MapViewPanel.Instance.Cut_click(o, args);
+                _mapViewPanel.Cut_click(o, args);
+                Refresh();
             };
 
             // 
@@ -100,15 +112,15 @@ namespace MapView.Forms.MainWindow
             btnCopy.AutoSize = false;
             btnCopy.DisplayStyle = ToolStripItemDisplayStyle.Image;
             btnCopy.ImageScaling = ToolStripItemImageScaling.None;
-            btnCopy.ImageTransparentColor = System.Drawing.Color.Magenta;
+            btnCopy.ImageTransparentColor = Color.Magenta;
             btnCopy.Name = "btnCopy";
-            btnCopy.Size = new System.Drawing.Size(25, 25);
+            btnCopy.Size = new Size(25, 25);
             btnCopy.Text = "toolStripButton4";
             btnCopy.ToolTipText = "Copy";
             btnCopy.Click += (o, args) =>
             {
                 ActivatePasteButtons();
-                MapViewPanel.Instance.Copy_click(o, args);
+                _mapViewPanel.Copy_click(o, args);
             };
 
             // 
@@ -117,12 +129,16 @@ namespace MapView.Forms.MainWindow
             btnPaste.AutoSize = false;
             btnPaste.DisplayStyle = ToolStripItemDisplayStyle.Image;
             btnPaste.ImageScaling = ToolStripItemImageScaling.None;
-            btnPaste.ImageTransparentColor = System.Drawing.Color.Magenta;
+            btnPaste.ImageTransparentColor = Color.Magenta;
             btnPaste.Name = "btnPaste";
-            btnPaste.Size = new System.Drawing.Size(25, 25);
+            btnPaste.Size = new Size(25, 25);
             btnPaste.Text = "toolStripButton5";
             btnPaste.ToolTipText = "Paste";
-            btnPaste.Click += MapViewPanel.Instance.Paste_click;
+            btnPaste.Click += delegate(object sender, EventArgs args)
+            {
+                _mapViewPanel.Paste_click(sender,args);
+                Refresh();
+            };
             btnPaste.Enabled = false;
             _pasteButtons.Add(btnPaste);
 
@@ -132,6 +148,12 @@ namespace MapView.Forms.MainWindow
             btnCopy.Image = Bitmap.FromStream(a.GetManifestResourceStream("MapView._Embedded.copy.gif"));
             btnUp.Image = Bitmap.FromStream(a.GetManifestResourceStream("MapView._Embedded.up.gif"));
             btnDown.Image = Bitmap.FromStream(a.GetManifestResourceStream("MapView._Embedded.down.gif"));
+        }
+
+        private static void Refresh()
+        {
+            MainWindowsManager.TopView.Refresh();
+            MainWindowsManager.RmpView.Refresh();
         }
 
         private void ActivatePasteButtons()

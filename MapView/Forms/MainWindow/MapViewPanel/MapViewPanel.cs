@@ -139,12 +139,16 @@ namespace MapView
 			_view.Location = new Point(-(_horiz.Value), _view.Top);
 			_view.Refresh();
 		}
-
+        
 		public void SetMap(IMap_Base map)
 		{
 			_view.Map = map;
 			_view.Focus();
 			OnResize(null);
+		}
+		public void SetupMapSize(   )
+		{
+			_view.SetupMapSize ();
 		}
 
 		public void ForceResize()
