@@ -80,6 +80,7 @@ namespace MapView.Forms.MapObservers.RmpViews
             this.label8 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.makeAllNodeRank0ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.gbNodeInfo.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.LinkGroupBox.SuspendLayout();
@@ -434,7 +435,8 @@ namespace MapView.Forms.MapObservers.RmpViews
             // miEdit
             // 
             this.miEdit.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.miOptions});
+            this.miOptions,
+            this.makeAllNodeRank0ToolStripMenuItem});
             this.miEdit.Name = "miEdit";
             this.miEdit.Size = new System.Drawing.Size(39, 23);
             this.miEdit.Text = "Edit";
@@ -442,7 +444,7 @@ namespace MapView.Forms.MapObservers.RmpViews
             // miOptions
             // 
             this.miOptions.Name = "miOptions";
-            this.miOptions.Size = new System.Drawing.Size(116, 22);
+            this.miOptions.Size = new System.Drawing.Size(186, 22);
             this.miOptions.Text = "Options";
             this.miOptions.Click += new System.EventHandler(this.options_click);
             // 
@@ -576,6 +578,13 @@ namespace MapView.Forms.MapObservers.RmpViews
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Node Information";
             // 
+            // makeAllNodeRank0ToolStripMenuItem
+            // 
+            this.makeAllNodeRank0ToolStripMenuItem.Name = "makeAllNodeRank0ToolStripMenuItem";
+            this.makeAllNodeRank0ToolStripMenuItem.Size = new System.Drawing.Size(186, 22);
+            this.makeAllNodeRank0ToolStripMenuItem.Text = "Make all node Rank 0";
+            this.makeAllNodeRank0ToolStripMenuItem.Click += new System.EventHandler(this.makeAllNodeRank0ToolStripMenuItem_Click);
+            // 
             // RmpView
             // 
             this.Controls.Add(this._contentPane);
@@ -650,5 +659,6 @@ namespace MapView.Forms.MapObservers.RmpViews
     private System.Windows.Forms.ComboBox AttackBaseCombo;
     private System.Windows.Forms.Label label8;
     private System.Windows.Forms.GroupBox groupBox2;
+    private System.Windows.Forms.ToolStripMenuItem makeAllNodeRank0ToolStripMenuItem;
 	}
 }

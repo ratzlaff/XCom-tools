@@ -30,11 +30,6 @@ namespace MapView.Forms.MapObservers.RmpViews
        
         private readonly List<object> _byteList = new List<object>();
 
-        private readonly object[] _items2 =
-        {
-            LinkTypes.ExitEast, LinkTypes.ExitNorth, LinkTypes.ExitSouth, LinkTypes.ExitWest,
-            LinkTypes.NotUsed
-        };
 
         public RmpView()
         {
@@ -292,7 +287,13 @@ namespace MapView.Forms.MapObservers.RmpViews
                 _byteList.Add(i);
             }
 
-            _byteList.AddRange(_items2);
+            var  items2 = new object []
+            {
+                LinkTypes.ExitEast, LinkTypes.ExitNorth, LinkTypes.ExitSouth, LinkTypes.ExitWest,
+                LinkTypes.NotUsed
+            };
+
+            _byteList.AddRange(items2);
 
             object[] bArr = _byteList.ToArray();
 
@@ -874,5 +875,28 @@ namespace MapView.Forms.MapObservers.RmpViews
             if (!_loadingMap) _map.MapChanged = true;
         }
 
+        private void makeAllNodeRank0ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var changeCount = 0;
+            foreach (RmpEntry rmp in _map.Rmp)
+            {
+                if (rmp.URank1 == 0) continue;
+                changeCount ++;
+                rmp.URank1 = 0;
+            }
+            if (changeCount > 0)
+            {
+                _map.MapChanged = true;
+                MessageBox.Show(
+                    changeCount + " links without 0 rank were found and changed", "Link Fix",
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            else
+            {
+                MessageBox.Show(
+                    "No links without 0 rank were found", "Link Fix",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        }
     }
 }
