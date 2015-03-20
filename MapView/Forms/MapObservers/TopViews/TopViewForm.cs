@@ -9,6 +9,6 @@ namespace MapView.Forms.MapObservers.TopViews
             InitializeComponent();
         }
 
-        public Map_Observer_Form MapObserver { get { return TopViewControl; } }
+        public MapObserverControl MapObserver { get { return TopViewControl; } }
     }
 }

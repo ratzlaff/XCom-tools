@@ -38,17 +38,31 @@ namespace MapView.Forms.MainWindow
 
         public void Register()
         {
-            RegisterForm(MainWindowsManager.TopView, "TopView", _showMenu);
-            RegisterForm(MainWindowsManager.TileView, "TileView", _showMenu);
-            RegisterForm(MainWindowsManager.RmpView, "RmpView", _showMenu);
+            MainWindowsManager.TopRmpView.TopViewControl.Settings =
+                MainWindowsManager.TopView.TopViewControl.Settings;
+            MainWindowsManager.TopRmpView.RouteViewControl.Settings =
+                MainWindowsManager.RmpView.RouteViewControl.Settings;
+
+            MainWindowsManager.TopRmpView.TopViewControl.LoadDefaultSettings();
+            MainWindowsManager.TopRmpView.RouteViewControl.LoadDefaultSettings();
+
+            RegisterForm(MainWindowsManager.TopView, "Top View", _showMenu, "TopView");
+            RegisterForm(MainWindowsManager.TileView, "Tile View", _showMenu, "TileView");
+            RegisterForm(MainWindowsManager.RmpView, "Route View", _showMenu, "RmpView");
+            RegisterForm(MainWindowsManager.TopRmpView, "Top & Route View", _showMenu);
 
             RegisterForm(_consoleSharedSpace.GetNewConsole(), "Console", _showMenu);
 
             RegisterForm(MainWindowsManager.HelpScreen, "Quick Help", _miHelp);
             RegisterForm(MainWindowsManager.AboutWindow, "About", _miHelp);
+
+            MainWindowsManager.TopRmpView.TopViewControl.RegistryInfo =
+                MainWindowsManager.TopView.TopViewControl.RegistryInfo;
+            MainWindowsManager.TopRmpView.RouteViewControl.RegistryInfo =
+                MainWindowsManager.RmpView.RouteViewControl.RegistryInfo;
         }
 
-        private void RegisterForm(Form form, string title, MenuItem parent)
+        private void RegisterForm(Form form, string title, MenuItem parent, string registryKey = null)
         {
             form.Closing += FormClosing;
 
@@ -66,9 +80,9 @@ namespace MapView.Forms.MainWindow
             {
                 var observer = observerForm.MapObserver;
                 observer.LoadDefaultSettings();
-                observer.RegistryInfo = new DSShared.Windows.RegistryInfo(form, title);
+                observer.RegistryInfo = new DSShared.Windows.RegistryInfo(form, registryKey);
 
-                _settingsHash.Add(title, observer.Settings);
+                _settingsHash.Add(registryKey, observer.Settings);
             }
 
             form.ShowInTaskbar = false;
@@ -81,7 +95,7 @@ namespace MapView.Forms.MainWindow
 
         private static void FormMiClick(object sender, EventArgs e)
         {
-            MenuItem mi = (MenuItem)sender;
+            var mi = (MenuItem)sender;
 
             if (!mi.Checked)
             {
@@ -94,11 +108,6 @@ namespace MapView.Forms.MainWindow
                 ((Form)mi.Tag).Close();
                 mi.Checked = false;
             }
-        }
-
-        public void ResetMenuItemValueFor(Map_Observer_Form form)
-        {
-            
         }
 
         private static void FormClosing(object sender, CancelEventArgs e)

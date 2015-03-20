@@ -8,7 +8,7 @@ using XCom;
 
 namespace MapView.Forms.MapObservers.TopViews
 {
-    public partial class TopView : Map_Observer_Form
+    public partial class TopView : MapObserverControl
     {
         private readonly Dictionary<ToolStripMenuItem, int> _visibleHash;
 		private Dictionary<string, SolidBrush> _brushes;
@@ -173,6 +173,7 @@ namespace MapView.Forms.MapObservers.TopViews
 
 			bottom.Brushes = _brushes;
 			bottom.Pens = _pens;
+            Invalidate();
 		}
 
 		public void Fill_Click(object sender, EventArgs evt)

@@ -6,6 +6,6 @@ namespace MapView.Forms.MapObservers
 {
     public interface IMapObserverFormProvider
     {
-        Map_Observer_Form MapObserver { get; }
+        MapObserverControl MapObserver { get; }
     }
 }

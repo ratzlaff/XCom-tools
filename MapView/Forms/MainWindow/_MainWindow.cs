@@ -5,6 +5,7 @@ using System.Windows.Forms;
 using MapView.Forms.Error.WarningConsole;
 using MapView.Forms.MainWindow;
 using MapView.Forms.MapObservers.RmpViews;
+using MapView.Forms.MapObservers.TopViews;
 using MapView.SettingServices;
 using XCom;
 using XCom.GameFiles.Map;
@@ -62,8 +63,8 @@ namespace MapView
             _mainWindowsManager = new MainWindowsManager();
             _mainWindowsMenuItemManager = new MainWindowsMenuItemManager(
                 showMenu, miHelp, _mapView, _settingsHash, consoleSharedSpace);
-
-			sharedSpace.GetObj("MapView", this);
+             
+		    sharedSpace.GetObj("MapView", this);
 			sharedSpace.GetObj("AppDir", Environment.CurrentDirectory);
 			sharedSpace.GetObj("CustomDir", Environment.CurrentDirectory + "\\custom");
 			sharedSpace.GetObj("SettingsDir", Environment.CurrentDirectory + "\\settings");
@@ -93,6 +94,10 @@ namespace MapView
 		    LogFile.Instance.WriteLine("GameInfo.Init done");
 
             _mainWindowsMenuItemManager.Register();
+
+            var settings = GetSettings();
+            RegisterWindowMenuItemValue(settings);
+
             MainWindowsManager.TileView.TileViewControl.MapChanged += TileView_MapChanged;
 
 			LogFile.Instance.WriteLine("Palette transparencies set");
@@ -132,10 +137,7 @@ namespace MapView
 			initList();
 
 			LogFile.Instance.WriteLine("Map list created");
-
-            //			addWindow(xConsole.Instance,"Console",showMenu);
-            //			((MenuItem)windowMI[xConsole.Instance]).PerformClick();
-
+             
 			LogFile.Instance.WriteLine("Quick help and About created");
 
             if (settingsFile.Exists())
@@ -183,7 +185,7 @@ namespace MapView
 			Show();
 			LogFile.Instance.Close();			
 		}
-         
+
 	    private static void InitGameInfo(PathInfo pathsFile)
 	    {
 	        GameInfo.Init(Palette.TFTDBattle, pathsFile); 
@@ -234,7 +236,7 @@ namespace MapView
 
 		private void changeSetting(object sender, string key, object val)
 		{
-			_settingsHash["MainWindow"][key].Value = val;
+            GetSettings()[key].Value = val;
 			switch (key)
 			{
 				case "Animation":
@@ -377,10 +379,10 @@ namespace MapView
 			settings.AddSetting("GridLineWidth", MapViewPanel.Instance.View.GridLineWidth, "Width of the grid lines in pixels", "MapView", null, true, MapViewPanel.Instance.View);
 			settings.AddSetting("SelectGrayscale", MapViewPanel.Instance.View.SelectGrayscale, "If true, the selection area will show up in gray", "MapView", null, true, MapViewPanel.Instance.View);
 			//settings.AddSetting("SaveOnExit",true,"If true, these settings will be saved on program exit","Main",null,false,null);
-			_settingsHash["MainWindow"] = settings;
+			SetSettings(settings);
 		}
 
-		private void update(object sender, EventArgs e)
+	    private void update(object sender, EventArgs e)
 		{
 			MainWindowsManager.TopView.TopViewControl.BottomPanel.Refresh();
 		}
@@ -492,8 +494,20 @@ namespace MapView
 	            //open all the forms in the show menu once
 	            if (!showMenu.Enabled)
 	            {
-	                foreach (MenuItem mi in showMenu.MenuItems)
-	                    mi.PerformClick();
+	                var settings = GetSettings();
+                    foreach (MenuItem mi in showMenu.MenuItems)
+                    {
+                        var settingName = GetWindowSettingName(mi);
+                        if (settings[settingName].ValueBool)
+                        {
+                            mi.PerformClick();
+                        }
+                        else
+                        {
+                            mi.PerformClick();
+                            mi.PerformClick();
+                        }
+                    }
 
 	                showMenu.Enabled = true;
 	            }
@@ -505,7 +519,7 @@ namespace MapView
 	        {
 	            miExport.Enabled = false;
 	        }
-	    }
+	    } 
 
 	    public DialogResult NotifySave()
 	    {
@@ -530,12 +544,12 @@ namespace MapView
 
 	    private void miOptions_Click(object sender, System.EventArgs e)
 		{
-			PropertyForm pf = new PropertyForm("MainViewSettings", _settingsHash["MainWindow"]);
+			PropertyForm pf = new PropertyForm("MainViewSettings", GetSettings());
 			pf.Text = "MainWindow Options";
 			pf.Show();
 		}
 
-		private void miSaveImage_Click(object sender, System.EventArgs e)
+	    private void miSaveImage_Click(object sender, System.EventArgs e)
 		{
 			if (_mapView.Map != null)
 			{
@@ -665,6 +679,37 @@ namespace MapView
                 _mapView.SetupMapSize();
                 Refresh();
             }
+        }
+
+        private void SetSettings(Settings settings)
+        {
+            _settingsHash["MainWindow"] = settings;
+        }
+
+        private Settings GetSettings()
+        {
+            return _settingsHash["MainWindow"];
+        }
+
+        private void RegisterWindowMenuItemValue(Settings settings)
+        {
+            foreach (MenuItem mi in showMenu.MenuItems)
+            { 
+                var settingName = GetWindowSettingName(mi);
+                var defaultVal = true;
+                if (mi.Tag is TopViewForm) defaultVal = false;
+                if (mi.Tag is RmpViewForm) defaultVal = false;
+                settings.AddSetting(settingName, defaultVal, "Default display window - " + mi.Text, "Windows", null, false, null);
+
+                MenuItem menuItem = mi;
+                mi.Click += (sender, a) => { settings[settingName].Value = menuItem.Checked; };
+            }
+        }
+
+        private static string GetWindowSettingName(MenuItem mi)
+        {
+            var settingName = "Window-" + mi.Text;
+            return settingName;
         }
 	}
 }

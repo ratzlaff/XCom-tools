@@ -15,7 +15,7 @@ using XCom.Interfaces.Base;
 namespace MapView.Forms.MapObservers.TileViews
 {
 	public delegate void SelectedTileTypeChanged(TileBase newTile);
-	public partial class TileView : Map_Observer_Form
+	public partial class TileView : MapObserverControl
 	{
 		private IContainer components;
 		private MenuItem menuItem1;

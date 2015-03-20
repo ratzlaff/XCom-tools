@@ -10,25 +10,35 @@ namespace MapView.Forms.MainWindow
         public static IMainWindowsShowAllManager MainWindowsShowAllManager;
         public static MainToolStripButtonsFactory MainToolStripButtonsFactory;
 
-        private static TileViewForm _tileView;
         private static TopViewForm _topView;
+        private static TileViewForm _tileView;
         private static RmpViewForm _rmpView;
+        private static TopRmpViewForm _topRmpView;
         private static HelpScreen _helpScreen;
         private static AboutWindow _aboutWindow;
 
-        public static TileViewForm TileView
+        public static TopRmpViewForm TopRmpView
         {
             get
             {
-                if (_tileView == null)
+                if (_topRmpView == null)
                 {
-                    _tileView = new TileViewForm();
-                    _tileView.TileViewControl.Initialize(MainWindowsShowAllManager);
-                    _tileView.TileViewControl.SelectedTileTypeChanged += _tileView_SelectedTileTypeChanged;
+                    _topRmpView = new TopRmpViewForm();
+                    _topRmpView.TopViewControl.Initialize(MainToolStripButtonsFactory);
                 }
-                return _tileView;
+                return _topRmpView;
             }
         }
+        public static RmpViewForm RmpView
+        {
+            get
+            {
+                if (_rmpView == null)
+                    _rmpView = new RmpViewForm();
+                return _rmpView;
+            }
+        }
+
 
         public static TopViewForm TopView
         {
@@ -44,13 +54,17 @@ namespace MapView.Forms.MainWindow
             }
         }
 
-        public static RmpViewForm RmpView
+        public static TileViewForm TileView
         {
             get
             {
-                if (_rmpView == null)
-                    _rmpView = new RmpViewForm();
-                return _rmpView;
+                if (_tileView == null)
+                {
+                    _tileView = new TileViewForm();
+                    _tileView.TileViewControl.Initialize(MainWindowsShowAllManager);
+                    _tileView.TileViewControl.SelectedTileTypeChanged += _tileView_SelectedTileTypeChanged;
+                }
+                return _tileView;
             }
         }
 
@@ -76,11 +90,13 @@ namespace MapView.Forms.MainWindow
 
         public void SetMap(IMap_Base map)
         {
-            var maps = new[]
+            var maps = new IMap_Observer[]
             {
-                TileView.MapObserver, 
-                TopView.MapObserver,
-                RmpView.MapObserver
+                TopRmpView.TopViewControl, 
+                TopRmpView.RouteViewControl, 
+                TileView.TileViewControl, 
+                RmpView.RouteViewControl,
+                TopView.TopViewControl
             };
             foreach (var frm in maps)
             {

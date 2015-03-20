@@ -9,14 +9,14 @@ using XCom;
 
 namespace MapView
 {
-    public class Map_Observer_Form  : UserControl,  IMap_Observer, IMenuItem
+    public class MapObserverControl  : UserControl,  IMap_Observer, IMenuItem
 	{
         private IMap_Base _map;
 		private RegistryInfo _registryInfo;
-        private readonly Settings _settings;
+        private Settings _settings;
 		private readonly Dictionary<string, IMap_Observer> _moreObservers;
 
-		public Map_Observer_Form()
+		public MapObserverControl()
 		{
 			_moreObservers = new Dictionary<string, IMap_Observer>();
 			_settings = new Settings();
@@ -26,10 +26,11 @@ namespace MapView
 
 		public Settings Settings
 		{
-			get { return _settings; }
+		    get { return _settings; }
+            set { _settings = value;}
 		}
 
-		public Dictionary<string, IMap_Observer> MoreObservers
+        public Dictionary<string, IMap_Observer> MoreObservers
 		{
 			get { return _moreObservers; }
 		}

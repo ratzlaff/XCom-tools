@@ -56,6 +56,6 @@ namespace MapView.Forms.MapObservers.RmpViews
 
         #endregion
 
-        private RmpView RouteViewControl;
+        public RmpView RouteViewControl;
     }
 }

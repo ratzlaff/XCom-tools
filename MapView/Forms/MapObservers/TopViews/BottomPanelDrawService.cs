@@ -95,17 +95,7 @@ namespace MapView.Forms.MapObservers.TopViews
             else
                 g.DrawImage(Globals.ExtraTiles[4].Image, startX + (3 * TOTAL_QUADRAN_SPACE), startY);
 
-            g.FillRectangle(Brushes["GroundColor"],
-                new RectangleF(startX, startY + tileHeight + space + Font.Height, tileWidth, 3));
-            g.FillRectangle(new SolidBrush(Pens["NorthColor"].Color),
-                new RectangleF(startX + (TOTAL_QUADRAN_SPACE), startY + tileHeight + space + Font.Height, tileWidth,
-                    3));
-            g.FillRectangle(new SolidBrush(Pens["WestColor"].Color),
-                new RectangleF(startX + (2 * TOTAL_QUADRAN_SPACE), startY + tileHeight + space + Font.Height,
-                    tileWidth, 3));
-            g.FillRectangle(Brushes["ContentColor"],
-                new RectangleF(startX + (3 * TOTAL_QUADRAN_SPACE), startY + tileHeight + space + Font.Height,
-                    tileWidth, 3));
+            DrawGroundAndContent(g);
 
             g.DrawString("Gnd", Font, System.Drawing.Brushes.Black,
                 new RectangleF(startX, startY + tileHeight + space, tileWidth, 50));
@@ -119,6 +109,24 @@ namespace MapView.Forms.MapObservers.TopViews
             for (int i = 0; i < 4; i++)
                 g.DrawRectangle(System.Drawing.Pens.Black, startX - 1 + (i * TOTAL_QUADRAN_SPACE), startY,
                     tileWidth + 2, tileHeight + 2);
+        }
+
+        private void DrawGroundAndContent(Graphics g)
+        {
+            if (Brushes == null) return;
+            if (Pens == null) return;
+
+            g.FillRectangle(Brushes["GroundColor"],
+                new RectangleF(startX, startY + tileHeight + space + Font.Height, tileWidth, 3));
+            g.FillRectangle(new SolidBrush(Pens["NorthColor"].Color),
+                new RectangleF(startX + (TOTAL_QUADRAN_SPACE), startY + tileHeight + space + Font.Height, tileWidth,
+                    3));
+            g.FillRectangle(new SolidBrush(Pens["WestColor"].Color),
+                new RectangleF(startX + (2 * TOTAL_QUADRAN_SPACE), startY + tileHeight + space + Font.Height,
+                    tileWidth, 3));
+            g.FillRectangle(Brushes["ContentColor"],
+                new RectangleF(startX + (3 * TOTAL_QUADRAN_SPACE), startY + tileHeight + space + Font.Height,
+                    tileWidth, 3));
         }
     }
 }

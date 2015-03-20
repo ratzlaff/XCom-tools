@@ -17,7 +17,7 @@ namespace MapView.Forms.MapObservers.RmpViews
 		Soldier ---- Soldier
 	*/
 
-    public partial class RmpView : Map_Observer_Form
+    public partial class RmpView : MapObserverControl
     {
         private readonly RmpPanel _rmpPanel;
 

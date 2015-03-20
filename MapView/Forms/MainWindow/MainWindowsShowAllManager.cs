@@ -28,6 +28,7 @@ namespace MapView.Forms.MainWindow
                 MainWindowsManager.TopView,
                 MainWindowsManager.TileView,
                 MainWindowsManager.RmpView,
+                MainWindowsManager.TopRmpView,
             };
             var console =_consoleSharedSpace.GetConsole();
             if (console != null) tempFormList.Add(console);
