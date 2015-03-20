@@ -53,8 +53,8 @@ namespace XCom
             UType = (UnitType) data[19];
             URank1 = data[20];
             NodeImportance = (NodeImportance) data[21];
-            Zero1 = data[22];
-            Usage = (SpawnUsage) data[23];
+            BaseModuleAttack = (BaseModuleAttack)data[22];
+            Spawn = (SpawnUsage) data[23];
         }
 
         public RmpEntry(byte idx, byte row, byte col, byte height)
@@ -71,8 +71,8 @@ namespace XCom
             UType = 0;
             URank1 = 0;
             NodeImportance = 0;
-            Zero1 = 0;
-            Usage = 0;
+            BaseModuleAttack = 0;
+            Spawn = 0;
         }
 
         public override bool Equals(object o)
@@ -107,8 +107,8 @@ namespace XCom
             fs.WriteByte((byte) UType);
             fs.WriteByte((byte) URank1);
             fs.WriteByte((byte) NodeImportance);
-            fs.WriteByte(Zero1);
-            fs.WriteByte((byte) Usage);
+            fs.WriteByte((byte)BaseModuleAttack);
+            fs.WriteByte((byte) Spawn);
         }
 
         public override string ToString()
@@ -140,9 +140,9 @@ namespace XCom
 
         public NodeImportance NodeImportance { get; set; }
 
-        public byte Zero1 { get; set; }
+        public BaseModuleAttack BaseModuleAttack { get; set; }
 
-        public SpawnUsage Usage { get; set; }
+        public SpawnUsage Spawn { get; set; }
 
         public int NumLinks
         {

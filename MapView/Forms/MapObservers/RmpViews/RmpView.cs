@@ -69,13 +69,17 @@ namespace MapView.Forms.MapObservers.RmpViews
             cbRank1.Items.AddRange(RmpFile.UnitRankUFO);
             cbRank1.DropDownStyle = ComboBoxStyle.DropDownList;
 
-            object[] itms2 =
+            foreach (var value in Enum.GetValues(typeof(NodeImportance)))
             {
-                NodeImportance.Zero, NodeImportance.One, NodeImportance.Two, NodeImportance.Three, NodeImportance.Four,
-                NodeImportance.Five, NodeImportance.Six, NodeImportance.Seven, NodeImportance.Eight
-            };
-            cbRank2.Items.AddRange(itms2);
+                cbRank2.Items.Add(value);
+            }
             cbRank2.DropDownStyle = ComboBoxStyle.DropDownList;
+
+            foreach (var value in Enum.GetValues(typeof(BaseModuleAttack)))
+            {
+                AttackBaseCombo.Items.Add(value);
+            }
+            AttackBaseCombo.DropDownStyle = ComboBoxStyle.DropDownList;
 
             cbLink1.DropDownStyle = ComboBoxStyle.DropDownList;
             cbLink2.DropDownStyle = ComboBoxStyle.DropDownList;
@@ -258,10 +262,14 @@ namespace MapView.Forms.MapObservers.RmpViews
             if (_currEntry == null)
             {
                 gbNodeInfo.Enabled = false;
+                groupBox1.Enabled = false;
+                groupBox2.Enabled = false;
                 LinkGroupBox.Enabled = false;
                 return;
             }
             gbNodeInfo.Enabled = true;
+            groupBox1.Enabled = true;
+            groupBox2.Enabled = true;
             gbNodeInfo.SuspendLayout();
             LinkGroupBox.Enabled = true;
             LinkGroupBox.SuspendLayout();
@@ -302,7 +310,8 @@ namespace MapView.Forms.MapObservers.RmpViews
                 cbRank1.SelectedItem = RmpFile.UnitRankTFTD[_currEntry.URank1];
 
             cbRank2.SelectedItem = _currEntry.NodeImportance;
-            cbUsage.SelectedItem = RmpFile.SpawnUsage[(byte) _currEntry.Usage];
+            AttackBaseCombo.SelectedItem = _currEntry.BaseModuleAttack;
+            cbUsage.SelectedItem = RmpFile.SpawnUsage[(byte) _currEntry.Spawn];
 
             idxLabel2.Text = "Index: " + _currEntry.Index;
 
@@ -343,6 +352,7 @@ namespace MapView.Forms.MapObservers.RmpViews
             txtDist4.Text = _currEntry[3].Distance + "";
             txtDist5.Text = _currEntry[4].Distance + "";
 
+            gbNodeInfo.ResumeLayout();
             gbNodeInfo.ResumeLayout();
             LinkGroupBox.ResumeLayout();
 
@@ -420,6 +430,11 @@ namespace MapView.Forms.MapObservers.RmpViews
         private void cbRank2_SelectedIndexChanged(object sender, EventArgs e)
         {
             _currEntry.NodeImportance = (NodeImportance) cbRank2.SelectedItem;
+        }
+
+        private void AttackBaseCombo_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            _currEntry.BaseModuleAttack = (BaseModuleAttack)cbRank2.SelectedItem;
         }
 
         private byte calcLinkDistance(RmpEntry from, RmpEntry to, TextBox result)
@@ -718,7 +733,7 @@ namespace MapView.Forms.MapObservers.RmpViews
 
         private void cbUsage_SelectedIndexChanged(object sender, EventArgs e)
         {
-            _currEntry.Usage = (SpawnUsage) ((StrEnum) cbUsage.SelectedItem).Enum;
+            _currEntry.Spawn = (SpawnUsage) ((StrEnum) cbUsage.SelectedItem).Enum;
             Refresh();
         }
 
@@ -781,8 +796,12 @@ namespace MapView.Forms.MapObservers.RmpViews
 
         private void copyNode_Click(object sender, EventArgs e)
         {
-            var nodeText = string.Format("MVNode|{0}|{1}|{2}|{3}",
-                cbType.SelectedIndex, cbRank1.SelectedIndex, cbRank2.SelectedIndex, cbUsage.SelectedIndex);
+            var nodeText = string.Format("MVNode|{0}|{1}|{2}|{3}|{4}",
+                cbType.SelectedIndex, 
+                cbRank1.SelectedIndex,
+                cbRank2.SelectedIndex,
+                AttackBaseCombo.SelectedIndex, 
+                cbUsage.SelectedIndex);
             Clipboard.SetText(nodeText);
         }
 
@@ -793,8 +812,9 @@ namespace MapView.Forms.MapObservers.RmpViews
             {
                 cbType.SelectedIndex = Int32.Parse(nodeData[1]);
                 cbRank1.SelectedIndex = Int32.Parse(nodeData[2]);
-                cbRank2.SelectedIndex = Int32.Parse(nodeData[3]);
-                cbUsage.SelectedIndex = Int32.Parse(nodeData[4]);
+                cbRank2.SelectedIndex = Int32.Parse(nodeData[4]);
+                AttackBaseCombo.SelectedIndex = Int32.Parse(nodeData[4]);
+                cbUsage.SelectedIndex = Int32.Parse(nodeData[5]);
             }
         }
 
@@ -821,6 +841,8 @@ namespace MapView.Forms.MapObservers.RmpViews
             _map.MapChanged = true;
             ClearSelected();
             gbNodeInfo.Enabled = false;
+            groupBox1.Enabled = false;
+            groupBox2.Enabled = false;
             LinkGroupBox.Enabled = false;
             Refresh();
         }
@@ -851,5 +873,6 @@ namespace MapView.Forms.MapObservers.RmpViews
             }
             if (!_loadingMap) _map.MapChanged = true;
         }
+
     }
 }

@@ -22,6 +22,7 @@ namespace XCom.Interfaces.Base
                     _mapPosition.MaxC < col ||
                     _mapPosition.MaxH < height) return null;
                 var index = GetIndex(row, col, height);
+                if (index >= _mapData.Length) return null;
                 return _mapData[index];
             }
             set

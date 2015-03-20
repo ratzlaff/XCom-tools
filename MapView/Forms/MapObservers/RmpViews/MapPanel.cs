@@ -8,7 +8,7 @@ namespace MapView.Forms.MapObservers.RmpViews
 {
     public delegate void MapPanelClickDelegate(object sender, MapPanelClickEventArgs e);
 
-    public class MapPanel : Panel
+    public class MapPanel : UserControl
     {
         private XCMapFile _map;
         protected Point Origin;

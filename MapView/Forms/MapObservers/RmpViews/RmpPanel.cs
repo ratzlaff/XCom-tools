@@ -62,7 +62,7 @@ namespace MapView.Forms.MapObservers.RmpViews
                     textHeight + 10);
                 if (posT.Rmp != null)
                 {
-                    overlayPos.Height += textHeight * 3;
+                    overlayPos.Height += textHeight * 4;
                 }
                 if (overlayPos.X + overlayPos.Width > ClientRectangle.Width)
                 {
@@ -96,6 +96,10 @@ namespace MapView.Forms.MapObservers.RmpViews
                     {
                         var text = "Importance: " + posT.Rmp.NodeImportance;
                         g.DrawString(text, Font, Brushes.Black, textLeft, overlayPos.Y + 5 + (textHeight * 3));
+                    }
+                    {
+                        var text = "Spawn: " + posT.Rmp.Spawn;
+                        g.DrawString(text, Font, Brushes.Black, textLeft, overlayPos.Y + 5 + (textHeight * 4));
                     }
                 }
             }
@@ -155,7 +159,7 @@ namespace MapView.Forms.MapObservers.RmpViews
                         {
                             g.FillPath(selectedNodeColor, upper);
                         }
-                        else if (rmpEntry.Usage != SpawnUsage.NoSpawn)
+                        else if (rmpEntry.Spawn != SpawnUsage.NoSpawn)
                         {
                             g.FillPath(spawnNodeColor, upper);
                         }
@@ -193,25 +197,41 @@ namespace MapView.Forms.MapObservers.RmpViews
 
                         if (DrawAreaHeight >= 10)
                         {
-                            var importanceX = x - (DrawAreaWidth / 2);
-                            var importanceY = y + (DrawAreaHeight / 3 * 2);
-                            g.FillRectangle(Brushes.Gray, importanceX, importanceY, 3, 10);
-                            g.DrawRectangle(Pens.Black, importanceX, importanceY, 3, 10);
 
+                            var boxX = x - (DrawAreaWidth / 2);
+                            var boxY = y + (DrawAreaHeight / 3 * 2);
+
+                            var nodeImportance = (int)rmpEntry.NodeImportance;
                             const int MAX_NODE_IMPORTANCE = 8;
-                            var nodeImportance = (int) rmpEntry.NodeImportance;
-                            if (nodeImportance > MAX_NODE_IMPORTANCE) nodeImportance = MAX_NODE_IMPORTANCE;
-                            if (nodeImportance > 0)
-                            {
-                                g.FillRectangle(Brushes.Red, 
-                                    importanceX + 1, importanceY + 1 + (MAX_NODE_IMPORTANCE - nodeImportance), 
-                                    2, 1 + nodeImportance);
-                            }
+                            DrawBox(g, boxX, boxY, nodeImportance, MAX_NODE_IMPORTANCE, Brushes.Red);
+
+                            var spawn =(int) rmpEntry.Spawn;
+                            if (spawn > 0) spawn += 5;
+                            DrawBox(g, boxX + 3, boxY, spawn, 15, Brushes.DeepSkyBlue);
                         }
                     }
                 }
                 startX -= DrawAreaWidth;
                 startY += DrawAreaHeight;
+            }
+        }
+
+        private static void DrawBox(Graphics g, int boxX, int boxY, int value, int max, Brush color)
+        {
+            g.FillRectangle(Brushes.Gray, boxX, boxY, 3, 10);
+            g.DrawRectangle(Pens.Black, boxX, boxY, 3, 10);
+
+            if (max > 8)
+            {
+                value = (int)((double)value / max * 8);
+                max = 8;
+            }
+            if (value > max) value = max;
+            if (value > 0)
+            {
+                g.FillRectangle(color,
+                    boxX + 1, boxY + 1 + (max - value),
+                    2, 1 + value);
             }
         }
 
