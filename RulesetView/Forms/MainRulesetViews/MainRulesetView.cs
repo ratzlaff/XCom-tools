@@ -5,6 +5,7 @@ using System.IO;
 using System.Windows.Forms;
 using RulesetView.Models;
 using RulesetView.Services;
+using YamlDotNet.Core;
 using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.NamingConventions;
 
@@ -39,6 +40,7 @@ namespace RulesetView.Forms.MainRulesetViews
         private void LoadFile(string file)
         {
             var ruleset = ReadRuleSet(file);
+            if (ruleset == null) return;
             var rulesetToTreeConverter = new RulesetToTreeConverter();
             rulesetToTreeConverter.Convert(ruleset, RuleTree);
             var costGridModelConverter = new CostGridModelConverter();
@@ -55,10 +57,30 @@ namespace RulesetView.Forms.MainRulesetViews
         {
             using (var reader = File.OpenText(file))
             {
-                var deserializer = new Deserializer(
-                    namingConvention: new CamelCaseNamingConvention(),
-                    ignoreUnmatched: true);
-                return  deserializer.Deserialize<RuleSet>(reader);
+                try
+                {
+                    var deserializer = new Deserializer(
+                        namingConvention: new CamelCaseNamingConvention(),
+                        ignoreUnmatched: true);
+                    return deserializer.Deserialize<RuleSet>(reader);
+                }
+                catch (YamlException ex)
+                {
+                    if (ex.Message.Contains("Expected 'MappingStart', got 'SequenceStart'"))
+                    {
+                        MessageBox.Show(
+                            ex.Message + Environment.NewLine + Environment.NewLine +
+                            @"To fix this issue try removing the '-' from this line #: " + ex.Start.Line,
+                            @"Yaml Exception",
+                            MessageBoxButtons.OK,
+                            MessageBoxIcon.Error);
+                        return null;
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
             }
         }
 
