@@ -187,7 +187,7 @@ namespace MapView.Forms.MapObservers.TopViews
 				map.Down();
 		}
 
-		private void convertCoordsDiamond(int x, int y, out int row, out int col)
+        private Point ConvertCoordsDiamond(int x, int y)
 		{
 			//int x = xp - offX; //16 is half the width of the diamond
 			//int y = yp - offY; //24 is the distance from the top of the diamond to the very top of the image
@@ -196,10 +196,8 @@ namespace MapView.Forms.MapObservers.TopViews
             var hHeight = DrawContentService.HHeight;
 			double x1 = (x * 1.0 / (2 * hWidth)) + (y * 1.0 / (2 * hHeight));
 			double x2 = -(x * 1.0 - 2 * y * 1.0) / (2 * hWidth);
-
-			row = (int)Math.Floor(x2);
-			col = (int)Math.Floor(x1);
-			//return new Point((int)Math.Floor(x1), (int)Math.Floor(x2));
+             
+			return new Point((int)Math.Floor(x1), (int)Math.Floor(x2));
 		}
 
 		protected virtual void RenderCell(MapTileBase tile, Graphics g, int x, int y) { }
@@ -266,39 +264,35 @@ namespace MapView.Forms.MapObservers.TopViews
 	    }
 
 	    protected override void OnMouseDown(MouseEventArgs e)
-		{
-			int row, col;
-		    if (map == null) return;
-			convertCoordsDiamond(e.X - _offX, e.Y - _offY,out row, out col);
-			map.SelectedTile = new MapLocation(row,col, map.CurrentHeight);
-			mDown = true;
+		{ 
+	        if (map == null) return;
+			var p = ConvertCoordsDiamond(e.X - _offX, e.Y - _offY );
+            map.SelectedTile = new MapLocation(p.Y, p.X, map.CurrentHeight);
+			_mDown = true;
 
-			Point p = new Point(col, row);
-		    ;
 			MapViewPanel.Instance.MapView.DragStart = p;
 			MapViewPanel.Instance.MapView.DragEnd = p;
 		}
 
-		private bool mDown = false;
+		private bool _mDown = false;
 		protected override void OnMouseUp(MouseEventArgs e)
 		{
-			mDown = false;
+			_mDown = false;
 			MapViewPanel.Instance.MapView.Refresh();
 			Refresh();
 		}
 
 		protected override void OnMouseMove(MouseEventArgs e)
 		{
-			int row, col;
-			convertCoordsDiamond(e.X - _offX, e.Y - _offY,out row, out col);
-			if (row != _mR || col != _mC)
+			var p = ConvertCoordsDiamond(e.X - _offX, e.Y - _offY );
+            if (p.Y != _mR || p.X != _mC)
 			{
-				_mR = row;
-				_mC = col;
+                _mR = p.Y;
+                _mC = p.X;
 
-				if (mDown)
+				if (_mDown)
 				{
-					MapViewPanel.Instance.MapView.DragEnd = new Point(col,row);
+                    MapViewPanel.Instance.MapView.DragEnd = p;
 					MapViewPanel.Instance.MapView.Refresh();
 				    if (e.Button == MouseButtons.Left)
 				    {
