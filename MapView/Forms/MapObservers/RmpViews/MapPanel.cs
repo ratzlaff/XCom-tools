@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
+using MapView.Forms.MainWindow;
 using XCom;
 
 namespace MapView.Forms.MapObservers.RmpViews
@@ -83,6 +84,12 @@ namespace MapView.Forms.MapObservers.RmpViews
                     ClickPoint = p;
 
                     _map.SelectedTile = new MapLocation(ClickPoint.Y, ClickPoint.X, _map.CurrentHeight);
+                    MapViewPanel.Instance.MapView.DragStart = p;
+                    MapViewPanel.Instance.MapView.DragEnd = p;
+                    MapViewPanel.Instance.MapView.Refresh();
+                    MainWindowsManager.TopView.TopViewControl.Refresh();
+                    MainWindowsManager.TopRmpView.TopViewControl.Refresh();
+
                     var mpe = new MapPanelClickEventArgs();
                     mpe.ClickTile = tile;
                     mpe.MouseEventArgs = e;
