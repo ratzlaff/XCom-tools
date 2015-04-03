@@ -1,7 +1,5 @@
 using System.Collections.Generic;
 using System.Windows.Forms;
-using XCom;
-using XCom.Interfaces.Base;
 
 namespace MapView.Forms.MainWindow
 {

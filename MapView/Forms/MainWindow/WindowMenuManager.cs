@@ -45,11 +45,6 @@ namespace MapView.Forms.MainWindow
             var mi = new MenuItem(title);
             mi.Tag = form;
 
-            if (form is IMenuItem)
-            {
-                ((IMenuItem)form).MenuItem = mi;
-            }
-
             parent.MenuItems.Add(mi);
             mi.Click += FormMiClick;
             form.Closing += (sender, e) =>

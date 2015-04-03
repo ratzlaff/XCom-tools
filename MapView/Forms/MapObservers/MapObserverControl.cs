@@ -1,15 +1,12 @@
-using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Text;
 using System.Windows.Forms;
 using DSShared.Windows;
 using XCom.Interfaces.Base;
-using XCom;
 
 namespace MapView
 {
-    public class MapObserverControl  : UserControl,  IMap_Observer, IMenuItem
+    public class MapObserverControl  : UserControl,  IMap_Observer
 	{
         private IMap_Base _map;
 		private RegistryInfo _registryInfo;
@@ -29,9 +26,6 @@ namespace MapView
 		{
 			get { return _moreObservers; }
 		}
-
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public MenuItem MenuItem { get; set; }
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public RegistryInfo RegistryInfo

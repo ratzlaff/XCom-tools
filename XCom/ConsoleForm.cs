@@ -10,7 +10,7 @@ using XCom.Interfaces.Base;
 
 namespace XCom
 {
-    public partial class ConsoleForm : Form, IMenuItem
+    public partial class ConsoleForm : Form 
 	{
 		public ConsoleForm()
 		{
@@ -43,8 +43,6 @@ namespace XCom
 		private void miClose_Click(object sender, EventArgs e)
 		{
 			Close();
-		}
-
-        public MenuItem MenuItem { get; set; }
+		} 
 	}
 }
