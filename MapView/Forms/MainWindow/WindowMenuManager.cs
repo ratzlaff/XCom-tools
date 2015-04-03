@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
+using MapView.Forms.MapObservers.RmpViews;
+using MapView.Forms.MapObservers.TopViews;
 using XCom;
 using XCom.Interfaces.Base;
 
@@ -12,6 +14,8 @@ namespace MapView.Forms.MainWindow
         private readonly MenuItem _miHelp;
         private readonly List<MenuItem> _allMenuItems = new List<MenuItem>();
         private readonly List<Form> _allForms = new List<Form>();
+        private Settings _settings;
+        private bool _isDisposed;
 
         public WindowMenuManager(MenuItem showMenu, MenuItem miHelp)
         {
@@ -19,19 +23,41 @@ namespace MapView.Forms.MainWindow
             _miHelp = miHelp;
         }
 
-        public void SetMenus(ConsoleForm consoleWindow)
+        public void SetMenus(ConsoleForm consoleWindow, Settings settings)
         {
-            RegisterForm(MainWindowsManager.TopView, "Top View", _showMenu, "TopView");
+            _settings = settings;
             RegisterForm(MainWindowsManager.TileView, "Tile View", _showMenu, "TileView");
+            _showMenu.MenuItems.Add(new MenuItem("-"));
+            RegisterForm(MainWindowsManager.TopView, "Top View", _showMenu, "TopView");
             RegisterForm(MainWindowsManager.RmpView, "Route View", _showMenu, "RmpView");
             RegisterForm(MainWindowsManager.TopRmpView, "Top & Route View", _showMenu);
-
+            _showMenu.MenuItems.Add(new MenuItem("-"));
             RegisterForm(consoleWindow, "Console", _showMenu);
 
             RegisterForm(MainWindowsManager.HelpScreen, "Quick Help", _miHelp);
             RegisterForm(MainWindowsManager.AboutWindow, "About", _miHelp);
+
+            RegisterWindowMenuItemValue( );
         }
 
+        public void LoadState(   )
+        {
+            foreach (MenuItem mi in _showMenu.MenuItems)
+            {
+                var settingName = GetWindowSettingName(mi);
+                if (_settings[settingName].ValueBool)
+                {
+                    mi.PerformClick();
+                }
+                else
+                {
+                    mi.PerformClick();
+                    mi.PerformClick();
+                }
+            }
+
+            _showMenu.Enabled = true;
+        }
 
         public IMainWindowsShowAllManager CreateShowAll(   )
         { 
@@ -39,7 +65,31 @@ namespace MapView.Forms.MainWindow
                 _allForms, _allMenuItems);
         }
 
-        public void RegisterForm(Form form, string title, MenuItem parent, string registryKey = null)
+        private void RegisterWindowMenuItemValue()
+        {
+            foreach (MenuItem mi in _showMenu.MenuItems)
+            {
+                var settingName = GetWindowSettingName(mi);
+                var defaultVal = true;
+                if (mi.Tag is TopViewForm) defaultVal = false;
+                if (mi.Tag is RmpViewForm) defaultVal = false;
+                _settings.AddSetting(settingName, defaultVal, "Default display window - " + mi.Text, "Windows", null, false, null);
+
+                var form = mi.Tag as Form;
+                if (form != null)
+                {
+                    form.VisibleChanged += (sender, a) =>
+                    {
+                        if (_isDisposed) return;
+                        var senderForm = sender as Form;
+                        if (senderForm == null) return;
+                        _settings[settingName].Value = senderForm.Visible;
+                    };
+                } 
+            }
+        } 
+
+        private void RegisterForm(Form form, string title, MenuItem parent, string registryKey = null)
         {
             form.Text = title;
             var mi = new MenuItem(title);
@@ -73,6 +123,17 @@ namespace MapView.Forms.MainWindow
                 ((Form)mi.Tag).Close();
                 mi.Checked = false;
             }
+        }
+
+        private static string GetWindowSettingName(MenuItem mi)
+        {
+            var settingName = "Window-" + mi.Text;
+            return settingName;
+        }
+
+        public void Dispose()
+        {
+            _isDisposed = true;
         }
     }
 }

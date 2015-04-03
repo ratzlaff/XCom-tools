@@ -9,19 +9,19 @@ using XCom.Interfaces.Base;
 
 namespace MapView.Forms.MainWindow
 {
-    public interface IMainWindowsMenuItemManager
+    public interface IMainWindowWindowsManager
     {
         void Register();
         void CloseAll();
     }
 
-    public class MainWindowsMenuItemManager : IMainWindowsMenuItemManager
+    public class MainWindowWindowsManager : IMainWindowWindowsManager
     {
         private readonly Dictionary<string, Form> _registeredForms;
         private readonly SettingsManager _settingsManager;
         private readonly ConsoleSharedSpace _consoleSharedSpace;
 
-        public MainWindowsMenuItemManager( 
+        public MainWindowWindowsManager( 
             SettingsManager settingsManager, ConsoleSharedSpace consoleSharedSpace)
         {
             _settingsManager = settingsManager;
@@ -40,9 +40,9 @@ namespace MapView.Forms.MainWindow
             MainWindowsManager.TopRmpView.RouteViewControl.LoadDefaultSettings();
 
             RegisterForm(MainWindowsManager.TopView, "Top View", "TopView");
-            RegisterForm(MainWindowsManager.TileView, "Tile View", "TileView");
             RegisterForm(MainWindowsManager.RmpView, "Route View", "RmpView");
             RegisterForm(MainWindowsManager.TopRmpView, "Top & Route View");
+            RegisterForm(MainWindowsManager.TileView, "Tile View", "TileView");
 
             RegisterForm(_consoleSharedSpace.GetNewConsole(), "Console");
 
@@ -65,7 +65,6 @@ namespace MapView.Forms.MainWindow
                 var observer = observerForm.MapObserver;
                 observer.LoadDefaultSettings();
                 observer.RegistryInfo = new DSShared.Windows.RegistryInfo(form, registryKey);
-
                 _settingsManager.Add(registryKey, observer.Settings);
             }
 

@@ -80,8 +80,7 @@ namespace MapView.Forms.MapObservers.RmpViews
                 {
                     var tile = _map[p.Y, p.X];
                     if (tile == null) return;
-                    ClickPoint.X = p.X;
-                    ClickPoint.Y = p.Y;
+                    ClickPoint = p;
 
                     _map.SelectedTile = new MapLocation(ClickPoint.Y, ClickPoint.X, _map.CurrentHeight);
                     var mpe = new MapPanelClickEventArgs();

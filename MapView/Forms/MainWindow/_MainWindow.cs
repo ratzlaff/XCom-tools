@@ -30,8 +30,9 @@ namespace MapView
         private readonly MapViewPanel _mapView;
         private readonly LoadingForm _lf;
         private readonly IWarningHandler _warningHandler;
-        private readonly IMainWindowsMenuItemManager _mainWindowsMenuItemManager;
+        private readonly IMainWindowWindowsManager _mainWindowWindowsManager;
         private readonly MainWindowsManager _mainWindowsManager;
+        private readonly WindowMenuManager _windowMenuManager;
 
 		public MainWindow()
         {
@@ -42,9 +43,9 @@ namespace MapView
             _mapView = MapViewPanel.Instance;
 
 		    _settingsManager = new SettingsManager();
-            var windowMenuManager = new WindowMenuManager(showMenu, miHelp);
-             
-            loadDefaults();
+		    _windowMenuManager = new WindowMenuManager(showMenu, miHelp);
+
+		    loadDefaults();
 
             Palette.TFTDBattle.SetTransparent(true);
             Palette.UFOBattle.SetTransparent(true);
@@ -60,13 +61,15 @@ namespace MapView
             MainWindowsManager.MainToolStripButtonsFactory = new MainToolStripButtonsFactory(_mapView);
 
             _mainWindowsManager = new MainWindowsManager();
-            _mainWindowsMenuItemManager = new MainWindowsMenuItemManager(
+            _mainWindowWindowsManager = new MainWindowWindowsManager(
                 _settingsManager, consoleSharedSpace);
 
-            windowMenuManager.SetMenus(consoleSharedSpace.GetNewConsole());
+            var settings = GetSettings();
+            _windowMenuManager.SetMenus(consoleSharedSpace.GetNewConsole(), settings);
 
             MainWindowsManager.MainWindowsShowAllManager =
-                windowMenuManager.CreateShowAll();
+                _windowMenuManager.CreateShowAll();
+
 
 		    MainWindowsManager.Initialize();
 
@@ -99,11 +102,8 @@ namespace MapView
 			InitGameInfo(pathsFile);
 		    LogFile.Instance.WriteLine("GameInfo.Init done");
 
-            _mainWindowsMenuItemManager.Register();
-
-            var settings = GetSettings();
-            RegisterWindowMenuItemValue(settings);
-
+            _mainWindowWindowsManager.Register();
+             
             MainWindowsManager.TileView.TileViewControl.MapChanged += TileView_MapChanged;
 
 			LogFile.Instance.WriteLine("Palette transparencies set");
@@ -317,13 +317,15 @@ namespace MapView
 				return;
 			}
 
+            _windowMenuManager.Dispose();
+
 			if (PathsEditor.SaveRegistry)
 			{
 				RegistryKey swKey = Registry.CurrentUser.CreateSubKey("Software");
 				RegistryKey mvKey = swKey.CreateSubKey("MapView");
 				RegistryKey riKey = mvKey.CreateSubKey("MainView");
 
-			    _mainWindowsMenuItemManager.CloseAll();
+			    _mainWindowWindowsManager.CloseAll();
 
 				WindowState = FormWindowState.Normal;
 				riKey.SetValue("Left", Left);
@@ -338,7 +340,7 @@ namespace MapView
 				mvKey.Close();
 				swKey.Close();
 			}
-
+             
 		    _settingsManager.Save(); 
 		}
 
@@ -484,22 +486,7 @@ namespace MapView
 	            //open all the forms in the show menu once
 	            if (!showMenu.Enabled)
 	            {
-	                var settings = GetSettings();
-                    foreach (MenuItem mi in showMenu.MenuItems)
-                    {
-                        var settingName = GetWindowSettingName(mi);
-                        if (settings[settingName].ValueBool)
-                        {
-                            mi.PerformClick();
-                        }
-                        else
-                        {
-                            mi.PerformClick();
-                            mi.PerformClick();
-                        }
-                    }
-
-	                showMenu.Enabled = true;
+                    _windowMenuManager.LoadState();
 	            }
 
 	            //Reset all observer events
@@ -696,27 +683,6 @@ namespace MapView
             _mapView.SetupMapSize();
             Refresh();
             _mapView.OnResize();
-        }
-
-        private void RegisterWindowMenuItemValue(Settings settings)
-        {
-            foreach (MenuItem mi in showMenu.MenuItems)
-            { 
-                var settingName = GetWindowSettingName(mi);
-                var defaultVal = true;
-                if (mi.Tag is TopViewForm) defaultVal = false;
-                if (mi.Tag is RmpViewForm) defaultVal = false;
-                settings.AddSetting(settingName, defaultVal, "Default display window - " + mi.Text, "Windows", null, false, null);
-
-                MenuItem menuItem = mi;
-                mi.Click += (sender, a) => { settings[settingName].Value = menuItem.Checked; };
-            }
-        }
-
-        private static string GetWindowSettingName(MenuItem mi)
-        {
-            var settingName = "Window-" + mi.Text;
-            return settingName;
         } 
 	}
 }
