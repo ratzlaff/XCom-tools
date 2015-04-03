@@ -19,73 +19,39 @@ namespace MapView.Forms.MainWindow
 
         public static TopRmpViewForm TopRmpView
         {
-            get
-            {
-                if (_topRmpView == null)
-                {
-                    _topRmpView = new TopRmpViewForm();
-                    _topRmpView.TopViewControl.Initialize(MainToolStripButtonsFactory);
-                }
-                return _topRmpView;
-            }
+            get { return _topRmpView ?? (_topRmpView = new TopRmpViewForm()); }
         }
         public static RmpViewForm RmpView
         {
-            get
-            {
-                if (_rmpView == null)
-                    _rmpView = new RmpViewForm();
-                return _rmpView;
-            }
+            get { return _rmpView ?? (_rmpView = new RmpViewForm()); }
         }
-
 
         public static TopViewForm TopView
         {
-            get
-            {
-                if (_topView == null)
-                {
-                    _topView = new TopViewForm();
-                    _topView.TopViewControl.Initialize(MainToolStripButtonsFactory);
-                }
-
-                return _topView;
-            }
+            get { return _topView ?? (_topView = new TopViewForm()); }
         }
 
         public static TileViewForm TileView
         {
-            get
-            {
-                if (_tileView == null)
-                {
-                    _tileView = new TileViewForm();
-                    _tileView.TileViewControl.Initialize(MainWindowsShowAllManager);
-                    _tileView.TileViewControl.SelectedTileTypeChanged += _tileView_SelectedTileTypeChanged;
-                }
-                return _tileView;
-            }
+            get { return _tileView ?? (_tileView = new TileViewForm()); }
         }
 
         public static HelpScreen HelpScreen
         {
-            get
-            {
-                if (_helpScreen == null)
-                    _helpScreen = new HelpScreen();
-                return _helpScreen;
-            }
+            get { return _helpScreen ?? (_helpScreen = new HelpScreen()); }
         }
 
         public static AboutWindow AboutWindow
         {
-            get
-            {
-                if (_aboutWindow == null)
-                    _aboutWindow = new AboutWindow();
-                return _aboutWindow;
-            }
+            get { return _aboutWindow ?? (_aboutWindow = new AboutWindow()); }
+        }
+
+        public static void Initialize()
+        {
+            TopRmpView.TopViewControl.Initialize(MainToolStripButtonsFactory);
+            TopView.TopViewControl.Initialize(MainToolStripButtonsFactory);
+            TileView.TileViewControl.Initialize(MainWindowsShowAllManager);
+            TileView.TileViewControl.SelectedTileTypeChanged += _tileView_SelectedTileTypeChanged;
         }
 
         public void SetMap(IMap_Base map)

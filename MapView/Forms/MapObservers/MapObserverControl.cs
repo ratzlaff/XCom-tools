@@ -13,22 +13,17 @@ namespace MapView
 	{
         private IMap_Base _map;
 		private RegistryInfo _registryInfo;
-        private Settings _settings;
-		private readonly Dictionary<string, IMap_Observer> _moreObservers;
+        private readonly Dictionary<string, IMap_Observer> _moreObservers;
 
 		public MapObserverControl()
 		{
 			_moreObservers = new Dictionary<string, IMap_Observer>();
-			_settings = new Settings();
+			Settings = new Settings();
         } 
 
 		public virtual void LoadDefaultSettings(   ){}
 
-		public Settings Settings
-		{
-		    get { return _settings; }
-            set { _settings = value;}
-		}
+        public Settings Settings { get; set; }
 
         public Dictionary<string, IMap_Observer> MoreObservers
 		{

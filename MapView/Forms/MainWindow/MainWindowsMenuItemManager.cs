@@ -18,22 +18,15 @@ namespace MapView.Forms.MainWindow
     public class MainWindowsMenuItemManager : IMainWindowsMenuItemManager
     {
         private readonly Dictionary<string, Form> _registeredForms;
-        private readonly Dictionary<string, Settings> _settingsHash;
-        private readonly MenuItem _showMenu;
-        private readonly MenuItem _miHelp;
-        private readonly MapViewPanel _mapView;
+        private readonly SettingsManager _settingsManager;
         private readonly ConsoleSharedSpace _consoleSharedSpace;
 
-        public MainWindowsMenuItemManager(
-            MenuItem showMenu, MenuItem miHelp, MapViewPanel mapView, 
-            Dictionary<string, Settings> settingsHash, ConsoleSharedSpace consoleSharedSpace)
+        public MainWindowsMenuItemManager( 
+            SettingsManager settingsManager, ConsoleSharedSpace consoleSharedSpace)
         {
-            _settingsHash = settingsHash;
+            _settingsManager = settingsManager;
             _consoleSharedSpace = consoleSharedSpace;
             _registeredForms = new Dictionary<string, Form>();
-            _showMenu = showMenu;
-            _miHelp = miHelp;
-            _mapView = mapView;
         }
 
         public void Register()
@@ -46,15 +39,15 @@ namespace MapView.Forms.MainWindow
             MainWindowsManager.TopRmpView.TopViewControl.LoadDefaultSettings();
             MainWindowsManager.TopRmpView.RouteViewControl.LoadDefaultSettings();
 
-            RegisterForm(MainWindowsManager.TopView, "Top View", _showMenu, "TopView");
-            RegisterForm(MainWindowsManager.TileView, "Tile View", _showMenu, "TileView");
-            RegisterForm(MainWindowsManager.RmpView, "Route View", _showMenu, "RmpView");
-            RegisterForm(MainWindowsManager.TopRmpView, "Top & Route View", _showMenu);
+            RegisterForm(MainWindowsManager.TopView, "Top View", "TopView");
+            RegisterForm(MainWindowsManager.TileView, "Tile View", "TileView");
+            RegisterForm(MainWindowsManager.RmpView, "Route View", "RmpView");
+            RegisterForm(MainWindowsManager.TopRmpView, "Top & Route View");
 
-            RegisterForm(_consoleSharedSpace.GetNewConsole(), "Console", _showMenu);
+            RegisterForm(_consoleSharedSpace.GetNewConsole(), "Console");
 
-            RegisterForm(MainWindowsManager.HelpScreen, "Quick Help", _miHelp);
-            RegisterForm(MainWindowsManager.AboutWindow, "About", _miHelp);
+            RegisterForm(MainWindowsManager.HelpScreen, "Quick Help");
+            RegisterForm(MainWindowsManager.AboutWindow, "About");
 
             MainWindowsManager.TopRmpView.TopViewControl.RegistryInfo =
                 MainWindowsManager.TopView.TopViewControl.RegistryInfo;
@@ -62,18 +55,9 @@ namespace MapView.Forms.MainWindow
                 MainWindowsManager.RmpView.RouteViewControl.RegistryInfo;
         }
 
-        private void RegisterForm(Form form, string title, MenuItem parent, string registryKey = null)
+        private void RegisterForm(Form form, string title, string registryKey = null)
         {
-            form.Closing += FormClosing;
-
             form.Text = title;
-            var mi = new MenuItem(title);
-            mi.Tag = form;
-
-            if (form is IMenuItem)
-            {
-                ((IMenuItem) form).MenuItem = mi;
-            }
 
             var observerForm = form as IMapObserverFormProvider;
             if (observerForm != null)
@@ -82,40 +66,13 @@ namespace MapView.Forms.MainWindow
                 observer.LoadDefaultSettings();
                 observer.RegistryInfo = new DSShared.Windows.RegistryInfo(form, registryKey);
 
-                _settingsHash.Add(registryKey, observer.Settings);
+                _settingsManager.Add(registryKey, observer.Settings);
             }
 
             form.ShowInTaskbar = false;
             form.FormBorderStyle = FormBorderStyle.SizableToolWindow;
 
-            parent.MenuItems.Add(mi);
-            mi.Click += FormMiClick;
             _registeredForms.Add(title, form);
-        }
-
-        private static void FormMiClick(object sender, EventArgs e)
-        {
-            var mi = (MenuItem)sender;
-
-            if (!mi.Checked)
-            {
-                ((Form)mi.Tag).Show();
-                ((Form)mi.Tag).WindowState = FormWindowState.Normal;
-                mi.Checked = true;
-            }
-            else
-            {
-                ((Form)mi.Tag).Close();
-                mi.Checked = false;
-            }
-        }
-
-        private static void FormClosing(object sender, CancelEventArgs e)
-        {
-            e.Cancel = true;
-            if (sender is IMenuItem)
-                ((IMenuItem)sender).MenuItem.Checked = false;
-            ((Form)sender).Hide();
         }
 
         public void CloseAll()

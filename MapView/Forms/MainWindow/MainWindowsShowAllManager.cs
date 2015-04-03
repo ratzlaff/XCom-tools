@@ -13,33 +13,32 @@ namespace MapView.Forms.MainWindow
 
     public class MainWindowsShowAllManager : IMainWindowsShowAllManager
     {
-        public MainWindowsShowAllManager(ConsoleSharedSpace consoleSharedSpace)
+        public MainWindowsShowAllManager(IEnumerable<Form> allForms, IEnumerable<MenuItem> allMenuItems)
         {
-            _consoleSharedSpace = consoleSharedSpace;
+            _allForms = allForms;
+            _allMenuItems = allMenuItems;
         }
 
-        private readonly ConsoleSharedSpace _consoleSharedSpace;
+        private readonly IEnumerable<Form> _allForms;
+        private readonly IEnumerable<MenuItem> _allMenuItems;
         private List<Form> _formList;
+        private List<MenuItem> _menuItems;
 
         public void HideAll()
         {
-            var tempFormList = new List<Form>()
+            _menuItems = new List<MenuItem>();
+            foreach (var menu in _allMenuItems)
             {
-                MainWindowsManager.TopView,
-                MainWindowsManager.TileView,
-                MainWindowsManager.RmpView,
-                MainWindowsManager.TopRmpView,
-            };
-            var console =_consoleSharedSpace.GetConsole();
-            if (console != null) tempFormList.Add(console);
-
+                if (!menu.Checked) continue;
+                _menuItems.Add(menu);
+            }
             _formList = new List<Form>();
-            foreach (var form in tempFormList)
+            foreach (var form in _allForms)
             {
                 if (!form.Visible) continue;
                 form.Close();
                 _formList.Add(form);
-            } 
+            }
         }
 
         public void RestoreAll()
@@ -48,12 +47,11 @@ namespace MapView.Forms.MainWindow
             {
                 form.Show();
                 form.WindowState = FormWindowState.Normal;
-                var mapObserverForm = form as IMenuItem;
-                if (mapObserverForm != null)
-                {
-                    mapObserverForm.MenuItem.Checked = true;
-                }
-            } 
+            }
+            foreach (var menuItem in _menuItems)
+            {
+                menuItem.Checked = true;
+            }
         }
     } 
 }

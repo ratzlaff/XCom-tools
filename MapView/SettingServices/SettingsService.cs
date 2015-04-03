@@ -9,12 +9,7 @@ namespace MapView.SettingServices
     public class SettingsService
     {
         public const string FILE_NAME = "MV_SettingsFile";
-        
-
-        public SettingsService()
-        {
-        }
-
+         
         public void Save(Dictionary<string, Settings> settingsHash)
         {
             using (var sw = new StreamWriter(SharedSpace.Instance[FILE_NAME].ToString()))

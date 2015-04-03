@@ -25,14 +25,13 @@ namespace MapView
 
 	public partial class MainWindow : Form
 	{
-		private Dictionary<string, Settings> _settingsHash;
+        private readonly SettingsManager _settingsManager;
 
         private readonly MapViewPanel _mapView;
         private readonly LoadingForm _lf;
         private readonly IWarningHandler _warningHandler;
         private readonly IMainWindowsMenuItemManager _mainWindowsMenuItemManager;
         private readonly MainWindowsManager _mainWindowsManager;
-	    private readonly ConnectNodeService _connectNodeService;
 
 		public MainWindow()
         {
@@ -41,8 +40,9 @@ namespace MapView
             /***********************/
 
             _mapView = MapViewPanel.Instance;
-            
-            _settingsHash = new Dictionary<string, Settings>();
+
+		    _settingsManager = new SettingsManager();
+            var windowMenuManager = new WindowMenuManager(showMenu, miHelp);
              
             loadDefaults();
 
@@ -53,17 +53,23 @@ namespace MapView
 
 			#region Setup SharedSpace information and paths
 
-            SharedSpace sharedSpace = SharedSpace.Instance;
+            var sharedSpace = SharedSpace.Instance;
 		    var consoleSharedSpace = new ConsoleSharedSpace(sharedSpace);
             _warningHandler = new ConsoleWarningHandler(consoleSharedSpace);
-
-            MainWindowsManager.MainWindowsShowAllManager = new MainWindowsShowAllManager(consoleSharedSpace);
+             
             MainWindowsManager.MainToolStripButtonsFactory = new MainToolStripButtonsFactory(_mapView);
 
             _mainWindowsManager = new MainWindowsManager();
             _mainWindowsMenuItemManager = new MainWindowsMenuItemManager(
-                showMenu, miHelp, _mapView, _settingsHash, consoleSharedSpace);
-             
+                _settingsManager, consoleSharedSpace);
+
+            windowMenuManager.SetMenus(consoleSharedSpace.GetNewConsole());
+
+            MainWindowsManager.MainWindowsShowAllManager =
+                windowMenuManager.CreateShowAll();
+
+		    MainWindowsManager.Initialize();
+
 		    sharedSpace.GetObj("MapView", this);
 			sharedSpace.GetObj("AppDir", Environment.CurrentDirectory);
 			sharedSpace.GetObj("CustomDir", Environment.CurrentDirectory + "\\custom");
@@ -142,7 +148,7 @@ namespace MapView
 
             if (settingsFile.Exists())
             {
-                readMapViewSettings(new StreamReader(settingsFile.ToString()));
+                _settingsManager.Load(settingsFile.ToString());
                 LogFile.Instance.WriteLine("User settings loaded");
             }
             else
@@ -219,22 +225,8 @@ namespace MapView
 					break;
 			}
 		}
-
-		private void readMapViewSettings(StreamReader sr)
-		{
-			var vc = new XCom.VarCollection(sr);
-			var kv = vc.ReadLine();
-
-            while (kv != null)
-		    {
-		        Settings.ReadSettings(vc, kv, _settingsHash[kv.Keyword]);
-                kv = vc.ReadLine();
-            }
-
-		    sr.Close();
-		}
-
-		private void changeSetting(object sender, string key, object val)
+         
+		private void ChangeSetting(object sender, string key, object val)
 		{
             GetSettings()[key].Value = val;
 			switch (key)
@@ -347,9 +339,7 @@ namespace MapView
 				swKey.Close();
 			}
 
-		    var settingsService = new SettingsService();
-            settingsService.Save(_settingsHash);
-
+		    _settingsManager.Save(); 
 		}
 
 		private void loadDefaults()
@@ -367,9 +357,9 @@ namespace MapView
 			mvKey.Close();
 			swKey.Close();
 
-			Settings settings = new Settings();
+			var settings = new Settings();
 			//Color.FromArgb(175,69,100,129)
-			ValueChangedDelegate eh = new ValueChangedDelegate(changeSetting);
+			var eh = new ValueChangedDelegate(ChangeSetting);
 			settings.AddSetting("Animation", MapViewPanel.Updating, "If true, the map will animate itself", "Main", eh, false, null);
 			settings.AddSetting("Doors", false, "If true, the door tiles will animate themselves", "Main", eh, false, null);
 			settings.AddSetting("SaveWindowPositions", PathsEditor.SaveRegistry, "If true, the window positions and sizes will be saved in the windows registry", "Main", eh, false, null);
@@ -395,12 +385,12 @@ namespace MapView
 
 		private void onItem_Click(object sender, System.EventArgs e)
 		{
-			changeSetting(this, "Animation", true);
+			ChangeSetting(this, "Animation", true);
 		}
 
 		private void offItem_Click(object sender, System.EventArgs e)
 		{
-			changeSetting(this, "Animation", false);
+			ChangeSetting(this, "Animation", false);
 		}
 
 		private void saveItem_Click(object sender, System.EventArgs e)
@@ -544,7 +534,7 @@ namespace MapView
 
 	    private void miOptions_Click(object sender, System.EventArgs e)
 		{
-			PropertyForm pf = new PropertyForm("MainViewSettings", GetSettings());
+			var pf = new PropertyForm("MainViewSettings", GetSettings());
 			pf.Text = "MainWindow Options";
 			pf.Show();
 		}
@@ -626,7 +616,7 @@ namespace MapView
 		private void miInfo_Click(object sender, System.EventArgs e)
 		{
             if (_mapView.Map == null) return;
-			MapInfoForm mif = new MapInfoForm();
+			var mif = new MapInfoForm();
 			mif.Show();
 			mif.Map = _mapView.Map;
 		}
@@ -655,6 +645,16 @@ namespace MapView
 
 		}
 
+        private void SetSettings(Settings settings)
+        {
+            _settingsManager["MainWindow"] = settings;
+        }
+
+        private Settings GetSettings()
+        {
+            return _settingsManager["MainWindow"];
+        }
+
         private void drawSelectionBoxButton_Click(object sender, EventArgs e)
         {
             _mapView.View.DrawSelectionBox = !_mapView.View.DrawSelectionBox;
@@ -679,16 +679,6 @@ namespace MapView
                 _mapView.SetupMapSize();
                 Refresh();
             }
-        }
-
-        private void SetSettings(Settings settings)
-        {
-            _settingsHash["MainWindow"] = settings;
-        }
-
-        private Settings GetSettings()
-        {
-            return _settingsHash["MainWindow"];
         }
 
         private void RegisterWindowMenuItemValue(Settings settings)
