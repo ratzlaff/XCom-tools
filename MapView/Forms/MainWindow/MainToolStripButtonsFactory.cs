@@ -5,6 +5,7 @@ using System.Reflection;
 using System.Text;
 using System.Windows.Forms;
 using MapView.Forms.MapObservers.TopViews;
+using MapView.Properties;
 
 namespace MapView.Forms.MainWindow
 {
@@ -142,12 +143,11 @@ namespace MapView.Forms.MainWindow
             btnPaste.Enabled = false;
             _pasteButtons.Add(btnPaste);
 
-            Assembly a = Assembly.GetExecutingAssembly();
-            btnCut.Image = Bitmap.FromStream(a.GetManifestResourceStream("MapView._Embedded.cut.gif"));
-            btnPaste.Image = Bitmap.FromStream(a.GetManifestResourceStream("MapView._Embedded.paste.gif"));
-            btnCopy.Image = Bitmap.FromStream(a.GetManifestResourceStream("MapView._Embedded.copy.gif"));
-            btnUp.Image = Bitmap.FromStream(a.GetManifestResourceStream("MapView._Embedded.up.gif"));
-            btnDown.Image = Bitmap.FromStream(a.GetManifestResourceStream("MapView._Embedded.down.gif"));
+            btnCut.Image = Resources.cut;
+            btnPaste.Image = Resources.paste;
+            btnCopy.Image = Resources.copy;
+            btnUp.Image =Resources.up;
+            btnDown.Image =Resources.down;
         }
 
         private static void Refresh()
@@ -166,17 +166,17 @@ namespace MapView.Forms.MainWindow
 
         private void btnDown_Click(object sender, EventArgs e)
         {
-            if (MapViewPanel.Instance.View.Map != null)
+            if (MapViewPanel.Instance.MapView.Map != null)
             {
-                MapViewPanel.Instance.View.Map.Down();
+                MapViewPanel.Instance.MapView.Map.Down();
             }
         }
 
         private void btnUp_Click(object sender, EventArgs e)
         {
-            if (MapViewPanel.Instance.View.Map != null)
+            if (MapViewPanel.Instance.MapView.Map != null)
             {
-                MapViewPanel.Instance.View.Map.Up();
+                MapViewPanel.Instance.MapView.Map.Up();
             }
         }
     }

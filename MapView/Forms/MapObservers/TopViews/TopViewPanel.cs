@@ -11,7 +11,7 @@ namespace MapView.Forms.MapObservers.TopViews
 
 	    public TopViewPanel()
 	    {
-	        MapViewPanel.Instance.View.DragChanged += ViewDrag;
+	        MapViewPanel.Instance.MapView.DragChanged += ViewDrag;
 	    }
 
         public ToolStripMenuItem Ground { get; set; }

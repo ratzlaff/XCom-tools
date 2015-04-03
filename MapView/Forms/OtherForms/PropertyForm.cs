@@ -32,7 +32,7 @@ namespace MapView
 		private void InitializeComponent()
 		{
 			this.label1 = new System.Windows.Forms.Label();
-			this.propertyGrid = new MapView.CustomPropertyGrid();
+			this.propertyGrid = new global::MapView.CustomPropertyGrid();
 			this.SuspendLayout();
 			// 
 			// label1

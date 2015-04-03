@@ -31,7 +31,7 @@ namespace MapView.Forms.MapObservers.TopViews
             this.toolStripContainer2 = new System.Windows.Forms.ToolStripContainer();
             this.center = new System.Windows.Forms.Panel();
             this.toolStrip = new System.Windows.Forms.ToolStrip();
-            this.bottom = new MapView.Forms.MapObservers.TopViews.BottomPanel();
+            this.bottom = new global::MapView.Forms.MapObservers.TopViews.BottomPanel();
             this.MainToolStrip = new System.Windows.Forms.ToolStrip();
             this.VisibleToolStripButton = new System.Windows.Forms.ToolStripDropDownButton();
             this.toolStripDropDownButton1 = new System.Windows.Forms.ToolStripDropDownButton();

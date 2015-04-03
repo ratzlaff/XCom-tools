@@ -178,16 +178,16 @@ namespace MapView.Forms.MapObservers.TopViews
 
 		public void Fill_Click(object sender, EventArgs evt)
 		{ 
-	        var map = MapViewPanel.Instance.View.Map;
+	        var map = MapViewPanel.Instance.MapView.Map;
 	        if (map == null) return;
 	        var s = new Point(0, 0);
 	        var e = new Point(0, 0);
 
-	        s.X = Math.Min(MapViewPanel.Instance.View.DragStart.X, MapViewPanel.Instance.View.DragEnd.X);
-	        s.Y = Math.Min(MapViewPanel.Instance.View.DragStart.Y, MapViewPanel.Instance.View.DragEnd.Y);
+	        s.X = Math.Min(MapViewPanel.Instance.MapView.DragStart.X, MapViewPanel.Instance.MapView.DragEnd.X);
+	        s.Y = Math.Min(MapViewPanel.Instance.MapView.DragStart.Y, MapViewPanel.Instance.MapView.DragEnd.Y);
 
-	        e.X = Math.Max(MapViewPanel.Instance.View.DragStart.X, MapViewPanel.Instance.View.DragEnd.X);
-	        e.Y = Math.Max(MapViewPanel.Instance.View.DragStart.Y, MapViewPanel.Instance.View.DragEnd.Y);
+	        e.X = Math.Max(MapViewPanel.Instance.MapView.DragStart.X, MapViewPanel.Instance.MapView.DragEnd.X);
+	        e.Y = Math.Max(MapViewPanel.Instance.MapView.DragStart.Y, MapViewPanel.Instance.MapView.DragEnd.Y);
 
 	        //row   col
 	        //y     x

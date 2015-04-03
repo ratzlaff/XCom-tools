@@ -28,7 +28,7 @@ namespace MapView.Forms.MapObservers.RmpViews
         /// </summary>
         private void InitializeComponent()
         {
-            this.RouteViewControl = new MapView.Forms.MapObservers.RmpViews.RmpView();
+            this.RouteViewControl = new global::MapView.Forms.MapObservers.RmpViews.RmpView();
             this.SuspendLayout();
             // 
             // RouteViewControl

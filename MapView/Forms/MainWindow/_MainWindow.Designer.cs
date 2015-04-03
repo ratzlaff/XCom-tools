@@ -56,10 +56,11 @@ namespace MapView
             this.tsMapSize = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripContainer1 = new System.Windows.Forms.ToolStripContainer();
             this.toolStrip = new System.Windows.Forms.ToolStrip();
-            this.cSplitList = new DSShared.Windows.CollapsibleSplitter();
             this.drawSelectionBoxButton = new System.Windows.Forms.ToolStripButton();
             this.ZoomInButton = new System.Windows.Forms.ToolStripButton();
             this.ZoomOutButton = new System.Windows.Forms.ToolStripButton();
+            this.AutoZoomButton = new System.Windows.Forms.ToolStripButton();
+            this.cSplitList = new DSShared.Windows.CollapsibleSplitter();
             this.statusStrip1.SuspendLayout();
             this.toolStripContainer1.TopToolStripPanel.SuspendLayout();
             this.toolStripContainer1.SuspendLayout();
@@ -212,7 +213,7 @@ namespace MapView
             this.mapList.Dock = System.Windows.Forms.DockStyle.Left;
             this.mapList.Location = new System.Drawing.Point(0, 0);
             this.mapList.Name = "mapList";
-            this.mapList.Size = new System.Drawing.Size(152, 141);
+            this.mapList.Size = new System.Drawing.Size(152, 61);
             this.mapList.TabIndex = 0;
             this.mapList.BeforeSelect += new System.Windows.Forms.TreeViewCancelEventHandler(this.mapList_BeforeSelect);
             this.mapList.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.mapList_AfterSelect);
@@ -228,7 +229,7 @@ namespace MapView
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.statusMapName,
             this.tsMapSize});
-            this.statusStrip1.Location = new System.Drawing.Point(160, 119);
+            this.statusStrip1.Location = new System.Drawing.Point(160, 39);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Size = new System.Drawing.Size(376, 22);
             this.statusStrip1.TabIndex = 2;
@@ -261,7 +262,7 @@ namespace MapView
             // 
             // toolStripContainer1.ContentPanel
             // 
-            this.toolStripContainer1.ContentPanel.Size = new System.Drawing.Size(376, 94);
+            this.toolStripContainer1.ContentPanel.Size = new System.Drawing.Size(376, 14);
             this.toolStripContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
             // 
             // toolStripContainer1.LeftToolStripPanel
@@ -273,7 +274,7 @@ namespace MapView
             // toolStripContainer1.RightToolStripPanel
             // 
             this.toolStripContainer1.RightToolStripPanel.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
-            this.toolStripContainer1.Size = new System.Drawing.Size(376, 119);
+            this.toolStripContainer1.Size = new System.Drawing.Size(376, 39);
             this.toolStripContainer1.TabIndex = 3;
             this.toolStripContainer1.Text = "toolStripContainer1";
             // 
@@ -288,22 +289,12 @@ namespace MapView
             this.toolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.drawSelectionBoxButton,
             this.ZoomInButton,
-            this.ZoomOutButton});
+            this.ZoomOutButton,
+            this.AutoZoomButton});
             this.toolStrip.Location = new System.Drawing.Point(3, 0);
             this.toolStrip.Name = "toolStrip";
-            this.toolStrip.Size = new System.Drawing.Size(246, 25);
+            this.toolStrip.Size = new System.Drawing.Size(193, 25);
             this.toolStrip.TabIndex = 0;
-            // 
-            // cSplitList
-            // 
-            this.cSplitList.BorderStyle3D = System.Windows.Forms.Border3DStyle.Flat;
-            this.cSplitList.ControlToHide = this.mapList;
-            this.cSplitList.Location = new System.Drawing.Point(152, 0);
-            this.cSplitList.MinimumSize = new System.Drawing.Size(5, 5);
-            this.cSplitList.Name = "cSplitList";
-            this.cSplitList.Size = new System.Drawing.Size(8, 141);
-            this.cSplitList.TabIndex = 1;
-            this.cSplitList.TabStop = false;
             // 
             // drawSelectionBoxButton
             // 
@@ -318,29 +309,52 @@ namespace MapView
             // 
             // ZoomInButton
             // 
-            this.ZoomInButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.ZoomInButton.Image = ((System.Drawing.Image)(resources.GetObject("ZoomInButton.Image")));
+            this.ZoomInButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.ZoomInButton.Image = global::MapView.Properties.Resources._12_Zoom_in_16;
             this.ZoomInButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.ZoomInButton.Name = "ZoomInButton";
-            this.ZoomInButton.Size = new System.Drawing.Size(56, 22);
+            this.ZoomInButton.Size = new System.Drawing.Size(23, 22);
             this.ZoomInButton.Text = "Zoom In";
             this.ZoomInButton.Click += new System.EventHandler(this.ZoomInButton_Click);
             // 
             // ZoomOutButton
             // 
-            this.ZoomOutButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.ZoomOutButton.Image = ((System.Drawing.Image)(resources.GetObject("ZoomOutButton.Image")));
+            this.ZoomOutButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.ZoomOutButton.Image = global::MapView.Properties.Resources._13_Zoom_out_16;
             this.ZoomOutButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.ZoomOutButton.Name = "ZoomOutButton";
-            this.ZoomOutButton.Size = new System.Drawing.Size(66, 22);
+            this.ZoomOutButton.Size = new System.Drawing.Size(23, 22);
             this.ZoomOutButton.Text = "Zoom Out";
             this.ZoomOutButton.Click += new System.EventHandler(this.ZoomOutButton_Click);
+            // 
+            // AutoZoomButton
+            // 
+            this.AutoZoomButton.Checked = true;
+            this.AutoZoomButton.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.AutoZoomButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.AutoZoomButton.Image = global::MapView.Properties.Resources._11_Search_16;
+            this.AutoZoomButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.AutoZoomButton.Name = "AutoZoomButton";
+            this.AutoZoomButton.Size = new System.Drawing.Size(23, 22);
+            this.AutoZoomButton.Text = "Auto Zoom";
+            this.AutoZoomButton.Click += new System.EventHandler(this.AutoZoomButton_Click);
+            // 
+            // cSplitList
+            // 
+            this.cSplitList.BorderStyle3D = System.Windows.Forms.Border3DStyle.Flat;
+            this.cSplitList.ControlToHide = this.mapList;
+            this.cSplitList.Location = new System.Drawing.Point(152, 0);
+            this.cSplitList.MinimumSize = new System.Drawing.Size(5, 5);
+            this.cSplitList.Name = "cSplitList";
+            this.cSplitList.Size = new System.Drawing.Size(8, 61);
+            this.cSplitList.TabIndex = 1;
+            this.cSplitList.TabStop = false;
             // 
             // MainWindow
             // 
             this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
             this.BackColor = System.Drawing.SystemColors.Control;
-            this.ClientSize = new System.Drawing.Size(536, 141);
+            this.ClientSize = new System.Drawing.Size(536, 61);
             this.Controls.Add(this.toolStripContainer1);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.cSplitList);
@@ -396,5 +410,6 @@ namespace MapView
         private System.Windows.Forms.ToolStripButton drawSelectionBoxButton;
         private System.Windows.Forms.ToolStripButton ZoomInButton;
         private System.Windows.Forms.ToolStripButton ZoomOutButton;
+        private System.Windows.Forms.ToolStripButton AutoZoomButton;
 	}
 }

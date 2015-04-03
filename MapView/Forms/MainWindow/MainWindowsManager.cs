@@ -71,7 +71,7 @@ namespace MapView.Forms.MainWindow
                     SetMap(map, frm);
                 }
             }
-            MapViewPanel.Instance.View.Refresh();
+            MapViewPanel.Instance.MapView.Refresh();
         }
 
         private static void _tileView_SelectedTileTypeChanged(TileBase newTile)

@@ -138,16 +138,16 @@ namespace MapView.Forms.MapObservers.TopViews
 	    private static Point GetDragEnd()
 	    {
 	        var e = new Point(0, 0);
-	        e.X = Math.Max(MapViewPanel.Instance.View.DragStart.X, MapViewPanel.Instance.View.DragEnd.X);
-	        e.Y = Math.Max(MapViewPanel.Instance.View.DragStart.Y, MapViewPanel.Instance.View.DragEnd.Y);
+	        e.X = Math.Max(MapViewPanel.Instance.MapView.DragStart.X, MapViewPanel.Instance.MapView.DragEnd.X);
+	        e.Y = Math.Max(MapViewPanel.Instance.MapView.DragStart.Y, MapViewPanel.Instance.MapView.DragEnd.Y);
 	        return e;
 	    }
 
 	    private static Point GetDragStart()
 	    {
 	        var s = new Point(0, 0);
-	        s.X = Math.Min(MapViewPanel.Instance.View.DragStart.X, MapViewPanel.Instance.View.DragEnd.X);
-	        s.Y = Math.Min(MapViewPanel.Instance.View.DragStart.Y, MapViewPanel.Instance.View.DragEnd.Y);
+	        s.X = Math.Min(MapViewPanel.Instance.MapView.DragStart.X, MapViewPanel.Instance.MapView.DragEnd.X);
+	        s.Y = Math.Min(MapViewPanel.Instance.MapView.DragStart.Y, MapViewPanel.Instance.MapView.DragEnd.Y);
 	        return s;
 	    }
 
@@ -275,15 +275,15 @@ namespace MapView.Forms.MapObservers.TopViews
 
 			Point p = new Point(col, row);
 		    ;
-			MapViewPanel.Instance.View.DragStart = p;
-			MapViewPanel.Instance.View.DragEnd = p;
+			MapViewPanel.Instance.MapView.DragStart = p;
+			MapViewPanel.Instance.MapView.DragEnd = p;
 		}
 
 		private bool mDown = false;
 		protected override void OnMouseUp(MouseEventArgs e)
 		{
 			mDown = false;
-			MapViewPanel.Instance.View.Refresh();
+			MapViewPanel.Instance.MapView.Refresh();
 			Refresh();
 		}
 
@@ -298,8 +298,8 @@ namespace MapView.Forms.MapObservers.TopViews
 
 				if (mDown)
 				{
-					MapViewPanel.Instance.View.DragEnd = new Point(col,row);
-					MapViewPanel.Instance.View.Refresh();
+					MapViewPanel.Instance.MapView.DragEnd = new Point(col,row);
+					MapViewPanel.Instance.MapView.Refresh();
 				    if (e.Button == MouseButtons.Left)
 				    {
 				        ViewDrag(null, e);

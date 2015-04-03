@@ -10,7 +10,7 @@ using XCom.Interfaces.Base;
 
 namespace MapView
 {
-    public class View : Panel
+    public class MapView : Panel
     {
         private IMap_Base map;
         private Point _origin = new Point(100, 0);
@@ -46,7 +46,7 @@ namespace MapView
 
         public event MouseEventHandler DragChanged;
 
-        public View()
+        public MapView()
         {
             map = null;
             _dragStart = _dragEnd = new Point(-1, -1);
@@ -165,7 +165,7 @@ namespace MapView
             }
         }
 
-        public MapView.Cursor Cursor
+        public global::MapView.Cursor Cursor
         {
             get { return cursor; }
             set
@@ -173,11 +173,6 @@ namespace MapView
                 cursor = value;
                 Refresh();
             }
-        }
-
-        public void OnResize()
-        {
-            OnResize(null);
         }
 
         protected override void OnMouseDown(MouseEventArgs e)
@@ -290,12 +285,22 @@ namespace MapView
 
         public void SetupMapSize()
         {
-            var halfWidth = (int) (H_WIDTH * Globals.PckImageScale);
-            var halfHeight = (int) (H_HEIGHT * Globals.PckImageScale);
+            if (map == null) return;
+            var size = GetMapSize(Globals.PckImageScale);
+            Width = size.Width;
+            Height = size.Height;
+        }
+
+        public Size GetMapSize(double pckImageScale)
+        {
+            if (map == null) return Size.Empty;
+            var halfWidth = (int) (H_WIDTH * pckImageScale);
+            var halfHeight = (int) (H_HEIGHT * pckImageScale);
             _origin = new Point((map.MapSize.Rows - 1) * halfWidth, 0);
-            Width = (map.MapSize.Rows + map.MapSize.Cols) * halfWidth;
-            Height = map.MapSize.Height * (halfHeight * 3) +
-                     (map.MapSize.Rows + map.MapSize.Cols) * halfHeight;
+            var width = (map.MapSize.Rows + map.MapSize.Cols) * halfWidth;
+            var height = map.MapSize.Height * (halfHeight * 3) +
+                         (map.MapSize.Rows + map.MapSize.Cols) * halfHeight;
+            return new Size(width, height);
         }
 
         public Size Viewable

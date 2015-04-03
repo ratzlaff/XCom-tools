@@ -127,13 +127,13 @@ namespace MapView
 
 			try
 			{
-				_mapView.View.Cursor = new Cursor(GameInfo.CachePck(SharedSpace.Instance.GetString("cursorFile"), "", 4, Palette.TFTDBattle));
+				_mapView.MapView.Cursor = new Cursor(GameInfo.CachePck(SharedSpace.Instance.GetString("cursorFile"), "", 4, Palette.TFTDBattle));
 			}
 			catch
 			{
 				try
 				{
-					_mapView.View.Cursor = new Cursor(GameInfo.CachePck(SharedSpace.Instance.GetString("cursorFile"), "", 2, Palette.UFOBattle));
+					_mapView.MapView.Cursor = new Cursor(GameInfo.CachePck(SharedSpace.Instance.GetString("cursorFile"), "", 2, Palette.UFOBattle));
 				}
 				catch { _mapView.Cursor = null; }
 			}
@@ -257,10 +257,10 @@ namespace MapView
 					}
 					break;
 				case "SaveWindowPositions": PathsEditor.SaveRegistry = (bool)val; break;
-				case "UseGrid": MapViewPanel.Instance.View.UseGrid = (bool)val; break;
-				case "GridColor": MapViewPanel.Instance.View.GridColor = (Color)val; break;
-				case "GridLineColor": MapViewPanel.Instance.View.GridLineColor = (Color)val; break;
-				case "GridLineWidth": MapViewPanel.Instance.View.GridLineWidth = (int)val; break;
+				case "UseGrid": MapViewPanel.Instance.MapView.UseGrid = (bool)val; break;
+				case "GridColor": MapViewPanel.Instance.MapView.GridColor = (Color)val; break;
+				case "GridLineColor": MapViewPanel.Instance.MapView.GridLineColor = (Color)val; break;
+				case "GridLineWidth": MapViewPanel.Instance.MapView.GridLineWidth = (int)val; break;
 			}
 		}
 
@@ -363,11 +363,11 @@ namespace MapView
 			settings.AddSetting("Animation", MapViewPanel.Updating, "If true, the map will animate itself", "Main", eh, false, null);
 			settings.AddSetting("Doors", false, "If true, the door tiles will animate themselves", "Main", eh, false, null);
 			settings.AddSetting("SaveWindowPositions", PathsEditor.SaveRegistry, "If true, the window positions and sizes will be saved in the windows registry", "Main", eh, false, null);
-			settings.AddSetting("UseGrid", MapViewPanel.Instance.View.UseGrid, "If true, a grid will show up at the current level of editing", "MapView", null, true, MapViewPanel.Instance.View);
-			settings.AddSetting("GridColor", MapViewPanel.Instance.View.GridColor, "Color of the grid in (a,r,g,b) format", "MapView", null, true, MapViewPanel.Instance.View);
-			settings.AddSetting("GridLineColor", MapViewPanel.Instance.View.GridLineColor, "Color of the lines that make up the grid", "MapView", null, true, MapViewPanel.Instance.View);
-			settings.AddSetting("GridLineWidth", MapViewPanel.Instance.View.GridLineWidth, "Width of the grid lines in pixels", "MapView", null, true, MapViewPanel.Instance.View);
-			settings.AddSetting("SelectGrayscale", MapViewPanel.Instance.View.SelectGrayscale, "If true, the selection area will show up in gray", "MapView", null, true, MapViewPanel.Instance.View);
+			settings.AddSetting("UseGrid", MapViewPanel.Instance.MapView.UseGrid, "If true, a grid will show up at the current level of editing", "MapView", null, true, MapViewPanel.Instance.MapView);
+			settings.AddSetting("GridColor", MapViewPanel.Instance.MapView.GridColor, "Color of the grid in (a,r,g,b) format", "MapView", null, true, MapViewPanel.Instance.MapView);
+			settings.AddSetting("GridLineColor", MapViewPanel.Instance.MapView.GridLineColor, "Color of the lines that make up the grid", "MapView", null, true, MapViewPanel.Instance.MapView);
+			settings.AddSetting("GridLineWidth", MapViewPanel.Instance.MapView.GridLineWidth, "Width of the grid lines in pixels", "MapView", null, true, MapViewPanel.Instance.MapView);
+			settings.AddSetting("SelectGrayscale", MapViewPanel.Instance.MapView.SelectGrayscale, "If true, the selection area will show up in gray", "MapView", null, true, MapViewPanel.Instance.MapView);
 			//settings.AddSetting("SaveOnExit",true,"If true, these settings will be saved on program exit","Main",null,false,null);
 			SetSettings(settings);
 		}
@@ -565,7 +565,7 @@ namespace MapView
 		    if (map != null)
 			{
 				map.Hq2x();
-                _mapView.View.OnResize();
+                _mapView.OnResize();
 			}
 		}
 
@@ -585,10 +585,10 @@ namespace MapView
 
 		private void miResize_Click(object sender, System.EventArgs e)
 		{
-		    if (_mapView.View.Map == null) return;
+		    if (_mapView.MapView.Map == null) return;
 		    using (var cmf = new ChangeMapSizeForm())
 		    {
-		        cmf.Map = _mapView.View.Map;
+		        cmf.Map = _mapView.MapView.Map;
 		        if (cmf.ShowDialog(this) == DialogResult.OK)
 		        {
 		            cmf.Map.ResizeTo(cmf.NewRows, cmf.NewCols, cmf.NewHeight, cmf.AddHeightToCelling);
@@ -657,28 +657,45 @@ namespace MapView
 
         private void drawSelectionBoxButton_Click(object sender, EventArgs e)
         {
-            _mapView.View.DrawSelectionBox = !_mapView.View.DrawSelectionBox;
+            _mapView.MapView.DrawSelectionBox = !_mapView.MapView.DrawSelectionBox;
             drawSelectionBoxButton.Checked = !drawSelectionBoxButton.Checked;
         }
 
         private void ZoomInButton_Click(object sender, EventArgs e)
         {
-            if (Globals.PckImageScale < 2)
+            if (Globals.PckImageScale < Globals.MaxPckImageScale )
             {
                 Globals.PckImageScale += 0.125;
+                Globals.AutoPckImageScale = false;
                 _mapView.SetupMapSize();
                 Refresh();
+                _mapView.OnResize();
             }
         }
 
         private void ZoomOutButton_Click(object sender, EventArgs e)
         {
-            if (Globals.PckImageScale > .3)
+            if (Globals.PckImageScale > Globals.MinPckImageScale)
             {
                 Globals.PckImageScale -= 0.125;
+                Globals.AutoPckImageScale = false;
                 _mapView.SetupMapSize();
                 Refresh();
+                _mapView.OnResize();
             }
+        }
+
+        private void AutoZoomButton_Click(object sender, EventArgs e)
+        {
+            Globals.AutoPckImageScale = !Globals.AutoPckImageScale;
+            if (!Globals.AutoPckImageScale)
+            {
+                Globals.PckImageScale = 1;
+            }
+            AutoZoomButton.Checked = !AutoZoomButton.Checked;
+            _mapView.SetupMapSize();
+            Refresh();
+            _mapView.OnResize();
         }
 
         private void RegisterWindowMenuItemValue(Settings settings)
@@ -700,6 +717,6 @@ namespace MapView
         {
             var settingName = "Window-" + mi.Text;
             return settingName;
-        }
+        } 
 	}
 }

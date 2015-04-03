@@ -1,11 +1,7 @@
 using System;
 using System.Drawing;
-using System.Collections;
-using System.ComponentModel;
 using System.Windows.Forms;
-using System.Data;
 using XCom;
-using XCom.Interfaces;
 using XCom.Interfaces.Base;
 
 
@@ -13,7 +9,7 @@ namespace MapView
 {
 	public class MapViewPanel : Panel
 	{
-		private View _view;
+		private MapView _mapView;
 		private readonly HScrollBar _horiz;
 		private readonly VScrollBar _vert;
 
@@ -34,44 +30,44 @@ namespace MapView
 
 	        Controls.AddRange(new Control[] {_vert, _horiz});
 
-	        SetView(new View());
+	        SetView(new MapView());
 	    }
 
-	    public void SetView(View v)
+	    public void SetView(MapView v)
 		{
-			if (_view != null)
+			if (_mapView != null)
 			{
-				v.Map = _view.Map;
-				Controls.Remove(_view);
+				v.Map = _mapView.Map;
+				Controls.Remove(_mapView);
 			}
 
-			_view = v;
+			_mapView = v;
 
-			_view.Location = new Point(0, 0);
-			_view.BorderStyle = BorderStyle.Fixed3D;
+			_mapView.Location = new Point(0, 0);
+			_mapView.BorderStyle = BorderStyle.Fixed3D;
 
 			_vert.Minimum = 0;
 			_vert.Value = _vert.Minimum;
 
-			_view.Width = ClientSize.Width - _vert.Width - 1;
+			_mapView.Width = ClientSize.Width - _vert.Width - 1;
 
-			Controls.Add(_view);
+			Controls.Add(_mapView);
 		}
 
 		public void Cut_click(object sender, EventArgs e)
 		{
-			_view.Copy();
-			_view.ClearSelection();
+			_mapView.Copy();
+			_mapView.ClearSelection();
 		}
 
 		public void Copy_click(object sender, EventArgs e)
 		{
-			_view.Copy();
+			_mapView.Copy();
 		}
 
 		public void Paste_click(object sender, EventArgs e)
 		{
-			_view.Paste();
+			_mapView.Paste();
 		}
 
 		public static MapViewPanel Instance
@@ -88,17 +84,28 @@ namespace MapView
 		}  
 		public IMap_Base Map
 		{
-			get { return _view.Map; }
+			get { return _mapView.Map; }
 		}
 
 		private void update(object sender, EventArgs e)
 		{
-			_view.Refresh();
+			_mapView.Refresh();
 		}
+
+        public void OnResize()
+        {
+            OnResize(EventArgs.Empty);
+        }
 
 		protected override void OnResize(EventArgs e)
 		{
 			base.OnResize(e);
+
+		    if (Globals.AutoPckImageScale)
+		    {
+		        SetupMapSize();
+		    }
+
 			_vert.Value = _vert.Minimum;
 			_horiz.Value = _horiz.Minimum;
 			vert_Scroll(null, null);
@@ -106,49 +113,70 @@ namespace MapView
 
 			int h = 0, w = 0;
 
-		    _vert.Visible = (_view.Height > ClientSize.Height);
+		    _vert.Visible = (_mapView.Height > ClientSize.Height);
             if (_vert.Visible)
 			{
-				_vert.Maximum = _view.Height - ClientSize.Height + _horiz.Height;
+				_vert.Maximum = _mapView.Height - ClientSize.Height + _horiz.Height;
 				w = _vert.Width;
 			}
 			else
 				_horiz.Width = ClientSize.Width;
 
-		    _horiz.Visible = (_view.Width > ClientSize.Width);
+		    _horiz.Visible = (_mapView.Width > ClientSize.Width);
             if (_horiz.Visible)
 			{
-				_horiz.Maximum = Math.Max((_view.Width - ClientSize.Width + _vert.Width), _horiz.Minimum);
+				_horiz.Maximum = Math.Max((_mapView.Width - ClientSize.Width + _vert.Width), _horiz.Minimum);
 				h = _horiz.Height;
 			}
 			else
 				_vert.Height = ClientSize.Height;
 
-			_view.Viewable = new Size(Width - w, Height - h);
-			_view.Refresh();
+			_mapView.Viewable = new Size(Width - w, Height - h);
+			_mapView.Refresh();
 		}
 
 		private void vert_Scroll(object sender, ScrollEventArgs e)
 		{
-			_view.Location = new Point(_view.Left, -(_vert.Value) + 1);
-			_view.Refresh();
+			_mapView.Location = new Point(_mapView.Left, -(_vert.Value) + 1);
+			_mapView.Refresh();
 		}
 
 		private void horiz_Scroll(object sender, ScrollEventArgs e)
 		{
-			_view.Location = new Point(-(_horiz.Value), _view.Top);
-			_view.Refresh();
+			_mapView.Location = new Point(-(_horiz.Value), _mapView.Top);
+			_mapView.Refresh();
 		}
         
 		public void SetMap(IMap_Base map)
 		{
-			_view.Map = map;
-			_view.Focus();
+			_mapView.Map = map;
+			_mapView.Focus();
 			OnResize(null);
 		}
 		public void SetupMapSize(   )
 		{
-			_view.SetupMapSize ();
+		    if (Globals.AutoPckImageScale)
+		    {
+                var size = _mapView.GetMapSize(1);
+                var wP = Width / (double)size.Width;
+                var hP = Height / (double)size.Height;
+		        if (wP > hP)
+		        {
+                    // Acommodate based on height 
+                    Globals.PckImageScale = hP;
+		        }
+		        else
+		        { 
+		            // Acommodate based on width 
+                    Globals.PckImageScale = wP;
+                }
+                if (Globals.PckImageScale > Globals.MaxPckImageScale)
+                    Globals.PckImageScale = Globals.MaxPckImageScale;
+                if (Globals.PckImageScale < Globals.MinPckImageScale )
+                    Globals.PckImageScale = Globals.MinPckImageScale;
+		    }
+
+			_mapView.SetupMapSize ();
 		}
 
 		public void ForceResize()
@@ -156,9 +184,9 @@ namespace MapView
 			OnResize(null);
 		}
 
-		public View View
+		public MapView MapView
 		{
-			get { return _view; }
+			get { return _mapView; }
 		}
 
 		/*** Timer stuff ***/

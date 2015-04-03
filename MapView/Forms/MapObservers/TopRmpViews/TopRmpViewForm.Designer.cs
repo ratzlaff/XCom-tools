@@ -31,10 +31,10 @@ namespace MapView.Forms.MapObservers.TileViews
         /// </summary>
         private void InitializeComponent()
         {
-            MapView.Settings settings1 = new MapView.Settings();
-            MapView.Settings settings2 = new MapView.Settings();
-            this.TopViewControl = new MapView.Forms.MapObservers.TopViews.TopView();
-            this.RouteViewControl = new MapView.Forms.MapObservers.RmpViews.RmpView();
+            global::MapView.Settings settings1 = new global::MapView.Settings();
+            global::MapView.Settings settings2 = new global::MapView.Settings();
+            this.TopViewControl = new global::MapView.Forms.MapObservers.TopViews.TopView();
+            this.RouteViewControl = new global::MapView.Forms.MapObservers.RmpViews.RmpView();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.tabPage2 = new System.Windows.Forms.TabPage();
