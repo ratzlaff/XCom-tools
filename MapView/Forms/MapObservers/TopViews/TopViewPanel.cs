@@ -36,7 +36,7 @@ namespace MapView.Forms.MapObservers.TopViews
 
 		protected override void RenderCell(MapTileBase tile, Graphics g, int x, int y)
 		{
-			XCMapTile mapTile = (XCMapTile)tile;
+			var mapTile = (XCMapTile)tile;
 		    if (!BLANK)
 		    {
 		        if (mapTile.Ground != null && Ground.Checked)
