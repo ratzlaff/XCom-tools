@@ -654,6 +654,7 @@ namespace MapView
             {
                 Globals.PckImageScale += 0.125;
                 Globals.AutoPckImageScale = false;
+                AutoZoomButton.Checked = false;
                 _mapView.SetupMapSize();
                 Refresh();
                 _mapView.OnResize();
@@ -666,6 +667,7 @@ namespace MapView
             {
                 Globals.PckImageScale -= 0.125;
                 Globals.AutoPckImageScale = false;
+                AutoZoomButton.Checked = false;
                 _mapView.SetupMapSize();
                 Refresh();
                 _mapView.OnResize();
