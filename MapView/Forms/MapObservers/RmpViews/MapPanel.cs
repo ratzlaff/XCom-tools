@@ -84,11 +84,7 @@ namespace MapView.Forms.MapObservers.RmpViews
                     ClickPoint = p;
 
                     _map.SelectedTile = new MapLocation(ClickPoint.Y, ClickPoint.X, _map.CurrentHeight);
-                    MapViewPanel.Instance.MapView.DragStart = p;
-                    MapViewPanel.Instance.MapView.DragEnd = p;
-                    MapViewPanel.Instance.MapView.Refresh();
-                    MainWindowsManager.TopView.TopViewControl.Refresh();
-                    MainWindowsManager.TopRmpView.TopViewControl.Refresh();
+                    MapViewPanel.Instance.MapView.SetDrag(p, p);
 
                     var mpe = new MapPanelClickEventArgs();
                     mpe.ClickTile = tile;

@@ -98,7 +98,7 @@ namespace MapView.Forms.MapObservers.TopViews
             SetSelectionRect();
         }
 
-	    protected void ViewDrag(object sender, MouseEventArgs ex)
+	    protected void ViewDrag(object sender, EventArgs ex)
         {
             SetSelectionRect();
         }
@@ -270,8 +270,7 @@ namespace MapView.Forms.MapObservers.TopViews
             map.SelectedTile = new MapLocation(p.Y, p.X, map.CurrentHeight);
 			_mDown = true;
 
-			MapViewPanel.Instance.MapView.DragStart = p;
-			MapViewPanel.Instance.MapView.DragEnd = p;
+            MapViewPanel.Instance.MapView.SetDrag(p, p);
 		}
 
 		private bool _mDown = false;
@@ -292,12 +291,9 @@ namespace MapView.Forms.MapObservers.TopViews
 
 				if (_mDown)
 				{
-                    MapViewPanel.Instance.MapView.DragEnd = p;
-					MapViewPanel.Instance.MapView.Refresh();
-				    if (e.Button == MouseButtons.Left)
-				    {
-				        ViewDrag(null, e);
-				    }
+                    MapViewPanel.Instance.MapView.SetDrag(
+                        MapViewPanel.Instance.MapView.DragStart,
+                        p);  
 				}
 				Refresh();
 			}
