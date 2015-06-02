@@ -1,8 +1,8 @@
 ${ufoPath}:${ufo}
 
-${rootPathUFO}:${ufoPath}\MAPS\
-${rmpPathUFO}:${ufoPath}\ROUTES\
-${blankUFO}:##RunPath##\BLANKS\UFO\
+${rootPathUFO}:${ufoPath}/MAPS/
+${rmpPathUFO}:${ufoPath}/ROUTES/
+${blankUFO}:##RunPath##/BLANKS/UFO/
 
 Tileset:UFO - Terrain
 	type:1
