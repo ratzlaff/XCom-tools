@@ -1095,8 +1095,8 @@ namespace MapView
 	        {
 	            foreach (string s in openFile.FileNames)
 	            {
-	                string path = s.Substring(0, s.LastIndexOf(@"\") + 1);
-	                string file = s.Substring(s.LastIndexOf(@"\") + 1);
+	                string path = s.Substring(0, s.LastIndexOf(@"/") + 1);
+	                string file = s.Substring(s.LastIndexOf(@"/") + 1);
 	                file = file.Substring(0, file.IndexOf("."));
 	                GameInfo.ImageInfo[file] = new ImageDescriptor(file, path);
 	            }
@@ -1331,7 +1331,7 @@ namespace MapView
 					IXCTileset tSet = (IXCTileset)GameInfo.TilesetInfo.Tilesets[subset.Parent.Text];
 					foreach(string file in openFile.FileNames)
 					{
-						int start = file.LastIndexOf(@"\")+1;
+						int start = file.LastIndexOf(@"/")+1;
 						int end = file.LastIndexOf(".");
 
 						string name = file.Substring(start,end-start);

@@ -644,8 +644,8 @@ namespace PckView
 
 				if (saveBmpSingle.ShowDialog() == DialogResult.OK)
 				{
-					string path = saveBmpSingle.FileName.Substring(0, saveBmpSingle.FileName.LastIndexOf(@"\"));
-					string file = saveBmpSingle.FileName.Substring(saveBmpSingle.FileName.LastIndexOf(@"\") + 1);
+					string path = saveBmpSingle.FileName.Substring(0, saveBmpSingle.FileName.LastIndexOf(@"/"));
+					string file = saveBmpSingle.FileName.Substring(saveBmpSingle.FileName.LastIndexOf(@"/") + 1);
 					string fName = file.Substring(0, file.LastIndexOf("."));
 					string ext = file.Substring(file.LastIndexOf(".") + 1);
 
@@ -679,7 +679,7 @@ namespace PckView
 					{
 						//Console.WriteLine("Save to: "+path+@"\"+fName+(xc.FileNum+countNum)+"."+ext);
 						//Console.WriteLine("Save: " + path + @"\" + fName + string.Format("{0:" + zeros + "}", xc.FileNum) + "." + ext);
-						Bmp.Save(path + @"\" + fName + string.Format("{0:" + zeros + "}", xc.FileNum) + "." + ext, xc.Image);
+						Bmp.Save(path + @"/" + fName + string.Format("{0:" + zeros + "}", xc.FileNum) + "." + ext, xc.Image);
 						//Console.WriteLine("---");
 						pw.Value = xc.FileNum;
 					}
