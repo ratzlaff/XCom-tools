@@ -1,4 +1,4 @@
-${ufoImg}:${ufo}\TERRAIN\
+${ufoImg}:${ufo}/TERRAIN/
 
 AVENGER:${ufoImg}
 BARN:${ufoImg}
