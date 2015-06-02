@@ -23,7 +23,7 @@ namespace PckView
 
 		protected override XCom.XCImageCollection LoadFileOverride(string directory,string file,int imgWid,int imgHei,XCom.Palette pal)
 		{
-			System.Drawing.Bitmap bmp =new System.Drawing.Bitmap(directory+"\\"+file);
+			System.Drawing.Bitmap bmp =new System.Drawing.Bitmap(directory+"/"+file);
 			BmpForm bmf = new BmpForm();
 			bmf.Bitmap=bmp;
 

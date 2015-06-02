@@ -25,7 +25,7 @@ namespace XCom.GameFiles.Images.xcFiles
 
 		protected override XCImageCollection LoadFileOverride(string directory,string file,int imgWid,int imgHei,Palette pal)
 		{
-			return new UncompressedCollection(imgWid,imgHei,System.IO.File.OpenRead(directory+"\\"+file),pal);
+			return new UncompressedCollection(imgWid,imgHei,System.IO.File.OpenRead(directory+"/"+file),pal);
 		}
 
 		public override void SaveCollection(string directory, string file,XCImageCollection images)

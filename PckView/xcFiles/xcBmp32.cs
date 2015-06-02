@@ -32,12 +32,12 @@ namespace PckView
 
 		protected override XCImageCollection LoadFileOverride(string directory, string file, int imgWid, int imgHei, Palette pal)
 		{
-			Image img = Image.FromFile(directory + "\\" + file);
+			Image img = Image.FromFile(directory + "/" + file);
 			System.Drawing.Bitmap bmp = new System.Drawing.Bitmap(img);
 			BmpForm bmf = new BmpForm();
 			bmf.Bitmap = bmp;
 
-			xConsole.AddLine("File: " + directory + "\\" + file);
+			xConsole.AddLine("File: " + directory + "/" + file);
 			if (bmf.ShowDialog() == System.Windows.Forms.DialogResult.OK)
 			{
 				imageSize = bmf.SelectedSize;
@@ -50,7 +50,7 @@ namespace PckView
 
 		public override void SaveCollection(string directory, string file, XCImageCollection images)
 		{
-			DotNetCollection.Save(directory + "\\" + file, images);
+			DotNetCollection.Save(directory + "/" + file, images);
 		}
 	}
 }

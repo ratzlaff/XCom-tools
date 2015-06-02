@@ -219,7 +219,7 @@ namespace MapView
 		{
 			TreeNode	tnPrevious, tnCurrent;
 		
-			string[] arrsDirsInCurrentPath = tbxCurrentPath.Text.Split('\\');
+			string[] arrsDirsInCurrentPath = tbxCurrentPath.Text.Split('/');
 
 			if(arrsDirsInCurrentPath.Length<=0)
 			{

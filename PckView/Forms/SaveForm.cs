@@ -122,8 +122,8 @@ namespace PckView
 				return;
 			}
 
-			string dir = txtOut.Text.Substring(0,txtOut.Text.LastIndexOf("\\"));
-			string file = txtOut.Text.Substring(txtOut.Text.LastIndexOf("\\")+1);
+			string dir = txtOut.Text.Substring(0,txtOut.Text.LastIndexOf("/"));
+			string file = txtOut.Text.Substring(txtOut.Text.LastIndexOf("/")+1);
 			file = file.Substring(0,file.LastIndexOf("."));
 
 

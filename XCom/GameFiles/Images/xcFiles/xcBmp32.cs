@@ -31,7 +31,7 @@ namespace XCom.GameFiles.Images.xcFiles
 
 		protected override XCImageCollection LoadFileOverride(string directory, string file, int imgWid, int imgHei, Palette pal)
 		{
-			System.Drawing.Bitmap bmp = new System.Drawing.Bitmap(directory + "\\" + file);
+			System.Drawing.Bitmap bmp = new System.Drawing.Bitmap(directory + "/" + file);
 			BmpForm bmf = new BmpForm();
 			bmf.Bitmap = bmp;
 
@@ -47,7 +47,7 @@ namespace XCom.GameFiles.Images.xcFiles
 
 		public override void SaveCollection(string directory, string file, XCImageCollection images)
 		{
-			DotNetCollection.Save(directory + "\\" + file, images);
+			DotNetCollection.Save(directory + "/" + file, images);
 		}
 	}
 }

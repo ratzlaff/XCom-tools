@@ -75,7 +75,7 @@ namespace MapView
 			{
 				txtUFO.Text = @folderSelector.SelectedPath;
 
-				if (folderSelector.SelectedPath.EndsWith("\\"))
+				if (folderSelector.SelectedPath.EndsWith("/"))
 					txtUFO.Text = txtUFO.Text.Substring(0,txtUFO.Text.Length-1);
 			}
 		}
@@ -88,7 +88,7 @@ namespace MapView
 			{
 				txtTFTD.Text = folderSelector.SelectedPath;
 
-				if (folderSelector.SelectedPath.EndsWith("\\"))
+				if (folderSelector.SelectedPath.EndsWith("/"))
 					txtTFTD.Text = txtTFTD.Text.Substring(0,txtTFTD.Text.Length-1);
 			}
 		}
@@ -118,9 +118,9 @@ namespace MapView
 
 			sw.WriteLine("useBlanks:false");
 			if(txtTFTD.Text!="")
-				sw.WriteLine("cursor:${tftd}\\UFOGRAPH");
+				sw.WriteLine("cursor:${tftd}/UFOGRAPH");
 			else if(txtUFO.Text!="")
-				sw.WriteLine("cursor:${ufo}\\UFOGRAPH");
+				sw.WriteLine("cursor:${ufo}/UFOGRAPH");
 
 			sw.Flush();
 			sw.Close();

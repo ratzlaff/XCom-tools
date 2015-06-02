@@ -75,8 +75,8 @@ namespace MapView
 
 		    sharedSpace.GetObj("MapView", this);
 			sharedSpace.GetObj("AppDir", Environment.CurrentDirectory);
-			sharedSpace.GetObj("CustomDir", Environment.CurrentDirectory + "\\custom");
-			sharedSpace.GetObj("SettingsDir", Environment.CurrentDirectory + "\\settings");
+			sharedSpace.GetObj("CustomDir", Environment.CurrentDirectory + "/custom");
+			sharedSpace.GetObj("SettingsDir", Environment.CurrentDirectory + "/settings");
 
 			var pathsFile = new PathInfo(SharedSpace.Instance.GetString("SettingsDir"), "Paths", "pth");
 			var settingsFile = new PathInfo(SharedSpace.Instance.GetString("SettingsDir"), "MVSettings", "dat");
@@ -208,10 +208,10 @@ namespace MapView
 			switch (line.Keyword.ToLower())
 			{
 				case "cursor":
-					if (line.Rest.EndsWith("\\"))
+					if (line.Rest.EndsWith("/"))
 						SharedSpace.Instance.GetObj("cursorFile", line.Rest + "CURSOR");
 					else
-						SharedSpace.Instance.GetObj("cursorFile", line.Rest + "\\CURSOR");
+						SharedSpace.Instance.GetObj("cursorFile", line.Rest + "/CURSOR");
 					break;
 				case "logfile":
 					try

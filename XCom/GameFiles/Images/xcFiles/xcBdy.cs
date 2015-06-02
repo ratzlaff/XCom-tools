@@ -28,7 +28,7 @@ namespace XCom.GameFiles.Images.xcFiles
 		protected override XCImageCollection LoadFileOverride(string directory, string file, int imgWid, int imgHei, Palette pal)
 		{
 			XCImageCollection collect = new XCImageCollection();
-			XCImage img = new BDYImage(pal, File.OpenRead(directory + "\\" + file),imgWid,imgHei);
+			XCImage img = new BDYImage(pal, File.OpenRead(directory + "/" + file),imgWid,imgHei);
 			collect.Add(img);
 
 			return collect;
@@ -37,10 +37,10 @@ namespace XCom.GameFiles.Images.xcFiles
 		public override void SaveCollection(string directory, string file, XCImageCollection images)
 		{
 			if (images.Count == 1)
-				BDYImage.Save(images[0].Bytes, File.OpenWrite(directory + "\\" + file + ext));
+				BDYImage.Save(images[0].Bytes, File.OpenWrite(directory + "/" + file + ext));
 			else
 				for (int i = 0; i < images.Count; i++)
-					BDYImage.Save(images[i].Bytes, File.OpenWrite(directory + "\\" + file + i.ToString() + ext));
+					BDYImage.Save(images[i].Bytes, File.OpenWrite(directory + "/" + file + i.ToString() + ext));
 		}
 	}
 }

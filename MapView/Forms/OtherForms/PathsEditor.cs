@@ -1176,8 +1176,8 @@ namespace MapView
 			System.Windows.Forms.Cursor oldCur = System.Windows.Forms.Cursor.Current;
 			System.Windows.Forms.Cursor.Current=Cursors.WaitCursor;
 
-			string path=txtMap.Text.Substring(0,txtMap.Text.LastIndexOf("\\")+1);
-			string file=txtMap.Text.Substring(txtMap.Text.LastIndexOf("\\")+1);
+			string path=txtMap.Text.Substring(0,txtMap.Text.LastIndexOf("/")+1);
+			string file=txtMap.Text.Substring(txtMap.Text.LastIndexOf("/")+1);
 			string ext = file.Substring(file.LastIndexOf("."));
 			file = file.Substring(0,file.LastIndexOf("."));
 

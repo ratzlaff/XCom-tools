@@ -25,7 +25,7 @@ namespace PckView
 			saveFile.InitialDirectory = XCom.SharedSpace.Instance["CustomDir"].ToString();
 			saveFile.FileName = "profile.pvp";
 
-			txtOutDir.Text = saveFile.InitialDirectory + "\\" + saveFile.FileName;
+			txtOutDir.Text = saveFile.InitialDirectory + "/" + saveFile.FileName;
 
 			saveFile.Filter = "Image Profiles|*" + xcProfile.PROFILE_EXT;			
 
@@ -76,7 +76,7 @@ namespace PckView
 				profileInfo.FileString = value;
 
 				saveFile.FileName = value.Substring(0,value.LastIndexOf(".")) + xcProfile.PROFILE_EXT;
-				txtOutDir.Text = saveFile.InitialDirectory + "\\" + saveFile.FileName;
+				txtOutDir.Text = saveFile.InitialDirectory + "/" + saveFile.FileName;
 			}
 		}
 
@@ -92,7 +92,7 @@ namespace PckView
 			profileInfo.Description = txtDesc.Text;
 			if (radioSingle.Checked)
 			{
-				string file = txtOutDir.Text.Substring(txtOutDir.Text.LastIndexOf("\\")+1);
+				string file = txtOutDir.Text.Substring(txtOutDir.Text.LastIndexOf("/")+1);
 				file = file.Substring(0,file.LastIndexOf("."));
 				profileInfo.OpenSingle = file;
 			}

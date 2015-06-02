@@ -22,7 +22,7 @@ namespace XCom
 
 		public void Save(string directory, string file, IxCollection images)
 		{
-			System.IO.BinaryWriter scanG = new System.IO.BinaryWriter(System.IO.File.Create(directory+"\\"+file+".dat"));
+			System.IO.BinaryWriter scanG = new System.IO.BinaryWriter(System.IO.File.Create(directory+"/"+file+".dat"));
 			foreach(ITile image in images)
 				ScanEntry.Save(scanG,image);
 			scanG.Close();
@@ -32,7 +32,7 @@ namespace XCom
 		{
 			this.images = images;
 			name="newTerrain";
-			path="C:\\";
+			path="C:/";
 		}
 
 		//		public override int ImgWidth{get{return ScanEntry.Width*scale;}}
