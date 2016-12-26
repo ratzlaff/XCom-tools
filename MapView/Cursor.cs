@@ -7,12 +7,12 @@ namespace MapView
 {
 	public enum CursorState{Select,Aim,SelectMControl,Waypoint,Throw};
 
-	public class Cursor
+	public class CursorSprite
 	{
 		private CursorState state;
 		private PckFile cursorFile;
 
-		public Cursor(PckFile cursorFile)
+		public CursorSprite(PckFile cursorFile)
 		{
 			state = CursorState.Select;	
 			this.cursorFile=cursorFile;

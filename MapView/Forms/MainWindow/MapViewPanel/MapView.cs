@@ -15,7 +15,7 @@ namespace MapView
         private IMap_Base map;
         private Point _origin = new Point(100, 0);
 
-        private Cursor cursor;
+        private CursorSprite cursor;
 
         private Size viewable;
 
@@ -165,7 +165,7 @@ namespace MapView
             }
         }
 
-        public global::MapView.Cursor Cursor
+        public global::MapView.CursorSprite CursorSprite
         {
             get { return cursor; }
             set

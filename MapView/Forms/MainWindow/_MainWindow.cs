@@ -127,13 +127,13 @@ namespace MapView
 
 			try
 			{
-				_mapView.MapView.Cursor = new Cursor(GameInfo.CachePck(SharedSpace.Instance.GetString("cursorFile"), "", 4, Palette.TFTDBattle));
+				_mapView.MapView.CursorSprite = new CursorSprite(GameInfo.CachePck(SharedSpace.Instance.GetString("cursorFile"), "", 4, Palette.TFTDBattle));
 			}
 			catch
 			{
 				try
 				{
-					_mapView.MapView.Cursor = new Cursor(GameInfo.CachePck(SharedSpace.Instance.GetString("cursorFile"), "", 2, Palette.UFOBattle));
+					_mapView.MapView.CursorSprite = new CursorSprite(GameInfo.CachePck(SharedSpace.Instance.GetString("cursorFile"), "", 2, Palette.UFOBattle));
 				}
 				catch { _mapView.Cursor = null; }
 			}
