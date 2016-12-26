@@ -38,11 +38,11 @@ namespace DSShared.Loadable
 			allLoaded = new List<T>();
 		}
 
-		/// <summary>
-		/// returns a list of objects that meet the filter requirements
-		/// </summary>
-		/// <param name="filterObj"></param>
-		/// <returns></returns>
+		// <summary>
+		// returns a list of objects that meet the filter requirements
+		// </summary>
+		// <param name="filterObj"></param>
+		// <returns></returns>
 		//public List<T> FilterBy(IFilter<T> filterObj)
 		//{
 		//    List<T> filterList = new List<T>();
@@ -62,10 +62,10 @@ namespace DSShared.Loadable
 			get { return allLoaded; }
 		}
 
-		/// <summary>
-		/// A string to use for an OpenFileDialog. The string will only be created once and cached for later use
-		/// If the file list changes, use CreateFilter() to build a new string
-		/// </summary>
+		// <summary>
+		// A string to use for an OpenFileDialog. The string will only be created once and cached for later use
+		// If the file list changes, use CreateFilter() to build a new string
+		// </summary>
 		//public string OpenFileFilter
 		//{
 		//    get 
@@ -77,11 +77,11 @@ namespace DSShared.Loadable
 		//    }
 		//}
 
-		/// <summary>
-		/// Returns the object at a specific filter index
-		/// </summary>
-		/// <param name="index"></param>
-		/// <returns></returns>
+		// <summary>
+		// Returns the object at a specific filter index
+		// </summary>
+		// <param name="index"></param>
+		// <returns></returns>
 		//public T GetFromFilter(int index)
 		//{
 		//    return filterDictionary[index];
