@@ -191,9 +191,9 @@ namespace MapView
 
         protected override void OnMouseWheel(MouseEventArgs e)
         {
-            if (e.Delta > 0)
+            if (e.Delta < 0)
                 map.Up();
-            else if (e.Delta < 0)
+            else if (e.Delta > 0)
                 map.Down();
         }
 

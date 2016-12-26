@@ -52,7 +52,7 @@ namespace MapView
         protected override void OnMouseWheel(MouseEventArgs e)
         {
             base.OnMouseWheel(e);
-            if (e.Delta > 0)
+            if (e.Delta < 0)
                 _map.Up();
             else
                 _map.Down();
