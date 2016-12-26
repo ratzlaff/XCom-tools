@@ -15,9 +15,9 @@ namespace PckView
 
 			FileVersionInfo info = FileVersionInfo.GetVersionInfo(Assembly.GetExecutingAssembly().Location);
 #if DEBUG
-			lblVer.Text = string.Format("Debug version {0},{1}", info.FileMajorPart, info.FileMinorPart);
+			lblVer.Text = string.Format("Debug version {0},{1},{2},{3}", info.FileMajorPart, info.FileMinorPart, info.FileBuildPart, info.FilePrivatePart);
 #else
-			lblVer.Text = string.Format("Release version {0},{1}", info.FileMajorPart, info.FileMinorPart);
+			lblVer.Text = string.Format("Release version {0},{1},{2},{3}", info.FileMajorPart, info.FileMinorPart, info.FileBuildPart, info.FilePrivatePart);
 #endif
 		}
 	}
