@@ -17,7 +17,7 @@ namespace MapView.Forms.MapObservers.TileViews
 	public delegate void SelectedTileTypeChanged(TileBase newTile);
 	public partial class TileView : MapObserverControl
 	{
-		private IContainer components;
+		private IContainer components = null;
 ///		private MenuItem menuItem1;
 		private MenuItem mcdInfoTab;
 
