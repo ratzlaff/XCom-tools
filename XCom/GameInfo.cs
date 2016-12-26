@@ -17,7 +17,7 @@ namespace XCom
 
 		private static ImageInfo imageInfo;
 		private static TilesetDesc tileInfo;
-        private static IWarningHandler WarningHandler;
+///        private static IWarningHandler WarningHandler;
 
 		private static Dictionary<Palette,Dictionary<string,PckFile>> pckHash;
 
