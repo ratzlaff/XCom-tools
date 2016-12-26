@@ -9,8 +9,8 @@ namespace DSShared.Windows
 	/// <summary>
 	/// Delegate used for pressing the Okay button on an InputBox
 	/// </summary>
-	/// <param sender="sender"></param>
-	/// <param e="settings"></param>
+	/// <param name="sender"></param>
+	/// <param name="e"></param>
 	public delegate void InputOkClickDelegate(object sender, InputOkEventArgs e);
 	/// <summary>
 	/// A generic inputbox providing an area for a user-supplied panel, and okay+cancel buttons
