@@ -57,14 +57,14 @@ namespace MapView.Forms.MapObservers.TopViews
 		        if (mapTile.Content != null && Content.Checked)
                     DrawContentService.DrawContent(g, _contentColor, x, y, mapTile.Content);
 		    }
-		    else
-		    {
-		        if (!mapTile.DrawAbove)
-		        {
-                    DrawContentService.DrawFloor(g, Brushes["GroundColor"], x, y);
-                    DrawContentService.DrawContent(g, _contentColor, x, y, mapTile.Content);
-		        }
-		    }
+///		    else
+///		    {
+///		        if (!mapTile.DrawAbove)
+///		        {
+///                    DrawContentService.DrawFloor(g, Brushes["GroundColor"], x, y);
+///                    DrawContentService.DrawContent(g, _contentColor, x, y, mapTile.Content);
+///		        }
+///		    }
 		}
 
 	    protected override void OnPaint(PaintEventArgs e)
