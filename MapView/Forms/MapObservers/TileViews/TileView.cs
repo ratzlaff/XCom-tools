@@ -18,7 +18,7 @@ namespace MapView.Forms.MapObservers.TileViews
 	public partial class TileView : MapObserverControl
 	{
 		private IContainer components;
-		private MenuItem menuItem1;
+///		private MenuItem menuItem1;
 		private MenuItem mcdInfoTab;
 
 		private TilePanel all;
