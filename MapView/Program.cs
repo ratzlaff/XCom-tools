@@ -35,7 +35,7 @@ namespace MapView
 	        // Create the second AppDomain.
 	        AppDomain ad2 = AppDomain.CreateDomain("MV Domain", null, ads);
 
-	        // Create an instance of MarshalbyRefType in the second AppDomain. 
+	        // Create an instance of MarshalByRefType in the second AppDomain.
 	        // A proxy to the object is returned.
 	        Startup startup =
 	            (Startup) ad2.CreateInstanceAndUnwrap(
