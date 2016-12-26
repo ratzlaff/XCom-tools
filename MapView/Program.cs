@@ -17,12 +17,6 @@ namespace MapView
 #endif
 		} 
 
-		private static void TestRun()
-		{
-			var startup = new Startup();
-			startup.RunProgram();
-		}
-
 		private static void ReleaseRun()
 		{
 			// Construct and initialize settings for a second AppDomain.
@@ -46,6 +40,12 @@ namespace MapView
 
 			Console.WriteLine("Disposing of appdomain");
 			AppDomain.Unload(ad2);
+		}
+
+		private static void TestRun()
+		{
+			var startup = new Startup();
+			startup.RunProgram();
 		}
 	}
 }
