@@ -11,41 +11,41 @@ namespace MapView
 		public static void Main()
 		{
 #if RELEASE
-            ReleaseRun();
+			ReleaseRun();
 #else
-		    TestRun();
+			TestRun();
 #endif
 		} 
-         
-	    private static void TestRun()
-	    {
-	        var startup = new Startup();
-	        startup.RunProgram();
-	    }
 
-	    private static void ReleaseRun()
-	    {
-            // Construct and initialize settings for a second AppDomain.
-            AppDomainSetup ads = new AppDomainSetup();
-	        ads.ApplicationBase = System.Environment.CurrentDirectory;
-	        ads.DisallowBindingRedirects = false;
-	        ads.DisallowCodeDownload = true;
-	        ads.ConfigurationFile = AppDomain.CurrentDomain.SetupInformation.ConfigurationFile;
+		private static void TestRun()
+		{
+			var startup = new Startup();
+			startup.RunProgram();
+		}
 
-	        // Create the second AppDomain.
-	        AppDomain ad2 = AppDomain.CreateDomain("MV Domain", null, ads);
+		private static void ReleaseRun()
+		{
+			// Construct and initialize settings for a second AppDomain.
+			AppDomainSetup ads = new AppDomainSetup();
+			ads.ApplicationBase = System.Environment.CurrentDirectory;
+			ads.DisallowBindingRedirects = false;
+			ads.DisallowCodeDownload = true;
+			ads.ConfigurationFile = AppDomain.CurrentDomain.SetupInformation.ConfigurationFile;
 
-	        // Create an instance of MarshalByRefType in the second AppDomain.
-	        // A proxy to the object is returned.
-	        Startup startup =
-	            (Startup) ad2.CreateInstanceAndUnwrap(
-	                Assembly.GetEntryAssembly().FullName,
-	                typeof (Startup).FullName);
+			// Create the second AppDomain.
+			AppDomain ad2 = AppDomain.CreateDomain("MV Domain", null, ads);
 
-	        startup.RunProgram();
+			// Create an instance of MarshalByRefType in the second AppDomain.
+			// A proxy to the object is returned.
+			Startup startup =
+				(Startup) ad2.CreateInstanceAndUnwrap(
+					Assembly.GetEntryAssembly().FullName,
+					typeof (Startup).FullName);
 
-	        Console.WriteLine("Disposing of appdomain");
-	        AppDomain.Unload(ad2);
-	    }
+			startup.RunProgram();
+
+			Console.WriteLine("Disposing of appdomain");
+			AppDomain.Unload(ad2);
+		}
 	}
 }
