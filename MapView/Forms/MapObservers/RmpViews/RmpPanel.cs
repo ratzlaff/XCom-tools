@@ -7,7 +7,9 @@ using XCom;
 
 namespace MapView.Forms.MapObservers.RmpViews
 {
-	public class RmpPanel : MapPanel
+	public class RmpPanel
+		:
+		MapPanel
 	{
 		public Point Position = new Point(-1, -1);
 

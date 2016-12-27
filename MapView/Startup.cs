@@ -8,7 +8,9 @@ namespace MapView
 	/// <summary>
 	/// Class that starts program execution.
 	/// </summary>
-	public class Startup //: MarshalByRefObject
+	public class Startup
+//		:
+//		MarshalByRefObject
 	{
 		private readonly IErrorHandler _errorHandler;
 

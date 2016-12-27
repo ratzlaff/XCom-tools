@@ -10,7 +10,9 @@ using XCom.Services;
 
 namespace XCom
 {
-	public class XCMapFile : IMap_Base
+	public class XCMapFile
+		:
+		IMap_Base
 	{
 		private readonly string _blankPath;
 		private readonly string[] _dependencies;
@@ -70,18 +72,21 @@ namespace XCom
 
 		public void Hq2x()
 		{
-			//instead, i would want to make an image of the whole map, and run that through hq2x
+			// instead i would want to make an image of the whole map and run that through hq2x
 			foreach (string s in _dependencies)
 				foreach (PckImage pi in GameInfo.GetPckFile(s))
 					pi.Hq2x();
 
-			PckImage.Width *= 2;
+			PckImage.Width  *= 2;
 			PckImage.Height *= 2;
 		}
 
 		public RmpEntry AddRmp(MapLocation loc)
 		{
-			RmpEntry re = Rmp.AddEntry((byte)loc.Row, (byte)loc.Col, (byte)loc.Height);
+			RmpEntry re = Rmp.AddEntry(
+									(byte)loc.Row,
+									(byte)loc.Col,
+									(byte)loc.Height);
 			((XCMapTile)this[re.Row, re.Col, re.Height]).Rmp = re;
 			return re;
 		}
@@ -99,27 +104,26 @@ namespace XCom
 		public void CalcDrawAbove()
 		{
 			for (int h = MapSize.Height - 1; h >= 0; h--)
-			{
 				for (int row = 0; row < MapSize.Rows - 2; row++)
-				{
 					for (int col = 0; col < MapSize.Cols -2; col++)
-					{
-						if (this[row, col, h] == null) continue;
-						if (h - 1 < 0) continue;
-						var mapTileHl1 = (XCMapTile)this[row, col, h - 1];
-						if (mapTileHl1 != null && mapTileHl1.Ground != null && //top
-							((XCMapTile)this[row + 1, col, h - 1]).Ground != null && //south
-							((XCMapTile)this[row + 2, col, h - 1]).Ground != null &&
-							((XCMapTile)this[row + 1, col + 1, h - 1]).Ground != null && //southeast
-							((XCMapTile)this[row + 2, col + 1, h - 1]).Ground != null &&
-							((XCMapTile)this[row + 2, col + 2, h - 1]).Ground != null &&
-							((XCMapTile)this[row, col + 1, h - 1]).Ground != null && //east
-							((XCMapTile)this[row, col + 2, h - 1]).Ground != null &&
-							((XCMapTile)this[row + 1, col + 2, h - 1]).Ground != null)
-							this[row, col, h].DrawAbove = false;
-					}
-				}
-			}
+						if (this[row, col, h] != null && h - 1 > -1)
+						{
+							var mapTileHl1 = (XCMapTile)this[row, col, h - 1];
+
+							if (   mapTileHl1 != null
+								&& mapTileHl1.Ground != null									// top
+								&& ((XCMapTile)this[row + 1, col,     h - 1]).Ground != null	// south
+								&& ((XCMapTile)this[row + 2, col,     h - 1]).Ground != null
+								&& ((XCMapTile)this[row + 1, col + 1, h - 1]).Ground != null	// southeast
+								&& ((XCMapTile)this[row + 2, col + 1, h - 1]).Ground != null
+								&& ((XCMapTile)this[row + 2, col + 2, h - 1]).Ground != null
+								&& ((XCMapTile)this[row,     col + 1, h - 1]).Ground != null	// east
+								&& ((XCMapTile)this[row,     col + 2, h - 1]).Ground != null
+								&& ((XCMapTile)this[row + 1, col + 2, h - 1]).Ground != null)
+							{
+								this[row, col, h].DrawAbove = false;
+							}
+						}
 		}
 
 		/// <summary>
@@ -135,6 +139,7 @@ namespace XCom
 			bw.Write(rows);
 			bw.Write(cols);
 			bw.Write(height);
+
 			for (int h = 0; h < height; h++)
 				for (int r = 0; r < rows; r++)
 					for (int c = 0; c < cols; c++)
@@ -152,9 +157,7 @@ namespace XCom
 				if (Rmp.ExtraHeight != 0)
 				{
 					foreach (RmpEntry route in Rmp)
-					{
 						route.Height += Rmp.ExtraHeight;
-					}
 				}
 
 				Rmp.Save();
@@ -167,6 +170,7 @@ namespace XCom
 						for (int c = 0; c < MapSize.Cols; c++)
 						{
 							var xcmt = (XCMapTile) this[r, c, h];
+
 							if (xcmt.Ground == null)
 								s.WriteByte(0);
 							else
@@ -186,8 +190,8 @@ namespace XCom
 								s.WriteByte(0);
 							else
 								s.WriteByte((byte) (xcmt.Content.MapId + 2));
-
 						}
+
 				s.WriteByte(Rmp.ExtraHeight);
 				s.Close();
 			}
@@ -203,7 +207,7 @@ namespace XCom
 
 			MapSize = new MapSize(rows, cols, height);
 
-			//map = new MapTile[rows,cols,height];
+//			map = new MapTile[rows,cols,height];
 			MapData = new MapTileList(rows, cols, height);
 
 			for (int h = 0; h < height; h++)
@@ -219,43 +223,53 @@ namespace XCom
 					}
 
 			if (input.Position < input.Length)
-			{
 				Rmp.ExtraHeight = (byte) input.ReadByte();
-			}
+
 			input.Close();
 		}
 
 		public RmpFile Rmp { get; private set; }
 
-		public override void ResizeTo(int newR, int newC, int newH, bool addHeightToCelling)
+		public override void ResizeTo(
+									int newR,
+									int newC,
+									int newH,
+									bool addHeightToCelling)
 		{
 			var mapResizeService = new MapResizeService();
-			var newMap = mapResizeService.ResizeMap(newR, newC, newH, MapSize, MapData, addHeightToCelling);
-			if (newMap == null) return;
 
-			// update Routes
-			if (addHeightToCelling && newH != MapSize.Height)
+			var newMap = mapResizeService.ResizeMap(
+												newR,
+												newC,
+												newH,
+												MapSize,
+												MapData,
+												addHeightToCelling);
+			if (newMap != null)
 			{
-				var heighDif = (newH - MapSize.Height);
-				foreach (RmpEntry rmp in Rmp)
+				// update Routes
+				if (addHeightToCelling && newH != MapSize.Height)
 				{
-					if (newH < MapSize.Height)
-						rmp.Height = (byte)(rmp.Height + heighDif);
-					else
-						rmp.Height += (byte)heighDif;
+					var heighDif = newH - MapSize.Height;
+
+					foreach (RmpEntry rmp in Rmp)
+					{
+						if (newH < MapSize.Height)
+							rmp.Height = (byte)(rmp.Height + heighDif);
+						else
+							rmp.Height += (byte)heighDif;
+					}
 				}
-			}
 
-			// Remove routes outside the range
-			if (newH < MapSize.Height)
-			{
-				Rmp.TrimHeightTo(newH);
-			}
+				// Remove routes outside the range
+				if (newH < MapSize.Height)
+					Rmp.TrimHeightTo(newH);
 
-			MapData = newMap;
-			MapSize = new MapSize(newR, newC, newH);
-			CurrentHeight = (byte)(MapSize.Height - 1);
-			MapChanged = true;
+				MapData = newMap;
+				MapSize = new MapSize(newR, newC, newH);
+				CurrentHeight = (byte)(MapSize.Height - 1);
+				MapChanged = true;
+			}
 		}
 
 		private XCMapTile createTile(List<TileBase> tiles, int q1, int q2, int q3, int q4)
@@ -263,13 +277,20 @@ namespace XCom
 			try
 			{
 				XCTile a, b, c, d;
-				a = b = c = d = null;
+				a =
+				b =
+				c =
+				d = null;
+
 				if (q1 != 0 && q1 != 1)
 					a = (XCTile)tiles[q1 - 2];
+
 				if (q2 != 0 && q2 != 1)
 					b = (XCTile)tiles[q2 - 2];
+
 				if (q3 != 0 && q3 != 1)
 					c = (XCTile)tiles[q3 - 2];
+
 				if (q4 != 0 && q4 != 1)
 					d = (XCTile)tiles[q4 - 2];
 
@@ -285,33 +306,33 @@ namespace XCom
 		public string GetDependecyName(TileBase selectedTile)
 		{
 			var dependencyId = -1;
+
 			foreach (var tile in Tiles)
 			{
-				if (tile.Id == 0) dependencyId ++;
+				if (tile.Id == 0) dependencyId++;
 				if (tile == selectedTile) break;
 			}
-			if (dependencyId == -1 ||
-				dependencyId >= _dependencies.Length) return null;
-			return _dependencies[dependencyId];
+
+			if (dependencyId != -1 && dependencyId < _dependencies.Length)
+				return _dependencies[dependencyId];
+
+			return null;
 		}
 
 		private void SetupRoutes(RmpFile rmp)
 		{
-			// remove extraHeight from edit mode
+			// remove extraHeight from edit-mode
 			if (rmp.ExtraHeight != 0)
-			{
 				foreach (RmpEntry route in rmp)
-				{
 					route.Height -= rmp.ExtraHeight;
-				}
-			}
 
 			// Set tile
 			foreach (RmpEntry re in rmp)
 			{
 				var tile = this[re.Row, re.Col, re.Height];
-				if (tile == null) continue;
-				((XCMapTile)tile).Rmp = re;
+
+				if (tile != null)
+					((XCMapTile)tile).Rmp = re;
 			}
 		}
 	}
