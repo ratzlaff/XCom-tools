@@ -5,9 +5,11 @@ using XCom.Interfaces.Base;
 
 namespace MapView.Forms.MapObservers.TopViews
 {
-	public class TopViewPanel : SimpleMapPanel
+	public class TopViewPanel
+		:
+		SimpleMapPanel
 	{
-		private const bool BLANK = false;
+//		private const bool BLANK = false;
 
 		public TopViewPanel()
 		{
@@ -34,29 +36,54 @@ namespace MapView.Forms.MapObservers.TopViews
 			set { MinimunHeight = value; ParentSize(Width, Height); }
 		}
 
-		protected override void RenderCell(MapTileBase tile, Graphics g, int x, int y)
+		protected override void RenderCell(
+										MapTileBase tile,
+										Graphics g,
+										int x, int y)
 		{
 			var mapTile = (XCMapTile)tile;
-			if (!BLANK)
-			{
-				if (mapTile.Ground != null && Ground.Checked)
-					DrawContentService.DrawFloor(g, Brushes["GroundColor"],x,y);
 
-				if (_northColor == null)
-					_northColor = new SolidPenBrush(Pens["NorthColor"] );
-				if (mapTile.North != null && North.Checked)
-					DrawContentService.DrawContent(g, _northColor, x, y, mapTile.North);
+//			if (!BLANK)
+//			{
+			if (mapTile.Ground != null && Ground.Checked)
+				DrawContentService.DrawFloor(
+											g,
+											Brushes["GroundColor"],
+											x, y);
 
-				if (_westColor == null)
-					_westColor = new SolidPenBrush(Pens["WestColor"] );
-				if (mapTile.West != null && West.Checked)
-					DrawContentService.DrawContent(g, _westColor, x, y, mapTile.West);
 
-				if (_contentColor == null)
-					_contentColor = new SolidPenBrush(Brushes["ContentColor"], _northColor.Pen.Width);
-				if (mapTile.Content != null && Content.Checked)
-					DrawContentService.DrawContent(g, _contentColor, x, y, mapTile.Content);
-			}
+			if (_northColor == null)
+				_northColor = new SolidPenBrush(Pens["NorthColor"] );
+
+			if (mapTile.North != null && North.Checked)
+				DrawContentService.DrawContent(
+											g,
+											_northColor,
+											x, y,
+											mapTile.North);
+
+
+			if (_westColor == null)
+				_westColor = new SolidPenBrush(Pens["WestColor"] );
+
+			if (mapTile.West != null && West.Checked)
+				DrawContentService.DrawContent(
+											g,
+											_westColor,
+											x, y,
+											mapTile.West);
+
+
+			if (_contentColor == null)
+				_contentColor = new SolidPenBrush(Brushes["ContentColor"], _northColor.Pen.Width);
+
+			if (mapTile.Content != null && Content.Checked)
+				DrawContentService.DrawContent(
+											g,
+											_contentColor,
+											x, y,
+											mapTile.Content);
+//			}
 //			else
 //			{
 //				if (!mapTile.DrawAbove)
@@ -71,7 +98,7 @@ namespace MapView.Forms.MapObservers.TopViews
 		{
 			base.OnPaint(e);
 
-			ControlPaint.DrawBorder3D(e.Graphics, ClientRectangle,Border3DStyle.Etched);
+			ControlPaint.DrawBorder3D(e.Graphics, ClientRectangle, Border3DStyle.Etched);
 		}
 
 		protected override void OnMouseDown(MouseEventArgs e)
@@ -79,10 +106,9 @@ namespace MapView.Forms.MapObservers.TopViews
 			base.OnMouseDown(e);
 
 			ViewDrag(null, e);
+
 			if (e.Button == MouseButtons.Right)
-			{
 				BottomPanel.SetSelected(e.Button, 1);
-			}
 		}
 	}
 }

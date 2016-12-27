@@ -18,7 +18,7 @@ namespace MapView.SettingServices
 
 		public string GetEditorFilePath()
 		{
-			var pathSetting= _settings.GetSetting(VOLUTAR_MCD_EDITOR_PATH, "");
+			var pathSetting = _settings.GetSetting(VOLUTAR_MCD_EDITOR_PATH, "");
 			var path = pathSetting.Value as string ;
 
 			// Ask for the file

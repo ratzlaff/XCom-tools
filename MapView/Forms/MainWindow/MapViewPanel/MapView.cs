@@ -106,6 +106,7 @@ namespace MapView
 				for (int c = start.X; c <= end.X; c++)
 					for (int r = start.Y; r <= end.Y; r++)
 						map[r, c] = XCMapTile.BlankTile;
+
 				map.MapChanged = true;
 				Refresh();
 			}
@@ -117,10 +118,9 @@ namespace MapView
 			{
 				var start = GetDragStart();
 				var end = GetDragEnd();
-	
+
 				// row col
 				// y   x
-	
 				copied = new MapTileBase[end.Y - start.Y + 1, end.X - start.X + 1];
 	
 				for (int c = start.X; c <= end.X; c++)
@@ -268,6 +268,7 @@ namespace MapView
 	
 				if (DragChanged != null)
 					DragChanged(this, EventArgs.Empty);
+
 				Refresh();
 			}
 		}
@@ -289,8 +290,7 @@ namespace MapView
 					map.SelectedTileChanged += TileChange;
 					SetupMapSize();
 
-					// Calculate drag
-					DragStart = DragStart;
+					DragStart = DragStart; // Calculate drag
 					DragEnd = DragEnd;
 				}
 			}
@@ -344,6 +344,7 @@ namespace MapView
 		protected override void OnPaint(PaintEventArgs e)
 		{
 			base.OnPaint(e);
+
 			if (map != null)
 			{
 				var g = e.Graphics;
@@ -581,7 +582,9 @@ namespace MapView
 					 (y * 1.0 / (2 * halfHeight));
 			var x2 = -(x * 1.0 - 2 * y * 1.0) / (2 * halfWidth);
 
-			return new Point((int)Math.Floor(x1), (int)Math.Floor(x2));
+			return new Point(
+						(int)Math.Floor(x1),
+						(int)Math.Floor(x2));
 		}
 
 		private Point ConvertCoordsRect(Point p, int h)
