@@ -14,7 +14,7 @@ namespace MapView.Forms.MapObservers.RmpViews
 		private XCMapFile _map;
 		protected Point Origin;
 
-		protected int DrawAreaWidth = 8;
+		protected int DrawAreaWidth  = 8;
 		protected int DrawAreaHeight = 4;
 
 		public Point ClickPoint;
@@ -49,19 +49,26 @@ namespace MapView.Forms.MapObservers.RmpViews
 		/// <returns>null if (x,y) is an invalid location for a tile</returns>
 		public XCMapTile GetTile(int x, int y)
 		{
-			if (_map == null) return null;
-			Point p = ConvertCoordsDiamond(x, y);
-			if (p.Y >= 0 && p.Y < _map.MapSize.Rows &&
-				p.X >= 0 && p.X < _map.MapSize.Cols)
-				return (XCMapTile) _map[p.Y, p.X];
+			if (_map != null)
+			{
+				Point p = ConvertCoordsDiamond(x, y);
+				if (   p.Y >= 0 && p.Y < _map.MapSize.Rows
+					&& p.X >= 0 && p.X < _map.MapSize.Cols)
+				{
+					return (XCMapTile)_map[p.Y, p.X];
+				}
+			}
 			return null;
 		}
 
 		public Point GetTileCoordinates(int x, int y)
 		{
 			Point p = ConvertCoordsDiamond(x, y);
-			if (p.Y >= 0 && p.Y < _map.MapSize.Rows && p.X >= 0 && p.X < _map.MapSize.Cols)
+			if (   p.Y >= 0 && p.Y < _map.MapSize.Rows
+				&& p.X >= 0 && p.X < _map.MapSize.Cols)
+			{
 				return p;
+			}
 			return new Point(-1, -1);
 		}
 
@@ -72,53 +79,63 @@ namespace MapView.Forms.MapObservers.RmpViews
 
 		protected override void OnMouseDown(MouseEventArgs e)
 		{
-			if (_map == null) return;
-			if (MapPanelClicked != null)
+			if (_map != null)
 			{
-				var p = ConvertCoordsDiamond(e.X, e.Y);
-				if (p.Y >= 0 && p.Y < _map.MapSize.Rows &&
-					p.X >= 0 && p.X < _map.MapSize.Cols)
+				if (MapPanelClicked != null)
 				{
-					var tile = _map[p.Y, p.X];
-					if (tile == null) return;
-					ClickPoint = p;
+					var p = ConvertCoordsDiamond(e.X, e.Y);
+					if (   p.Y >= 0 && p.Y < _map.MapSize.Rows
+						&& p.X >= 0 && p.X < _map.MapSize.Cols)
+					{
+						var tile = _map[p.Y, p.X];
+						if (tile != null)
+						{
+							ClickPoint = p;
 
-					_map.SelectedTile = new MapLocation(ClickPoint.Y, ClickPoint.X, _map.CurrentHeight);
-					MapViewPanel.Instance.MapView.SetDrag(p, p);
+							_map.SelectedTile = new MapLocation(
+															ClickPoint.Y,
+															ClickPoint.X,
+															_map.CurrentHeight);
 
-					var mpe = new MapPanelClickEventArgs();
-					mpe.ClickTile = tile;
-					mpe.MouseEventArgs = e;
-					mpe.ClickLocation = new MapLocation(ClickPoint.Y, ClickPoint.X, _map.CurrentHeight);
-					MapPanelClicked(this, mpe);
+							MapViewPanel.Instance.MapView.SetDrag(p, p);
+
+							var mpe = new MapPanelClickEventArgs();
+							mpe.ClickTile = tile;
+							mpe.MouseEventArgs = e;
+							mpe.ClickLocation = new MapLocation(
+															ClickPoint.Y,
+															ClickPoint.X,
+															_map.CurrentHeight);
+							MapPanelClicked(this, mpe);
+						}
+						else
+							return;
+					}
 				}
+				Refresh();
 			}
-
-			Refresh();
 		}
 
 		protected override void OnResize(EventArgs e)
 		{
 			if (_map != null)
 			{
-				if (Height > Width / 2)
+				if (Height > Width / 2) // use width
 				{
-					// use width
-					DrawAreaWidth = (Width) / (_map.MapSize.Rows + _map.MapSize.Cols + 1);
+					DrawAreaWidth = Width / (_map.MapSize.Rows + _map.MapSize.Cols + 1);
 
 					if (DrawAreaWidth % 2 != 0)
 						DrawAreaWidth--;
 
 					DrawAreaHeight = DrawAreaWidth / 2;
 				}
-				else
+				else // use height
 				{
-					// use height
-					DrawAreaHeight = (Height) / (_map.MapSize.Rows + _map.MapSize.Cols);
-					DrawAreaWidth = DrawAreaHeight * 2;
+					DrawAreaHeight = Height / (_map.MapSize.Rows + _map.MapSize.Cols);
+					DrawAreaWidth  = DrawAreaHeight * 2;
 				}
 
-				Origin = new Point((_map.MapSize.Rows) * DrawAreaWidth, 0);
+				Origin = new Point(_map.MapSize.Rows * DrawAreaWidth, 0);
 				Refresh();
 			}
 		}
@@ -128,10 +145,13 @@ namespace MapView.Forms.MapObservers.RmpViews
 			int x = xp - Origin.X;
 			int y = yp - Origin.Y;
 
-			double x1 = (x * 1.0 / (DrawAreaWidth * 2)) + (y * 1.0 / (DrawAreaHeight * 2));
+			double x1 = (x * 1.0 / (DrawAreaWidth  * 2))
+					  + (y * 1.0 / (DrawAreaHeight * 2));
 			double x2 = -(x * 1.0 - 2 * y * 1.0) / (DrawAreaWidth * 2);
 
-			return new Point((int) Math.Floor(x1), (int) Math.Floor(x2));
+			return new Point(
+						(int) Math.Floor(x1),
+						(int) Math.Floor(x2));
 		}
 	}
 }

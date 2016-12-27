@@ -89,7 +89,7 @@ namespace MapView
 		public bool SelectGrayscale
 		{
 			get { return selectGrayscale; }
-			set 
+			set
 			{
 				selectGrayscale = value;
 				Refresh();
@@ -118,8 +118,8 @@ namespace MapView
 				var start = GetDragStart();
 				var end = GetDragEnd();
 	
-				// row  col
-				// y	 x
+				// row col
+				// y   x
 	
 				copied = new MapTileBase[end.Y - start.Y + 1, end.X - start.X + 1];
 	
