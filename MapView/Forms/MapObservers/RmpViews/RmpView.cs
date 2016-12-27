@@ -8,13 +8,13 @@ using XCom.Interfaces.Base;
 namespace MapView.Forms.MapObservers.RmpViews
 {
 	/*
-		TFTD ---- UFO
-		Commander ---- Commander
-		Navigator ---- Leader
-		Medic ---- Engineer
-		Technition ---- Medic
-		SquadLeader ---- Navigator
-		Soldier ---- Soldier
+		UFO			TFTD
+		Commander	Commander
+		Leader		Navigator
+		Engineer	Medic
+		Medic		Technition
+		Navigator	SquadLeader
+		Soldier		Soldier
 	*/
 
 	public partial class RmpView : MapObserverControl
@@ -43,8 +43,13 @@ namespace MapView.Forms.MapObservers.RmpViews
 
 			var uTypeItms = new object[]
 			{
-				UnitType.Any, UnitType.Flying, UnitType.FlyingLarge, UnitType.Large, UnitType.Small
+				UnitType.Any,
+				UnitType.Flying,
+				UnitType.FlyingLarge,
+				UnitType.Large,
+				UnitType.Small
 			};
+
 			cbType.Items.AddRange(uTypeItms);
 
 			cbUse1.Items.AddRange(uTypeItms);
@@ -65,15 +70,13 @@ namespace MapView.Forms.MapObservers.RmpViews
 			cbRank1.DropDownStyle = ComboBoxStyle.DropDownList;
 
 			foreach (var value in Enum.GetValues(typeof(NodeImportance)))
-			{
 				cbRank2.Items.Add(value);
-			}
+
 			cbRank2.DropDownStyle = ComboBoxStyle.DropDownList;
 
 			foreach (var value in Enum.GetValues(typeof(BaseModuleAttack)))
-			{
 				AttackBaseCombo.Items.Add(value);
-			}
+
 			AttackBaseCombo.DropDownStyle = ComboBoxStyle.DropDownList;
 
 			cbLink1.DropDownStyle = ComboBoxStyle.DropDownList;
@@ -126,6 +129,7 @@ namespace MapView.Forms.MapObservers.RmpViews
 			{
 				lblMouseOver.Text = @"";
 			}
+
 			_rmpPanel.Position.X = e.X;
 			_rmpPanel.Position.Y = e.Y;
 			_rmpPanel.Refresh();
@@ -166,7 +170,6 @@ namespace MapView.Forms.MapObservers.RmpViews
 			{
 				return;
 			}
-
 			FillGui();
 		}
 
@@ -221,9 +224,7 @@ namespace MapView.Forms.MapObservers.RmpViews
 			for (int pI = 0; pI < prevEntry.NumLinks; pI++)
 			{
 				if (prevEntry[pI].Index == 0xFF)
-				{
 					return prevEntry[pI];
-				}
 			}
 			return null;
 		}
@@ -248,6 +249,7 @@ namespace MapView.Forms.MapObservers.RmpViews
 						spaceAt = i;
 				}
 			}
+
 			if (existingLink || !spaceAvailable) return null;
 			return spaceAt;
 		}
@@ -287,9 +289,12 @@ namespace MapView.Forms.MapObservers.RmpViews
 				_byteList.Add(i);
 			}
 
-			var  items2 = new object []
+			var items2 = new object[]
 			{
-				LinkTypes.ExitEast, LinkTypes.ExitNorth, LinkTypes.ExitSouth, LinkTypes.ExitWest,
+				LinkTypes.ExitEast,
+				LinkTypes.ExitNorth,
+				LinkTypes.ExitSouth,
+				LinkTypes.ExitWest,
 				LinkTypes.NotUsed
 			};
 
@@ -387,8 +392,7 @@ namespace MapView.Forms.MapObservers.RmpViews
 						_rmpPanel.ClickPoint.Y = _currEntry.Row;
 					}
 
-					_rmpPanel.Map = _map;
-					if (_rmpPanel.Map != null)
+					if ((_rmpPanel.Map = _map) != null)
 					{
 						cbRank1.Items.Clear();
 						if (_map.Tiles[0][0].Palette == Palette.UFOBattle)
@@ -408,7 +412,9 @@ namespace MapView.Forms.MapObservers.RmpViews
 		 
 		public override void SelectedTileChanged(IMap_Base sender, SelectedTileChangedEventArgs e)
 		{
-			Text = string.Format("Waypoint view: r:{0} c:{1} ", e.MapPosition.Row, e.MapPosition.Col);
+			Text = string.Format(
+							"Waypoint view: r:{0} c:{1} ",
+							e.MapPosition.Row, e.MapPosition.Col);
 		}
 
 		public override void HeightChanged(IMap_Base sender, HeightChangedEventArgs e)
@@ -440,12 +446,13 @@ namespace MapView.Forms.MapObservers.RmpViews
 
 		private byte calcLinkDistance(RmpEntry from, RmpEntry to, TextBox result)
 		{
-			var dist = ((int) Math.Sqrt(Math.Pow(from.Row - to.Row, 2) + Math.Pow(from.Col - to.Col, 2) +
-							  Math.Pow(from.Height - to.Height, 2)));
+			var dist = (int)Math.Sqrt(
+									Math.Pow(from.Row - to.Row, 2) +
+									Math.Pow(from.Col - to.Col, 2) +
+									Math.Pow(from.Height - to.Height, 2));
 			if (result != null)
-			{
 				result.Text = dist.ToString();
-			}
+
 			return (byte) dist;
 		}
 
@@ -751,58 +758,139 @@ namespace MapView.Forms.MapObservers.RmpViews
 			var redPen = new Pen(new SolidBrush(Color.Red), 2);
 			pens["UnselectedLinkColor"] = redPen;
 			pens["UnselectedLinkWidth"] = redPen;
-			settings.AddSetting("UnselectedLinkColor", redPen.Color, "Color of unselected link lines", "Links", pc,
-				false, null);
-			settings.AddSetting("UnselectedLinkWidth", 2, "Width of unselected link lines", "Links", pw, false, null);
+			settings.AddSetting(
+							"UnselectedLinkColor",
+							redPen.Color,
+							"Color of unselected link lines",
+							"Links",
+							pc,
+							false,
+							null);
+			settings.AddSetting(
+							"UnselectedLinkWidth",
+							2,
+							"Width of unselected link lines",
+							"Links",
+							pw,
+							false,
+							null);
 
 			var bluePen = new Pen(new SolidBrush(Color.Blue), 2);
 			pens["SelectedLinkColor"] = bluePen;
 			pens["SelectedLinkWidth"] = bluePen;
-			settings.AddSetting("SelectedLinkColor", bluePen.Color, "Color of selected link lines", "Links", pc, false,
-				null);
-			settings.AddSetting("SelectedLinkWidth", 2, "Width of selected link lines", "Links", pw, false, null);
+			settings.AddSetting(
+							"SelectedLinkColor",
+							bluePen.Color,
+							"Color of selected link lines",
+							"Links",
+							pc,
+							false,
+							null);
+			settings.AddSetting(
+							"SelectedLinkWidth",
+							2,
+							"Width of selected link lines",
+							"Links",
+							pw,
+							false,
+							null);
 
 			var wallPen = new Pen(new SolidBrush(Color.Black), 4);
 			pens["WallColor"] = wallPen;
 			pens["WallWidth"] = wallPen;
-			settings.AddSetting("WallColor", wallPen.Color, "Color of wall indicators", "View", pc, false, null);
-			settings.AddSetting("WallWidth", 4, "Width of wall indicators", "View", pw, false, null);
+			settings.AddSetting(
+							"WallColor",
+							wallPen.Color,
+							"Color of wall indicators",
+							"View",
+							pc,
+							false,
+							null);
+			settings.AddSetting(
+							"WallWidth",
+							4,
+							"Width of wall indicators",
+							"View",
+							pw,
+							false,
+							null);
 
 			var gridPen = new Pen(new SolidBrush(Color.Black), 1);
 			pens["GridLineColor"] = gridPen;
 			pens["GridLineWidth"] = gridPen;
-			settings.AddSetting("GridLineColor", gridPen.Color, "Color of grid lines", "View", pc, false, null);
-			settings.AddSetting("GridLineWidth", 1, "Width of grid lines", "View", pw, false, null);
+			settings.AddSetting(
+							"GridLineColor",
+							gridPen.Color,
+							"Color of grid lines",
+							"View",
+							pc,
+							false,
+							null);
+			settings.AddSetting(
+							"GridLineWidth",
+							1,
+							"Width of grid lines",
+							"View",
+							pw,
+							false,
+							null);
 
 			var selBrush = new SolidBrush(Color.Blue);
 			brushes["SelectedNodeColor"] = selBrush;
-			settings.AddSetting("SelectedNodeColor", selBrush.Color, "Color of selected nodes", "Nodes", bc, false, null);
+			settings.AddSetting(
+							"SelectedNodeColor",
+							selBrush.Color,
+							"Color of selected nodes",
+							"Nodes",
+							bc,
+							false,
+							null);
 
 			var spawnBrush = new SolidBrush(Color.GreenYellow);
 			brushes["SpawnNodeColor"] = spawnBrush;
-			settings.AddSetting("SpawnNodeColor", spawnBrush.Color, "Color of spawn nodes", "Nodes", bc, false, null);
+			settings.AddSetting(
+							"SpawnNodeColor",
+							spawnBrush.Color,
+							"Color of spawn nodes",
+							"Nodes",
+							bc,
+							false,
+							null);
 
 			var nodeBrush = new SolidBrush(Color.Green);
 			brushes["UnselectedNodeColor"] = nodeBrush;
-			settings.AddSetting("UnselectedNodeColor", nodeBrush.Color, "Color of unselected nodes", "Nodes", bc, false,
-				null);
+			settings.AddSetting(
+							"UnselectedNodeColor",
+							nodeBrush.Color,
+							"Color of unselected nodes",
+							"Nodes",
+							bc,
+							false,
+							null);
 
 			var contentBrush = new SolidBrush(Color.DarkGray);
 			brushes["ContentTiles"] = contentBrush;
-			settings.AddSetting("ContentTiles", contentBrush.Color, "Color of map tiles with a content tile", "Other",
-				bc, false, null);
+			settings.AddSetting(
+							"ContentTiles",
+							contentBrush.Color,
+							"Color of map tiles with a content tile",
+							"Other",
+							bc,
+							false,
+							null);
 
 			connectNodesYoolStripMenuItem.SelectedIndex = 2;
 		}
 
 		private void copyNode_Click(object sender, EventArgs e)
 		{
-			var nodeText = string.Format("MVNode|{0}|{1}|{2}|{3}|{4}",
-				cbType.SelectedIndex,
-				cbRank1.SelectedIndex,
-				cbRank2.SelectedIndex,
-				AttackBaseCombo.SelectedIndex,
-				cbUsage.SelectedIndex);
+			var nodeText = string.Format(
+									"MVNode|{0}|{1}|{2}|{3}|{4}",
+									cbType.SelectedIndex,
+									cbRank1.SelectedIndex,
+									cbRank2.SelectedIndex,
+									AttackBaseCombo.SelectedIndex,
+									cbUsage.SelectedIndex);
 			Clipboard.SetText(nodeText);
 		}
 
@@ -823,8 +911,10 @@ namespace MapView.Forms.MapObservers.RmpViews
 		{
 			if (connectNodesYoolStripMenuItem.Text == @"Connect One way")
 				return ConnectNodeTypes.ConnectOneWay;
+
 			if (connectNodesYoolStripMenuItem.Text == @"Connect Two ways")
 				return ConnectNodeTypes.ConnectTwoWays;
+
 			return ConnectNodeTypes.DontConnect;
 		}
 
@@ -872,6 +962,7 @@ namespace MapView.Forms.MapObservers.RmpViews
 				_map.Rmp.ExtraHeight = 0;
 				HeightDifTextbox.Text = _map.Rmp.ExtraHeight.ToString();
 			}
+
 			if (!_loadingMap) _map.MapChanged = true;
 		}
 
@@ -881,21 +972,26 @@ namespace MapView.Forms.MapObservers.RmpViews
 			foreach (RmpEntry rmp in _map.Rmp)
 			{
 				if (rmp.URank1 == 0) continue;
-				changeCount ++;
+				changeCount++;
 				rmp.URank1 = 0;
 			}
+
 			if (changeCount > 0)
 			{
 				_map.MapChanged = true;
 				MessageBox.Show(
-					changeCount + " links without 0 rank were found and changed", "Link Fix",
-					MessageBoxButtons.OK, MessageBoxIcon.Information);
+							changeCount + " links without 0 rank were found and changed",
+							"Link Fix",
+							MessageBoxButtons.OK,
+							MessageBoxIcon.Information);
 			}
 			else
 			{
 				MessageBox.Show(
-					"No links without 0 rank were found", "Link Fix",
-					MessageBoxButtons.OK, MessageBoxIcon.Warning);
+							"No links without 0 rank were found",
+							"Link Fix",
+							MessageBoxButtons.OK,
+							MessageBoxIcon.Warning);
 			}
 		}
 	}

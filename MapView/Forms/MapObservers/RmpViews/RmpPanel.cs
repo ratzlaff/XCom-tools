@@ -14,7 +14,7 @@ namespace MapView.Forms.MapObservers.RmpViews
 		private readonly Font _font = new Font("Arial", 12, FontStyle.Bold);
 		private readonly DrawContentService _drawContentService = new DrawContentService();
 		private SolidPenBrush _wallColor;
-		 
+
 		public void Calculate()
 		{
 			OnResize(null);
@@ -379,6 +379,5 @@ namespace MapView.Forms.MapObservers.RmpViews
 		}
 
 		#endregion
-
 	}
 }

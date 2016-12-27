@@ -103,7 +103,7 @@ namespace MapView.Forms.MapObservers.RmpViews
 			{
 				if (Height > Width / 2)
 				{
-					//use width
+					// use width
 					DrawAreaWidth = (Width) / (_map.MapSize.Rows + _map.MapSize.Cols + 1);
 
 					if (DrawAreaWidth % 2 != 0)
@@ -113,7 +113,7 @@ namespace MapView.Forms.MapObservers.RmpViews
 				}
 				else
 				{
-					//use height
+					// use height
 					DrawAreaHeight = (Height) / (_map.MapSize.Rows + _map.MapSize.Cols);
 					DrawAreaWidth = DrawAreaHeight * 2;
 				}

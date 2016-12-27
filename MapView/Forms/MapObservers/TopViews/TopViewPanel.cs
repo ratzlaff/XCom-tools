@@ -86,4 +86,3 @@ namespace MapView.Forms.MapObservers.TopViews
 		}
 	}
 }
-
