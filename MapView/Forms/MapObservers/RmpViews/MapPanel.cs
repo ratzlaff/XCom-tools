@@ -150,8 +150,8 @@ namespace MapView.Forms.MapObservers.RmpViews
 			double x2 = -(x * 1.0 - 2 * y * 1.0) / (DrawAreaWidth * 2);
 
 			return new Point(
-						(int) Math.Floor(x1),
-						(int) Math.Floor(x2));
+						(int)Math.Floor(x1),
+						(int)Math.Floor(x2));
 		}
 	}
 }
