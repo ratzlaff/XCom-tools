@@ -5,52 +5,53 @@ using MapView.Forms.Error;
 
 namespace MapView
 {
-    /// <summary>
-    /// Class that starts program execution.
-    /// </summary>
-    public class Startup //: MarshalByRefObject
-    { 
-        private readonly IErrorHandler _errorHandler;
+	/// <summary>
+	/// Class that starts program execution.
+	/// </summary>
+	public class Startup //: MarshalByRefObject
+	{ 
+		private readonly IErrorHandler _errorHandler;
 
-        public Startup()
-        {
-            _errorHandler = new ErrorWindowAdapter();
-        }
+		public Startup()
+		{
+			_errorHandler = new ErrorWindowAdapter();
+		}
 
-        public void RunProgram()
-        {
-            Application.EnableVisualStyles(); 
-            Application.SetCompatibleTextRenderingDefault(false);
-            Application.ThreadException += Application_ThreadException;
-            try
-            {
-                MainWindow mw = new MainWindow();
-                // mw.SendMessage += new StringDelegate(mw_SendMessage);
+		public void RunProgram()
+		{
+			Application.EnableVisualStyles(); 
+			Application.SetCompatibleTextRenderingDefault(false);
+			Application.ThreadException += Application_ThreadException;
+			try
+			{
+				MainWindow mw = new MainWindow();
+				//mw.SendMessage += new StringDelegate(mw_SendMessage);
 
-                Application.Run(mw);
+				Application.Run(mw);
 
-                // Get this AppDomain's settings and display some of them.
-                //AppDomainSetup ads = AppDomain.CurrentDomain.SetupInformation;
-                //Console.WriteLine("AppName={0}, AppBase={1}, ConfigFile={2}",
-                //    ads.ApplicationName,
-                //    ads.ApplicationBase,
-                //    ads.ConfigurationFile
-                //);
-            }
-            catch (Exception ex)
-            {
-                _errorHandler.HandleException(ex);
-            }
-        }
+				// https://msdn.microsoft.com/en-us/library/system.appdomain.aspx
+				// Get this AppDomain's settings and display some of them.
+				//AppDomainSetup ads = AppDomain.CurrentDomain.SetupInformation;
+				//Console.WriteLine(
+				//				"AppName={0}, AppBase={1}, ConfigFile={2}",
+				//				ads.ApplicationName,
+				//				ads.ApplicationBase,
+				//				ads.ConfigurationFile);
+			}
+			catch (Exception ex)
+			{
+				_errorHandler.HandleException(ex);
+			}
+		}
 
-        void mw_SendMessage(object sender, string args)
-        {
-            Console.WriteLine("External command: " + args);
-        }
+		//void mw_SendMessage(object sender, string args)
+		//{
+		//	Console.WriteLine("External command: " + args);
+		//}
 
-        private void Application_ThreadException(object sender, ThreadExceptionEventArgs e)
-        {
-            _errorHandler.HandleException(e.Exception);
-        }
-    }
+		private void Application_ThreadException(object sender, ThreadExceptionEventArgs e)
+		{
+			_errorHandler.HandleException(e.Exception);
+		}
+	}
 }

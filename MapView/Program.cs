@@ -19,6 +19,7 @@ namespace MapView
 
 		private static void ReleaseRun()
 		{
+			// https://msdn.microsoft.com/en-us/library/system.appdomain.aspx
 			// Construct and initialize settings for a second AppDomain.
 			AppDomainSetup ads = new AppDomainSetup();
 			ads.ApplicationBase = System.Environment.CurrentDirectory;
@@ -31,14 +32,13 @@ namespace MapView
 
 			// Create an instance of MarshalByRefType in the second AppDomain.
 			// A proxy to the object is returned.
-			Startup startup =
-				(Startup) ad2.CreateInstanceAndUnwrap(
-					Assembly.GetEntryAssembly().FullName,
-					typeof (Startup).FullName);
+			Startup startup = (Startup)ad2.CreateInstanceAndUnwrap(
+																Assembly.GetEntryAssembly().FullName,
+																typeof(Startup).FullName);
 
 			startup.RunProgram();
 
-			Console.WriteLine("Disposing of appdomain");
+			//Console.WriteLine("Disposing of appdomain");
 			AppDomain.Unload(ad2);
 		}
 
