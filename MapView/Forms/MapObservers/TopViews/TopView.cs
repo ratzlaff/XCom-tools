@@ -8,18 +8,18 @@ using XCom;
 
 namespace MapView.Forms.MapObservers.TopViews
 {
-    public partial class TopView : MapObserverControl
-    {
-        private readonly Dictionary<ToolStripMenuItem, int> _visibleHash;
+	public partial class TopView : MapObserverControl
+	{
+		private readonly Dictionary<ToolStripMenuItem, int> _visibleHash;
 		private Dictionary<string, SolidBrush> _brushes;
 		private Dictionary<string, Pen> _pens;
 
 		private readonly TopViewPanel _topViewPanel;
-	    private MainToolStripButtonsFactory _mainToolStripButtonsFactory;
-        
+		private MainToolStripButtonsFactory _mainToolStripButtonsFactory;
+
 		public event EventHandler VisibleTileChanged;
-         
-        public TopView()
+
+		public TopView()
 		{
 			InitializeComponent();
 
@@ -33,52 +33,52 @@ namespace MapView.Forms.MapObservers.TopViews
 
 			center.Resize += (sender, e) => _topViewPanel.ParentSize(center.Width, center.Height);
 
-            _visibleHash = new Dictionary<ToolStripMenuItem, int>();
+			_visibleHash = new Dictionary<ToolStripMenuItem, int>();
 
-            var visItems = VisibleToolStripButton.DropDown.Items;
-            var ground = new ToolStripMenuItem("Ground");
-            visItems.Add(ground);
-            _topViewPanel.Ground = ground ;
+			var visItems = VisibleToolStripButton.DropDown.Items;
+			var ground = new ToolStripMenuItem("Ground");
+			visItems.Add(ground);
+			_topViewPanel.Ground = ground ;
 			_visibleHash[_topViewPanel.Ground] = 0;
 			_topViewPanel.Ground.ShortcutKeys = Keys.F1;
 
-            var west = new ToolStripMenuItem("West");
-            visItems.Add(west);
-            _topViewPanel.West = west;
+			var west = new ToolStripMenuItem("West");
+			visItems.Add(west);
+			_topViewPanel.West = west;
 			_visibleHash[_topViewPanel.West] = 1;
-            _topViewPanel.West.ShortcutKeys = Keys.F2;
+			_topViewPanel.West.ShortcutKeys = Keys.F2;
 
-            var north = new ToolStripMenuItem("North");
-            visItems.Add(north);
-            _topViewPanel.North = north;
-            _visibleHash[_topViewPanel.North] = 2;
-            _topViewPanel.West.ShortcutKeys = Keys.F3;
+			var north = new ToolStripMenuItem("North");
+			visItems.Add(north);
+			_topViewPanel.North = north;
+			_visibleHash[_topViewPanel.North] = 2;
+			_topViewPanel.West.ShortcutKeys = Keys.F3;
 
-            var content = new ToolStripMenuItem("Content");
-            visItems.Add(content);
-            _topViewPanel.Content = content;
-            _visibleHash[_topViewPanel.Content] = 3;
-            _topViewPanel.Content.ShortcutKeys = Keys.F4; 
+			var content = new ToolStripMenuItem("Content");
+			visItems.Add(content);
+			_topViewPanel.Content = content;
+			_visibleHash[_topViewPanel.Content] = 3;
+			_topViewPanel.Content.ShortcutKeys = Keys.F4;
 
-            foreach (ToolStripItem visItem in visItems)
-            {
-                visItem.Click += VisibleClick;
-            }
-             
+			foreach (ToolStripItem visItem in visItems)
+			{
+				visItem.Click += VisibleClick;
+			}
+
 			_topViewPanel.BottomPanel = bottom;
 
 			MoreObservers.Add("BottomPanel", bottom);
 			MoreObservers.Add("TopViewPanel", _topViewPanel);
 
 			ResumeLayout();
-        }
+		}
 
-        public void Initialize(MainToolStripButtonsFactory mainToolStripButtonsFactory)
-        {
-            _mainToolStripButtonsFactory = mainToolStripButtonsFactory;
-            _mainToolStripButtonsFactory.MakeToolstrip(toolStrip);
-        }
-         
+		public void Initialize(MainToolStripButtonsFactory mainToolStripButtonsFactory)
+		{
+			_mainToolStripButtonsFactory = mainToolStripButtonsFactory;
+			_mainToolStripButtonsFactory.MakeToolstrip(toolStrip);
+		}
+
 		public BottomPanel BottomPanel
 		{
 			get { return bottom; }
@@ -86,7 +86,7 @@ namespace MapView.Forms.MapObservers.TopViews
 
 		private void VisibleClick(object sender, EventArgs e)
 		{
-            ((ToolStripMenuItem)sender).Checked = !((ToolStripMenuItem)sender).Checked;
+			((ToolStripMenuItem)sender).Checked = !((ToolStripMenuItem)sender).Checked;
 
 			if (VisibleTileChanged != null)
 				VisibleTileChanged(this, new EventArgs());
@@ -118,8 +118,8 @@ namespace MapView.Forms.MapObservers.TopViews
 		}
 
 		public override void LoadDefaultSettings()
-		{ 
-            var settings = Settings;
+		{
+			var settings = Settings;
 
 			_brushes = new Dictionary<string, SolidBrush>();
 			_pens = new Dictionary<string, Pen>();
@@ -128,19 +128,19 @@ namespace MapView.Forms.MapObservers.TopViews
 			_brushes.Add("ContentColor", new SolidBrush(Color.Green));
 			_brushes.Add("SelectTileColor", bottom.SelectColor);
 
-            var northPen = new Pen(new SolidBrush(Color.Red), 4);
+			var northPen = new Pen(new SolidBrush(Color.Red), 4);
 			_pens.Add("NorthColor", northPen);
 			_pens.Add("NorthWidth", northPen);
 
-            var westPen = new Pen(new SolidBrush(Color.Red), 4);
+			var westPen = new Pen(new SolidBrush(Color.Red), 4);
 			_pens.Add("WestColor", westPen);
 			_pens.Add("WestWidth", westPen);
 
-            var selPen = new Pen(new SolidBrush(Color.Black), 2);
+			var selPen = new Pen(new SolidBrush(Color.Black), 2);
 			_pens.Add("SelectColor", selPen);
 			_pens.Add("SelectWidth", selPen);
 
-            var gridPen = new Pen(new SolidBrush(Color.Black), 1);
+			var gridPen = new Pen(new SolidBrush(Color.Black), 1);
 			_pens.Add("GridColor", gridPen);
 			_pens.Add("GridWidth", gridPen);
 
@@ -173,38 +173,38 @@ namespace MapView.Forms.MapObservers.TopViews
 
 			bottom.Brushes = _brushes;
 			bottom.Pens = _pens;
-            Invalidate();
+			Invalidate();
 		}
 
 		public void Fill_Click(object sender, EventArgs evt)
-		{ 
-	        var map = MapViewPanel.Instance.MapView.Map;
-	        if (map == null) return;
-	        var s = new Point(0, 0);
-	        var e = new Point(0, 0);
+		{
+			var map = MapViewPanel.Instance.MapView.Map;
+			if (map == null) return;
+			var s = new Point(0, 0);
+			var e = new Point(0, 0);
 
-	        s.X = Math.Min(MapViewPanel.Instance.MapView.DragStart.X, MapViewPanel.Instance.MapView.DragEnd.X);
-	        s.Y = Math.Min(MapViewPanel.Instance.MapView.DragStart.Y, MapViewPanel.Instance.MapView.DragEnd.Y);
+			s.X = Math.Min(MapViewPanel.Instance.MapView.DragStart.X, MapViewPanel.Instance.MapView.DragEnd.X);
+			s.Y = Math.Min(MapViewPanel.Instance.MapView.DragStart.Y, MapViewPanel.Instance.MapView.DragEnd.Y);
 
-	        e.X = Math.Max(MapViewPanel.Instance.MapView.DragStart.X, MapViewPanel.Instance.MapView.DragEnd.X);
-	        e.Y = Math.Max(MapViewPanel.Instance.MapView.DragStart.Y, MapViewPanel.Instance.MapView.DragEnd.Y);
+			e.X = Math.Max(MapViewPanel.Instance.MapView.DragStart.X, MapViewPanel.Instance.MapView.DragEnd.X);
+			e.Y = Math.Max(MapViewPanel.Instance.MapView.DragStart.Y, MapViewPanel.Instance.MapView.DragEnd.Y);
 
-	        //row   col
-	        //y     x
-            var tileView = MainWindowsManager.TileView.TileViewControl;
-            for (int c = s.X; c <= e.X; c++)
-	            for (int r = s.Y; r <= e.Y; r++)
-	            {
-	                ((XCMapTile) map[r, c])[bottom.SelectedQuadrant] = tileView.SelectedTile;
-	            }
+			//row   col
+			//y	 x
+			var tileView = MainWindowsManager.TileView.TileViewControl;
+			for (int c = s.X; c <= e.X; c++)
+				for (int r = s.Y; r <= e.Y; r++)
+				{
+					((XCMapTile) map[r, c])[bottom.SelectedQuadrant] = tileView.SelectedTile;
+				}
 
-		    map.MapChanged = true;
-         
-	        MapViewPanel.Instance.Refresh();
-	        Refresh();
-	    }
+			map.MapChanged = true;
+		 
+			MapViewPanel.Instance.Refresh();
+			Refresh();
+		}
 
-	    private void options_click(object sender, EventArgs e)
+		private void options_click(object sender, EventArgs e)
 		{
 			var pf = new PropertyForm("TopViewType", Settings);
 			pf.Text = "TopView Options";
@@ -250,37 +250,36 @@ namespace MapView.Forms.MapObservers.TopViews
 		{
 			get { return _topViewPanel.Content.Checked; }
 		}
-         
-        private void TopView_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.Control && e.KeyCode == Keys.S)
-            {
-                if (Map != null)
-                {
-                    Map.Save();
-                    e.Handled = true;
-                }
-            }
-        }
+		 
+		private void TopView_KeyDown(object sender, KeyEventArgs e)
+		{
+			if (e.Control && e.KeyCode == Keys.S)
+			{
+				if (Map != null)
+				{
+					Map.Save();
+					e.Handled = true;
+				}
+			}
+		}
 
-	    public void SetSelectedQuadrantFrom(TileType tileType)
-	    {
-	        switch (tileType)
-	        {
-	            case TileType.Ground:
-	                BottomPanel.SelectedQuadrant = XCMapTile.MapQuadrant.Ground;
-	                break;
-	            case TileType.WestWall:
-	                BottomPanel.SelectedQuadrant = XCMapTile.MapQuadrant.West;
-	                break;
-	            case TileType.NorthWall:
-	                BottomPanel.SelectedQuadrant = XCMapTile.MapQuadrant.North;
-	                break;
-	            case TileType.Object:
-	                BottomPanel.SelectedQuadrant = XCMapTile.MapQuadrant.Content;
-	                break;
-	        }
-	    }
-    }
+		public void SetSelectedQuadrantFrom(TileType tileType)
+		{
+			switch (tileType)
+			{
+				case TileType.Ground:
+					BottomPanel.SelectedQuadrant = XCMapTile.MapQuadrant.Ground;
+					break;
+				case TileType.WestWall:
+					BottomPanel.SelectedQuadrant = XCMapTile.MapQuadrant.West;
+					break;
+				case TileType.NorthWall:
+					BottomPanel.SelectedQuadrant = XCMapTile.MapQuadrant.North;
+					break;
+				case TileType.Object:
+					BottomPanel.SelectedQuadrant = XCMapTile.MapQuadrant.Content;
+					break;
+			}
+		}
+	}
 }
-

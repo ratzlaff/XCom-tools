@@ -24,7 +24,7 @@ namespace XCom
 			string line="",keyword="",name="";
 			VarCollection vars = new VarCollection(sr,v);
 
-			while((line = vars.ReadLine(sr))!=null)
+			while((line = vars.ReadLine(sr)) != null)
 			{
 				int idx = line.IndexOf(':');
 				keyword = line.Substring(0,idx);
@@ -85,7 +85,7 @@ namespace XCom
 
 		public override void Save(string outFile)
 		{
-			//iterate thru each tileset, call save on them
+			// iterate thru each tileset, call save on them
 			VarCollection vc = new VarCollection("Path");
 			StreamWriter sw = new StreamWriter(outFile);
 
@@ -113,7 +113,7 @@ namespace XCom
 				((IXCTileset)tilesets[s]).Save(sw,vc);
 			}
 
-      sw.Close();
+			sw.Close();
 		}
 	}
 }

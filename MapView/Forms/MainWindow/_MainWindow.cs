@@ -25,55 +25,55 @@ namespace MapView
 
 	public partial class MainWindow : Form
 	{
-        private readonly SettingsManager _settingsManager;
+		private readonly SettingsManager _settingsManager;
 
-        private readonly MapViewPanel _mapView;
-        private readonly LoadingForm _lf;
-        private readonly IWarningHandler _warningHandler;
-        private readonly IMainWindowWindowsManager _mainWindowWindowsManager;
-        private readonly MainWindowsManager _mainWindowsManager;
-        private readonly WindowMenuManager _windowMenuManager;
+		private readonly MapViewPanel _mapView;
+		private readonly LoadingForm _lf;
+		private readonly IWarningHandler _warningHandler;
+		private readonly IMainWindowWindowsManager _mainWindowWindowsManager;
+		private readonly MainWindowsManager _mainWindowsManager;
+		private readonly WindowMenuManager _windowMenuManager;
 
 		public MainWindow()
-        {
-            /***********************/
-            InitializeComponent();
-            /***********************/
+		{
+			/***********************/
+			InitializeComponent();
+			/***********************/
 
-            _mapView = MapViewPanel.Instance;
+			_mapView = MapViewPanel.Instance;
 
-		    _settingsManager = new SettingsManager();
-		    _windowMenuManager = new WindowMenuManager(showMenu, miHelp);
+			_settingsManager = new SettingsManager();
+			_windowMenuManager = new WindowMenuManager(showMenu, miHelp);
 
-		    loadDefaults();
+			loadDefaults();
 
-            Palette.TFTDBattle.SetTransparent(true);
-            Palette.UFOBattle.SetTransparent(true);
-            Palette.TFTDBattle.Grayscale.SetTransparent(true);
-            Palette.UFOBattle.Grayscale.SetTransparent(true);
+			Palette.TFTDBattle.SetTransparent(true);
+			Palette.UFOBattle.SetTransparent(true);
+			Palette.TFTDBattle.Grayscale.SetTransparent(true);
+			Palette.UFOBattle.Grayscale.SetTransparent(true);
 
 			#region Setup SharedSpace information and paths
 
-            var sharedSpace = SharedSpace.Instance;
-		    var consoleSharedSpace = new ConsoleSharedSpace(sharedSpace);
-            _warningHandler = new ConsoleWarningHandler(consoleSharedSpace);
-             
-            MainWindowsManager.MainToolStripButtonsFactory = new MainToolStripButtonsFactory(_mapView);
+			var sharedSpace = SharedSpace.Instance;
+			var consoleSharedSpace = new ConsoleSharedSpace(sharedSpace);
+			_warningHandler = new ConsoleWarningHandler(consoleSharedSpace);
+			 
+			MainWindowsManager.MainToolStripButtonsFactory = new MainToolStripButtonsFactory(_mapView);
 
-            _mainWindowsManager = new MainWindowsManager();
-            _mainWindowWindowsManager = new MainWindowWindowsManager(
-                _settingsManager, consoleSharedSpace);
+			_mainWindowsManager = new MainWindowsManager();
+			_mainWindowWindowsManager = new MainWindowWindowsManager(
+				_settingsManager, consoleSharedSpace);
 
-            var settings = GetSettings();
-            _windowMenuManager.SetMenus(consoleSharedSpace.GetNewConsole(), settings);
+			var settings = GetSettings();
+			_windowMenuManager.SetMenus(consoleSharedSpace.GetNewConsole(), settings);
 
-            MainWindowsManager.MainWindowsShowAllManager =
-                _windowMenuManager.CreateShowAll();
+			MainWindowsManager.MainWindowsShowAllManager =
+				_windowMenuManager.CreateShowAll();
 
 
-		    MainWindowsManager.Initialize();
+			MainWindowsManager.Initialize();
 
-		    sharedSpace.GetObj("MapView", this);
+			sharedSpace.GetObj("MapView", this);
 			sharedSpace.GetObj("AppDir", Environment.CurrentDirectory);
 			sharedSpace.GetObj("CustomDir", Environment.CurrentDirectory + "\\custom");
 			sharedSpace.GetObj("SettingsDir", Environment.CurrentDirectory + "\\settings");
@@ -100,11 +100,11 @@ namespace MapView
 			GameInfo.ParseLine += parseLine;
 
 			InitGameInfo(pathsFile);
-		    LogFile.Instance.WriteLine("GameInfo.Init done");
+			LogFile.Instance.WriteLine("GameInfo.Init done");
 
-            _mainWindowWindowsManager.Register();
-             
-            MainWindowsManager.TileView.TileViewControl.MapChanged += TileView_MapChanged;
+			_mainWindowWindowsManager.Register();
+			 
+			MainWindowsManager.TileView.TileViewControl.MapChanged += TileView_MapChanged;
 
 			LogFile.Instance.WriteLine("Palette transparencies set");
 
@@ -117,8 +117,8 @@ namespace MapView
 			mapList.TreeViewNodeSorter = new System.Collections.CaseInsensitiveComparer();
 
 			toolStripContainer1.ContentPanel.Controls.Add(_mapView);
-            MainWindowsManager.MainToolStripButtonsFactory.MakeToolstrip(toolStrip);
-		    toolStrip.Enabled = false;
+			MainWindowsManager.MainToolStripButtonsFactory.MakeToolstrip(toolStrip);
+			toolStrip.Enabled = false;
 			toolStrip.Items.Add(new ToolStripSeparator());
 
 			LogFile.Instance.WriteLine("Main view window created");
@@ -143,18 +143,18 @@ namespace MapView
 			initList();
 
 			LogFile.Instance.WriteLine("Map list created");
-             
+			 
 			LogFile.Instance.WriteLine("Quick help and About created");
 
-            if (settingsFile.Exists())
-            {
-                _settingsManager.Load(settingsFile.ToString());
-                LogFile.Instance.WriteLine("User settings loaded");
-            }
-            else
-            {
-                LogFile.Instance.WriteLine("User settings NOT loaded - no settings file to load");
-            }
+			if (settingsFile.Exists())
+			{
+				_settingsManager.Load(settingsFile.ToString());
+				LogFile.Instance.WriteLine("User settings loaded");
+			}
+			else
+			{
+				LogFile.Instance.WriteLine("User settings NOT loaded - no settings file to load");
+			}
 
 			OnResize(null);
 			this.Closing += new CancelEventHandler(closing);
@@ -189,20 +189,20 @@ namespace MapView
 
 			LogFile.Instance.WriteLine("About to show window");
 			Show();
-			LogFile.Instance.Close();			
+			LogFile.Instance.Close();
 		}
 
-	    private static void InitGameInfo(PathInfo pathsFile)
-	    {
-	        GameInfo.Init(Palette.TFTDBattle, pathsFile); 
-	    }
+		private static void InitGameInfo(PathInfo pathsFile)
+		{
+			GameInfo.Init(Palette.TFTDBattle, pathsFile);
+		}
 
-	    private static MainWindow instance;
+		private static MainWindow instance;
 		public static MainWindow Instance
 		{
 			get { return instance; }
 		}
-         
+		 
 		private void parseLine(XCom.KeyVal line, XCom.VarCollection vars)
 		{
 			switch (line.Keyword.ToLower())
@@ -225,10 +225,10 @@ namespace MapView
 					break;
 			}
 		}
-         
+		 
 		private void ChangeSetting(object sender, string key, object val)
 		{
-            GetSettings()[key].Value = val;
+			GetSettings()[key].Value = val;
 			switch (key)
 			{
 				case "Animation":
@@ -317,7 +317,7 @@ namespace MapView
 				return;
 			}
 
-            _windowMenuManager.Dispose();
+			_windowMenuManager.Dispose();
 
 			if (PathsEditor.SaveRegistry)
 			{
@@ -325,7 +325,7 @@ namespace MapView
 				RegistryKey mvKey = swKey.CreateSubKey("MapView");
 				RegistryKey riKey = mvKey.CreateSubKey("MainView");
 
-			    _mainWindowWindowsManager.CloseAll();
+				_mainWindowWindowsManager.CloseAll();
 
 				WindowState = FormWindowState.Normal;
 				riKey.SetValue("Left", Left);
@@ -340,8 +340,8 @@ namespace MapView
 				mvKey.Close();
 				swKey.Close();
 			}
-             
-		    _settingsManager.Save(); 
+
+			_settingsManager.Save();
 		}
 
 		private void loadDefaults()
@@ -374,7 +374,7 @@ namespace MapView
 			SetSettings(settings);
 		}
 
-	    private void update(object sender, EventArgs e)
+		private void update(object sender, EventArgs e)
 		{
 			MainWindowsManager.TopView.TopViewControl.BottomPanel.Refresh();
 		}
@@ -415,118 +415,118 @@ namespace MapView
 			PathsEditor p = new PathsEditor(SharedSpace.Instance["MV_PathsFile"].ToString());
 			p.ShowDialog();
 
-		    var pathInfo = (PathInfo) SharedSpace.Instance["MV_PathsFile"];
-		    InitGameInfo(pathInfo);
+			var pathInfo = (PathInfo) SharedSpace.Instance["MV_PathsFile"];
+			InitGameInfo(pathInfo);
 			initList();
 		}
 
 
-	    private void mapList_BeforeSelect(object sender, TreeViewCancelEventArgs e)
-	    {
-	        if (NotifySave() == DialogResult.Cancel)
-	        {
-	            e.Cancel = true;
-	            return;
-	        }
+		private void mapList_BeforeSelect(object sender, TreeViewCancelEventArgs e)
+		{
+			if (NotifySave() == DialogResult.Cancel)
+			{
+				e.Cancel = true;
+				return;
+			}
 
-            // make old selected not bold 
-	        if (mapList.SelectedNode != null)
-	        {
-                mapList.SelectedNode.BackColor = Color.Transparent ;
-            }
-	    }
+			// make old selected not bold
+			if (mapList.SelectedNode != null)
+			{
+				mapList.SelectedNode.BackColor = Color.Transparent ;
+			}
+		}
 
-	    private void mapList_AfterSelect(object sender, TreeViewEventArgs e)
-	    {
-	        // Make selected bold 
-            mapList.SelectedNode.BackColor = Color.Gold;
+		private void mapList_AfterSelect(object sender, TreeViewEventArgs e)
+		{
+			// Make selected bold
+			mapList.SelectedNode.BackColor = Color.Gold;
 
-	        LoadSelectedNodeMap();
-	    }
+			LoadSelectedNodeMap();
+		}
 
-        private void TileView_MapChanged()
-        {
-            LoadSelectedNodeMap();
-        }
+		private void TileView_MapChanged()
+		{
+			LoadSelectedNodeMap();
+		}
 
-	    private void LoadSelectedNodeMap()
-	    {
-	        var imd = mapList.SelectedNode.Tag as IMapDesc;
-	        if (imd != null)
-	        {
-	            miExport.Enabled = true;
+		private void LoadSelectedNodeMap()
+		{
+			var imd = mapList.SelectedNode.Tag as IMapDesc;
+			if (imd != null)
+			{
+				miExport.Enabled = true;
 
-	            var xcTileFactory = new XcTileFactory();
-	            xcTileFactory.HandleWarning += _warningHandler.HandleWarning;
-	            var mapService = new XcMapFileService(xcTileFactory);
-                var map = mapService.Load(imd as XCMapDesc);
-	            _mapView.SetMap(map);
-	            toolStrip.Enabled = true;
+				var xcTileFactory = new XcTileFactory();
+				xcTileFactory.HandleWarning += _warningHandler.HandleWarning;
+				var mapService = new XcMapFileService(xcTileFactory);
+				var map = mapService.Load(imd as XCMapDesc);
+				_mapView.SetMap(map);
+				toolStrip.Enabled = true;
 
-	            var rmpService = new RmpService();
-                rmpService.ReviewRouteEntries(map);
+				var rmpService = new RmpService();
+				rmpService.ReviewRouteEntries(map);
 
-	            statusMapName.Text = "Map:" + imd.Name;
-	            if (map != null)
-	            {
-	                tsMapSize.Text = "Size: " + map.MapSize;
-	            }
-	            else
-	            {
-	                tsMapSize.Text = "Size: Unknown";
-	            }
+				statusMapName.Text = "Map:" + imd.Name;
+				if (map != null)
+				{
+					tsMapSize.Text = "Size: " + map.MapSize;
+				}
+				else
+				{
+					tsMapSize.Text = "Size: Unknown";
+				}
 
-	            //turn off door animations
-	            if (miDoors.Checked)
-	            {
-	                miDoors.Checked = false;
-	                miDoors_Click(null, null);
-	            }
+				//turn off door animations
+				if (miDoors.Checked)
+				{
+					miDoors.Checked = false;
+					miDoors_Click(null, null);
+				}
 
-	            //open all the forms in the show menu once
-	            if (!showMenu.Enabled)
-	            {
-                    _windowMenuManager.LoadState();
-	            }
+				//open all the forms in the show menu once
+				if (!showMenu.Enabled)
+				{
+					_windowMenuManager.LoadState();
+				}
 
-	            //Reset all observer events
-	            _mainWindowsManager.SetMap(map);
-	        }
-	        else
-	        {
-	            miExport.Enabled = false;
-	        }
-	    } 
+				//Reset all observer events
+				_mainWindowsManager.SetMap(map);
+			}
+			else
+			{
+				miExport.Enabled = false;
+			}
+		}
 
-	    public DialogResult NotifySave()
-	    {
-            if (_mapView.Map != null && _mapView.Map.MapChanged)
-	        {
-	            switch (
-	                MessageBox.Show(this, "Map changed, do you wish to save?", "Save map?",
-	                    MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1))
-	            {
-	                case DialogResult.No: //dont save 
-	                    break;
-	                case DialogResult.Yes: //save
-	                    _mapView.Map.Save();
-	                    break;
-	                case DialogResult.Cancel: //do nothing
-	                    return DialogResult.Cancel;
-	            }
-	        }
+		public DialogResult NotifySave()
+		{
+			if (_mapView.Map != null && _mapView.Map.MapChanged)
+			{
+				switch (
+					MessageBox.Show(this, "Map changed, do you wish to save?", "Save map?",
+						MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1))
+				{
+					case DialogResult.No: //dont save
+						break;
+					case DialogResult.Yes: //save
+						_mapView.Map.Save();
+						break;
+					case DialogResult.Cancel: //do nothing
+						return DialogResult.Cancel;
+				}
+			}
 
-	        return DialogResult.OK;
-	    }
+			return DialogResult.OK;
+		}
 
-	    private void miOptions_Click(object sender, System.EventArgs e)
+		private void miOptions_Click(object sender, System.EventArgs e)
 		{
 			var pf = new PropertyForm("MainViewSettings", GetSettings());
 			pf.Text = "MainWindow Options";
 			pf.Show();
 		}
 
-	    private void miSaveImage_Click(object sender, System.EventArgs e)
+		private void miSaveImage_Click(object sender, System.EventArgs e)
 		{
 			if (_mapView.Map != null)
 			{
@@ -534,29 +534,29 @@ namespace MapView
 				if (saveFile.ShowDialog() == DialogResult.OK)
 				{
 					_lf.Show();
-				    try
-				    {
-                        _mapView.Map.SaveGif(saveFile.FileName);
-				    }
-				    finally
-				    {
-                        _lf.Hide();
-                    }
+					try
+					{
+						_mapView.Map.SaveGif(saveFile.FileName);
+					}
+					finally
+					{
+						_lf.Hide();
+					}
 				}
 			}
 		}
 
 		private void miHq_Click(object sender, System.EventArgs e)
 		{
-		    var map = _mapView.Map as XCMapFile;
-		    if (map != null)
+			var map = _mapView.Map as XCMapFile;
+			if (map != null)
 			{
 				map.Hq2x();
-                _mapView.OnResize();
+				_mapView.OnResize();
 			}
 		}
 
-	    private void miDoors_Click(object sender, System.EventArgs e)
+		private void miDoors_Click(object sender, System.EventArgs e)
 		{
 			miDoors.Checked = !miDoors.Checked;
 
@@ -572,21 +572,21 @@ namespace MapView
 
 		private void miResize_Click(object sender, System.EventArgs e)
 		{
-		    if (_mapView.MapView.Map == null) return;
-		    using (var cmf = new ChangeMapSizeForm())
-		    {
-		        cmf.Map = _mapView.MapView.Map;
-		        if (cmf.ShowDialog(this) == DialogResult.OK)
-		        {
-		            cmf.Map.ResizeTo(cmf.NewRows, cmf.NewCols, cmf.NewHeight, cmf.AddHeightToCelling);
-		            _mapView.ForceResize();
-		        }
-		    }
+			if (_mapView.MapView.Map == null) return;
+			using (var cmf = new ChangeMapSizeForm())
+			{
+				cmf.Map = _mapView.MapView.Map;
+				if (cmf.ShowDialog(this) == DialogResult.OK)
+				{
+					cmf.Map.ResizeTo(cmf.NewRows, cmf.NewCols, cmf.NewHeight, cmf.AddHeightToCelling);
+					_mapView.ForceResize();
+				}
+			}
 		}
 
 		private bool windowFlag = false;
 
-	    private void MainWindow_Activated(object sender, System.EventArgs e)
+		private void MainWindow_Activated(object sender, System.EventArgs e)
 		{
 			if (!windowFlag)
 			{
@@ -602,25 +602,25 @@ namespace MapView
 
 		private void miInfo_Click(object sender, System.EventArgs e)
 		{
-            if (_mapView.Map == null) return;
+			if (_mapView.Map == null) return;
 			var mif = new MapInfoForm();
 			mif.Show();
 			mif.Map = _mapView.Map;
 		}
 
 
-	    private void miExport_Click(object sender, EventArgs e)
+		private void miExport_Click(object sender, EventArgs e)
 		{
 			//if (mapList.SelectedNode.Parent == null)//top level node - bad
-			//    throw new Exception("miExport_Click: Should not be here");
+			//	throw new Exception("miExport_Click: Should not be here");
 
 			//ExportForm ef = new ExportForm();
 			//List<string> maps = new List<string>();
 			//if (mapList.SelectedNode.Parent.Parent == null)//tileset
-			//    foreach (TreeNode tn in mapList.SelectedNode.Nodes)
-			//        maps.Add(tn.Text);
+			//	foreach (TreeNode tn in mapList.SelectedNode.Nodes)
+			//		maps.Add(tn.Text);
 			//else //map
-			//    maps.Add(mapList.SelectedNode.Text);
+			//	maps.Add(mapList.SelectedNode.Text);
 			//ef.Maps = maps;
 
 
@@ -632,59 +632,59 @@ namespace MapView
 
 		}
 
-        private void SetSettings(Settings settings)
-        {
-            _settingsManager["MainWindow"] = settings;
-        }
+		private void SetSettings(Settings settings)
+		{
+			_settingsManager["MainWindow"] = settings;
+		}
 
-        private Settings GetSettings()
-        {
-            return _settingsManager["MainWindow"];
-        }
+		private Settings GetSettings()
+		{
+			return _settingsManager["MainWindow"];
+		}
 
-        private void drawSelectionBoxButton_Click(object sender, EventArgs e)
-        {
-            _mapView.MapView.DrawSelectionBox = !_mapView.MapView.DrawSelectionBox;
-            drawSelectionBoxButton.Checked = !drawSelectionBoxButton.Checked;
-        }
+		private void drawSelectionBoxButton_Click(object sender, EventArgs e)
+		{
+			_mapView.MapView.DrawSelectionBox = !_mapView.MapView.DrawSelectionBox;
+			drawSelectionBoxButton.Checked = !drawSelectionBoxButton.Checked;
+		}
 
-        private void ZoomInButton_Click(object sender, EventArgs e)
-        {
-            if (Globals.PckImageScale < Globals.MaxPckImageScale )
-            {
-                Globals.PckImageScale += 0.125;
-                Globals.AutoPckImageScale = false;
-                AutoZoomButton.Checked = false;
-                _mapView.SetupMapSize();
-                Refresh();
-                _mapView.OnResize();
-            }
-        }
+		private void ZoomInButton_Click(object sender, EventArgs e)
+		{
+			if (Globals.PckImageScale < Globals.MaxPckImageScale )
+			{
+				Globals.PckImageScale += 0.125;
+				Globals.AutoPckImageScale = false;
+				AutoZoomButton.Checked = false;
+				_mapView.SetupMapSize();
+				Refresh();
+				_mapView.OnResize();
+			}
+		}
 
-        private void ZoomOutButton_Click(object sender, EventArgs e)
-        {
-            if (Globals.PckImageScale > Globals.MinPckImageScale)
-            {
-                Globals.PckImageScale -= 0.125;
-                Globals.AutoPckImageScale = false;
-                AutoZoomButton.Checked = false;
-                _mapView.SetupMapSize();
-                Refresh();
-                _mapView.OnResize();
-            }
-        }
+		private void ZoomOutButton_Click(object sender, EventArgs e)
+		{
+			if (Globals.PckImageScale > Globals.MinPckImageScale)
+			{
+				Globals.PckImageScale -= 0.125;
+				Globals.AutoPckImageScale = false;
+				AutoZoomButton.Checked = false;
+				_mapView.SetupMapSize();
+				Refresh();
+				_mapView.OnResize();
+			}
+		}
 
-        private void AutoZoomButton_Click(object sender, EventArgs e)
-        {
-            Globals.AutoPckImageScale = !Globals.AutoPckImageScale;
-            if (!Globals.AutoPckImageScale)
-            {
-                Globals.PckImageScale = 1;
-            }
-            AutoZoomButton.Checked = !AutoZoomButton.Checked;
-            _mapView.SetupMapSize();
-            Refresh();
-            _mapView.OnResize();
-        } 
+		private void AutoZoomButton_Click(object sender, EventArgs e)
+		{
+			Globals.AutoPckImageScale = !Globals.AutoPckImageScale;
+			if (!Globals.AutoPckImageScale)
+			{
+				Globals.PckImageScale = 1;
+			}
+			AutoZoomButton.Checked = !AutoZoomButton.Checked;
+			_mapView.SetupMapSize();
+			Refresh();
+			_mapView.OnResize();
+		}
 	}
 }

@@ -18,10 +18,10 @@ namespace PckView
 
 		private VScrollBar scroll;
 		private StatusBar statusBar;
-        private StatusBarPanel statusOverTile;
-        private StatusBarPanel statusBPP;
-        private int click;
-        private int move;
+		private StatusBarPanel statusOverTile;
+		private StatusBarPanel statusBPP;
+		private int click;
+		private int move;
 
 		public event PckViewMouseClicked ViewClicked;
 		public event XCImageCollectionHandler XCImageCollectionSet;
@@ -56,8 +56,9 @@ namespace PckView
 			scroll.Minimum = 0;
 
 			this.Controls.AddRange(new System.Windows.Forms.Control[] {
-																		  statusBar,
-																		  scroll,view});
+																statusBar,
+																scroll,
+																view });
 
 			view.SizeChanged += new EventHandler(viewSizeChange);
 			OnResize(null);
@@ -66,9 +67,9 @@ namespace PckView
 		public ViewPck View
 		{
 			get { return view; }
-		} 
+		}
 
-        private void viewClik(object sender, PckViewMouseClickArgs e)
+		private void viewClik(object sender, PckViewMouseClickArgs e)
 		{
 			if (ViewClicked != null)
 				ViewClicked(sender, e);
@@ -103,14 +104,14 @@ namespace PckView
 				scroll.Visible = false;
 		}
 
-        public ReadOnlyCollection<ViewPckItemImage> SelectedItems
+		public ReadOnlyCollection<ViewPckItemImage> SelectedItems
 		{
 			get { return view.SelectedItems; }
 		}
-        public void ChangeItem(int index, XCImage image)
-        {
-            view.ChangeItem(index, image);
-        }
+		public void ChangeItem(int index, XCImage image)
+		{
+			view.ChangeItem(index, image);
+		}
 
 		public XCImageCollection Collection
 		{
@@ -165,8 +166,8 @@ namespace PckView
 			view.Refresh();
 		}
 
-        private void viewClicked(object sender, PckViewMouseClickArgs e)
-        { 
+		private void viewClicked(object sender, PckViewMouseClickArgs e)
+		{
 			click = e.ClickedPck;
 			statusOverTile.Text = "Selected: " + click + " Over: " + move;
 		}
@@ -181,11 +182,11 @@ namespace PckView
 		{
 			view.Hq2x();
 		}
-         
-	    public void RemoveSelected()
-	    {
-            view.RemoveSelected(); 
-	    }
+		 
+		public void RemoveSelected()
+		{
+			view.RemoveSelected();
+		}
 	}
 
 	public class XCImageCollectionSetEventArgs

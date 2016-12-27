@@ -7,7 +7,7 @@ using XCom.Interfaces;
 using System.Reflection;
 using XCom.Interfaces.Base;
 
-namespace XCom 
+namespace XCom
 {
 	public delegate void ParseLineDelegate(KeyVal kv,VarCollection vars);
 
@@ -17,7 +17,7 @@ namespace XCom
 
 		private static ImageInfo imageInfo;
 		private static TilesetDesc tileInfo;
-///        private static IWarningHandler WarningHandler;
+//		private static IWarningHandler WarningHandler;
 
 		private static Dictionary<Palette,Dictionary<string,PckFile>> pckHash;
 
@@ -26,7 +26,7 @@ namespace XCom
 		public static void Init(Palette p, DSShared.PathInfo paths)
 		{
 			currentPalette = p;
-			pckHash = new Dictionary<Palette, Dictionary<string, PckFile>>();		
+			pckHash = new Dictionary<Palette, Dictionary<string, PckFile>>();
 
 			VarCollection vars = new VarCollection(new StreamReader(File.OpenRead(paths.ToString())));
 
@@ -38,13 +38,13 @@ namespace XCom
 			while((kv=vars.ReadLine())!=null)
 			{
 				switch (kv.Keyword)
-				{					
+				{
 		/* mapedit */case "mapdata":
 						tileInfo = new TilesetDesc(kv.Rest, vars);
-						break; 
-		/* mapedit */case "images": 
-						imageInfo = new ImageInfo(kv.Rest, vars); 
-						break; 
+						break;
+		/* mapedit */case "images":
+						imageInfo = new ImageInfo(kv.Rest, vars);
+						break;
 					default:
 						if (ParseLine != null)
 							ParseLine(kv, vars);
@@ -81,9 +81,9 @@ namespace XCom
 		public static PckFile GetPckFile(string imageSet)
 		{
 			return GetPckFile(imageSet,currentPalette);
-		}		 
+		}
 
-		public static PckFile CachePck(string basePath,string basename,int bpp, Palette p)		
+		public static PckFile CachePck(string basePath,string basename,int bpp, Palette p)
 		{
 			if (pckHash == null)
 				pckHash = new Dictionary<Palette, Dictionary<string, PckFile>>();
@@ -92,28 +92,28 @@ namespace XCom
 				pckHash.Add(p, new Dictionary<string, PckFile>());
 
 			//if(pckHash[p][basePath+basename]==null)
-		    var path = basePath + basename;
-		    var paleteHash = pckHash[p];
-            if (!paleteHash.ContainsKey(path))
-            {
-                using (var pckStream = File.OpenRead(path + ".PCK"))
-                using (var tabStream = File.OpenRead(path + ".TAB"))
-                {
-                    paleteHash.Add(path, new PckFile(pckStream, tabStream, bpp, p));
-                }
-            }
+			var path = basePath + basename;
+			var paleteHash = pckHash[p];
+			if (!paleteHash.ContainsKey(path))
+			{
+				using (var pckStream = File.OpenRead(path + ".PCK"))
+				using (var tabStream = File.OpenRead(path + ".TAB"))
+				{
+					paleteHash.Add(path, new PckFile(pckStream, tabStream, bpp, p));
+				}
+			}
 
-		    return pckHash[p][basePath+basename];
+			return pckHash[p][basePath+basename];
 		}
 
-        public static void ClearPckCache(string basePath, string basename)
-	    {
-            var path = basePath + basename;
-            foreach (var paleteHash in pckHash.Values)
-            {
-                if (!paleteHash.ContainsKey(path)) continue;
-                paleteHash.Remove(path);
-            }
-	    }
+		public static void ClearPckCache(string basePath, string basename)
+		{
+			var path = basePath + basename;
+			foreach (var paleteHash in pckHash.Values)
+			{
+				if (!paleteHash.ContainsKey(path)) continue;
+				paleteHash.Remove(path);
+			}
+		}
 	}
 }

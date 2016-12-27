@@ -9,9 +9,9 @@ namespace XCom
 	public static class Globals
 	{
 		public static int HalfWidth = 16;
-	    public static int HalfHeight = 8;
+		public static int HalfHeight = 8;
 
-	    public static string RegistryKey
+		public static string RegistryKey
 		{
 			get{return "ViewSuite";}
 		}

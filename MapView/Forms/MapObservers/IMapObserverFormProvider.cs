@@ -4,8 +4,8 @@ using System.Text;
 
 namespace MapView.Forms.MapObservers
 {
-    public interface IMapObserverFormProvider
-    {
-        MapObserverControl MapObserver { get; }
-    }
+	public interface IMapObserverFormProvider
+	{
+		MapObserverControl MapObserver { get; }
+	}
 }

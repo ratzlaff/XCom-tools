@@ -12,71 +12,97 @@ namespace XCom
 	public class PckImage:XCImage
 	{
 		private PckFile pckFile;
-		private int mapID;		
+		private int mapID;
 		private byte[] expanded;
-		private int moveIdx=-1;
-		private byte moveVal=0;
+		private int moveIdx = -1;
+		private byte moveVal = 0;
 
 		private int staticID;
-		private static int globalStaticID=0;
+		private static int globalStaticID = 0;
 
-		public static int Width=32;
-		public static int Height=40;
+		public static int Width = 32;
+		public static int Height = 40;
 
-		private static readonly byte TransIdx=0xFE;
+		private static readonly byte TransIdx = 0xFE;
 
-		internal PckImage(int imageNum,byte[] idx,Palette pal,PckFile pFile):this(imageNum,idx,pal,pFile,40,32){}
+		internal PckImage(
+				int imageNum,
+				byte[] idx,
+				Palette pal,
+				PckFile pFile)
+			:
+			this(
+				imageNum,
+				idx,
+				pal,
+				pFile,
+				40,
+				32){}
 
-		internal PckImage(int imageNum,byte[] idx,Palette pal,PckFile pFile,int height,int width)
+		internal PckImage(
+				int imageNum,
+				byte[] idx,
+				Palette pal,
+				PckFile pFile,
+				int height,
+				int width)
 		{
-			Palette=pal;
+			Palette = pal;
 			pckFile = pFile;
-			this.fileNum=imageNum;
-			//this.imageNum=imageNum;
-			//this.idx=idx;
-			staticID=globalStaticID++;
+			this.fileNum = imageNum;
+//			this.imageNum = imageNum;
+//			this.idx = idx;
+			staticID = globalStaticID++;
 
-			Height=height;
-			Width=width;
+			Height = height;
+			Width = width;
 
-			//image = new Bitmap(Width,Height,PixelFormat.Format8bppIndexed);
+//			image = new Bitmap(Width,Height,PixelFormat.Format8bppIndexed);
 			expanded = new byte[Width*Height];
 
-			for(int i=0;i<expanded.Length;i++)
+			for (int i = 0; i < expanded.Length; i++)
 				expanded[i] = TransparentIndex;
 
-			int ex=0;
-			int startIdx=0;
+			int ex = 0;
+			int startIdx = 0;
 
-			if(idx[0]!=254)
-				ex = idx[startIdx++]*Width;		
+			if (idx[0] != 254)
+				ex = idx[startIdx++] * Width;
 
-			for(int i=startIdx;i<idx.Length;i++)
+			for (int i = startIdx; i < idx.Length; i++)
 			{
-				switch(idx[i])
+				switch (idx[i])
 				{
-					case 254: //skip required pixels
-					{
-						if(moveIdx==-1)
+					case 254: // skip required pixels
+						if (moveIdx == -1)
 						{
-							moveIdx=i+1;
-							moveVal=idx[i+1];
+							moveIdx = i + 1;
+							moveVal = idx[i + 1];
 						}
-						ex+=idx[i+1];
+						ex += idx[i + 1];
 						i++;
-					}
 						break;
-					case 255: //end of image
+
+					case 255: // end of image
 						break;
+
 					default:
-						expanded[ex++]=idx[i];
+						expanded[ex++] = idx[i];
 						break;
-				}					
+				}
 			}
 			this.idx=expanded;
 		
-			image = Bmp.MakeBitmap8(Width,Height,expanded,pal.Colors);
-			gray = Bmp.MakeBitmap8(Width,Height,expanded,pal.Grayscale.Colors);
+			image = Bmp.MakeBitmap8(
+								Width,
+								Height,
+								expanded,
+								pal.Colors);
+			gray = Bmp.MakeBitmap8(
+								Width,
+								Height,
+								expanded,
+								pal.Grayscale.Colors);
 		}
 
 		public static int EncodePck(System.IO.BinaryWriter output, XCImage tile)
@@ -138,19 +164,19 @@ namespace XCom
 			if ((byte)bytes[bytes.Count - 1] != 255 || throughLoop)
 				bytes.Add(255);
 
-			//if (bytes.Count % 2 == 1 || throughLoop)
-			//    bytes.Add(255);
+//			if (bytes.Count % 2 == 1 || throughLoop)
+//				bytes.Add(255);
 
 			output.Write(bytes.ToArray());
 
 			return bytes.Count;
 		}
 
-		//public override void Hq2x()
-		//{
-		//    if(Width==32)//hasnt been done yet
-		//        base.Hq2x();
-		//}
+//		public override void Hq2x()
+//		{
+//			if(Width==32)//hasnt been done yet
+//				base.Hq2x();
+//		}
 
 		public int StaticID
 		{
@@ -164,53 +190,70 @@ namespace XCom
 
 		public void ReImage()
 		{
-			image = Bmp.MakeBitmap8(Width,Height,expanded,Palette.Colors);
-			gray = Bmp.MakeBitmap8(Width,Height,expanded,Palette.Grayscale.Colors);			
+			image = Bmp.MakeBitmap8(
+								Width,
+								Height,
+								expanded,
+								Palette.Colors);
+			gray = Bmp.MakeBitmap8(
+								Width,
+								Height,
+								expanded,
+								Palette.Grayscale.Colors);
 		}
 
 		public void MoveImage(byte offset)
 		{
-			idx[moveIdx]=(byte)(moveVal-offset);
-			int ex=0;
-			int startIdx=0;
-			for(int i=0;i<expanded.Length;i++)
+			idx[moveIdx] = (byte)(moveVal - offset);
+			int ex = 0;
+			int startIdx = 0;
+			for (int i = 0; i < expanded.Length; i++)
 				expanded[i] = TransparentIndex;
 
-			if(idx[0]!=254)
-				ex = idx[startIdx++]*Width;	
+			if (idx[0] != 254)
+				ex = idx[startIdx++] * Width;
 
-			for(int i=startIdx;i<idx.Length;i++)
+			for (int i = startIdx; i < idx.Length; i++)
 			{
 				switch(idx[i])
 				{
-					case 254: //skip required pixels
-					{
-						ex+=idx[i+1];
+					case 254: // skip required pixels
+						ex += idx[i + 1];
 						i++;
-					}
 						break;
-					case 255: //end of image
+
+					case 255: // end of image
 						break;
+
 					default:
-						expanded[ex++]=idx[i];
+						expanded[ex++] = idx[i];
 						break;
-				}					
+				}
 			}
 		
-			image = Bmp.MakeBitmap8(Width,Height,expanded,Palette.Colors);
-			gray = Bmp.MakeBitmap8(Width,Height,expanded,Palette.Grayscale.Colors);
+			image = Bmp.MakeBitmap8(
+								Width,
+								Height,
+								expanded,
+								Palette.Colors);
+			gray = Bmp.MakeBitmap8(
+								Width,
+								Height,
+								expanded,
+								Palette.Grayscale.Colors);
 		}
 
 		public int MapID
 		{
-			get{return mapID;}
-			set{mapID=value;}
+			get { return mapID; }
+			set { mapID=value; }
 		}
 
 		public override bool Equals(object other)
 		{
-			if(other is PckImage)
-				return ToString().Equals(other.ToString());			
+			if (other is PckImage)
+				return ToString().Equals(other.ToString());
+
 			return false;
 		}
 
@@ -223,17 +266,18 @@ namespace XCom
 		{
 			string ret="";
 
-			if(pckFile!=null)
-				ret+=pckFile.ToString();
-			ret+=fileNum+"\n";
+			if (pckFile!=null)
+				ret += pckFile.ToString();
 
-			for(int i=0;i<expanded.Length;i++)
+			ret += fileNum + "\n";
+
+			for(int i = 0; i < expanded.Length; i++)
 			{
-				ret+=expanded[i];
-				if(expanded[i]==255)
-					ret+="\n";
+				ret += expanded[i];
+				if (expanded[i] == 255)
+					ret += "\n";
 				else
-					ret+=" ";
+					ret += " ";
 			}
 			return ret;
 		}

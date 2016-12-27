@@ -45,13 +45,13 @@ namespace DSShared.Loadable
 		// <returns></returns>
 		//public List<T> FilterBy(IFilter<T> filterObj)
 		//{
-		//    List<T> filterList = new List<T>();
+		//	List<T> filterList = new List<T>();
 
-		//    foreach (T obj in filterList)
-		//        if (filterObj.FilterObj(obj))
-		//            filterList.Add(obj);
+		//	foreach (T obj in filterList)
+		//		if (filterObj.FilterObj(obj))
+		//			filterList.Add(obj);
 
-		//    return filterList;
+		//	return filterList;
 		//}
 
 		/// <summary>
@@ -68,13 +68,13 @@ namespace DSShared.Loadable
 		// </summary>
 		//public string OpenFileFilter
 		//{
-		//    get 
-		//    {
-		//        if (openFileFilter == "")
-		//            CreateFilter();
+		//	get
+		//	{
+		//		if (openFileFilter == "")
+		//			CreateFilter();
 
-		//        return openFileFilter; 
-		//    }
+		//		return openFileFilter;
+		//	}
 		//}
 
 		// <summary>
@@ -84,12 +84,12 @@ namespace DSShared.Loadable
 		// <returns></returns>
 		//public T GetFromFilter(int index)
 		//{
-		//    return filterDictionary[index];
+		//	return filterDictionary[index];
 		//}
 
 		//public string CreateFilter()
 		//{
-		//    return "";
+		//	return "";
 		//}
 
 		/// <summary>
@@ -98,26 +98,26 @@ namespace DSShared.Loadable
 		/// <returns></returns>
 		//public string CreateFilter()
 		//{
-		//    openFileFilter = "";
-		//    bool two = true;
-		//    int filterIdx = 1; //filter index starts at 1
+		//	openFileFilter = "";
+		//	bool two = true;
+		//	int filterIdx = 1; //filter index starts at 1
 
-		//    foreach (T fc in allLoaded)
-		//    {
-		//        if (fc.FilterIndex != -1)
-		//        {
-		//            if (!two)
-		//                openFileFilter += "|";
-		//            else
-		//                two = false;
+		//	foreach (T fc in allLoaded)
+		//	{
+		//		if (fc.FilterIndex != -1)
+		//		{
+		//			if (!two)
+		//				openFileFilter += "|";
+		//			else
+		//				two = false;
 
-		//            openFileFilter += fc.FileFilter;
-		//            fc.FilterIndex = filterIdx++;
-		//            filterDictionary[fc.FilterIndex] = fc;
-		//        }
-		//    }
+		//			openFileFilter += fc.FileFilter;
+		//			fc.FilterIndex = filterIdx++;
+		//			filterDictionary[fc.FilterIndex] = fc;
+		//		}
+		//	}
 
-		//    return openFileFilter;
+		//	return openFileFilter;
 		//}
 
 		public string CreateFilter(IFilter<T> filter, Dictionary<int, T> filterDictionary)
@@ -147,23 +147,23 @@ namespace DSShared.Loadable
 
 		//public string CreateFilter(IFilter<T> filter)
 		//{
-		//    string fileFilter = "";
-		//    bool two = false;
-		//    int filterIdx = 1; //filter index starts at 1
+		//	string fileFilter = "";
+		//	bool two = false;
+		//	int filterIdx = 1; //filter index starts at 1
 
-		//    List<T> filterList = allLoaded;
+		//	List<T> filterList = allLoaded;
 
-		//    if (filter != null)
-		//    {
-		//        filterList = new List<T>();
-		//        foreach(T obj in allLoaded)
-		//            if(filter.FilterObj(obj))
-		//    }
+		//	if (filter != null)
+		//	{
+		//		filterList = new List<T>();
+		//		foreach(T obj in allLoaded)
+		//			if(filter.FilterObj(obj))
+		//	}
 
-		//    foreach (T fc in filterList)
-		//    {
-		//    }
-		//    return fileFilter;
+		//	foreach (T fc in filterList)
+		//	{
+		//	}
+		//	return fileFilter;
 		//}
 
 		/// <summary>

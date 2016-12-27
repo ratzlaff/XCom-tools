@@ -18,7 +18,7 @@ namespace XCom.Interfaces
 		protected xcFileOptions fileOptions=new xcFileOptions();
 		protected string ext = ".bad";
 		protected string expDesc = "Bad Description";
-		//private int fIdx=0;
+//		private int fIdx=0;
 		protected string author = "Author", desc = "Description";
 		protected string singleFile = null;
 
@@ -32,6 +32,7 @@ namespace XCom.Interfaces
 			{
 				if (singleFile != null)
 					return singleFile + " - " + expDesc + "|" + singleFile;
+
 				return "*" + ext + " - " + expDesc + "|*" + ext;
 			}
 		}
@@ -42,8 +43,12 @@ namespace XCom.Interfaces
 		/// <returns></returns>
 		public virtual bool RegisterFile()
 		{
-			//Console.WriteLine("{0} registered: {1}", this.GetType(), GetType() != typeof(IXCFile));
-			xConsole.AddLine(string.Format("{0} registered: {1}", this.GetType(), GetType() != typeof(IXCImageFile)));
+//			Console.WriteLine("{0} registered: {1}", this.GetType(), GetType() != typeof(IXCFile));
+			xConsole.AddLine(string.Format(
+										"{0} registered: {1}",
+										this.GetType(),
+										GetType() != typeof(IXCImageFile)));
+
 			return GetType() != typeof(IXCImageFile);
 		}
 
@@ -58,7 +63,7 @@ namespace XCom.Interfaces
 		/// </summary>
 		public virtual string FileExtension { get { return ext; } }
 
-        public void Unload() { }
+		public void Unload() { }
 
 		/// <summary>
 		/// It is not recommended to instantiate objects of this type directly.
@@ -158,7 +163,7 @@ namespace XCom.Interfaces
 		}
 
 		/// <summary>
-		/// Saves a collection 
+		/// Saves a collection
 		/// </summary>
 		/// <param name="directory">Directory to save to</param>
 		/// <param name="file">Filename</param>

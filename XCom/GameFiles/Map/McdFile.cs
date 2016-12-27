@@ -7,11 +7,9 @@ using XCom.GameFiles.Map;
 
 namespace XCom
 {
-    public class McdFile : ReadOnlyCollection<XCTile>
+	public class McdFile : ReadOnlyCollection<XCTile>
 	{
-        internal McdFile(XCTile[] tiles)
-            : base(tiles)
-        {
-        }
+		internal McdFile(XCTile[] tiles) : base(tiles)
+		{}
 	}
 }

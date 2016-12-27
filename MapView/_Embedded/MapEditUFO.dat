@@ -13,18 +13,18 @@ Tileset:UFO - Terrain
 	
 	files:Jungle
 		${dep}:JUNGLE
-		JUNGLE00:${dep} 
-		JUNGLE01:${dep} 
-		JUNGLE02:${dep} 
-		JUNGLE03:${dep} 
-		JUNGLE04:${dep} 
-		JUNGLE05:${dep} 
-		JUNGLE06:${dep} 
-		JUNGLE07:${dep} 
-		JUNGLE08:${dep} 
-		JUNGLE09:${dep} 
-		JUNGLE10:${dep} 
-		JUNGLE11:${dep} 
+		JUNGLE00:${dep}
+		JUNGLE01:${dep}
+		JUNGLE02:${dep}
+		JUNGLE03:${dep}
+		JUNGLE04:${dep}
+		JUNGLE05:${dep}
+		JUNGLE06:${dep}
+		JUNGLE07:${dep}
+		JUNGLE08:${dep}
+		JUNGLE09:${dep}
+		JUNGLE10:${dep}
+		JUNGLE11:${dep}
 	end
 	
 	files:Farm
@@ -67,7 +67,7 @@ Tileset:UFO - Terrain
 	end
 	
 	files:XCom Base
-		${dep}:XBASE1 XBASE2 
+		${dep}:XBASE1 XBASE2
 		XBASE_00:${dep}
 		XBASE_01:${dep}
 		XBASE_02:${dep}
@@ -108,11 +108,11 @@ Tileset:UFO - Terrain
 		UBASE_12:${dep}
 		UBASE_13:${dep}
 		UBASE_14:${dep}
-		UBASE_15:${dep}		
+		UBASE_15:${dep}
 	end
 	
-	files:City Terror Site	
-		${dep}:ROADS urbits URBAN FRNITURE 
+	files:City Terror Site
+		${dep}:ROADS urbits URBAN FRNITURE
 		URBAN00:${dep}
 		URBAN01:${dep}
 		URBAN02:${dep}
@@ -158,9 +158,9 @@ Tileset:UFO - Terrain
 		MOUNT07:${dep}
 		MOUNT08:${dep}
 		MOUNT09:${dep}
-		MOUNT10:${dep} 
+		MOUNT10:${dep}
 		MOUNT11:${dep}
-		MOUNT12:${dep} 
+		MOUNT12:${dep}
 	end
 	
 	files:Arctic
@@ -181,8 +181,8 @@ Tileset:UFO - Terrain
 		POLAR13:${dep}
 	end
 	
-	files:Cydonia	
-		${dep}:MARS U_WALL02 
+	files:Cydonia
+		${dep}:MARS U_WALL02
 		MARS00:${dep}
 		MARS01:${dep}
 		MARS02:${dep}
@@ -203,20 +203,20 @@ Tileset:UFO - Ships
 	blankPath:${blankUFO}
 	palette:ufo
 	files:XCom
-		PLANE:plane 
-		LIGHTNIN:LIGHTNIN 
-		AVENGER:AVENGER 
+		PLANE:plane
+		LIGHTNIN:LIGHTNIN
+		AVENGER:AVENGER
 	end
 	files:Alien
-		UFO_000:U_EXT02 U_WALL02 U_DISEC2 U_BITS 
-		UFO_01a:U_EXT02 U_WALL02 U_DISEC2 U_BITS 
-		UFO_010:U_EXT02 U_WALL02 U_DISEC2 U_BITS 
-		UFO_110:U_EXT02 U_WALL02 U_BITS 
-		UFO_120:U_EXT02 U_WALL02 U_BITS 
-		UFO_130:U_EXT02 U_WALL02 U_DISEC2 U_BITS 
-		UFO_140:U_EXT02 U_WALL02 U_OPER2 U_BITS 
-		UFO_150:U_EXT02 U_WALL02 U_PODS U_BITS 
-		UFO_160:U_EXT02 U_WALL02 U_PODS U_BITS 
-		UFO_170:U_EXT02 U_WALL02 U_DISEC2 U_BITS 
-	end     
-end  
+		UFO_000:U_EXT02 U_WALL02 U_DISEC2 U_BITS
+		UFO_01a:U_EXT02 U_WALL02 U_DISEC2 U_BITS
+		UFO_010:U_EXT02 U_WALL02 U_DISEC2 U_BITS
+		UFO_110:U_EXT02 U_WALL02 U_BITS
+		UFO_120:U_EXT02 U_WALL02 U_BITS
+		UFO_130:U_EXT02 U_WALL02 U_DISEC2 U_BITS
+		UFO_140:U_EXT02 U_WALL02 U_OPER2 U_BITS
+		UFO_150:U_EXT02 U_WALL02 U_PODS U_BITS
+		UFO_160:U_EXT02 U_WALL02 U_PODS U_BITS
+		UFO_170:U_EXT02 U_WALL02 U_DISEC2 U_BITS
+	end
+end

@@ -20,8 +20,8 @@ namespace PckView
 
 		//public override int FilterIndex
 		//{
-		//    get { return base.FilterIndex; }
-		//    set { base.FilterIndex = value; FIDX = value; }
+		//	get { return base.FilterIndex; }
+		//	set { base.FilterIndex = value; FIDX = value; }
 		//}
 
 		protected override XCom.XCImageCollection LoadFileOverride(string directory,string file,int imgWid,int imgHei,XCom.Palette pal)

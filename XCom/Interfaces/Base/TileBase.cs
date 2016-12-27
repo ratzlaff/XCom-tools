@@ -8,21 +8,21 @@ namespace XCom.Interfaces.Base
 	public class TileBase
 	{
 		protected XCImage[] image;
-	    protected IInfo info;
+		protected IInfo info;
 
 		public TileBase(int id) { this.Id = id; MapId = -1; info = null; }
 
-	    /// <summary>
-	    /// This is the ID unique to this TileBase after it has been loaded
-	    /// </summary>
-	    public int Id { get; protected set; }
+		/// <summary>
+		/// This is the ID unique to this TileBase after it has been loaded
+		/// </summary>
+		public int Id { get; protected set; }
 
-	    /// <summary>
-	    /// This is the ID by which the map knows this tile by
-	    /// </summary>
-	    public int MapId { get; set; }
+		/// <summary>
+		/// This is the ID by which the map knows this tile by
+		/// </summary>
+		public int MapId { get; set; }
 
-	    /// <summary>
+		/// <summary>
 		/// Gets an image at the specified animation frame
 		/// </summary>
 		/// <param name="i"></param>

@@ -8,13 +8,13 @@ using System.Windows.Forms;
 
 namespace MapView.Forms.MapObservers.RmpViews
 {
-    public partial class RmpViewForm : Form, IMapObserverFormProvider
-    {
-        public RmpViewForm()
-        {
-            InitializeComponent();
-        }
+	public partial class RmpViewForm : Form, IMapObserverFormProvider
+	{
+		public RmpViewForm()
+		{
+			InitializeComponent();
+		}
 
-        public MapObserverControl MapObserver { get { return RouteViewControl; } }
-    }
+		public MapObserverControl MapObserver { get { return RouteViewControl; } }
+	}
 }

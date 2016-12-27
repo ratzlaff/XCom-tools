@@ -66,18 +66,18 @@ namespace PckView
 			this.panelWidth.SuspendLayout();
 			this.panel1.SuspendLayout();
 			this.SuspendLayout();
-			// 
+			//
 			// drawPanel
-			// 
+			//
 			this.drawPanel.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.drawPanel.Location = new System.Drawing.Point(0, 76);
 			this.drawPanel.Name = "drawPanel";
 			this.drawPanel.Size = new System.Drawing.Size(542, 337);
 			this.drawPanel.TabIndex = 6;
 			this.drawPanel.Paint += new System.Windows.Forms.PaintEventHandler(this.drawPanel_Paint);
-			// 
+			//
 			// panel3
-			// 
+			//
 			this.panel3.Controls.Add(this.panel2);
 			this.panel3.Controls.Add(this.panel1);
 			this.panel3.Dock = System.Windows.Forms.DockStyle.Top;
@@ -85,9 +85,9 @@ namespace PckView
 			this.panel3.Name = "panel3";
 			this.panel3.Size = new System.Drawing.Size(542, 76);
 			this.panel3.TabIndex = 0;
-			// 
+			//
 			// panel2
-			// 
+			//
 			this.panel2.Controls.Add(this.panel4);
 			this.panel2.Controls.Add(this.panelHeight);
 			this.panel2.Controls.Add(this.panelWidth);
@@ -96,9 +96,9 @@ namespace PckView
 			this.panel2.Name = "panel2";
 			this.panel2.Size = new System.Drawing.Size(390, 76);
 			this.panel2.TabIndex = 6;
-			// 
+			//
 			// panel4
-			// 
+			//
 			this.panel4.Controls.Add(this.scrollSpace);
 			this.panel4.Controls.Add(this.txtSpace);
 			this.panel4.Controls.Add(this.label3);
@@ -107,9 +107,9 @@ namespace PckView
 			this.panel4.Name = "panel4";
 			this.panel4.Size = new System.Drawing.Size(390, 24);
 			this.panel4.TabIndex = 4;
-			// 
+			//
 			// scrollSpace
-			// 
+			//
 			this.scrollSpace.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.scrollSpace.LargeChange = 2;
 			this.scrollSpace.Location = new System.Drawing.Point(48, 0);
@@ -120,27 +120,27 @@ namespace PckView
 			this.scrollSpace.TabIndex = 2;
 			this.scrollSpace.Value = 1;
 			this.scrollSpace.Scroll += new System.Windows.Forms.ScrollEventHandler(this.scrollSpace_Scroll);
-			// 
+			//
 			// txtSpace
-			// 
+			//
 			this.txtSpace.Dock = System.Windows.Forms.DockStyle.Right;
 			this.txtSpace.Location = new System.Drawing.Point(342, 0);
 			this.txtSpace.Name = "txtSpace";
 			this.txtSpace.Size = new System.Drawing.Size(48, 20);
 			this.txtSpace.TabIndex = 1;
 			this.txtSpace.TextChanged += new System.EventHandler(this.txtSpace_TextChanged);
-			// 
+			//
 			// label3
-			// 
+			//
 			this.label3.Dock = System.Windows.Forms.DockStyle.Left;
 			this.label3.Location = new System.Drawing.Point(0, 0);
 			this.label3.Name = "label3";
 			this.label3.Size = new System.Drawing.Size(48, 24);
 			this.label3.TabIndex = 0;
 			this.label3.Text = "Space";
-			// 
+			//
 			// panelHeight
-			// 
+			//
 			this.panelHeight.Controls.Add(this.scrollHeight);
 			this.panelHeight.Controls.Add(this.label2);
 			this.panelHeight.Controls.Add(this.txtHeight);
@@ -149,9 +149,9 @@ namespace PckView
 			this.panelHeight.Name = "panelHeight";
 			this.panelHeight.Size = new System.Drawing.Size(390, 24);
 			this.panelHeight.TabIndex = 3;
-			// 
+			//
 			// scrollHeight
-			// 
+			//
 			this.scrollHeight.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.scrollHeight.Location = new System.Drawing.Point(48, 0);
 			this.scrollHeight.Maximum = 500;
@@ -162,27 +162,27 @@ namespace PckView
 			this.scrollHeight.TabIndex = 3;
 			this.scrollHeight.Value = 1;
 			this.scrollHeight.Scroll += new System.Windows.Forms.ScrollEventHandler(this.scrollHeight_Scroll);
-			// 
+			//
 			// label2
-			// 
+			//
 			this.label2.Dock = System.Windows.Forms.DockStyle.Left;
 			this.label2.Location = new System.Drawing.Point(0, 0);
 			this.label2.Name = "label2";
 			this.label2.Size = new System.Drawing.Size(48, 24);
 			this.label2.TabIndex = 1;
 			this.label2.Text = "Height";
-			// 
+			//
 			// txtHeight
-			// 
+			//
 			this.txtHeight.Dock = System.Windows.Forms.DockStyle.Right;
 			this.txtHeight.Location = new System.Drawing.Point(342, 0);
 			this.txtHeight.Name = "txtHeight";
 			this.txtHeight.Size = new System.Drawing.Size(48, 20);
 			this.txtHeight.TabIndex = 4;
 			this.txtHeight.TextChanged += new System.EventHandler(this.txtHeight_TextChanged);
-			// 
+			//
 			// panelWidth
-			// 
+			//
 			this.panelWidth.Controls.Add(this.scrollWidth);
 			this.panelWidth.Controls.Add(this.label1);
 			this.panelWidth.Controls.Add(this.txtWidth);
@@ -191,9 +191,9 @@ namespace PckView
 			this.panelWidth.Name = "panelWidth";
 			this.panelWidth.Size = new System.Drawing.Size(390, 24);
 			this.panelWidth.TabIndex = 2;
-			// 
+			//
 			// scrollWidth
-			// 
+			//
 			this.scrollWidth.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.scrollWidth.Location = new System.Drawing.Point(48, 0);
 			this.scrollWidth.Maximum = 500;
@@ -204,27 +204,27 @@ namespace PckView
 			this.scrollWidth.TabIndex = 2;
 			this.scrollWidth.Value = 1;
 			this.scrollWidth.Scroll += new System.Windows.Forms.ScrollEventHandler(this.scrollWidth_Scroll);
-			// 
+			//
 			// label1
-			// 
+			//
 			this.label1.Dock = System.Windows.Forms.DockStyle.Left;
 			this.label1.Location = new System.Drawing.Point(0, 0);
 			this.label1.Name = "label1";
 			this.label1.Size = new System.Drawing.Size(48, 24);
 			this.label1.TabIndex = 0;
 			this.label1.Text = "Width";
-			// 
+			//
 			// txtWidth
-			// 
+			//
 			this.txtWidth.Dock = System.Windows.Forms.DockStyle.Right;
 			this.txtWidth.Location = new System.Drawing.Point(342, 0);
 			this.txtWidth.Name = "txtWidth";
 			this.txtWidth.Size = new System.Drawing.Size(48, 20);
 			this.txtWidth.TabIndex = 4;
 			this.txtWidth.TextChanged += new System.EventHandler(this.txtWidth_TextChanged);
-			// 
+			//
 			// panel1
-			// 
+			//
 			this.panel1.Controls.Add(this.btnOk);
 			this.panel1.Controls.Add(this.cbTypes);
 			this.panel1.Dock = System.Windows.Forms.DockStyle.Left;
@@ -232,64 +232,62 @@ namespace PckView
 			this.panel1.Name = "panel1";
 			this.panel1.Size = new System.Drawing.Size(152, 76);
 			this.panel1.TabIndex = 7;
-			// 
+			//
 			// btnOk
-			// 
+			//
 			this.btnOk.Location = new System.Drawing.Point(39, 24);
 			this.btnOk.Name = "btnOk";
 			this.btnOk.Size = new System.Drawing.Size(75, 23);
 			this.btnOk.TabIndex = 5;
 			this.btnOk.Text = "Ok";
 			this.btnOk.Click += new System.EventHandler(this.btnOk_Click);
-			// 
+			//
 			// cbTypes
-			// 
+			//
 			this.cbTypes.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.cbTypes.Location = new System.Drawing.Point(0, 0);
 			this.cbTypes.Name = "cbTypes";
 			this.cbTypes.Size = new System.Drawing.Size(144, 21);
 			this.cbTypes.TabIndex = 4;
 			this.cbTypes.SelectedIndexChanged += new System.EventHandler(this.cbTypes_SelectedIndexChanged);
-			// 
+			//
 			// mainMenu1
-			// 
-			this.mainMenu1.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
-            this.menuItem1,
-            this.menuItem2});
-			// 
+			//
+			this.mainMenu1.MenuItems.AddRange(new System.Windows.Forms.MenuItem[]{
+																			this.menuItem1,
+																			this.menuItem2 });
+			//
 			// menuItem1
-			// 
+			//
 			this.menuItem1.Index = 0;
-			this.menuItem1.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
-            this.miClose});
+			this.menuItem1.MenuItems.AddRange(new System.Windows.Forms.MenuItem[]{ this.miClose });
 			this.menuItem1.Text = "File";
-			// 
+			//
 			// miClose
-			// 
+			//
 			this.miClose.Index = 0;
 			this.miClose.Text = "Close";
 			this.miClose.Click += new System.EventHandler(this.miClose_Click);
-			// 
+			//
 			// menuItem2
-			// 
+			//
 			this.menuItem2.Index = 1;
-			this.menuItem2.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
-            this.miLineColor});
+			this.menuItem2.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] { this.miLineColor });
 			this.menuItem2.Text = "Edit";
-			// 
+			//
 			// miLineColor
-			// 
+			//
 			this.miLineColor.Index = 0;
 			this.miLineColor.Text = "Line Color";
 			this.miLineColor.Click += new System.EventHandler(this.miLineColor_Click);
-			// 
+			//
 			// openFile
-			// 
+			//
 			this.openFile.Filter = "BMP Files|*.bmp";
 			this.openFile.Multiselect = true;
-			// 
+			//
 			// BmpForm
-			// 
+			//
 			this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
 			this.ClientSize = new System.Drawing.Size(542, 413);
 			this.Controls.Add(this.drawPanel);

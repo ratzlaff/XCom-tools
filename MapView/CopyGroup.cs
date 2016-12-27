@@ -1,4 +1,5 @@
-/*using System;
+/*
+using System;
 using System.Drawing;
 using System.Collections;
 using System.ComponentModel;
@@ -56,35 +57,35 @@ namespace MapView
 			Hashtable h = groupCheckHash[4] as Hashtable;
 			h["group"]=level4Group;
 			h[XCMapTile.MapQuadrant.Ground] = checkBox1;
-            h[XCMapTile.MapQuadrant.West] = checkBox2;
-            h[XCMapTile.MapQuadrant.Content] = checkBox3;
-            h[XCMapTile.MapQuadrant.North] = checkBox4;
+			h[XCMapTile.MapQuadrant.West] = checkBox2;
+			h[XCMapTile.MapQuadrant.Content] = checkBox3;
+			h[XCMapTile.MapQuadrant.North] = checkBox4;
 
 			h = groupCheckHash[3] as Hashtable;
 			h["group"]=level3Group;
-            h[XCMapTile.MapQuadrant.Ground] = checkBox5;
-            h[XCMapTile.MapQuadrant.Content] = checkBox6;
-            h[XCMapTile.MapQuadrant.West] = checkBox7;
-            h[XCMapTile.MapQuadrant.North] = checkBox8;
+			h[XCMapTile.MapQuadrant.Ground] = checkBox5;
+			h[XCMapTile.MapQuadrant.Content] = checkBox6;
+			h[XCMapTile.MapQuadrant.West] = checkBox7;
+			h[XCMapTile.MapQuadrant.North] = checkBox8;
 
 			h = groupCheckHash[2] as Hashtable;
 			h["group"]=level2Group;
-            h[XCMapTile.MapQuadrant.Ground] = checkBox9;
-            h[XCMapTile.MapQuadrant.Content] = checkBox10;
-            h[XCMapTile.MapQuadrant.West] = checkBox11;
-            h[XCMapTile.MapQuadrant.North] = checkBox12;
+			h[XCMapTile.MapQuadrant.Ground] = checkBox9;
+			h[XCMapTile.MapQuadrant.Content] = checkBox10;
+			h[XCMapTile.MapQuadrant.West] = checkBox11;
+			h[XCMapTile.MapQuadrant.North] = checkBox12;
 
 			h = groupCheckHash[1] as Hashtable;
 			h["group"]=level1Group;
-            h[XCMapTile.MapQuadrant.Ground] = checkBox13;
-            h[XCMapTile.MapQuadrant.Content] = checkBox14;
-            h[XCMapTile.MapQuadrant.West] = checkBox15;
-            h[XCMapTile.MapQuadrant.North] = checkBox16;
+			h[XCMapTile.MapQuadrant.Ground] = checkBox13;
+			h[XCMapTile.MapQuadrant.Content] = checkBox14;
+			h[XCMapTile.MapQuadrant.West] = checkBox15;
+			h[XCMapTile.MapQuadrant.North] = checkBox16;
 
 			foreach(int key in groupCheckHash.Keys)
 			{
 				foreach(object o in (groupCheckHash[key]as Hashtable).Keys)
-                    if (o is XCMapTile.MapQuadrant)
+					if (o is XCMapTile.MapQuadrant)
 						((groupCheckHash[key]as Hashtable)[o] as CheckBox).Checked=true;
 
 			}
@@ -374,12 +375,12 @@ namespace MapView
 			// 
 			this.ClientSize = new System.Drawing.Size(224, 229);
 			this.Controls.AddRange(new System.Windows.Forms.Control[] {
-																		  this.level1Group,
-																		  this.level2Group,
-																		  this.level4Group,
-																		  this.btnPaste,
-																		  this.btnCopy,
-																		  this.level3Group});
+																	this.level1Group,
+																	this.level2Group,
+																	this.level4Group,
+																	this.btnPaste,
+																	this.btnCopy,
+																	this.level3Group });
 			this.Name = "CopyForm";
 			this.Text = "CopyForm";
 			this.level4Group.ResumeLayout(false);

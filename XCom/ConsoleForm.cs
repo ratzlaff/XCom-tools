@@ -10,7 +10,7 @@ using XCom.Interfaces.Base;
 
 namespace XCom
 {
-    public partial class ConsoleForm : Form 
+	public partial class ConsoleForm : Form
 	{
 		public ConsoleForm()
 		{
@@ -24,8 +24,8 @@ namespace XCom
 			SetStyle(ControlStyles.OptimizedDoubleBuffer | ControlStyles.AllPaintingInWmPaint, true);
 		}
 
-        private void xConsole_BufferChanged(Node current)
-		{			
+		private void xConsole_BufferChanged(Node current)
+		{
 			
 			string buffer = current.str+"\n";
 			Node curr = current.next;
@@ -43,6 +43,6 @@ namespace XCom
 		private void miClose_Click(object sender, EventArgs e)
 		{
 			Close();
-		} 
+		}
 	}
 }

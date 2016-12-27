@@ -15,7 +15,7 @@ namespace MapView
 #else
 			TestRun();
 #endif
-		} 
+		}
 
 		private static void ReleaseRun()
 		{

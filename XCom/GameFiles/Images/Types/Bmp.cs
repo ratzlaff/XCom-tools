@@ -62,10 +62,10 @@ namespace XCom
 			{
 				//for (int i = 0; i < bArr.Length; i += 4)
 				//{
-				//    bArr[i] = entries[i / 4].B;
-				//    bArr[i + 1] = entries[i / 4].G;
-				//    bArr[i + 2] = entries[i / 4].R;
-				//    bArr[i + 3] = 0;
+				//	bArr[i] = entries[i / 4].B;
+				//	bArr[i + 1] = entries[i / 4].G;
+				//	bArr[i + 2] = entries[i / 4].R;
+				//	bArr[i + 3] = 0;
 
 				bw.Write(entries[i].B);
 				bw.Write(entries[i].G);
@@ -74,8 +74,8 @@ namespace XCom
 
 				//bw.Write((byte)image.Palette.Entries[i].B);
 				//bw.Write((byte)image.Palette.Entries[i].G);
-				//bw.Write((byte)image.Palette.Entries[i].R);		
-				//bw.Write((byte)0);		
+				//bw.Write((byte)image.Palette.Entries[i].R);
+				//bw.Write((byte)0);
 			}
 			//bw.Write(bArr);
 			Console.WriteLine("Table");
@@ -93,7 +93,7 @@ namespace XCom
 			for(int i=image.Height-1;i>=0;i--)
 			{
 				for(int j=0;j<image.Width;j++)
-					bw.Write(table[image.GetPixel(j,i)]);	
+					bw.Write(table[image.GetPixel(j,i)]);
 				for(int j=0;j<more;j++)
 					bw.Write((byte)0x00);
 			}
@@ -175,17 +175,17 @@ namespace XCom
 			// palette index here.
 			IntPtr pixels = bitmapData.Scan0;
 
-			unsafe 
-			{ 
+			unsafe
+			{
 				// Get the pointer to the image bits.
 				// This is the unsafe operation.
 				byte *  pBits;
 				if (bitmapData.Stride > 0)
 					pBits = (byte *)pixels.ToPointer();
 				else
-					// If the Stide is negative, Scan0 points to the last 
+					// If the Stide is negative, Scan0 points to the last
 					// scanline in the buffer. To normalize the loop, obtain
-					// a pointer to the front of the buffer that is located 
+					// a pointer to the front of the buffer that is located
 					// (Height-1) scanlines previous.
 					pBits = (byte *)pixels.ToPointer() + bitmapData.Stride*(height-1);
 				uint stride = (uint)Math.Abs(bitmapData.Stride);
@@ -219,17 +219,17 @@ namespace XCom
 			// palette index here.
 			IntPtr pixels = bitmapData.Scan0;
 
-			unsafe 
-			{ 
+			unsafe
+			{
 				// Get the pointer to the image bits.
 				// This is the unsafe operation.
 				byte *  pBits;
 				if (bitmapData.Stride > 0)
 					pBits = (byte *)pixels.ToPointer();
 				else
-					// If the Stide is negative, Scan0 points to the last 
+					// If the Stide is negative, Scan0 points to the last
 					// scanline in the buffer. To normalize the loop, obtain
-					// a pointer to the front of the buffer that is located 
+					// a pointer to the front of the buffer that is located
 					// (Height-1) scanlines previous.
 					pBits = (byte *)pixels.ToPointer() + bitmapData.Stride*(height-1);
 				uint stride = (uint)Math.Abs(bitmapData.Stride);
@@ -261,8 +261,8 @@ namespace XCom
 			IntPtr srcPixels = srcData.Scan0;
 			IntPtr destPixels = destData.Scan0;
 
-			unsafe 
-			{ 
+			unsafe
+			{
 				byte * sBits;
 				if (srcData.Stride > 0)
 					sBits = (byte *)srcPixels.ToPointer();
@@ -300,8 +300,8 @@ namespace XCom
 			IntPtr srcPixels = srcData.Scan0;
 
 			int minR,minC,maxR,maxC;
-			unsafe 
-			{ 
+			unsafe
+			{
 				byte * sBits;
 				if (srcData.Stride > 0)
 					sBits = (byte *)srcPixels.ToPointer();
@@ -373,8 +373,8 @@ namespace XCom
 			IntPtr srcPixels = srcData.Scan0;
 			IntPtr destPixels = destData.Scan0;
 
-			unsafe 
-			{ 
+			unsafe
+			{
 				byte * sBits;
 				if (srcData.Stride > 0)
 					sBits = (byte *)srcPixels.ToPointer();
@@ -409,7 +409,7 @@ namespace XCom
 		{
 			if(LoadingEvent!=null)
 				LoadingEvent(curr,total);
-		}		
+		}
 
 		public static unsafe Bitmap Hq2x(Bitmap image)
 		{
@@ -424,7 +424,7 @@ namespace XCom
 					*(in24.m_pBitmap+((row)*in24.m_Xres*3)+((col)*3))=c.B;
 					*(in24.m_pBitmap+((row)*in24.m_Xres*3)+((col)*3+1))=c.G;
 					*(in24.m_pBitmap+((row)*in24.m_Xres*3)+((col)*3+2))=c.R;
-				}					
+				}
 
 			in24.ConvertTo16();
 			
@@ -534,8 +534,8 @@ namespace XCom
 
 			IntPtr srcPixels = srcData.Scan0;
 
-			unsafe 
-			{ 
+			unsafe
+			{
 				byte * sBits;
 				if (srcData.Stride > 0)
 					sBits = (byte *)srcPixels.ToPointer();
@@ -566,7 +566,7 @@ namespace XCom
 		}
 
 		public static XCImage LoadSingle(Bitmap src,int num,Palette pal,Type collectionType)
-		{			
+		{
 //			return PckFile.FromBmpSingle(src,num,pal);
 
 			MethodInfo mi = collectionType.GetMethod("FromBmpSingle");

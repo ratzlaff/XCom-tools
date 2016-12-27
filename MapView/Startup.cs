@@ -9,7 +9,7 @@ namespace MapView
 	/// Class that starts program execution.
 	/// </summary>
 	public class Startup //: MarshalByRefObject
-	{ 
+	{
 		private readonly IErrorHandler _errorHandler;
 
 		public Startup()
@@ -19,7 +19,7 @@ namespace MapView
 
 		public void RunProgram()
 		{
-			Application.EnableVisualStyles(); 
+			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
 			Application.ThreadException += Application_ThreadException;
 			try

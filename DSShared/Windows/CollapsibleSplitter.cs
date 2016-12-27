@@ -1,8 +1,7 @@
 #region author comment
 /*
-
  *	http://www.codeproject.com/cs/miscctrl/collapsiblesplitter.asp
- * 
+ *
 	Windows Forms Collapsible Splitter Control for .Net
 	(c)Copyright 2002-2003 NJF (furty74@yahoo.com). All rights reserved.
 	
@@ -35,11 +34,11 @@
 	Added an optional 3D border
 	General code and comment cleaning
 	Flagged assembly with the CLSCompliant attribute
-	Added a simple designer class to filter unwanted properties	
+	Added a simple designer class to filter unwanted properties
 */
 
 /*
-  My Changes
+  My Changes (well that was relevant..)
   -added new Dock property
   changed VisualStyles to DotStyles
   changed drawing logic
@@ -54,30 +53,30 @@ using System.Windows.Forms;
 using System.Drawing.Drawing2D;
 
 namespace DSShared.Windows
-{   
+{
 	/// <summary>
 	/// Specifies how the outline of the collapsible splitter is drawn
 	/// </summary>
 	public enum DotStyles
 	{
 		/// <summary>
-		/// 
+		///
 		/// </summary>
 		Mozilla,
 		/// <summary>
-		/// 
+		///
 		/// </summary>
 		XP,
 		/// <summary>
-		/// 
+		///
 		/// </summary>
 		Win9x,
 		/// <summary>
-		/// 
+		///
 		/// </summary>
 		DoubleDots,
 		/// <summary>
-		/// 
+		///
 		/// </summary>
 		Lines
 	}
@@ -88,19 +87,19 @@ namespace DSShared.Windows
 	public enum SplitterState
 	{
 		/// <summary>
-		/// 
+		///
 		/// </summary>
 		Collapsed,
 		/// <summary>
-		/// 
+		///
 		/// </summary>
 		Expanding,
 		/// <summary>
-		/// 
+		///
 		/// </summary>
 		Expanded,
 		/// <summary>
-		/// 
+		///
 		/// </summary>
 		Collapsing
 	}
@@ -164,7 +163,7 @@ namespace DSShared.Windows
 
 			SetStyle(ControlStyles.AllPaintingInWmPaint|ControlStyles.UserPaint|ControlStyles.DoubleBuffer,true);
 
-			backBrush= new SolidBrush(BackColor);	
+			backBrush= new SolidBrush(BackColor);
 			backPen = new Pen(BackColor,1);
 			hotArea = new Rectangle(0,((Height - hotZoneArea)/2), Width, hotZoneArea);
 
@@ -209,9 +208,9 @@ namespace DSShared.Windows
 		public bool IsCollapsed
 		{
 			get
-			{ 
+			{
 				if(this.controlToHide!= null)
-					return !this.controlToHide.Visible; 
+					return !this.controlToHide.Visible;
 				else
 					return true;
 			}
@@ -219,7 +218,7 @@ namespace DSShared.Windows
 			{
 				if(controlToHide!=null)
 					if(controlToHide.Visible==value)
-						ToggleSplitter();					
+						ToggleSplitter();
 			}
 		}
 
@@ -281,14 +280,14 @@ namespace DSShared.Windows
 		/// <summary>
 		/// An optional border style to paint on the control. Set to Flat for no border
 		/// </summary>
-		[Category("Custom Appearance"), 
+		[Category("Custom Appearance"),
 		DefaultValue(System.Windows.Forms.Border3DStyle.Adjust),
 		Description("An optional border style to paint on the control")]
 		public Border3DStyle BorderStyle3D
 		{
 			get{ return this.borderStyle; }
 			set
-			{ 
+			{
 				switch(value)
 				{
 					case Border3DStyle.Etched:
@@ -331,7 +330,7 @@ namespace DSShared.Windows
 					case DockStyle.Bottom:
 						Height=10;
 						break;
-				}								
+				}
 				base.Dock=value;
 			}
 		}
@@ -350,7 +349,7 @@ namespace DSShared.Windows
 			set{hotZoneArea=value;OnResize(null);}
 		}
 
-		#endregion      
+		#endregion
 
 		#region Overrides
 
@@ -420,7 +419,7 @@ namespace DSShared.Windows
 			{
 				if(this.hot)
 				{
-					this.hot = false;				
+					this.hot = false;
 					Refresh();
 				}
 
@@ -429,7 +428,7 @@ namespace DSShared.Windows
 				if(controlToHide!= null)
 				{
 					// Changed in v1.2 to support Horizontal Splitters
-					if(controlToHide.Visible)			
+					if(controlToHide.Visible)
 					{
 						if(this.Dock == DockStyle.Left || this.Dock == DockStyle.Right)
 							this.Cursor = Cursors.VSplit;
@@ -437,7 +436,7 @@ namespace DSShared.Windows
 							this.Cursor = Cursors.HSplit;
 					}
 				}
-			}	
+			}
 			base.OnMouseMove(e);
 		}
 
@@ -458,8 +457,8 @@ namespace DSShared.Windows
 		/// <param name="e">An <see cref="T:System.EventArgs"></see> that contains the event data.</param>
 		protected override void OnClick(System.EventArgs e)
 		{
-			if(controlToHide!= null && hot && 
-				currentState != SplitterState.Collapsing && 
+			if(controlToHide!= null && hot &&
+				currentState != SplitterState.Collapsing &&
 				currentState != SplitterState.Expanding)
 			{
 				ToggleSplitter();
@@ -598,7 +597,7 @@ namespace DSShared.Windows
 							this.Invalidate();
 						}
 					}
-					else 
+					else
 					{
 						// horizontal splitter
 						if(controlToHide.Height > animationStep)
@@ -654,7 +653,7 @@ namespace DSShared.Windows
 							this.Invalidate();
 						}
 					}
-					else 
+					else
 					{
 						// horizontal splitter
 						if(controlToHide.Height < (controlHeight - animationStep))
@@ -679,7 +678,6 @@ namespace DSShared.Windows
 							currentState = SplitterState.Expanded;
 							this.Invalidate();
 						}
-
 					}
 					break;
 			}
@@ -700,7 +698,7 @@ namespace DSShared.Windows
 			
 			/********** Vertical splitter ********/
 			if(this.Dock == DockStyle.Left || this.Dock == DockStyle.Right)
-			{		
+			{
 				if(hot)
 					g.FillRectangle(hotBrush,hotArea);
 				//else
@@ -714,7 +712,7 @@ namespace DSShared.Windows
 				{
 					// draw the arrows for our control image
 					GraphicsPath leftRight=new GraphicsPath();
-					if(	(Dock==DockStyle.Right && controlToHide.Visible) || 
+					if(	(Dock==DockStyle.Right && controlToHide.Visible) ||
 						(Dock==DockStyle.Left && !controlToHide.Visible))
 					{
 						leftRight.AddLine((Width-tWidth)/2,hotArea.Y+offY,(Width-tWidth)/2+tWidth,hotArea.Y+offY+tHeight/2);
@@ -723,7 +721,7 @@ namespace DSShared.Windows
 
 						leftRight.AddLine((Width-tWidth)/2,hotArea.Y+hotArea.Height-offY,(Width-tWidth)/2,hotArea.Y+hotArea.Height-offY-tHeight);
 						leftRight.AddLine((Width-tWidth)/2,hotArea.Y+hotArea.Height-offY-tHeight,(Width-tWidth)/2+tWidth,hotArea.Y+hotArea.Height-(offY+tHeight/2));
-						leftRight.CloseFigure();					
+						leftRight.CloseFigure();
 					}
 					else
 					{
@@ -733,9 +731,9 @@ namespace DSShared.Windows
 
 						leftRight.AddLine((Width-tWidth)/2+tWidth,hotArea.Y+hotArea.Height-offY,(Width-tWidth)/2+tWidth,hotArea.Y+hotArea.Height-offY-tHeight);
 						leftRight.AddLine((Width-tWidth)/2+tWidth,hotArea.Y+hotArea.Height-offY-tHeight,(Width-tWidth)/2,hotArea.Y+hotArea.Height-(offY+tHeight/2));
-						leftRight.CloseFigure();	
+						leftRight.CloseFigure();
 					}
-					g.FillPath(controlDarkBrush,leftRight);					
+					g.FillPath(controlDarkBrush,leftRight);
 				}
 
 				// draw the dots for our control image using a loop
@@ -814,7 +812,7 @@ namespace DSShared.Windows
 			}
 				// Horizontal Splitter support added in v1.2
 			else if (this.Dock == DockStyle.Top || this.Dock == DockStyle.Bottom)
-			{				
+			{
 				// draw the background color for our control image
 				if(hot)
 					g.FillRectangle(new SolidBrush(hotColor), hotArea);
@@ -843,7 +841,7 @@ namespace DSShared.Windows
 
 						upDown.AddLine((Width-tWidth)/2,hotArea.Y+hotArea.Height-offY,(Width-tWidth)/2,hotArea.Y+hotArea.Height-offY-tHeight);
 						upDown.AddLine((Width-tWidth)/2,hotArea.Y+hotArea.Height-offY-tHeight,(Width-tWidth)/2+tWidth,hotArea.Y+hotArea.Height-(offY+tHeight/2));
-						upDown.CloseFigure();					
+						upDown.CloseFigure();
 					}
 					else
 					{
@@ -853,9 +851,9 @@ namespace DSShared.Windows
 
 						upDown.AddLine((Width-tWidth)/2+tWidth,hotArea.Y+hotArea.Height-offY,(Width-tWidth)/2+tWidth,hotArea.Y+hotArea.Height-offY-tHeight);
 						upDown.AddLine((Width-tWidth)/2+tWidth,hotArea.Y+hotArea.Height-offY-tHeight,(Width-tWidth)/2,hotArea.Y+hotArea.Height-(offY+tHeight/2));
-						upDown.CloseFigure();	
+						upDown.CloseFigure();
 					}
-					g.FillPath(controlDarkBrush,upDown);*/	
+					g.FillPath(controlDarkBrush,upDown);*/
 				}
 
 				// draw the dots for our control image using a loop
@@ -926,7 +924,7 @@ namespace DSShared.Windows
 			}
 
 			//if(this.borderStyle != System.Windows.Forms.Border3DStyle.Flat)
-			ControlPaint.DrawBorder3D(e.Graphics,ClientRectangle,borderStyle);			
+			ControlPaint.DrawBorder3D(e.Graphics,ClientRectangle,borderStyle);
 		}
 
 		// This creates a point array to draw a arrow-like polygon
@@ -935,7 +933,7 @@ namespace DSShared.Windows
 //			Point[] point = new Point[3];
 //
 //			// decide which direction the arrow will point
-//			if ( (dock == DockStyle.Right && visible) || 
+//			if ( (dock == DockStyle.Right && visible) ||
 //				(dock == DockStyle.Left && !visible))
 //			{
 //				// right arrow
@@ -943,7 +941,7 @@ namespace DSShared.Windows
 //				point[1] = new Point(x + tWidth, y + tHeight/2);
 //				point[2] = new Point(x, y + tHeight);
 //			}
-//			else if ( (dock == DockStyle.Right && !visible) || 
+//			else if ( (dock == DockStyle.Right && !visible) ||
 //				(dock == DockStyle.Left && visible))
 //			{
 //				// left arrow
@@ -952,7 +950,7 @@ namespace DSShared.Windows
 //				point[2] = new Point(x + tWidth, y + tHeight);
 //			}
 //				// Up/Down arrows added in v1.2
-//			else if ( (dock == DockStyle.Top && visible) || 
+//			else if ( (dock == DockStyle.Top && visible) ||
 //				(dock == DockStyle.Bottom && !visible))
 //			{
 //				// up arrow
@@ -974,7 +972,7 @@ namespace DSShared.Windows
 
 		// this method was borrowed from the RichUI Control library by Sajith M
 		private static Color CalculateColor(Color front, Color back, int alpha)
-		{	
+		{
 			// solid color obtained as a result of alpha-blending
 
 			Color frontColor = Color.FromArgb(255, front);
@@ -996,26 +994,24 @@ namespace DSShared.Windows
 
 			return  Color.FromArgb(newRed, newGreen, newBlue);
 		}
-	        
-
+			
 		#endregion
 	}
 
 	/// <summary>
-	/// A simple designer class for the CollapsibleSplitter control to remove 
+	/// A simple designer class for the CollapsibleSplitter control to remove
 	/// unwanted properties at design time.
 	/// </summary>
 	public class CollapsibleSplitterDesigner : System.Windows.Forms.Design.ControlDesigner
 	{
 		/// <summary>
-		/// 
+		///
 		/// </summary>
 		public CollapsibleSplitterDesigner()
-		{
-		}
+		{}
 
 		/// <summary>
-		/// 
+		///
 		/// </summary>
 		/// <param name="properties"></param>
 		protected override void PreFilterProperties(System.Collections.IDictionary properties)
@@ -1024,4 +1020,3 @@ namespace DSShared.Windows
 		}
 	}
 }
-

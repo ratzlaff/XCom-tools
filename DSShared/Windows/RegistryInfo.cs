@@ -48,29 +48,29 @@ namespace DSShared.Windows
 			set{regKey=value;}
 		}
 
-	    /// <summary>
-	    /// Constructor that uses the name parameter as the registry key to save values under
-	    /// </summary>
-	    /// <param name="obj">the object to save/load values into the registry</param>
-	    /// <param name="name">the name of the registry key to save/load</param>
-	    public RegistryInfo(object obj, string name)
-	    {
-	        this.obj = obj;
-	        this.name = name;
+		/// <summary>
+		/// Constructor that uses the name parameter as the registry key to save values under
+		/// </summary>
+		/// <param name="obj">the object to save/load values into the registry</param>
+		/// <param name="name">the name of the registry key to save/load</param>
+		public RegistryInfo(object obj, string name)
+		{
+			this.obj = obj;
+			this.name = name;
 
-	        properties = new Dictionary<string, PropertyInfo>();
+			properties = new Dictionary<string, PropertyInfo>();
 
-	        if (obj is Form)
-	        {
-	            var f = (Form) obj;
-	            f.StartPosition = FormStartPosition.Manual;
-	            f.Load += Load;
-	            f.Closing += Closing;
-	            AddProperty("Width", "Height", "Left", "Top");
-	        }
-	    }
+			if (obj is Form)
+			{
+				var f = (Form) obj;
+				f.StartPosition = FormStartPosition.Manual;
+				f.Load += Load;
+				f.Closing += Closing;
+				AddProperty("Width", "Height", "Left", "Top");
+			}
+		}
 
-	    /// <summary>
+		/// <summary>
 		/// Constructor that uses the ToString() value of the object as the name of the constructor parameter
 		/// </summary>
 		/// <param name="obj"></param>
@@ -175,8 +175,8 @@ namespace DSShared.Windows
 		/// <param name="e"></param>
 		public void Save(object sender, EventArgs e)
 		{
-		    var form = obj as Form;
-		    if (form != null) form.WindowState = FormWindowState.Normal;
+			var form = obj as Form;
+			if (form != null) form.WindowState = FormWindowState.Normal;
 
 			if(saveOnClose)
 			{

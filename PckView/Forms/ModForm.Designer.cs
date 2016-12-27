@@ -32,13 +32,13 @@ namespace PckView
 			this.colAuth = new System.Windows.Forms.ColumnHeader();
 			this.colDesc = new System.Windows.Forms.ColumnHeader();
 			this.SuspendLayout();
-			// 
+			//
 			// modList
-			// 
+			//
 			this.modList.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.colExt,
-            this.colAuth,
-            this.colDesc});
+			this.colExt,
+			this.colAuth,
+			this.colDesc});
 			this.modList.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.modList.FullRowSelect = true;
 			this.modList.GridLines = true;
@@ -49,24 +49,24 @@ namespace PckView
 			this.modList.TabIndex = 0;
 			this.modList.UseCompatibleStateImageBehavior = false;
 			this.modList.View = System.Windows.Forms.View.Details;
-			// 
+			//
 			// colExt
-			// 
+			//
 			this.colExt.Text = "Ext";
 			this.colExt.Width = 59;
-			// 
+			//
 			// colAuth
-			// 
+			//
 			this.colAuth.Text = "Author";
 			this.colAuth.Width = 100;
-			// 
+			//
 			// colDesc
-			// 
+			//
 			this.colDesc.Text = "Description";
 			this.colDesc.Width = 346;
-			// 
+			//
 			// ModForm
-			// 
+			//
 			this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
 			this.ClientSize = new System.Drawing.Size(520, 273);
 			this.Controls.Add(this.modList);

@@ -5,8 +5,8 @@ using System.Text;
 
 namespace MapView.Forms.Error
 {
-    public interface IErrorHandler
-    {
-        void HandleException(Exception exception);
-    }
+	public interface IErrorHandler
+	{
+		void HandleException(Exception exception);
+	}
 }

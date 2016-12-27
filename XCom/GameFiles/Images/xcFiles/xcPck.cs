@@ -20,36 +20,38 @@ namespace XCom.GameFiles.Images.xcFiles
 		}
 
 		protected override XCImageCollection LoadFileOverride(
-            string directory,string file,int imgWid,int imgHei,Palette pal)
+			string directory,string file,int imgWid,int imgHei,Palette pal)
 		{
 			System.IO.Stream tabStream=null;
-            string tabBase = file.Substring(0, file.LastIndexOf("."));
-            var tabFilePath = directory + "\\" + tabBase + TAB_EXT;
+			string tabBase = file.Substring(0, file.LastIndexOf("."));
+			var tabFilePath = directory + "\\" + tabBase + TAB_EXT;
 
-            if (System.IO.File.Exists(tabFilePath))
-                tabStream = System.IO.File.OpenRead(tabFilePath);
-            using (tabStream)
-            using (var pckStream = System.IO.File.OpenRead(directory + "\\" + file))
-		    {
-		        try
-		        {
-		            return new PckFile(pckStream,
-		                tabStream,
-		                2,
-		                pal,
-		                imgHei,
-		                imgWid);
-		        }
-		        catch (Exception)
-		        {
-                    return new PckFile(pckStream,
-		                tabStream,
-		                4,
-		                pal,
-		                imgHei,
-		                imgWid);
-		        }
-		    }
+			if (System.IO.File.Exists(tabFilePath))
+				tabStream = System.IO.File.OpenRead(tabFilePath);
+			using (tabStream)
+			using (var pckStream = System.IO.File.OpenRead(directory + "\\" + file))
+			{
+				try
+				{
+					return new PckFile(
+									pckStream,
+									tabStream,
+									2,
+									pal,
+									imgHei,
+									imgWid);
+				}
+				catch (Exception)
+				{
+					return new PckFile(
+									pckStream,
+									tabStream,
+									4,
+									pal,
+									imgHei,
+									imgWid);
+				}
+			}
 		}
 
 		private System.Windows.Forms.Panel SavingOptions
@@ -113,11 +115,12 @@ namespace XCom.GameFiles.Images.xcFiles
 					l.Text="If you are unsure about the correct bpp option, open up the original .pck file and see what the number is in the lower right of the main screen";
 					l.Dock=DockStyle.Fill;
 
-					savePanel.Controls.AddRange(new Control[]{l,left});					
+					savePanel.Controls.AddRange(new Control[]{l,left});
 				}
 
 				return savePanel;
 			}
+
 			set
 			{
 				savePanel=value;
@@ -132,19 +135,19 @@ namespace XCom.GameFiles.Images.xcFiles
 				radio2.Checked=false;
 		}
 
-        //Method to save a collection in its original format
-        public override void SaveCollection(string directory, string file, XCImageCollection images)
-        {
-            var ib = new DSShared.Windows.InputBox("Enter Pck Options", SavingOptions);
-            int bpp;
-            if (ib.ShowDialog() != DialogResult.OK) return ;
-            {
-                bpp = 4;
-                if (radio2.Checked)
-                    bpp = 2;
-            }
-            PckFile.Save(directory, file, images, bpp);
-        } 
+		// Method to save a collection in its original format
+		public override void SaveCollection(string directory, string file, XCImageCollection images)
+		{
+			var ib = new DSShared.Windows.InputBox("Enter Pck Options", SavingOptions);
+			int bpp;
+			if (ib.ShowDialog() != DialogResult.OK) return ;
+			{
+				bpp = 4;
+				if (radio2.Checked)
+					bpp = 2;
+			}
+			PckFile.Save(directory, file, images, bpp);
+		}
 	}
 
 	public class xcPckTab : xcPck
@@ -160,11 +163,20 @@ namespace XCom.GameFiles.Images.xcFiles
 			fileOptions.Init(false, false, false, false);
 		}
 
-		protected override XCImageCollection LoadFileOverride(string directory, string file, int imgWid, int imgHei, Palette pal)
+		protected override XCImageCollection LoadFileOverride(
+				string directory,
+				string file,
+				int imgWid,
+				int imgHei,
+				Palette pal)
 		{
 			string fileBase = file.Substring(0, file.IndexOf("."));
-
-			return base.LoadFileOverride(directory, fileBase+".pck", imgWid, imgHei, pal);
+			return base.LoadFileOverride(
+									directory,
+									fileBase + ".pck",
+									imgWid,
+									imgHei,
+									pal);
 		}
 	}
 }

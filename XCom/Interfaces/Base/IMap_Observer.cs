@@ -17,20 +17,20 @@ namespace XCom.Interfaces.Base
 	/// <summary>
 	/// EventArgs class that holds a IMap_Base for when a SetMap event fires
 	/// </summary>
-    public class SetMapEventArgs : EventArgs
-    {
+	public class SetMapEventArgs : EventArgs
+	{
 		private IMap_Base map;
 
 		public SetMapEventArgs(IMap_Base map)
-        {
-            this.map = map;
-        }
+		{
+			this.map = map;
+		}
 
 		public IMap_Base Map
-        {
-            get { return map; }
-        }
-    }
+		{
+			get { return map; }
+		}
+	}
 
 
 	/// <summary>
@@ -38,16 +38,16 @@ namespace XCom.Interfaces.Base
 	/// </summary>
 	public class SelectedTileChangedEventArgs : EventArgs
 	{
-        private MapLocation newSelected;
+		private MapLocation newSelected;
 		private MapTileBase selectedTile;
 
-        public SelectedTileChangedEventArgs(MapLocation newSelected, MapTileBase selectedTile)
+		public SelectedTileChangedEventArgs(MapLocation newSelected, MapTileBase selectedTile)
 		{
 			this.newSelected = newSelected;
 			this.selectedTile = selectedTile;
 		}
 
-        public MapLocation MapPosition
+		public MapLocation MapPosition
 		{
 			get { return newSelected; }
 		}
@@ -59,7 +59,7 @@ namespace XCom.Interfaces.Base
 	}
 
 	/// <summary>
-	/// EventArgs class for when a HeightChanged event fires. 
+	/// EventArgs class for when a HeightChanged event fires.
 	/// </summary>
 	public class HeightChangedEventArgs : EventArgs
 	{

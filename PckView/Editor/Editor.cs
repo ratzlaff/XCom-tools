@@ -37,7 +37,7 @@ namespace PckView
 			Controls.Add(edit);
 			Controls.Add(buttons);
 			Controls.Add(size);
-            
+
 			buttons.Location = new Point(0,0);
 			buttons.Width = buttons.PreferredWidth;
 
@@ -95,7 +95,7 @@ namespace PckView
 			edit.Width = ClientSize.Width-buttons.PreferredWidth;
 			edit.Height=ClientSize.Height-size.Height;
 			buttons.Height = ClientSize.Height;
-			size.Width=edit.Width;			
+			size.Width=edit.Width;
 
 			edit.Left=buttons.Right;
 			size.Left=edit.Left;
@@ -134,41 +134,39 @@ namespace PckView
 			this.showPalette = new System.Windows.Forms.MenuItem();
 			this.linesItem = new System.Windows.Forms.MenuItem();
 			this.showLines = new System.Windows.Forms.MenuItem();
-			// 
+			//
 			// menu
-			// 
-			this.menu.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
-																				 this.paletteMain,
-																				 this.linesItem});
-			// 
+			//
+			this.menu.MenuItems.AddRange(new System.Windows.Forms.MenuItem[]{
+																		this.paletteMain,
+																		this.linesItem });
+			//
 			// paletteMain
-			// 
+			//
 			this.paletteMain.Index = 0;
-			this.paletteMain.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
-																						this.showPalette});
+			this.paletteMain.MenuItems.AddRange(new System.Windows.Forms.MenuItem[]{ this.showPalette });
 			this.paletteMain.Text = "Palette";
-			// 
+			//
 			// showPalette
-			// 
+			//
 			this.showPalette.Index = 0;
 			this.showPalette.Text = "Show";
 			this.showPalette.Click += new System.EventHandler(this.showPalette_Click);
-			// 
+			//
 			// linesItem
-			// 
+			//
 			this.linesItem.Index = 1;
-			this.linesItem.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
-																					  this.showLines});
+			this.linesItem.MenuItems.AddRange(new System.Windows.Forms.MenuItem[]{ this.showLines });
 			this.linesItem.Text = "Lines";
-			// 
+			//
 			// showLines
-			// 
+			//
 			this.showLines.Index = 0;
 			this.showLines.Text = "Show";
 			this.showLines.Click += new System.EventHandler(this.showLines_Click);
-			// 
+			//
 			// Editor
-			// 
+			//
 			this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
 			this.ClientSize = new System.Drawing.Size(292, 273);
 			this.Menu = this.menu;

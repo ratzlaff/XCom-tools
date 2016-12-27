@@ -13,7 +13,7 @@ namespace MapView
 	/// </summary>
 	public class Settings
 	{
-		private Dictionary<string,Setting> settings;		
+		private Dictionary<string,Setting> settings;
 		private Dictionary<string,PropObj> propObj;
 
 		private static Dictionary<Type,ConvertObject> converters;
@@ -46,7 +46,7 @@ namespace MapView
 				{
 					case "}": //all done
 						return;
-					case "{"://starting out
+					case "{": //starting out
 						break;
 					default:
 						if(currSettings [kv.Keyword]!=null)
@@ -74,15 +74,15 @@ namespace MapView
 		{
 			get
 			{
-                key = key.Replace(" ", "");
-                if (settings.ContainsKey(key))
+				key = key.Replace(" ", "");
+				if (settings.ContainsKey(key))
 					return settings[key];
 				return null;
 			}
 			set
 			{
-                key = key.Replace(" ", "");
-                if (!settings.ContainsKey(key))
+				key = key.Replace(" ", "");
+				if (!settings.ContainsKey(key))
 					settings.Add(key, value);
 				else
 				{
@@ -91,47 +91,47 @@ namespace MapView
 			}
 		}
 
-	    /// <summary>
-	    /// adds a setting to this settings object
-	    /// </summary>
-	    /// <param name="name">property name</param>
-	    /// <param name="val">start value of the property</param>
-	    /// <param name="desc">property description</param>
-	    /// <param name="category">property category</param>
-	    /// <param name="update">event handler to recieve the PropertyValueChanged event</param>
-	    /// <param name="reflect">if true, an internal event handler will be created - the refObj must not be null and the name must be the name of a property of the type that refObj is</param>
-	    /// <param name="refObj">the object that will recieve the changed property values</param>
-	    public void AddSetting(string name, object val,
-	        string desc, string category, ValueChangedDelegate update, bool reflect, object refObj)
-	    {
-	        //take out all spaces
-	        name = name.Replace(" ", "");
+		/// <summary>
+		/// adds a setting to this settings object
+		/// </summary>
+		/// <param name="name">property name</param>
+		/// <param name="val">start value of the property</param>
+		/// <param name="desc">property description</param>
+		/// <param name="category">property category</param>
+		/// <param name="update">event handler to recieve the PropertyValueChanged event</param>
+		/// <param name="reflect">if true, an internal event handler will be created - the refObj must not be null and the name must be the name of a property of the type that refObj is</param>
+		/// <param name="refObj">the object that will recieve the changed property values</param>
+		public void AddSetting(string name, object val,
+			string desc, string category, ValueChangedDelegate update, bool reflect, object refObj)
+		{
+			//take out all spaces
+			name = name.Replace(" ", "");
 
 
-            Setting setting;
-	        if (!settings.ContainsKey(name))
-	        {
-	            setting = new Setting(val, desc, category);
-	            settings[name] = setting;
-	        }
-	        else
-	        {
-	            setting = settings[name];
-                setting.Value = val;
-                setting.Description = desc;
-	        }
+			Setting setting;
+			if (!settings.ContainsKey(name))
+			{
+				setting = new Setting(val, desc, category);
+				settings[name] = setting;
+			}
+			else
+			{
+				setting = settings[name];
+				setting.Value = val;
+				setting.Description = desc;
+			}
 
-	        if (update != null)
-                setting.ValueChanged += update;
+			if (update != null)
+				setting.ValueChanged += update;
 
-	        if (reflect && refObj != null)
-	        {
-	            propObj[name] = new PropObj(refObj, name);
-	            this[name].ValueChanged += reflectEvent;
-	        }
-	    }
+			if (reflect && refObj != null)
+			{
+				propObj[name] = new PropObj(refObj, name);
+				this[name].ValueChanged += reflectEvent;
+			}
+		}
 
-	    /// <summary>
+		/// <summary>
 		/// Gets the Setting object tied to the string. If there is no Setting object, one will be created with the defaultValue
 		/// </summary>
 		/// <param name="key">The name of the setting object</param>
@@ -141,9 +141,9 @@ namespace MapView
 		{
 			if(!settings.ContainsKey(key))
 			{
-                var item = new Setting(defaultvalue, null, null);
+				var item = new Setting(defaultvalue, null, null);
 				settings.Add(key ,item);
-                item.Name = key;
+				item.Name = key;
 			}
 
 			return settings[key];
@@ -188,12 +188,12 @@ namespace MapView
 	{
 		private object _val;
 
-	    private static Dictionary<Type,parseString> converters;
+		private static Dictionary<Type,parseString> converters;
 
 		public event ValueChangedDelegate ValueChanged;
 
 		private delegate object parseString(string s);
-         
+		 
 		private static object parseBoolString(string s)
 		{
 			return bool.Parse(s);
@@ -214,61 +214,61 @@ namespace MapView
 			return Color.FromArgb(int.Parse(vals[0]),int.Parse(vals[1]),int.Parse(vals[2]),int.Parse(vals[3]));
 		}
 
-        public Setting(object val, string desc, string category)
-        {
-            _val = val;
-            Description = desc;
-            Category = category;
-
-            if (converters == null)
-            {
-                converters = new Dictionary<Type, parseString>();
-                converters[typeof(int)] = parseIntString;
-                converters[typeof(Color)] = parseColorString;
-                converters[typeof(bool)] = parseBoolString;
-            }
-        }
-
-	    public bool ValueBool
-	    {
-	        get
-	        {
-                if (Value is bool)return (bool)Value;
-	            return false;
-	        }
-	    }
-
-	    public object Value
+		public Setting(object val, string desc, string category)
 		{
-			get{return _val;}
-		    set
-		    {
-		        if (_val != null)
-		        {
-		            var type = _val.GetType();
-                    if (converters.ContainsKey(type) && value is string)
-		            {
-                        _val = converters[type]((string)value);
-		            }
-		            else
-		            {
-		                _val = value;
-		            }
-		        }
-		        else
-		        {
-		            _val = value;
-		        }
-		    }
+			_val = val;
+			Description = desc;
+			Category = category;
+
+			if (converters == null)
+			{
+				converters = new Dictionary<Type, parseString>();
+				converters[typeof(int)] = parseIntString;
+				converters[typeof(Color)] = parseColorString;
+				converters[typeof(bool)] = parseBoolString;
+			}
 		}
 
-	    public string Description { get; set; }
+		public bool ValueBool
+		{
+			get
+			{
+				if (Value is bool)return (bool)Value;
+				return false;
+			}
+		}
 
-	    public string Category { get; set; }
+		public object Value
+		{
+			get{return _val;}
+			set
+			{
+				if (_val != null)
+				{
+					var type = _val.GetType();
+					if (converters.ContainsKey(type) && value is string)
+					{
+						_val = converters[type]((string)value);
+					}
+					else
+					{
+						_val = value;
+					}
+				}
+				else
+				{
+					_val = value;
+				}
+			}
+		}
 
-	    public string Name { get; set; }
+		public string Description { get; set; }
 
-	    public void FireUpdate(string key, object val)
+		public string Category { get; set; }
+
+		public string Name { get; set; }
+
+		public void FireUpdate(string key, object val)
 		{
 			if(ValueChanged!=null)
 				ValueChanged(this,key,val);
@@ -277,7 +277,7 @@ namespace MapView
 		public void FireUpdate(string key)
 		{
 			if(ValueChanged!=null)
-				ValueChanged(this,key,_val);			
+				ValueChanged(this,key,_val);
 		}
 	}
 
