@@ -503,7 +503,7 @@ namespace MapView
 			PathsEditor p = new PathsEditor(SharedSpace.Instance["MV_PathsFile"].ToString());
 			p.ShowDialog();
 
-			var pathInfo = (PathInfo) SharedSpace.Instance["MV_PathsFile"];
+			var pathInfo = (PathInfo)SharedSpace.Instance["MV_PathsFile"];
 			InitGameInfo(pathInfo);
 			initList();
 		}
@@ -516,13 +516,13 @@ namespace MapView
 			}
 			else if (mapList.SelectedNode != null)
 			{
-				mapList.SelectedNode.BackColor = Color.Silver; // (de)colorize background-field of current mapname in Maps tree
+				mapList.SelectedNode.BackColor = Color.Silver; // (de)colorize background-field of (de)selected label in the left-panel's MapBlocks' tree
 			}
 		}
 
 		private void mapList_AfterSelect(object sender, TreeViewEventArgs e)
 		{
-			mapList.SelectedNode.BackColor = Color.Gold; // colorize background-field of current mapname in Maps tree
+			mapList.SelectedNode.BackColor = Color.Gold; // colorize background-field of selected label in the left-panel's MapBlocks' tree
 
 			LoadSelectedNodeMap();
 		}

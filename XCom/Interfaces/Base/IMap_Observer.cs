@@ -6,12 +6,14 @@ namespace XCom.Interfaces.Base
 {
 	public interface IMap_Observer
 	{
-		//void SetMap(object sender, SetMapEventArgs e);
+//		void SetMap(object sender, SetMapEventArgs e);
 		IMap_Base Map { set;get;}
+
 		void HeightChanged(IMap_Base sender, HeightChangedEventArgs e);
 		void SelectedTileChanged(IMap_Base sender, SelectedTileChangedEventArgs e);
-		DSShared.Windows.RegistryInfo RegistryInfo { get;set;}
-		Dictionary<string, IMap_Observer> MoreObservers { get;}
+
+		DSShared.Windows.RegistryInfo RegistryInfo { get; set; }
+		Dictionary<string, IMap_Observer> MoreObservers { get; }
 	}
 
 	/// <summary>
@@ -61,7 +63,9 @@ namespace XCom.Interfaces.Base
 	/// <summary>
 	/// EventArgs class for when a HeightChanged event fires.
 	/// </summary>
-	public class HeightChangedEventArgs : EventArgs
+	public class HeightChangedEventArgs
+		:
+		EventArgs
 	{
 		private int newHeight;
 		private int oldHeight;

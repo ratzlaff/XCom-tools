@@ -10,31 +10,33 @@ namespace XCom.GameFiles.Map.RmpData
 	{
 		public void ReviewRouteEntries(IMap_Base map)
 		{
-			// review route entries
 			var xMap = map as XCMapFile;
-			if (xMap == null) return;
-			var entryOutside = new List<RmpEntry>();
-
-			foreach (RmpEntry entry in xMap.Rmp)
-				if (RmpFile.IsOutsideHeight(entry, map.MapSize.Height))
-					entryOutside.Add(entry);
-
-			if (entryOutside.Count > 0)
+			if (xMap != null)
 			{
-				var result = MessageBox.Show(
-										"There are route entries outside the vertical limits of this map. Do you want to remove them?",
-										"Incorrect Routes",
-										MessageBoxButtons.YesNo);
+				var entryOutside = new List<RmpEntry>();
 
-				if (result == DialogResult.Yes)
+				// TODO: Check x/y bounds also.
+
+				foreach (RmpEntry entry in xMap.Rmp)
+					if (RmpFile.IsOutsideHeight(entry, map.MapSize.Height))
+						entryOutside.Add(entry);
+
+				if (entryOutside.Count > 0)
 				{
-					foreach (var rmpEntry in entryOutside)
-						xMap.Rmp.RemoveEntry(rmpEntry);
+					var result = MessageBox.Show(
+											"There are route entries outside the vertical limits of this map. Do you want to remove them?",
+											"Incorrect Routes",
+											MessageBoxButtons.YesNo);
 
-					xMap.MapChanged = true;
+					if (result == DialogResult.Yes)
+					{
+						foreach (var rmpEntry in entryOutside)
+							xMap.Rmp.RemoveEntry(rmpEntry);
+
+						xMap.MapChanged = true;
+					}
 				}
 			}
 		}
-
 	}
 }

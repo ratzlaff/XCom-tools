@@ -178,7 +178,9 @@ namespace XCom
 	};
 
 
-	public class RmpFile : IEnumerable<RmpEntry>
+	public class RmpFile
+		:
+		IEnumerable<RmpEntry>
 	{
 		private readonly List<RmpEntry> _entries;
 		private readonly string _basename;
@@ -254,6 +256,7 @@ namespace XCom
 		{
 			for (int i = 0; i < _entries.Count; i++)
 				_entries[i].Save(fs);
+
 			fs.Close();
 		}
 
@@ -271,9 +274,10 @@ namespace XCom
 		{
 			get
 			{
-				if (_entries.Count <= i)
-					return null;
-				return _entries[i];
+				if (i > -1 && i < _entries.Count)
+					return _entries[i];
+
+				return null;
 			}
 		}
 
@@ -289,6 +293,7 @@ namespace XCom
 			int oldIdx = r.Index;
 
 			_entries.Remove(r);
+
 			foreach (var rr in _entries)
 			{
 				if (rr.Index > oldIdx)
@@ -326,7 +331,7 @@ namespace XCom
 
 		public static bool IsOutsideHeight(RmpEntry entry, int height)
 		{
-			return (entry.Height >= height || entry.Height < 0);
+			return (entry.Height < 0 || entry.Height >= height);
 		}
 
 		public RmpEntry GetEntryAtHeight(byte currentHeight)
