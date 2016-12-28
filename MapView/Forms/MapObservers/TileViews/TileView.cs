@@ -78,7 +78,8 @@ namespace MapView.Forms.MapObservers.TileViews
 		private void OnMapChanged()
 		{
 			MethodInvoker handler = MapChanged;
-			if (handler != null) handler();
+			if (handler != null)
+				handler();
 		}
 
 		#endregion

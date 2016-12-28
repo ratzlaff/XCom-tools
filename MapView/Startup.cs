@@ -27,18 +27,18 @@ namespace MapView
 			try
 			{
 				MainWindow mw = new MainWindow();
-				//mw.SendMessage += new StringDelegate(mw_SendMessage);
+//				mw.SendMessage += new StringDelegate(mw_SendMessage);
 
 				Application.Run(mw);
 
 				// https://msdn.microsoft.com/en-us/library/system.appdomain.aspx
 				// Get this AppDomain's settings and display some of them.
-				//AppDomainSetup ads = AppDomain.CurrentDomain.SetupInformation;
-				//Console.WriteLine(
-				//				"AppName={0}, AppBase={1}, ConfigFile={2}",
-				//				ads.ApplicationName,
-				//				ads.ApplicationBase,
-				//				ads.ConfigurationFile);
+//				AppDomainSetup ads = AppDomain.CurrentDomain.SetupInformation;
+//				Console.WriteLine(
+//								"AppName={0}, AppBase={1}, ConfigFile={2}",
+//								ads.ApplicationName,
+//								ads.ApplicationBase,
+//								ads.ConfigurationFile);
 			}
 			catch (Exception ex)
 			{
@@ -46,10 +46,10 @@ namespace MapView
 			}
 		}
 
-		//void mw_SendMessage(object sender, string args)
-		//{
-		//	Console.WriteLine("External command: " + args);
-		//}
+//		void mw_SendMessage(object sender, string args)
+//		{
+//			Console.WriteLine("External command: " + args);
+//		}
 
 		private void Application_ThreadException(object sender, ThreadExceptionEventArgs e)
 		{

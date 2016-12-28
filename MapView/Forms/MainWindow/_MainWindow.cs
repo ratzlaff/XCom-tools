@@ -19,9 +19,8 @@ using System.Collections.Generic;
 
 namespace MapView
 {
-	public delegate void MapChangedDelegate(object sender, SetMapEventArgs e);
-
-	public delegate void StringDelegate(object sender, string args);
+//	public delegate void MapChangedDelegate(object sender, SetMapEventArgs e);
+//	public delegate void StringDelegate(object sender, string args);
 
 	public partial class MainWindow
 		:
@@ -685,6 +684,7 @@ namespace MapView
 
 				Focus();
 				BringToFront();
+
 				windowFlag = false;
 			}
 		}
