@@ -6,9 +6,12 @@ using XCom.Interfaces.Base;
 
 namespace MapView
 {
-	public class MapViewPanel : Panel
+	public class MapViewPanel
+		:
+		Panel
 	{
 		private MapView _mapView;
+
 		private readonly HScrollBar _horiz;
 		private readonly VScrollBar _vert;
 
@@ -81,6 +84,7 @@ namespace MapView
 				return _myInstance;
 			}
 		}
+
 		public IMap_Base Map
 		{
 			get { return _mapView.Map; }
@@ -101,12 +105,11 @@ namespace MapView
 			base.OnResize(e);
 
 			if (Globals.AutoPckImageScale)
-			{
 				SetupMapSize();
-			}
 
 			_vert.Value = _vert.Minimum;
 			_horiz.Value = _horiz.Minimum;
+
 			vert_Scroll(null, null);
 			horiz_Scroll(null, null);
 
@@ -145,37 +148,40 @@ namespace MapView
 			_mapView.Location = new Point(-(_horiz.Value), _mapView.Top);
 			_mapView.Refresh();
 		}
-		
+
 		public void SetMap(IMap_Base map)
 		{
 			_mapView.Map = map;
 			_mapView.Focus();
 			OnResize(null);
 		}
-		public void SetupMapSize(   )
+
+		public void SetupMapSize()
 		{
 			if (Globals.AutoPckImageScale)
 			{
 				var size = _mapView.GetMapSize(1);
-				var wP = Width / (double)size.Width;
+
+				var wP = Width  / (double)size.Width;
 				var hP = Height / (double)size.Height;
+
 				if (wP > hP)
 				{
-					// Acommodate based on height
-					Globals.PckImageScale = hP;
+					Globals.PckImageScale = hP; // Acommodate based on height
 				}
 				else
 				{
-					// Acommodate based on width
-					Globals.PckImageScale = wP;
+					Globals.PckImageScale = wP; // Acommodate based on width
 				}
+
 				if (Globals.PckImageScale > Globals.MaxPckImageScale)
 					Globals.PckImageScale = Globals.MaxPckImageScale;
+
 				if (Globals.PckImageScale < Globals.MinPckImageScale )
 					Globals.PckImageScale = Globals.MinPckImageScale;
 			}
 
-			_mapView.SetupMapSize ();
+			_mapView.SetupMapSize();
 		}
 
 		public void ForceResize()

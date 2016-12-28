@@ -135,15 +135,18 @@ namespace MapView.Forms.MapObservers.TileViews
 //						tiles = value;
 						tiles = new TileBase[value.Count + 1];
 						tiles[0] = null;
+
 						for (int i = 0; i < value.Count; i++)
 							tiles[i + 1] = value[i];
 					}
 					else
 					{
 						var list = new List<TileBase>();
+
 						for (int i = 0; i < value.Count; i++)
 							if (value[i].Info.TileType == type)
 								list.Add(value[i]);
+
 						tiles = list.ToArray();
 					}
 
@@ -220,11 +223,14 @@ namespace MapView.Forms.MapObservers.TileViews
 				int x = 0, y = 0;
 				var bottomWidth = width + 2 * space;
 				var bottomHeight = height + 2 * space;
+
 				foreach (var tile in tiles)
 				{
 					var bottomTop = startY + y * bottomHeight;
 					var bottomLeft = x * bottomWidth;
-					var rect = new Rectangle(bottomLeft, bottomTop, bottomWidth, bottomHeight);
+					var rect = new Rectangle(
+										bottomLeft, bottomTop,
+										bottomWidth, bottomHeight);
 
 					if (tile != null && (type == TileType.All || tile.Info.TileType == type))
 					{
@@ -236,13 +242,19 @@ namespace MapView.Forms.MapObservers.TileViews
 						}
 
 						// Image
-						g.DrawImage(tile[MapViewPanel.Current].Image, bottomLeft,
-							bottomTop - tile.Info.TileOffset);
+						g.DrawImage(
+								tile[MapViewPanel.Current].Image,
+								bottomLeft,
+								bottomTop - tile.Info.TileOffset);
 
 						// Door text
 						if (tile.Info.HumanDoor || tile.Info.UFODoor)
-							g.DrawString("Door", this.Font, Brushes.Black, bottomLeft,
-								bottomTop + PckImage.Height - Font.Height);
+							g.DrawString(
+									"Door",
+									this.Font,
+									Brushes.Black,
+									bottomLeft,
+									bottomTop + PckImage.Height - Font.Height);
 
 						x = (x + 1) % numAcross;
 						if (x == 0) y++;
@@ -252,10 +264,9 @@ namespace MapView.Forms.MapObservers.TileViews
 						g.FillRectangle(Brushes.AliceBlue, rect);
 
 						if (Globals.ExtraTiles != null)
-						{
-							g.DrawImage(Globals.ExtraTiles[0].Image, bottomLeft,
-								bottomTop);
-						}
+							g.DrawImage(
+									Globals.ExtraTiles[0].Image,
+									bottomLeft, bottomTop);
 
 						x = (x + 1) % numAcross;
 						if (x == 0) y++;
