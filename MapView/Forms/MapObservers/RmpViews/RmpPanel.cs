@@ -15,6 +15,7 @@ namespace MapView.Forms.MapObservers.RmpViews
 
 		private readonly Font _font = new Font("Arial", 12, FontStyle.Bold);
 		private readonly DrawContentService _drawContentService = new DrawContentService();
+
 		private SolidPenBrush _wallColor;
 
 		public void Calculate()
@@ -28,22 +29,18 @@ namespace MapView.Forms.MapObservers.RmpViews
 
 			try
 			{
-				if (Map == null) return;
-				var upper = new GraphicsPath();
+				if (Map != null)
+				{
+					var upper = new GraphicsPath();
 
-				DrawWallsAndContent(graphics);
-
-				DrawUnselectedLink(upper, graphics);
-
-				DrawSelectedLink(graphics);
-
-				DrawNodes(upper, graphics);
-
-				DrawGridLines(graphics);
-
-				DrawPoles(graphics);
-
-				DrawInformation(graphics);
+					DrawWallsAndContent(graphics);
+					DrawUnselectedLink(upper, graphics);
+					DrawSelectedLink(graphics);
+					DrawNodes(upper, graphics);
+					DrawGridLines(graphics);
+					DrawPoles(graphics);
+					DrawInformation(graphics);
+				}
 			}
 			catch (Exception ex)
 			{
@@ -54,7 +51,6 @@ namespace MapView.Forms.MapObservers.RmpViews
 								new SolidBrush(Color.White),
 								8, 8);
 			}
-
 		}
 
 		#region Draw Methods
@@ -66,8 +62,9 @@ namespace MapView.Forms.MapObservers.RmpViews
 			if (posT != null)
 			{
 				var textHeight = (int)g.MeasureString("X", Font).Height;
-				var overlayPos = new Rectangle(Position.X + 18, Position.Y, 200,
-					textHeight + 10);
+				var overlayPos = new Rectangle(
+											Position.X + 18, Position.Y,
+											200, textHeight + 10);
 
 				if (posT.Rmp != null)
 					overlayPos.Height += textHeight * 4;

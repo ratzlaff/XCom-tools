@@ -21,8 +21,8 @@ namespace MapView.Forms.MapObservers.TileViews
 		MapObserverControl
 	{
 		private IContainer components = null;
-//		private MenuItem menuItem1;
 		private MenuItem mcdInfoTab;
+//		private MenuItem menuItem1;
 
 		private TilePanel all;
 		private TilePanel[] panels;
@@ -35,12 +35,15 @@ namespace MapView.Forms.MapObservers.TileViews
 		private TabPage wWallsTab;
 		private Hashtable brushes;
 
-		private  IMainWindowsShowAllManager _mainWindowsShowAllManager;
+		private IMainWindowsShowAllManager _mainWindowsShowAllManager;
+
 		public event SelectedTileTypeChanged SelectedTileTypeChanged;
+
 		private void OnSelectedTileTypeChanged(TileBase newtile)
 		{
 			var handler = SelectedTileTypeChanged;
-			if (handler != null) handler(newtile);
+			if (handler != null)
+				handler(newtile);
 		}
 
 		public TileView( )
@@ -48,20 +51,20 @@ namespace MapView.Forms.MapObservers.TileViews
 			InitializeComponent();
 
 			tabs.Selected += tabs_Selected;
-			all = new TilePanel(TileType.All);
-			var ground = new TilePanel(TileType.Ground);
-			var wWalls = new TilePanel(TileType.WestWall);
-			var nWalls = new TilePanel(TileType.NorthWall);
-			var objects = new TilePanel(TileType.Object);
 
-			panels = new[]{all,ground,wWalls,nWalls,objects};
+			all			= new TilePanel(TileType.All);
+			var ground	= new TilePanel(TileType.Ground);
+			var wWalls	= new TilePanel(TileType.WestWall);
+			var nWalls	= new TilePanel(TileType.NorthWall);
+			var objects	= new TilePanel(TileType.Object);
 
-			AddPanel(all,allTab);
-			AddPanel(ground,groundTab);
-			AddPanel(wWalls,wWallsTab);
-			AddPanel(nWalls,nWallsTab);
-			AddPanel(objects,objectsTab);
-			  
+			panels = new[]{all, ground, wWalls, nWalls, objects};
+
+			AddPanel(all,		allTab);
+			AddPanel(ground,	groundTab);
+			AddPanel(wWalls,	wWallsTab);
+			AddPanel(nWalls,	nWallsTab);
+			AddPanel(objects,	objectsTab);
 		}
 
 		public void Initialize(IMainWindowsShowAllManager mainWindowsShowAllManager)
@@ -93,18 +96,18 @@ namespace MapView.Forms.MapObservers.TileViews
 
 		private void options_click(object sender,EventArgs e)
 		{
-			PropertyForm pf = new PropertyForm("tileViewOptions",Settings);
-			pf.Text="Tile View Settings";
+			PropertyForm pf = new PropertyForm("tileViewOptions", Settings);
+			pf.Text = "Tile View Settings";
 			pf.Show();
 		}
 
 		private void BrushChanged(object sender,string key, object val)
 		{
-			((SolidBrush)brushes[key]).Color=(Color)val;
+			((SolidBrush)brushes[key]).Color = (Color)val;
 			Refresh();
 		}
 
-		public override void LoadDefaultSettings(   )
+		public override void LoadDefaultSettings()
 		{
 			brushes = new Hashtable();
 
@@ -112,8 +115,15 @@ namespace MapView.Forms.MapObservers.TileViews
 			var settings = Settings;
 			foreach(string s in Enum.GetNames(typeof(SpecialType)))
 			{
-				brushes[s]=new SolidBrush(TilePanel.tileTypes[(int)Enum.Parse(typeof(SpecialType),s)]);
-				settings.AddSetting(s,((SolidBrush)brushes[s]).Color,"Color of specified tile type","TileView",bc,false,null);
+				brushes[s] = new SolidBrush(TilePanel.tileTypes[(int)Enum.Parse(typeof(SpecialType), s)]);
+				settings.AddSetting(
+								s,
+								((SolidBrush)brushes[s]).Color,
+								"Color of specified tile type",
+								"TileView",
+								bc,
+								false,
+								null);
 			}
 			VolutarSettingService.LoadDefaultSettings(settings);
 
@@ -126,6 +136,7 @@ namespace MapView.Forms.MapObservers.TileViews
 			page.Controls.Add(panel);
 			panel.TileChanged += TileChanged;
 		}
+
 		private void TileChanged(TileBase tile)
 		{
 			if (tile != null && tile.Info is McdEntry)
@@ -143,8 +154,8 @@ namespace MapView.Forms.MapObservers.TileViews
 
 		private void UpdateMcdText(McdEntry info)
 		{
-			if (MCDInfoForm == null) return;
-			MCDInfoForm.UpdateData(info);
+			if (MCDInfoForm != null)
+				MCDInfoForm.UpdateData(info);
 		}
 
 		public override IMap_Base Map
@@ -191,95 +202,108 @@ namespace MapView.Forms.MapObservers.TileViews
 		private void EditPckMenuItem_Click(object sender, EventArgs e)
 		{
 			var dependencyName = GetSelectedDependencyName();
-			if (dependencyName == null) return;
-
-			var image = GameInfo.ImageInfo[dependencyName];
-			if (image == null) return;
-			var path = image.BasePath + image.BaseName + ".PCK";
-			if (!File.Exists(path))
+			if (dependencyName != null)
 			{
-				MessageBox.Show("File does not exists: " + path);
-				return;
-			}
-
-			_mainWindowsShowAllManager.HideAll();
-			 
-			using (var editor = new PckViewForm())
-			{
-				var pckFile = image.GetPckFile();
-				editor.SelectedPalette = pckFile.Pal.Name;
-				editor.LoadPckFile(path, pckFile.Bpp);
-				var parent = FindForm();
-				Form owner = null;
-				if (parent != null) owner = parent.Owner;
-				if (owner == null) owner = parent;
-				editor.ShowDialog(owner);
-				if (editor.SavedFile)
+				var image = GameInfo.ImageInfo[dependencyName];
+				if (image != null)
 				{
-					GameInfo.ImageInfo.Images[dependencyName].ClearMcd();
-					GameInfo.ClearPckCache(image.BasePath, image.BaseName);
+					var path = image.BasePath + image.BaseName + ".PCK";
+					if (!File.Exists(path))
+					{
+						MessageBox.Show("File does not exist: " + path);
+					}
+					else
+					{
+						_mainWindowsShowAllManager.HideAll();
 
-					OnMapChanged();
+						using (var editor = new PckViewForm())
+						{
+							var pckFile = image.GetPckFile();
+							editor.SelectedPalette = pckFile.Pal.Name;
+							editor.LoadPckFile(path, pckFile.Bpp);
+
+							var parent = FindForm();
+
+							Form owner = null;
+							if (parent != null)
+								owner = parent.Owner;
+
+							if (owner == null)
+								owner = parent;
+
+							editor.ShowDialog(owner);
+							if (editor.SavedFile)
+							{
+								GameInfo.ImageInfo.Images[dependencyName].ClearMcd();
+								GameInfo.ClearPckCache(image.BasePath, image.BaseName);
+
+								OnMapChanged();
+							}
+						}
+
+						_mainWindowsShowAllManager.RestoreAll();
+					}
 				}
 			}
-
-			_mainWindowsShowAllManager.RestoreAll();
 		}
 
 		private void mcdInfoTab_Click(object sender, System.EventArgs e)
 		{
-			if (mcdInfoTab.Checked) return;
-			if (MCDInfoForm == null)
+			if (!mcdInfoTab.Checked)
 			{
-				MCDInfoForm = new McdViewerForm();
-				MCDInfoForm.Size = new Size(480, 670);
-				MCDInfoForm.Closing += infoTabClosing;
-				   
-				var tile = SelectedTile;
-				if (tile != null && tile.Info is McdEntry)
+				if (MCDInfoForm == null)
 				{
-					var info = (McdEntry) tile.Info;
-					Text = "TileView: mapID:" + tile.MapId + " mcdID: " + tile.Id;
-					UpdateMcdText(info);
+					MCDInfoForm = new McdViewerForm();
+					MCDInfoForm.Size = new Size(480, 670);
+					MCDInfoForm.Closing += infoTabClosing;
+
+					var tile = SelectedTile;
+					if (tile != null && tile.Info is McdEntry)
+					{
+						var info = (McdEntry)tile.Info;
+						Text = "TileView: mapID:" + tile.MapId + " mcdID: " + tile.Id;
+						UpdateMcdText(info);
+					}
 				}
+
+				MCDInfoForm.Visible = true;
+				MCDInfoForm.Location = new Point(
+											this.Location.X-MCDInfoForm.Width,
+											this.Location.Y);
+				MCDInfoForm.Show();
+				mcdInfoTab.Checked = true;
 			}
-			MCDInfoForm.Visible=true;
-			MCDInfoForm.Location = new Point(this.Location.X-MCDInfoForm.Width,this.Location.Y);
-			MCDInfoForm.Show();
-			mcdInfoTab.Checked=true;
 		}
 
 		private void infoTabClosing(object sender, CancelEventArgs e)
 		{
-			e.Cancel=true;
-			MCDInfoForm.Visible=false;
-			mcdInfoTab.Checked=false;
+			e.Cancel = true;
+			MCDInfoForm.Visible = false;
+			mcdInfoTab.Checked = false;
 		}
 
 		private string GetSelectedDependencyName()
 		{
 			var selectedTile = SelectedTile;
-			if (selectedTile == null) return null;
-
-			var map = Map as XCMapFile;
-			if (map == null) return null;
-
-			var dependencyName = map.GetDependecyName(selectedTile);
-
-			return dependencyName;
+			if (selectedTile != null)
+			{
+				var map = Map as XCMapFile;
+				if (map != null)
+					return map.GetDependecyName(selectedTile);
+			}
+			return null;
 		}
 
 		private void VolutarMcdEditMenuItem_Click(object sender, EventArgs e)
 		{
-			var map = Map as XCMapFile;
-			if (map == null) return;
-
-			var pathService = new VolutarSettingService(Settings);
-			var path = pathService.GetEditorFilePath();
-			if (!string.IsNullOrEmpty(path))
+			if ((Map as XCMapFile) != null)
 			{
-				var info = new ProcessStartInfo(path);
-				Process.Start(info);
+				var pathService = new VolutarSettingService(Settings);
+
+				var path = pathService.GetEditorFilePath();
+
+				if (!string.IsNullOrEmpty(path))
+					Process.Start(new ProcessStartInfo(path));
 			}
 		}
 	}
