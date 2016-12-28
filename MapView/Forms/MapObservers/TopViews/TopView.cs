@@ -8,7 +8,9 @@ using XCom;
 
 namespace MapView.Forms.MapObservers.TopViews
 {
-	public partial class TopView : MapObserverControl
+	public partial class TopView
+		:
+		MapObserverControl
 	{
 		private readonly Dictionary<ToolStripMenuItem, int> _visibleHash;
 		private Dictionary<string, SolidBrush> _brushes;
@@ -61,9 +63,7 @@ namespace MapView.Forms.MapObservers.TopViews
 			_topViewPanel.Content.ShortcutKeys = Keys.F4;
 
 			foreach (ToolStripItem visItem in visItems)
-			{
 				visItem.Click += VisibleClick;
-			}
 
 			_topViewPanel.BottomPanel = bottom;
 
@@ -92,7 +92,6 @@ namespace MapView.Forms.MapObservers.TopViews
 				VisibleTileChanged(this, new EventArgs());
 
 			MapViewPanel.Instance.Refresh();
-
 			Refresh();
 		}
 
@@ -113,6 +112,7 @@ namespace MapView.Forms.MapObservers.TopViews
 		protected override void OnRISettingsSave(DSShared.Windows.RegistrySaveLoadEventArgs e)
 		{
 			RegistryKey riKey = e.OpenKey;
+
 			foreach (var mi in _visibleHash.Keys)
 				riKey.SetValue("vis" + _visibleHash[mi], mi.Checked);
 		}
@@ -153,20 +153,20 @@ namespace MapView.Forms.MapObservers.TopViews
 			ValueChangedDelegate pw = PenWidthChanged;
 			ValueChangedDelegate dh = DiamondHeight;
 
-			settings.AddSetting("GroundColor", Color.Orange, "Color of the ground tile indicator", "Tile", bc, false, null);
-			settings.AddSetting("NorthColor", Color.Red, "Color of the north tile indicator", "Tile", pc, false, null);
-			settings.AddSetting("WestColor", Color.Red, "Color of the west tile indicator", "Tile", pc, false, null);
-			settings.AddSetting("ContentColor", Color.Green, "Color of the content tile indicator", "Tile", bc, false, null);
-			settings.AddSetting("NorthWidth", 4, "Width of the north tile indicator in pixels", "Tile", pw, false, null);
-			settings.AddSetting("WestWidth", 4, "Width of the west tile indicator in pixels", "Tile", pw, false, null);
-			settings.AddSetting("SelectColor", Color.Black, "Color of the selection line", "Select", pc, false, null);
-			settings.AddSetting("SelectWidth", 2, "Width of the selection line in pixels", "Select", pw, false, null);
-			settings.AddSetting("GridColor", Color.Black, "Color of the grid lines", "Grid", pc, false, null);
-			settings.AddSetting("GridWidth", 1, "Width of the grid lines", "Grid", pw, false, null);
-			settings.AddSetting("MouseWidth", 2, "Width of the mouse-over indicatior", "Grid", pw, false, null);
-			settings.AddSetting("MouseColor", Color.Blue, "Color of the mouse-over indicator", "Grid", pc, false, null);
-			settings.AddSetting("SelectTileColor", Color.LightBlue, "Background color of the selected tile piece", "Other", bc, false, null);
-			settings.AddSetting("DiamondMinHeight", _topViewPanel.MinHeight, "Minimum height of the grid tiles", "Tile", dh, false, null);
+			settings.AddSetting("GroundColor",		Color.Orange,				"Color of the ground tile indicator",			"Tile",		bc, false, null);
+			settings.AddSetting("NorthColor",		Color.Red,					"Color of the north tile indicator",			"Tile",		pc, false, null);
+			settings.AddSetting("WestColor",		Color.Red,					"Color of the west tile indicator",				"Tile",		pc, false, null);
+			settings.AddSetting("ContentColor",		Color.Green,				"Color of the content tile indicator",			"Tile",		bc, false, null);
+			settings.AddSetting("NorthWidth",		4,							"Width of the north tile indicator in pixels",	"Tile",		pw, false, null);
+			settings.AddSetting("WestWidth",		4,							"Width of the west tile indicator in pixels",	"Tile",		pw, false, null);
+			settings.AddSetting("SelectColor",		Color.Black,				"Color of the selection line",					"Select",	pc, false, null);
+			settings.AddSetting("SelectWidth",		2,							"Width of the selection line in pixels",		"Select",	pw, false, null);
+			settings.AddSetting("GridColor",		Color.Black,				"Color of the grid lines",						"Grid",		pc, false, null);
+			settings.AddSetting("GridWidth",		1,							"Width of the grid lines",						"Grid",		pw, false, null);
+			settings.AddSetting("MouseWidth",		2,							"Width of the mouse-over indicator",			"Grid",		pw, false, null);
+			settings.AddSetting("MouseColor",		Color.Blue,					"Color of the mouse-over indicator",			"Grid",		pc, false, null);
+			settings.AddSetting("SelectTileColor",	Color.LightBlue,			"Background color of the selected tile part",	"Other",	bc, false, null);
+			settings.AddSetting("DiamondMinHeight",	_topViewPanel.MinHeight,	"Minimum height of the grid tiles",				"Tile",		dh, false, null);
 
 			_topViewPanel.Brushes = _brushes;
 			_topViewPanel.Pens = _pens;
@@ -179,34 +179,35 @@ namespace MapView.Forms.MapObservers.TopViews
 		public void Fill_Click(object sender, EventArgs evt)
 		{
 			var map = MapViewPanel.Instance.MapView.Map;
-			if (map == null) return;
-			var s = new Point(0, 0);
-			var e = new Point(0, 0);
 
-			s.X = Math.Min(MapViewPanel.Instance.MapView.DragStart.X, MapViewPanel.Instance.MapView.DragEnd.X);
-			s.Y = Math.Min(MapViewPanel.Instance.MapView.DragStart.Y, MapViewPanel.Instance.MapView.DragEnd.Y);
+			if (map != null)
+			{
+				var s = new Point(0, 0);
+				var e = new Point(0, 0);
 
-			e.X = Math.Max(MapViewPanel.Instance.MapView.DragStart.X, MapViewPanel.Instance.MapView.DragEnd.X);
-			e.Y = Math.Max(MapViewPanel.Instance.MapView.DragStart.Y, MapViewPanel.Instance.MapView.DragEnd.Y);
+				s.X = Math.Min(MapViewPanel.Instance.MapView.DragStart.X, MapViewPanel.Instance.MapView.DragEnd.X);
+				s.Y = Math.Min(MapViewPanel.Instance.MapView.DragStart.Y, MapViewPanel.Instance.MapView.DragEnd.Y);
+	
+				e.X = Math.Max(MapViewPanel.Instance.MapView.DragStart.X, MapViewPanel.Instance.MapView.DragEnd.X);
+				e.Y = Math.Max(MapViewPanel.Instance.MapView.DragStart.Y, MapViewPanel.Instance.MapView.DragEnd.Y);
 
-			//row   col
-			//y	 x
-			var tileView = MainWindowsManager.TileView.TileViewControl;
-			for (int c = s.X; c <= e.X; c++)
-				for (int r = s.Y; r <= e.Y; r++)
-				{
-					((XCMapTile) map[r, c])[bottom.SelectedQuadrant] = tileView.SelectedTile;
-				}
+				// row col
+				// y   x
+				var tileView = MainWindowsManager.TileView.TileViewControl;
+				for (int c = s.X; c <= e.X; c++)
+					for (int r = s.Y; r <= e.Y; r++)
+						((XCMapTile) map[r, c])[bottom.SelectedQuadrant] = tileView.SelectedTile;
 
-			map.MapChanged = true;
-		 
-			MapViewPanel.Instance.Refresh();
-			Refresh();
+				map.MapChanged = true;
+				MapViewPanel.Instance.Refresh();
+				Refresh();
+			}
 		}
 
 		private void options_click(object sender, EventArgs e)
 		{
 			var pf = new PropertyForm("TopViewType", Settings);
+
 			pf.Text = "TopView Options";
 			pf.Show();
 		}
@@ -214,8 +215,10 @@ namespace MapView.Forms.MapObservers.TopViews
 		private void BrushChanged(object sender, string key, object val)
 		{
 			_brushes[key].Color = (Color)val;
+
 			if (key == "SelectTileColor")
 				bottom.SelectColor = _brushes[key];
+
 			Refresh();
 		}
 
@@ -253,13 +256,12 @@ namespace MapView.Forms.MapObservers.TopViews
 		 
 		private void TopView_KeyDown(object sender, KeyEventArgs e)
 		{
-			if (e.Control && e.KeyCode == Keys.S)
+			if (e.Control
+				&& e.KeyCode == Keys.S
+				&& Map != null)
 			{
-				if (Map != null)
-				{
-					Map.Save();
-					e.Handled = true;
-				}
+				Map.Save();
+				e.Handled = true;
 			}
 		}
 
@@ -270,12 +272,15 @@ namespace MapView.Forms.MapObservers.TopViews
 				case TileType.Ground:
 					BottomPanel.SelectedQuadrant = XCMapTile.MapQuadrant.Ground;
 					break;
+
 				case TileType.WestWall:
 					BottomPanel.SelectedQuadrant = XCMapTile.MapQuadrant.West;
 					break;
+
 				case TileType.NorthWall:
 					BottomPanel.SelectedQuadrant = XCMapTile.MapQuadrant.North;
 					break;
+
 				case TileType.Object:
 					BottomPanel.SelectedQuadrant = XCMapTile.MapQuadrant.Content;
 					break;
