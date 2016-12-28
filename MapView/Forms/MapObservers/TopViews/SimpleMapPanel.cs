@@ -10,10 +10,13 @@ using XCom.Interfaces.Base;
 
 namespace MapView.Forms.MapObservers.TopViews
 {
-	public class SimpleMapPanel : Map_Observer_Control
+	public class SimpleMapPanel
+		:
+		Map_Observer_Control
 	{
 		private int _offX = 0;
 		private int _offY = 0;
+
 		protected int MinimunHeight = 4;
 
 		private readonly GraphicsPath _cell;
@@ -22,6 +25,7 @@ namespace MapView.Forms.MapObservers.TopViews
 
 		private int _mR;
 		private int _mC;
+
 		protected DrawContentService DrawContentService = new DrawContentService() ;
 
 		public SimpleMapPanel()
@@ -40,9 +44,8 @@ namespace MapView.Forms.MapObservers.TopViews
 				var hHeight = DrawContentService.HHeight;
 				if (map.MapSize.Rows > 0 || map.MapSize.Cols > 0)
 				{
-					if (height > width / 2)
+					if (height > width / 2) // use width
 					{
-						//use width
 						hWidth = width / (map.MapSize.Rows + map.MapSize.Cols);
 
 						if (hWidth % 2 != 0)
@@ -50,9 +53,8 @@ namespace MapView.Forms.MapObservers.TopViews
 
 						hHeight = hWidth / 2;
 					}
-					else
+					else // use height
 					{
-						//use height
 						hHeight = height / (map.MapSize.Rows + map.MapSize.Cols);
 						hWidth = hHeight * 2;
 					}
@@ -72,7 +74,7 @@ namespace MapView.Forms.MapObservers.TopViews
 
 				if (oldWid != hWidth)
 				{
-					Width = 8 + (map.MapSize.Rows + map.MapSize.Cols) * hWidth;
+					Width  = 8 + (map.MapSize.Rows + map.MapSize.Cols) * hWidth;
 					Height = 8 + (map.MapSize.Rows + map.MapSize.Cols) * hHeight;
 					Refresh();
 				}
@@ -108,23 +110,23 @@ namespace MapView.Forms.MapObservers.TopViews
 			var s = GetDragStart();
 			var e = GetDragEnd();
 
-			var hWidth = DrawContentService.HWidth;
+			var hWidth  = DrawContentService.HWidth;
 			var hHeight = DrawContentService.HHeight;
 			var sel1 = new Point(
-				_offX + (s.X - s.Y) * hWidth,
-				_offY + (s.X + s.Y) * hHeight);
+							_offX + (s.X - s.Y) * hWidth,
+							_offY + (s.X + s.Y) * hHeight);
 
 			var sel2 = new Point(
-				_offX + (e.X - s.Y) * hWidth + hWidth,
-				_offY + (e.X + s.Y) * hHeight + hHeight);
+							_offX + (e.X - s.Y) * hWidth + hWidth,
+							_offY + (e.X + s.Y) * hHeight + hHeight);
 
 			var sel3 = new Point(
-				_offX + (e.X - e.Y) * hWidth,
-				_offY + (e.X + e.Y) * hHeight + hHeight + hHeight);
+							_offX + (e.X - e.Y) * hWidth,
+							_offY + (e.X + e.Y) * hHeight + hHeight + hHeight);
 
 			var sel4 = new Point(
-				_offX + (s.X - e.Y) * hWidth - hWidth,
-				_offY + (s.X + e.Y) * hHeight + hHeight);
+							_offX + (s.X - e.Y) * hWidth - hWidth,
+							_offY + (s.X + e.Y) * hHeight + hHeight);
 
 			_copyArea.Reset();
 			_copyArea.AddLine(sel1, sel2);
@@ -138,16 +140,24 @@ namespace MapView.Forms.MapObservers.TopViews
 		private static Point GetDragEnd()
 		{
 			var e = new Point(0, 0);
-			e.X = Math.Max(MapViewPanel.Instance.MapView.DragStart.X, MapViewPanel.Instance.MapView.DragEnd.X);
-			e.Y = Math.Max(MapViewPanel.Instance.MapView.DragStart.Y, MapViewPanel.Instance.MapView.DragEnd.Y);
+			e.X = Math.Max(
+						MapViewPanel.Instance.MapView.DragStart.X,
+						MapViewPanel.Instance.MapView.DragEnd.X);
+			e.Y = Math.Max(
+						MapViewPanel.Instance.MapView.DragStart.Y,
+						MapViewPanel.Instance.MapView.DragEnd.Y);
 			return e;
 		}
 
 		private static Point GetDragStart()
 		{
 			var s = new Point(0, 0);
-			s.X = Math.Min(MapViewPanel.Instance.MapView.DragStart.X, MapViewPanel.Instance.MapView.DragEnd.X);
-			s.Y = Math.Min(MapViewPanel.Instance.MapView.DragStart.Y, MapViewPanel.Instance.MapView.DragEnd.Y);
+			s.X = Math.Min(
+						MapViewPanel.Instance.MapView.DragStart.X,
+						MapViewPanel.Instance.MapView.DragEnd.X);
+			s.Y = Math.Min(
+						MapViewPanel.Instance.MapView.DragStart.Y,
+						MapViewPanel.Instance.MapView.DragEnd.Y);
 			return s;
 		}
 
@@ -165,13 +175,20 @@ namespace MapView.Forms.MapObservers.TopViews
 
 			var hWidth = DrawContentService.HWidth;
 			var hHeight = DrawContentService.HHeight;
+
 			int xc = (pt.Col - pt.Row) * hWidth;
 			int yc = (pt.Col + pt.Row) * hHeight;
 
 			_selected.Reset();
-			_selected.AddLine(xc, yc, xc + hWidth, yc + hHeight);
-			_selected.AddLine(xc + hWidth, yc + hHeight, xc, yc + 2 * hHeight);
-			_selected.AddLine(xc, yc + 2 * hHeight, xc - hWidth, yc + hHeight);
+			_selected.AddLine(
+							xc, yc,
+							xc + hWidth, yc + hHeight);
+			_selected.AddLine(
+							xc + hWidth, yc + hHeight,
+							xc, yc + 2 * hHeight);
+			_selected.AddLine(
+							xc, yc + 2 * hHeight,
+							xc - hWidth, yc + hHeight);
 			_selected.CloseFigure();
 
 			ViewDrag(null, null);
@@ -189,28 +206,41 @@ namespace MapView.Forms.MapObservers.TopViews
 
 		private Point ConvertCoordsDiamond(int x, int y)
 		{
-			//int x = xp - offX; //16 is half the width of the diamond
-			//int y = yp - offY; //24 is the distance from the top of the diamond to the very top of the image
+//			int x = xp - offX; // 16 is half the width of the diamond
+//			int y = yp - offY; // 24 is the distance from the top of the diamond to the very top of the image
 
 			var hWidth = DrawContentService.HWidth;
 			var hHeight = DrawContentService.HHeight;
+
 			double x1 = (x * 1.0 / (2 * hWidth)) + (y * 1.0 / (2 * hHeight));
 			double x2 = -(x * 1.0 - 2 * y * 1.0) / (2 * hWidth);
-			 
-			return new Point((int)Math.Floor(x1), (int)Math.Floor(x2));
+
+			return new Point(
+						(int)Math.Floor(x1),
+						(int)Math.Floor(x2));
 		}
 
-		protected virtual void RenderCell(MapTileBase tile, Graphics g, int x, int y) { }
-
+		protected virtual void RenderCell(
+										MapTileBase tile,
+										Graphics g,
+										int x, int y)
+		{}
 
 		protected GraphicsPath CellPath(int xc, int yc)
 		{
 			var hWidth = DrawContentService.HWidth;
 			var hHeight = DrawContentService.HHeight ;
+
 			_cell.Reset();
-			_cell.AddLine(xc, yc, xc + hWidth, yc + hHeight);
-			_cell.AddLine(xc + hWidth, yc + hHeight, xc, yc + 2 * hHeight);
-			_cell.AddLine(xc, yc + 2 * hHeight, xc - hWidth, yc + hHeight);
+			_cell.AddLine(
+						xc, yc,
+						xc + hWidth, yc + hHeight);
+			_cell.AddLine(
+						xc + hWidth, yc + hHeight,
+						xc, yc + 2 * hHeight);
+			_cell.AddLine(
+						xc, yc + 2 * hHeight,
+						xc - hWidth, yc + hHeight);
 			_cell.CloseFigure();
 			return _cell;
 		}
@@ -221,15 +251,16 @@ namespace MapView.Forms.MapObservers.TopViews
 
 			var hWidth = DrawContentService.HWidth;
 			var hHeight = DrawContentService.HHeight;
+
 			if (map != null)
 			{
 				for (int row = 0, startX = _offX, startY = _offY;
-					row < map.MapSize.Rows;
-					row++, startX -= hWidth, startY += hHeight)
+						row < map.MapSize.Rows;
+						row++, startX -= hWidth, startY += hHeight)
 				{
 					for (int col = 0, x = startX, y = startY;
-						col < map.MapSize.Cols;
-						col++, x += hWidth, y += hHeight)
+							col < map.MapSize.Cols;
+							col++, x += hWidth, y += hHeight)
 					{
 						MapTileBase mapTile = map[row, col];
 
@@ -239,12 +270,20 @@ namespace MapView.Forms.MapObservers.TopViews
 				}
 
 				for (int i = 0; i <= map.MapSize.Rows; i++)
-					g.DrawLine(Pens["GridColor"], _offX - i * hWidth, _offY + i * hHeight,
-						((map.MapSize.Cols - i) * hWidth) + _offX, ((i + map.MapSize.Cols) * hHeight) + _offY);
+					g.DrawLine(
+							Pens["GridColor"],
+							_offX - i * hWidth,
+							_offY + i * hHeight,
+							((map.MapSize.Cols - i) * hWidth)  + _offX,
+							((map.MapSize.Cols + i) * hHeight) + _offY);
+
 				for (int i = 0; i <= map.MapSize.Cols; i++)
-					g.DrawLine(Pens["GridColor"], _offX + i * hWidth, _offY + i * hHeight,
-						(i * hWidth) - map.MapSize.Rows * hWidth + _offX,
-						(i * hHeight) + map.MapSize.Rows * hHeight + _offY);
+					g.DrawLine(
+							Pens["GridColor"],
+							_offX + i * hWidth,
+							_offY + i * hHeight,
+							(i * hWidth)  - map.MapSize.Rows * hWidth  + _offX,
+							(i * hHeight) + map.MapSize.Rows * hHeight + _offY);
 
 				if (_copyArea != null)
 					g.DrawPath(Pens["SelectColor"], _copyArea);
@@ -252,7 +291,10 @@ namespace MapView.Forms.MapObservers.TopViews
 //				if(selected!=null) //clicked on
 //					g.DrawPath(new Pen(Brushes.Blue,2),selected);
 
-				if (_mR < map.MapSize.Rows && _mC < map.MapSize.Cols && _mR >= 0 && _mC >= 0)
+				if (   _mR < map.MapSize.Rows
+					&& _mC < map.MapSize.Cols
+					&& _mR >= 0
+					&& _mC >= 0)
 				{
 					int xc = (_mC - _mR) * hWidth + _offX;
 					int yc = (_mC + _mR) * hHeight + _offY;
@@ -274,6 +316,7 @@ namespace MapView.Forms.MapObservers.TopViews
 		}
 
 		private bool _mDown = false;
+
 		protected override void OnMouseUp(MouseEventArgs e)
 		{
 			_mDown = false;
@@ -290,11 +333,9 @@ namespace MapView.Forms.MapObservers.TopViews
 				_mC = p.X;
 
 				if (_mDown)
-				{
 					MapViewPanel.Instance.MapView.SetDrag(
-						MapViewPanel.Instance.MapView.DragStart,
-						p);
-				}
+													MapViewPanel.Instance.MapView.DragStart,
+													p);
 				Refresh();
 			}
 		}

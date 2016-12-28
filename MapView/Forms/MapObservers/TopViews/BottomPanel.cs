@@ -9,7 +9,9 @@ using XCom.Interfaces.Base;
 
 namespace MapView.Forms.MapObservers.TopViews
 {
-	public class BottomPanel : Map_Observer_Control
+	public class BottomPanel
+		:
+		Map_Observer_Control
 	{
 		private XCMapTile _mapTile;
 		private MapLocation _lastLoc;
@@ -49,7 +51,11 @@ namespace MapView.Forms.MapObservers.TopViews
 		public SolidBrush SelectColor
 		{
 			get { return _drawService.Brush; }
-			set { _drawService.Brush = value; Refresh(); }
+			set
+			{
+				_drawService.Brush = value;
+				Refresh();
+			}
 		}
 
 		public XCMapTile.MapQuadrant SelectedQuadrant
@@ -64,19 +70,28 @@ namespace MapView.Forms.MapObservers.TopViews
 
 		public void SetSelected(MouseButtons btn, int clicks)
 		{
-			var tileView = MainWindowsManager.TileView.TileViewControl;
-			if (btn == MouseButtons.Right && _mapTile != null)
+			if (_mapTile != null)
 			{
-				if (clicks == 1)
-					_mapTile[SelectedQuadrant] = tileView.SelectedTile;
-				else if (clicks == 2)
-					_mapTile[SelectedQuadrant] = null;
+				if (btn == MouseButtons.Left)
+				{
+					if (clicks == 2)
+					{
+						var tileView = MainWindowsManager.TileView.TileViewControl;
+						tileView.SelectedTile = _mapTile[SelectedQuadrant];
+					}
+				}
+				else if (btn == MouseButtons.Right)
+				{
+					if (clicks == 1)
+					{
+						var tileView = MainWindowsManager.TileView.TileViewControl;
+						_mapTile[SelectedQuadrant] = tileView.SelectedTile;
+					}
+					else if (clicks == 2)
+						_mapTile[SelectedQuadrant] = null;
+				}
 			}
-			else if (btn == MouseButtons.Left && _mapTile != null)
-			{
-				if (clicks == 2)
-					tileView.SelectedTile = _mapTile[SelectedQuadrant];
-			}
+
 			map.MapChanged = true;
 			Refresh();
 		}
