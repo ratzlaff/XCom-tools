@@ -23,7 +23,9 @@ namespace MapView
 
 	public delegate void StringDelegate(object sender, string args);
 
-	public partial class MainWindow : Form
+	public partial class MainWindow
+		:
+		Form
 	{
 		private readonly SettingsManager _settingsManager;
 
@@ -57,20 +59,18 @@ namespace MapView
 			var sharedSpace = SharedSpace.Instance;
 			var consoleSharedSpace = new ConsoleSharedSpace(sharedSpace);
 			_warningHandler = new ConsoleWarningHandler(consoleSharedSpace);
-			 
+
 			MainWindowsManager.MainToolStripButtonsFactory = new MainToolStripButtonsFactory(_mapView);
 
 			_mainWindowsManager = new MainWindowsManager();
 			_mainWindowWindowsManager = new MainWindowWindowsManager(
-				_settingsManager, consoleSharedSpace);
+																_settingsManager,
+																consoleSharedSpace);
 
 			var settings = GetSettings();
 			_windowMenuManager.SetMenus(consoleSharedSpace.GetNewConsole(), settings);
 
-			MainWindowsManager.MainWindowsShowAllManager =
-				_windowMenuManager.CreateShowAll();
-
-
+			MainWindowsManager.MainWindowsShowAllManager = _windowMenuManager.CreateShowAll();
 			MainWindowsManager.Initialize();
 
 			sharedSpace.GetObj("MapView", this);
@@ -78,15 +78,16 @@ namespace MapView
 			sharedSpace.GetObj("CustomDir", Environment.CurrentDirectory + "\\custom");
 			sharedSpace.GetObj("SettingsDir", Environment.CurrentDirectory + "\\settings");
 
-			var pathsFile = new PathInfo(SharedSpace.Instance.GetString("SettingsDir"), "Paths", "pth");
-			var settingsFile = new PathInfo(SharedSpace.Instance.GetString("SettingsDir"), "MVSettings", "dat");
-			var mapeditFile = new PathInfo(SharedSpace.Instance.GetString("SettingsDir"), "MapEdit", "dat");
-			var imagesFile = new PathInfo(SharedSpace.Instance.GetString("SettingsDir"), "Images", "dat");
+			var pathsFile		= new PathInfo(SharedSpace.Instance.GetString("SettingsDir"), "Paths",		"pth");
+			var settingsFile	= new PathInfo(SharedSpace.Instance.GetString("SettingsDir"), "MVSettings",	"dat");
+			var mapeditFile		= new PathInfo(SharedSpace.Instance.GetString("SettingsDir"), "MapEdit",	"dat");
+			var imagesFile		= new PathInfo(SharedSpace.Instance.GetString("SettingsDir"), "Images",		"dat");
 
 			sharedSpace.GetObj("MV_PathsFile", pathsFile);
 			sharedSpace.GetObj(SettingsService.FILE_NAME, settingsFile);
 			sharedSpace.GetObj("MV_MapEditFile", mapeditFile);
 			sharedSpace.GetObj("MV_ImagesFile", imagesFile);
+
 			#endregion
 
 			if (!pathsFile.Exists())
@@ -103,7 +104,7 @@ namespace MapView
 			LogFile.Instance.WriteLine("GameInfo.Init done");
 
 			_mainWindowWindowsManager.Register();
-			 
+
 			MainWindowsManager.TileView.TileViewControl.MapChanged += TileView_MapChanged;
 
 			LogFile.Instance.WriteLine("Palette transparencies set");
@@ -122,20 +123,30 @@ namespace MapView
 			toolStrip.Items.Add(new ToolStripSeparator());
 
 			LogFile.Instance.WriteLine("Main view window created");
-
 			LogFile.Instance.WriteLine("Default settings loaded");
 
 			try
 			{
-				_mapView.MapView.CursorSprite = new CursorSprite(GameInfo.CachePck(SharedSpace.Instance.GetString("cursorFile"), "", 4, Palette.TFTDBattle));
+				_mapView.MapView.CursorSprite = new CursorSprite(GameInfo.CachePck(
+																				SharedSpace.Instance.GetString("cursorFile"),
+																				"",
+																				4,
+																				Palette.TFTDBattle));
 			}
 			catch
 			{
 				try
 				{
-					_mapView.MapView.CursorSprite = new CursorSprite(GameInfo.CachePck(SharedSpace.Instance.GetString("cursorFile"), "", 2, Palette.UFOBattle));
+					_mapView.MapView.CursorSprite = new CursorSprite(GameInfo.CachePck(
+																				SharedSpace.Instance.GetString("cursorFile"),
+																				"",
+																				2,
+																				Palette.UFOBattle));
 				}
-				catch { _mapView.Cursor = null; }
+				catch
+				{
+					_mapView.Cursor = null;
+				}
 			}
 
 			LogFile.Instance.WriteLine("Cursor loaded");
@@ -143,7 +154,6 @@ namespace MapView
 			initList();
 
 			LogFile.Instance.WriteLine("Map list created");
-			 
 			LogFile.Instance.WriteLine("Quick help and About created");
 
 			if (settingsFile.Exists())
@@ -162,29 +172,30 @@ namespace MapView
 			_lf = new LoadingForm();
 			Bmp.LoadingEvent += _lf.Update;
 
-			//I should rewrite the hq2x wrapper for .net sometime (not the code, its pretty insane)
-			//if(!File.Exists("hq2xa.dll"))
+			// I should rewrite the hq2x wrapper for .NET sometime -- not the code it's pretty insane
+//			if (!File.Exists("hq2xa.dll"))
 			miHq.Visible = false;
-			//LogFile.Instance.WriteLine("Loading user-made plugins");
+
+//			LogFile.Instance.WriteLine("Loading user-made plugins");
 
 			/****************************************/
-			//Copied from pckview
-			//loadedTypes = new LoadOfType<IMapDesc>();
-			//sharedSpace["MapMods"] = loadedTypes.AllLoaded;
+			// Copied from PckView
+//			loadedTypes = new LoadOfType<IMapDesc>();
+//			sharedSpace["MapMods"] = loadedTypes.AllLoaded;
 
-			//There are no currently loadable maps in this assembly so this is more for future use
-			//loadedTypes.LoadFrom(Assembly.GetAssembly(typeof(XCom.Interfaces.Base.IMapDesc)));
+			// There are no currently loadable maps in this assembly so this is more for future use
+//			loadedTypes.LoadFrom(Assembly.GetAssembly(typeof(XCom.Interfaces.Base.IMapDesc)));
 
-			//if (Directory.Exists(sharedSpace["CustomDir"].ToString()))
-			//{
-			//	xConsole.AddLine("Custom directory exists: " + sharedSpace["CustomDir"].ToString());
-			//	foreach (string s in Directory.GetFiles(sharedSpace["CustomDir"].ToString()))
-			//		if (s.EndsWith(".dll"))
-			//		{
-			//			xConsole.AddLine("Loading dll: " + s);
-			//			loadedTypes.LoadFrom(Assembly.LoadFrom(s));
-			//		}
-			//}
+//			if (Directory.Exists(sharedSpace["CustomDir"].ToString()))
+//			{
+//				xConsole.AddLine("Custom directory exists: " + sharedSpace["CustomDir"].ToString());
+//				foreach (string s in Directory.GetFiles(sharedSpace["CustomDir"].ToString()))
+//					if (s.EndsWith(".dll"))
+//					{
+//						xConsole.AddLine("Loading dll: " + s);
+//						loadedTypes.LoadFrom(Assembly.LoadFrom(s));
+//					}
+//			}
 			/****************************************/
 
 			LogFile.Instance.WriteLine("About to show window");
@@ -198,6 +209,7 @@ namespace MapView
 		}
 
 		private static MainWindow instance;
+
 		public static MainWindow Instance
 		{
 			get { return instance; }
@@ -213,6 +225,7 @@ namespace MapView
 					else
 						SharedSpace.Instance.GetObj("cursorFile", line.Rest + "\\CURSOR");
 					break;
+
 				case "logfile":
 					try
 					{
@@ -232,46 +245,71 @@ namespace MapView
 			switch (key)
 			{
 				case "Animation":
-					bool animVal = (bool)val;
-					onItem.Checked = animVal;
-					offItem.Checked = !animVal;
+					onItem.Checked = (bool)val;
+					offItem.Checked = !onItem.Checked;
 
-					if ((bool)val)
+					if (onItem.Checked)
 						MapViewPanel.Start();
 					else
 						MapViewPanel.Stop();
 					break;
+
 				case "Doors":
 					if (MapViewPanel.Instance.Map != null)
 					{
 						if ((bool)val)
+						{
 							foreach (XCTile t in MapViewPanel.Instance.Map.Tiles)
 							{
 								if (t.Info.UFODoor || t.Info.HumanDoor)
 									t.MakeAnimate();
 							}
+						}
 						else
+						{
 							foreach (XCTile t in MapViewPanel.Instance.Map.Tiles)
 								if (t.Info.UFODoor || t.Info.HumanDoor)
 									t.StopAnimate();
+						}
 					}
 					break;
-				case "SaveWindowPositions": PathsEditor.SaveRegistry = (bool)val; break;
-				case "UseGrid": MapViewPanel.Instance.MapView.UseGrid = (bool)val; break;
-				case "GridColor": MapViewPanel.Instance.MapView.GridColor = (Color)val; break;
-				case "GridLineColor": MapViewPanel.Instance.MapView.GridLineColor = (Color)val; break;
-				case "GridLineWidth": MapViewPanel.Instance.MapView.GridLineWidth = (int)val; break;
+
+				case "SaveWindowPositions":
+					PathsEditor.SaveRegistry = (bool)val;
+					break;
+
+				case "UseGrid":
+					MapViewPanel.Instance.MapView.UseGrid = (bool)val;
+					break;
+
+				case "GridColor":
+					MapViewPanel.Instance.MapView.GridColor = (Color)val;
+					break;
+
+				case "GridLineColor":
+					MapViewPanel.Instance.MapView.GridLineColor = (Color)val;
+					break;
+
+				case "GridLineWidth":
+					MapViewPanel.Instance.MapView.GridLineWidth = (int)val;
+					break;
 			}
 		}
 
-		private class SortableTreeNode : TreeNode,IComparable
+		private class SortableTreeNode
+			:
+			TreeNode,
+			IComparable
 		{
-			public SortableTreeNode(string text) : base(text) { }
+			public SortableTreeNode(string text)
+				:
+				base(text){}
 
 			public int CompareTo(object other)
 			{
 				if (other is SortableTreeNode)
 					return Text.CompareTo(((SortableTreeNode)other).Text);
+
 				return -1;
 			}
 		}
@@ -305,6 +343,7 @@ namespace MapView
 		private void initList()
 		{
 			mapList.Nodes.Clear();
+
 			foreach (string key in GameInfo.TilesetInfo.Tilesets.Keys)
 				AddTileset(GameInfo.TilesetInfo.Tilesets[key]);
 		}
@@ -314,34 +353,35 @@ namespace MapView
 			if (NotifySave() == DialogResult.Cancel)
 			{
 				e.Cancel = true;
-				return;
 			}
-
-			_windowMenuManager.Dispose();
-
-			if (PathsEditor.SaveRegistry)
+			else
 			{
-				RegistryKey swKey = Registry.CurrentUser.CreateSubKey("Software");
-				RegistryKey mvKey = swKey.CreateSubKey("MapView");
-				RegistryKey riKey = mvKey.CreateSubKey("MainView");
+				_windowMenuManager.Dispose();
 
-				_mainWindowWindowsManager.CloseAll();
+				if (PathsEditor.SaveRegistry)
+				{
+					RegistryKey swKey = Registry.CurrentUser.CreateSubKey("Software");
+					RegistryKey mvKey = swKey.CreateSubKey("MapView");
+					RegistryKey riKey = mvKey.CreateSubKey("MainView");
 
-				WindowState = FormWindowState.Normal;
-				riKey.SetValue("Left", Left);
-				riKey.SetValue("Top", Top);
-				riKey.SetValue("Width", Width);
-				riKey.SetValue("Height", Height - 19);
+					_mainWindowWindowsManager.CloseAll();
 
-				//				riKey.SetValue("Animation",onItem.Checked.ToString());
-				//				riKey.SetValue("Doors",miDoors.Checked.ToString());
+					WindowState = FormWindowState.Normal;
+					riKey.SetValue("Left", Left);
+					riKey.SetValue("Top", Top);
+					riKey.SetValue("Width", Width);
+					riKey.SetValue("Height", Height - 19);
 
-				riKey.Close();
-				mvKey.Close();
-				swKey.Close();
+//					riKey.SetValue("Animation",onItem.Checked.ToString());
+//					riKey.SetValue("Doors",miDoors.Checked.ToString());
+
+					riKey.Close();
+					mvKey.Close();
+					swKey.Close();
+				}
+
+				_settingsManager.Save();
 			}
-
-			_settingsManager.Save();
 		}
 
 		private void loadDefaults()
@@ -350,27 +390,76 @@ namespace MapView
 			RegistryKey mvKey = swKey.CreateSubKey("MapView");
 			RegistryKey riKey = mvKey.CreateSubKey("MainView");
 
-			Left = (int)riKey.GetValue("Left", Left);
-			Top = (int)riKey.GetValue("Top", Top);
-			Width = (int)riKey.GetValue("Width", Width);
-			Height = (int)riKey.GetValue("Height", Height);
+			Left	= (int)riKey.GetValue("Left", Left);
+			Top		= (int)riKey.GetValue("Top", Top);
+			Width	= (int)riKey.GetValue("Width", Width);
+			Height	= (int)riKey.GetValue("Height", Height);
 
 			riKey.Close();
 			mvKey.Close();
 			swKey.Close();
 
 			var settings = new Settings();
-			//Color.FromArgb(175,69,100,129)
+
+//			Color.FromArgb(175,69,100,129)
+
 			var eh = new ValueChangedDelegate(ChangeSetting);
-			settings.AddSetting("Animation", MapViewPanel.Updating, "If true, the map will animate itself", "Main", eh, false, null);
-			settings.AddSetting("Doors", false, "If true, the door tiles will animate themselves", "Main", eh, false, null);
-			settings.AddSetting("SaveWindowPositions", PathsEditor.SaveRegistry, "If true, the window positions and sizes will be saved in the windows registry", "Main", eh, false, null);
-			settings.AddSetting("UseGrid", MapViewPanel.Instance.MapView.UseGrid, "If true, a grid will show up at the current level of editing", "MapView", null, true, MapViewPanel.Instance.MapView);
-			settings.AddSetting("GridColor", MapViewPanel.Instance.MapView.GridColor, "Color of the grid in (a,r,g,b) format", "MapView", null, true, MapViewPanel.Instance.MapView);
-			settings.AddSetting("GridLineColor", MapViewPanel.Instance.MapView.GridLineColor, "Color of the lines that make up the grid", "MapView", null, true, MapViewPanel.Instance.MapView);
-			settings.AddSetting("GridLineWidth", MapViewPanel.Instance.MapView.GridLineWidth, "Width of the grid lines in pixels", "MapView", null, true, MapViewPanel.Instance.MapView);
-			settings.AddSetting("SelectGrayscale", MapViewPanel.Instance.MapView.SelectGrayscale, "If true, the selection area will show up in gray", "MapView", null, true, MapViewPanel.Instance.MapView);
-			//settings.AddSetting("SaveOnExit",true,"If true, these settings will be saved on program exit","Main",null,false,null);
+
+			settings.AddSetting(
+							"Animation",
+							MapViewPanel.Updating,
+							"If true the map will animate itself",
+							"Main",
+							eh, false, null);
+			settings.AddSetting(
+							"Doors",
+							false,
+							"If true the door tiles will animate themselves",
+							"Main",
+							eh, false, null);
+			settings.AddSetting(
+							"SaveWindowPositions",
+							PathsEditor.SaveRegistry,
+							"If true the window positions and sizes will be saved in the windows registry",
+							"Main",
+							eh, false, null);
+			settings.AddSetting(
+							"UseGrid",
+							MapViewPanel.Instance.MapView.UseGrid,
+							"If true a grid will show up at the current level of editing",
+							"MapView",
+							null, true, MapViewPanel.Instance.MapView);
+			settings.AddSetting(
+							"GridColor",
+							MapViewPanel.Instance.MapView.GridColor,
+							"Color of the grid in (a,r,g,b) format",
+							"MapView",
+							null, true, MapViewPanel.Instance.MapView);
+			settings.AddSetting(
+							"GridLineColor",
+							MapViewPanel.Instance.MapView.GridLineColor,
+							"Color of the lines that make up the grid",
+							"MapView",
+							null, true, MapViewPanel.Instance.MapView);
+			settings.AddSetting(
+							"GridLineWidth",
+							MapViewPanel.Instance.MapView.GridLineWidth,
+							"Width of the grid lines in pixels",
+							"MapView",
+							null, true, MapViewPanel.Instance.MapView);
+			settings.AddSetting(
+							"SelectGrayscale",
+							MapViewPanel.Instance.MapView.SelectGrayscale,
+							"If true the selection area will show up in gray",
+							"MapView",
+							null, true, MapViewPanel.Instance.MapView);
+//			settings.AddSetting(
+//							"SaveOnExit",
+//							true,
+//							"If true these settings will be saved on program exit",
+//							"Main",
+//							null, false, null);
+
 			SetSettings(settings);
 		}
 
@@ -420,26 +509,21 @@ namespace MapView
 			initList();
 		}
 
-
 		private void mapList_BeforeSelect(object sender, TreeViewCancelEventArgs e)
 		{
 			if (NotifySave() == DialogResult.Cancel)
 			{
 				e.Cancel = true;
-				return;
 			}
-
-			// make old selected not bold
-			if (mapList.SelectedNode != null)
+			else if (mapList.SelectedNode != null)
 			{
-				mapList.SelectedNode.BackColor = Color.Transparent ;
+				mapList.SelectedNode.BackColor = Color.Transparent ; // make old selected not bold
 			}
 		}
 
 		private void mapList_AfterSelect(object sender, TreeViewEventArgs e)
 		{
-			// Make selected bold
-			mapList.SelectedNode.BackColor = Color.Gold;
+			mapList.SelectedNode.BackColor = Color.Gold; // make selected bold
 
 			LoadSelectedNodeMap();
 		}
@@ -458,64 +542,61 @@ namespace MapView
 
 				var xcTileFactory = new XcTileFactory();
 				xcTileFactory.HandleWarning += _warningHandler.HandleWarning;
+
 				var mapService = new XcMapFileService(xcTileFactory);
+
 				var map = mapService.Load(imd as XCMapDesc);
 				_mapView.SetMap(map);
+
 				toolStrip.Enabled = true;
 
 				var rmpService = new RmpService();
 				rmpService.ReviewRouteEntries(map);
 
-				statusMapName.Text = "Map:" + imd.Name;
+				statusMapName.Text = "Map: " + imd.Name;
+
 				if (map != null)
 				{
 					tsMapSize.Text = "Size: " + map.MapSize;
 				}
 				else
 				{
-					tsMapSize.Text = "Size: Unknown";
+					tsMapSize.Text = "Size: n/a";
 				}
 
-				//turn off door animations
-				if (miDoors.Checked)
+				if (miDoors.Checked) // turn off door animations
 				{
 					miDoors.Checked = false;
 					miDoors_Click(null, null);
 				}
 
-				//open all the forms in the show menu once
-				if (!showMenu.Enabled)
-				{
+				if (!showMenu.Enabled) // open all the forms in the show menu once
 					_windowMenuManager.LoadState();
-				}
 
-				//Reset all observer events
-				_mainWindowsManager.SetMap(map);
+				_mainWindowsManager.SetMap(map); // reset all observer events
 			}
 			else
-			{
 				miExport.Enabled = false;
-			}
 		}
 
 		public DialogResult NotifySave()
 		{
 			if (_mapView.Map != null && _mapView.Map.MapChanged)
 			{
-				switch (
-					MessageBox.Show(this, "Map changed, do you wish to save?", "Save map?",
+				switch (MessageBox.Show(this, "Map changed, do you wish to save?", "Save map?",
 						MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1))
 				{
-					case DialogResult.No: //dont save
+					case DialogResult.No:		// don't save
 						break;
-					case DialogResult.Yes: //save
+
+					case DialogResult.Yes:		// save
 						_mapView.Map.Save();
 						break;
-					case DialogResult.Cancel: //do nothing
+
+					case DialogResult.Cancel:	// do nothing
 						return DialogResult.Cancel;
 				}
 			}
-
 			return DialogResult.OK;
 		}
 
@@ -572,14 +653,20 @@ namespace MapView
 
 		private void miResize_Click(object sender, System.EventArgs e)
 		{
-			if (_mapView.MapView.Map == null) return;
-			using (var cmf = new ChangeMapSizeForm())
+			if (_mapView.MapView.Map != null)
 			{
-				cmf.Map = _mapView.MapView.Map;
-				if (cmf.ShowDialog(this) == DialogResult.OK)
+				using (var cmf = new ChangeMapSizeForm())
 				{
-					cmf.Map.ResizeTo(cmf.NewRows, cmf.NewCols, cmf.NewHeight, cmf.AddHeightToCelling);
-					_mapView.ForceResize();
+					cmf.Map = _mapView.MapView.Map;
+					if (cmf.ShowDialog(this) == DialogResult.OK)
+					{
+						cmf.Map.ResizeTo(
+									cmf.NewRows,
+									cmf.NewCols,
+									cmf.NewHeight,
+									cmf.AddHeightToCelling);
+						_mapView.ForceResize();
+					}
 				}
 			}
 		}
@@ -591,9 +678,11 @@ namespace MapView
 			if (!windowFlag)
 			{
 				windowFlag = true;
+
 				foreach (MenuItem mi in showMenu.MenuItems)
 					if (mi.Checked)
 						((Form)mi.Tag).BringToFront();
+
 				Focus();
 				BringToFront();
 				windowFlag = false;
@@ -602,35 +691,36 @@ namespace MapView
 
 		private void miInfo_Click(object sender, System.EventArgs e)
 		{
-			if (_mapView.Map == null) return;
-			var mif = new MapInfoForm();
-			mif.Show();
-			mif.Map = _mapView.Map;
+			if (_mapView.Map != null)
+			{
+				var mif = new MapInfoForm();
+				mif.Show();
+				mif.Map = _mapView.Map;
+			}
 		}
-
 
 		private void miExport_Click(object sender, EventArgs e)
 		{
-			//if (mapList.SelectedNode.Parent == null)//top level node - bad
-			//	throw new Exception("miExport_Click: Should not be here");
-
-			//ExportForm ef = new ExportForm();
-			//List<string> maps = new List<string>();
-			//if (mapList.SelectedNode.Parent.Parent == null)//tileset
-			//	foreach (TreeNode tn in mapList.SelectedNode.Nodes)
-			//		maps.Add(tn.Text);
-			//else //map
-			//	maps.Add(mapList.SelectedNode.Text);
-			//ef.Maps = maps;
-
-
-			//ef.ShowDialog();
+//			if (mapList.SelectedNode.Parent == null) // top level node - bad
+//				throw new Exception("miExport_Click: Should not be here");
+//
+//			ExportForm ef = new ExportForm();
+//			List<string> maps = new List<string>();
+//
+//			if (mapList.SelectedNode.Parent.Parent == null)//tileset
+//			{
+//				foreach (TreeNode tn in mapList.SelectedNode.Nodes)
+//					maps.Add(tn.Text);
+//			}
+//			else // map
+//				maps.Add(mapList.SelectedNode.Text);
+//
+//			ef.Maps = maps;
+//			ef.ShowDialog();
 		}
 
 		private void miOpen_Click(object sender, EventArgs e)
-		{
-
-		}
+		{}
 
 		private void SetSettings(Settings settings)
 		{
@@ -655,8 +745,11 @@ namespace MapView
 				Globals.PckImageScale += 0.125;
 				Globals.AutoPckImageScale = false;
 				AutoZoomButton.Checked = false;
+
 				_mapView.SetupMapSize();
+
 				Refresh();
+
 				_mapView.OnResize();
 			}
 		}
@@ -668,8 +761,11 @@ namespace MapView
 				Globals.PckImageScale -= 0.125;
 				Globals.AutoPckImageScale = false;
 				AutoZoomButton.Checked = false;
+
 				_mapView.SetupMapSize();
+
 				Refresh();
+
 				_mapView.OnResize();
 			}
 		}
@@ -677,13 +773,16 @@ namespace MapView
 		private void AutoZoomButton_Click(object sender, EventArgs e)
 		{
 			Globals.AutoPckImageScale = !Globals.AutoPckImageScale;
+
 			if (!Globals.AutoPckImageScale)
-			{
 				Globals.PckImageScale = 1;
-			}
+
 			AutoZoomButton.Checked = !AutoZoomButton.Checked;
+
 			_mapView.SetupMapSize();
+
 			Refresh();
+
 			_mapView.OnResize();
 		}
 	}
