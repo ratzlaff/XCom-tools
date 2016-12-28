@@ -4,32 +4,32 @@
  *
 	Windows Forms Collapsible Splitter Control for .Net
 	(c)Copyright 2002-2003 NJF (furty74@yahoo.com). All rights reserved.
-	
+
 	Assembly Build Dependencies:
 	CollapsibleSplitter.bmp
-	
+
 	Version 1.1 Changes:
 	OnPaint is now overridden instead of being a handled event, and the entire splitter is now painted rather than just the collpaser control
 	The splitter rectangle is now correctly defined
 	The Collapsed property was renamed to IsCollapsed, and the code changed so that no value needs to be set
 	New visual styles added: Win9x, XP, DoubleDots and Lines
-	
+
 	Version 1.11 Changes:
 	The OnMouseMove event handler was updated to address a flickering issue discovered by John O'Byrne
-	
+
 	Version 1.2 Changes:
 	Added support for horizontal splitters
-	
+
 	Version 1.21 Changes:
 	Added support for inclusion as a VS.Net ToolBox control
 	Added a ToolBox bitmap
 	Removed extraneous overrides
 	Added summaries
-	
+
 	Version 1.22 Changes:
 	Removed the ParentFolder from public properties - this is now set automatically in the OnHandleCreated event
 	*Added expand/collapse animation code
-	
+
 	Version 1.3 Changes:
 	Added an optional 3D border
 	General code and comment cleaning
@@ -38,13 +38,13 @@
 */
 
 /*
-  My Changes (well that was relevant..)
-  -added new Dock property
-  changed VisualStyles to DotStyles
-  changed drawing logic
-  cached pens and brushes so they arent created over and over in drawing method
-  turned some events (all?) into overrides
- */
+My Changes (well that was relevant..)
+-added new Dock property
+changed VisualStyles to DotStyles
+changed drawing logic
+cached pens and brushes so they arent created over and over in drawing method
+turned some events (all?) into overrides
+*/
 #endregion
 using System;
 using System.ComponentModel;
@@ -977,14 +977,14 @@ namespace DSShared.Windows
 
 			Color frontColor = Color.FromArgb(255, front);
 			Color backColor = Color.FromArgb(255, back);
-										
+
 			float frontRed = frontColor.R;
 			float frontGreen = frontColor.G;
 			float frontBlue = frontColor.B;
 			float backRed = backColor.R;
 			float backGreen = backColor.G;
 			float backBlue = backColor.B;
-				
+
 			float fRed = frontRed*alpha/255 + backRed*((float)(255-alpha)/255);
 			byte newRed = (byte)fRed;
 			float fGreen = frontGreen*alpha/255 + backGreen*((float)(255-alpha)/255);
@@ -992,9 +992,9 @@ namespace DSShared.Windows
 			float fBlue = frontBlue*alpha/255 + backBlue*((float)(255-alpha)/255);
 			byte newBlue = (byte)fBlue;
 
-			return  Color.FromArgb(newRed, newGreen, newBlue);
+			return Color.FromArgb(newRed, newGreen, newBlue);
 		}
-			
+
 		#endregion
 	}
 

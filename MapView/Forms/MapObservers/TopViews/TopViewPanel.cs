@@ -17,11 +17,8 @@ namespace MapView.Forms.MapObservers.TopViews
 		}
 
 		public ToolStripMenuItem Ground { get; set; }
-
 		public ToolStripMenuItem North { get; set; }
-
 		public ToolStripMenuItem West { get; set; }
-
 		public ToolStripMenuItem Content { get; set; }
 
 		public BottomPanel BottomPanel { get; set; }

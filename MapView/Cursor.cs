@@ -5,7 +5,14 @@ using XCom;
 
 namespace MapView
 {
-	public enum CursorState{Select,Aim,SelectMControl,Waypoint,Throw};
+	public enum CursorState
+	{
+		Select,
+		Aim,
+		SelectMControl,
+		Waypoint,
+		Throw
+	};
 
 	public class CursorSprite
 	{
@@ -23,8 +30,8 @@ namespace MapView
 
 		public CursorState State
 		{
-			get{return state;}
-			set{state=value;}
+			get { return state; }
+			set { state=value; }
 		}
 
 		public PckFile PckFile
@@ -46,8 +53,12 @@ namespace MapView
 			{
 				image = cursorFile[2].Image;
 			}
-			g.DrawImage(image, x, y,
-				(int)(image.Width * Globals.PckImageScale), (int)(image.Height * Globals.PckImageScale));
+
+			g.DrawImage(
+					image,
+					x, y,
+					(int)(image.Width  * Globals.PckImageScale),
+					(int)(image.Height * Globals.PckImageScale));
 		}
 
 		public void DrawLow(Graphics g, int x, int y, int i,bool over,bool top)
@@ -59,20 +70,23 @@ namespace MapView
 					image = cursorFile[4].Image;
 				else
 					image = cursorFile[3].Image;
+
 				switch(state)
 				{
 					case CursorState.SelectMControl:
 						image = cursorFile[11 + i % 2].Image;
 						break;
+
 					case CursorState.Throw:
 						image = cursorFile[15 + i % 2].Image;
 						break;
+
 					case CursorState.Waypoint:
 						image = cursorFile[13 + i % 2].Image;
 						break;
 				}
 			}
-			else if(top) //top and aim
+			else if (top) // top and aim
 			{
 				image = cursorFile[7 + i % 4].Image;
 			}
@@ -80,8 +94,12 @@ namespace MapView
 			{
 				image = cursorFile[5].Image;
 			}
-			g.DrawImage(image, x, y,
-				(int)(image.Width * Globals.PckImageScale), (int)(image.Height * Globals.PckImageScale));
+
+			g.DrawImage(
+					image,
+					x, y,
+					(int)(image.Width  * Globals.PckImageScale),
+					(int)(image.Height * Globals.PckImageScale));
 		}
 	}
 }

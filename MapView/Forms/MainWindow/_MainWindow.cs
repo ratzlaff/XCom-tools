@@ -517,13 +517,13 @@ namespace MapView
 			}
 			else if (mapList.SelectedNode != null)
 			{
-				mapList.SelectedNode.BackColor = Color.Transparent ; // make old selected not bold
+				mapList.SelectedNode.BackColor = Color.Silver; // (de)colorize background-field of current mapname in Maps tree
 			}
 		}
 
 		private void mapList_AfterSelect(object sender, TreeViewEventArgs e)
 		{
-			mapList.SelectedNode.BackColor = Color.Gold; // make selected bold
+			mapList.SelectedNode.BackColor = Color.Gold; // colorize background-field of current mapname in Maps tree
 
 			LoadSelectedNodeMap();
 		}

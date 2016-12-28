@@ -288,8 +288,8 @@ namespace MapView.Forms.MapObservers.TopViews
 				if (_copyArea != null)
 					g.DrawPath(Pens["SelectColor"], _copyArea);
 
-//				if(selected!=null) //clicked on
-//					g.DrawPath(new Pen(Brushes.Blue,2),selected);
+//				if (selected != null) // clicked on
+//					g.DrawPath(new Pen(Brushes.Blue, 2), selected);
 
 				if (   _mR < map.MapSize.Rows
 					&& _mC < map.MapSize.Cols
@@ -307,12 +307,14 @@ namespace MapView.Forms.MapObservers.TopViews
 
 		protected override void OnMouseDown(MouseEventArgs e)
 		{
-			if (map == null) return;
-			var p = ConvertCoordsDiamond(e.X - _offX, e.Y - _offY );
-			map.SelectedTile = new MapLocation(p.Y, p.X, map.CurrentHeight);
-			_mDown = true;
+			if (map != null)
+			{
+				var p = ConvertCoordsDiamond(e.X - _offX, e.Y - _offY );
+				map.SelectedTile = new MapLocation(p.Y, p.X, map.CurrentHeight);
+				_mDown = true;
 
-			MapViewPanel.Instance.MapView.SetDrag(p, p);
+				MapViewPanel.Instance.MapView.SetDrag(p, p);
+			}
 		}
 
 		private bool _mDown = false;
