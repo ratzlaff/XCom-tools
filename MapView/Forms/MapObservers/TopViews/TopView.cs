@@ -27,7 +27,7 @@ namespace MapView.Forms.MapObservers.TopViews
 
 			SuspendLayout();
 			_topViewPanel = new TopViewPanel();
-			_topViewPanel.Width = 100;
+			_topViewPanel.Width  = 100;
 			_topViewPanel.Height = 100;
 
 			center.AutoScroll = true;

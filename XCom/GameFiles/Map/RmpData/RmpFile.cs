@@ -15,13 +15,13 @@ using System.Collections;
 // unknown6 = Medic,Navigator,Soldier,Terrorist
 
 	/*
-		TFTD ---- UFO
-		Commander ---- Commander
-		Navigator ---- Leader
-		Medic ---- Engineer
-		Technition ---- Medic
-		SquadLeader ---- Navigator
-		Soldier ---- Soldier
+		UFO			TFTD
+		Commander	Commander
+		Leader		Navigator
+		Engineer	Medic
+		Medic		Technition
+		Navigator	SquadLeader
+		Soldier		Soldier
 	*/
 
 #region about the RMP file
@@ -88,7 +88,8 @@ observed
 #endregion
 namespace XCom
 {
-	public enum UnitType : byte
+	public enum UnitType
+		: byte
 	{
 		Any = 0,
 		Flying,
@@ -97,7 +98,8 @@ namespace XCom
 		Large
 	};
 
-	public enum UnitRankUFO : byte
+	public enum UnitRankUFO
+		: byte
 	{
 		Civilian = 0,
 		XCom,
@@ -110,7 +112,8 @@ namespace XCom
 		Misc2
 	};
 
-	public enum UnitRankTFTD : byte
+	public enum UnitRankTFTD
+		: byte
 	{
 		Civilian = 0,
 		XCom,
@@ -123,7 +126,8 @@ namespace XCom
 		Misc2
 	};
 
-	public enum SpawnUsage : byte
+	public enum SpawnUsage
+		: byte
 	{
 		NoSpawn	= 0,
 		Spawn1	= 1,
@@ -138,7 +142,8 @@ namespace XCom
 		Spawn10	= 10
 	};
 
-	public enum NodeImportance : byte
+	public enum NodeImportance
+		: byte
 	{
 		Zero = 0,
 		One,
@@ -153,7 +158,8 @@ namespace XCom
 		Ten
 	};
 
-	public enum BaseModuleAttack : byte
+	public enum BaseModuleAttack
+		: byte
 	{
 		Zero = 0,
 		One,
@@ -168,7 +174,8 @@ namespace XCom
 		Ten
 	};
 
-	public enum LinkTypes : byte
+	public enum LinkTypes
+		: byte
 	{
 		NotUsed		= 0xFF,
 		ExitNorth	= 0xFE,
@@ -302,10 +309,15 @@ namespace XCom
 				for (int i = 0; i < 5; i++)
 				{
 					var l = rr[i];
+
 					if (l.Index == oldIdx)
+					{
 						l.Index = Link.NOT_USED;
+					}
 					else if (l.Index > oldIdx && l.Index < 0xFB)
+					{
 						l.Index--;
+					}
 				}
 			}
 		}

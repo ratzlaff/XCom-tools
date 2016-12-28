@@ -17,7 +17,9 @@ namespace MapView.Forms.MapObservers.RmpViews
 		Soldier		Soldier
 	*/
 
-	public partial class RmpView : MapObserverControl
+	public partial class RmpView
+		:
+		MapObserverControl
 	{
 		private readonly RmpPanel _rmpPanel;
 
@@ -741,11 +743,11 @@ namespace MapView.Forms.MapObservers.RmpViews
 
 		private void cbUsage_SelectedIndexChanged(object sender, EventArgs e)
 		{
-			_currEntry.Spawn = (SpawnUsage) ((StrEnum) cbUsage.SelectedItem).Enum;
+			_currEntry.Spawn = (SpawnUsage)((StrEnum) cbUsage.SelectedItem).Enum;
 			Refresh();
 		}
 
-		public override void LoadDefaultSettings( )
+		public override void LoadDefaultSettings()
 		{
 			var brushes = _rmpPanel.MapBrushes;
 			var pens = _rmpPanel.MapPens;
@@ -926,16 +928,22 @@ namespace MapView.Forms.MapObservers.RmpViews
 		 
 		private void RemoveSelected()
 		{
-			if (_currEntry == null) return;
-			_map.Rmp.RemoveEntry(_currEntry);
-			((XCMapTile)_map[_currEntry.Row, _currEntry.Col, _currEntry.Height]).Rmp = null;
-			_map.MapChanged = true;
-			ClearSelected();
-			gbNodeInfo.Enabled = false;
-			groupBox1.Enabled = false;
-			groupBox2.Enabled = false;
-			LinkGroupBox.Enabled = false;
-			Refresh();
+			if (_currEntry != null)
+			{
+				_map.Rmp.RemoveEntry(_currEntry);
+				((XCMapTile)_map[_currEntry.Row, _currEntry.Col, _currEntry.Height]).Rmp = null;
+
+				_map.MapChanged = true;
+
+				ClearSelected();
+
+				gbNodeInfo.Enabled = false;
+				groupBox1.Enabled = false;
+				groupBox2.Enabled = false;
+				LinkGroupBox.Enabled = false;
+
+				Refresh();
+			}
 		}
 
 		private void RmpView_KeyDown(object sender, KeyEventArgs e)
@@ -963,7 +971,8 @@ namespace MapView.Forms.MapObservers.RmpViews
 				HeightDifTextbox.Text = _map.Rmp.ExtraHeight.ToString();
 			}
 
-			if (!_loadingMap) _map.MapChanged = true;
+			if (!_loadingMap)
+				_map.MapChanged = true;
 		}
 
 		private void makeAllNodeRank0ToolStripMenuItem_Click(object sender, EventArgs e)
@@ -993,6 +1002,11 @@ namespace MapView.Forms.MapObservers.RmpViews
 							MessageBoxButtons.OK,
 							MessageBoxIcon.Warning);
 			}
+		}
+		
+		void _contentPanePaint(object sender, PaintEventArgs e)
+		{
+			
 		}
 	}
 }
