@@ -15,13 +15,17 @@ namespace MapView.Forms.MainWindow
 		void CloseAll();
 	}
 
-	public class MainWindowWindowsManager : IMainWindowWindowsManager
+	public class MainWindowWindowsManager
+		:
+		IMainWindowWindowsManager
 	{
 		private readonly Dictionary<string, Form> _registeredForms;
 		private readonly SettingsManager _settingsManager;
 		private readonly ConsoleSharedSpace _consoleSharedSpace;
 
-		public MainWindowWindowsManager(SettingsManager settingsManager, ConsoleSharedSpace consoleSharedSpace)
+		public MainWindowWindowsManager(
+									SettingsManager settingsManager,
+									ConsoleSharedSpace consoleSharedSpace)
 		{
 			_settingsManager = settingsManager;
 			_consoleSharedSpace = consoleSharedSpace;
@@ -32,16 +36,17 @@ namespace MapView.Forms.MainWindow
 		{
 			MainWindowsManager.TopRmpView.TopViewControl.Settings =
 				MainWindowsManager.TopView.TopViewControl.Settings;
+
 			MainWindowsManager.TopRmpView.RouteViewControl.Settings =
 				MainWindowsManager.RmpView.RouteViewControl.Settings;
 
 			MainWindowsManager.TopRmpView.TopViewControl.LoadDefaultSettings();
 			MainWindowsManager.TopRmpView.RouteViewControl.LoadDefaultSettings();
 
-			RegisterForm(MainWindowsManager.TopView, "Top View", "TopView");
-			RegisterForm(MainWindowsManager.RmpView, "Route View", "RmpView");
-			RegisterForm(MainWindowsManager.TopRmpView, "Top & Route View");
-			RegisterForm(MainWindowsManager.TileView, "Tile View", "TileView");
+			RegisterForm(MainWindowsManager.TopView,	"Top View",		"TopView");
+			RegisterForm(MainWindowsManager.RmpView,	"Route View",	"RmpView");
+			RegisterForm(MainWindowsManager.TopRmpView,	"Top & Route View");
+			RegisterForm(MainWindowsManager.TileView,	"Tile View",	"TileView");
 
 			RegisterForm(_consoleSharedSpace.GetNewConsole(), "Console");
 
@@ -50,6 +55,7 @@ namespace MapView.Forms.MainWindow
 
 			MainWindowsManager.TopRmpView.TopViewControl.RegistryInfo =
 				MainWindowsManager.TopView.TopViewControl.RegistryInfo;
+
 			MainWindowsManager.TopRmpView.RouteViewControl.RegistryInfo =
 				MainWindowsManager.RmpView.RouteViewControl.RegistryInfo;
 		}

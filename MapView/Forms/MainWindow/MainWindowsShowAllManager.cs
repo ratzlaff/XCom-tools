@@ -9,9 +9,13 @@ namespace MapView.Forms.MainWindow
 		void RestoreAll();
 	}
 
-	public class MainWindowsShowAllManager : IMainWindowsShowAllManager
+	public class MainWindowsShowAllManager
+		:
+		IMainWindowsShowAllManager
 	{
-		public MainWindowsShowAllManager(IEnumerable<Form> allForms, IEnumerable<MenuItem> allMenuItems)
+		public MainWindowsShowAllManager(
+									IEnumerable<Form> allForms,
+									IEnumerable<MenuItem> allMenuItems)
 		{
 			_allForms = allForms;
 			_allMenuItems = allMenuItems;
@@ -19,6 +23,7 @@ namespace MapView.Forms.MainWindow
 
 		private readonly IEnumerable<Form> _allForms;
 		private readonly IEnumerable<MenuItem> _allMenuItems;
+
 		private List<Form> _formList;
 		private List<MenuItem> _menuItems;
 
@@ -26,18 +31,16 @@ namespace MapView.Forms.MainWindow
 		{
 			_menuItems = new List<MenuItem>();
 			foreach (var menu in _allMenuItems)
-			{
-				if (!menu.Checked) continue;
-				_menuItems.Add(menu);
-			}
+				if (menu.Checked)
+					_menuItems.Add(menu);
 
 			_formList = new List<Form>();
 			foreach (var form in _allForms)
-			{
-				if (!form.Visible) continue;
-				form.Close();
-				_formList.Add(form);
-			}
+				if (form.Visible)
+				{
+					form.Close();
+					_formList.Add(form);
+				}
 		}
 
 		public void RestoreAll()
@@ -49,9 +52,7 @@ namespace MapView.Forms.MainWindow
 			}
 
 			foreach (var menuItem in _menuItems)
-			{
 				menuItem.Checked = true;
-			}
 		}
 	}
 }

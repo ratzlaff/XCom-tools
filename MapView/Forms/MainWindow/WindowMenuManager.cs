@@ -12,9 +12,12 @@ namespace MapView.Forms.MainWindow
 	{
 		private readonly MenuItem _showMenu;
 		private readonly MenuItem _miHelp;
+
 		private readonly List<MenuItem> _allMenuItems = new List<MenuItem>();
 		private readonly List<Form> _allForms = new List<Form>();
+
 		private Settings _settings;
+
 		private bool _isDisposed;
 
 		public WindowMenuManager(MenuItem showMenu, MenuItem miHelp)
@@ -26,16 +29,45 @@ namespace MapView.Forms.MainWindow
 		public void SetMenus(ConsoleForm consoleWindow, Settings settings)
 		{
 			_settings = settings;
-			RegisterForm(MainWindowsManager.TileView, "Tile View", _showMenu, "TileView");
-			_showMenu.MenuItems.Add(new MenuItem("-"));
-			RegisterForm(MainWindowsManager.TopView, "Top View", _showMenu, "TopView");
-			RegisterForm(MainWindowsManager.RmpView, "Route View", _showMenu, "RmpView");
-			RegisterForm(MainWindowsManager.TopRmpView, "Top & Route View", _showMenu);
-			_showMenu.MenuItems.Add(new MenuItem("-"));
-			RegisterForm(consoleWindow, "Console", _showMenu);
 
-			RegisterForm(MainWindowsManager.HelpScreen, "Quick Help", _miHelp);
-			RegisterForm(MainWindowsManager.AboutWindow, "About", _miHelp);
+			RegisterForm(
+						MainWindowsManager.TileView,
+						"Tile View",
+						_showMenu,
+						"TileView");
+
+			_showMenu.MenuItems.Add(new MenuItem("-"));
+
+			RegisterForm(
+						MainWindowsManager.TopView,
+						"Top View",
+						_showMenu,
+						"TopView");
+			RegisterForm(
+						MainWindowsManager.RmpView,
+						"Route View",
+						_showMenu,
+						"RmpView");
+			RegisterForm(
+						MainWindowsManager.TopRmpView,
+						"Top & Route View",
+						_showMenu);
+
+			_showMenu.MenuItems.Add(new MenuItem("-"));
+
+			RegisterForm(
+						consoleWindow,
+						"Console",
+						_showMenu);
+
+			RegisterForm(
+						MainWindowsManager.HelpScreen,
+						"Quick Help",
+						_miHelp);
+			RegisterForm(
+						MainWindowsManager.AboutWindow,
+						"About",
+						_miHelp);
 
 			RegisterWindowMenuItemValue();
 		}
@@ -55,14 +87,12 @@ namespace MapView.Forms.MainWindow
 					mi.PerformClick();
 				}
 			}
-
 			_showMenu.Enabled = true;
 		}
 
 		public IMainWindowsShowAllManager CreateShowAll()
 		{
-			return new MainWindowsShowAllManager(
-				_allForms, _allMenuItems);
+			return new MainWindowsShowAllManager(_allForms, _allMenuItems);
 		}
 
 		private void RegisterWindowMenuItemValue()
@@ -70,9 +100,14 @@ namespace MapView.Forms.MainWindow
 			foreach (MenuItem mi in _showMenu.MenuItems)
 			{
 				var settingName = GetWindowSettingName(mi);
+
 				var defaultVal = true;
-				if (mi.Tag is TopViewForm) defaultVal = false;
-				if (mi.Tag is RmpViewForm) defaultVal = false;
+				if (   (mi.Tag is TopViewForm)
+					|| (mi.Tag is RmpViewForm))
+				{
+					defaultVal = false;
+				}
+
 				_settings.AddSetting(
 								settingName,
 								defaultVal,
@@ -88,15 +123,21 @@ namespace MapView.Forms.MainWindow
 					form.VisibleChanged += (sender, a) =>
 					{
 						if (_isDisposed) return;
+
 						var senderForm = sender as Form;
 						if (senderForm == null) return;
+
 						_settings[settingName].Value = senderForm.Visible;
 					};
 				}
 			}
 		}
 
-		private void RegisterForm(Form form, string title, MenuItem parent, string registryKey = null)
+		private void RegisterForm(
+								Form form,
+								string title,
+								MenuItem parent,
+								string registryKey = null)
 		{
 			form.Text = title;
 			var mi = new MenuItem(title);
@@ -114,7 +155,7 @@ namespace MapView.Forms.MainWindow
 			_allMenuItems.Add(mi);
 			_allForms.Add(form);
 		}
-		
+
 		private static void FormMiClick(object sender, EventArgs e)
 		{
 			var mi = (MenuItem)sender;

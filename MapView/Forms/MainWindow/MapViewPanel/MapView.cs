@@ -189,6 +189,7 @@ namespace MapView
 				SetDrag(dragStart, dragEnd);
 
 				map.SelectedTile = new MapLocation(DragEnd.Y, DragEnd.X, map.CurrentHeight);
+
 				Focus();
 				Refresh();
 			}

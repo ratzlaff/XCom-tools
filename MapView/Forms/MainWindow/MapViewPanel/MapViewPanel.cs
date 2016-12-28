@@ -22,7 +22,7 @@ namespace MapView
 			ImageUpdate += update;
 
 			_horiz = new HScrollBar();
-			_vert = new VScrollBar();
+			_vert  = new VScrollBar();
 
 			_horiz.Scroll += horiz_Scroll;
 			_horiz.Dock = DockStyle.Bottom;
@@ -30,7 +30,7 @@ namespace MapView
 			_vert.Scroll += vert_Scroll;
 			_vert.Dock = DockStyle.Right;
 
-			Controls.AddRange(new Control[] {_vert, _horiz});
+			Controls.AddRange(new Control[]{_vert, _horiz});
 
 			SetView(new MapView());
 		}
@@ -107,7 +107,7 @@ namespace MapView
 			if (Globals.AutoPckImageScale)
 				SetupMapSize();
 
-			_vert.Value = _vert.Minimum;
+			_vert.Value  = _vert.Minimum;
 			_horiz.Value = _horiz.Minimum;
 
 			vert_Scroll(null, null);
@@ -127,7 +127,9 @@ namespace MapView
 			_horiz.Visible = (_mapView.Width > ClientSize.Width);
 			if (_horiz.Visible)
 			{
-				_horiz.Maximum = Math.Max((_mapView.Width - ClientSize.Width + _vert.Width), _horiz.Minimum);
+				_horiz.Maximum = Math.Max(
+									_mapView.Width - ClientSize.Width + _vert.Width,
+									_horiz.Minimum);
 				h = _horiz.Height;
 			}
 			else
@@ -153,6 +155,7 @@ namespace MapView
 		{
 			_mapView.Map = map;
 			_mapView.Focus();
+
 			OnResize(null);
 		}
 
@@ -167,11 +170,11 @@ namespace MapView
 
 				if (wP > hP)
 				{
-					Globals.PckImageScale = hP; // Acommodate based on height
+					Globals.PckImageScale = hP; // accommodate based on height
 				}
 				else
 				{
-					Globals.PckImageScale = wP; // Acommodate based on width
+					Globals.PckImageScale = wP; // accommodate based on width
 				}
 
 				if (Globals.PckImageScale > Globals.MaxPckImageScale)

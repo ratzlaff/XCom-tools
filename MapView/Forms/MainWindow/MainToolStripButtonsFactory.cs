@@ -25,12 +25,12 @@ namespace MapView.Forms.MainWindow
 		/// <param name="toolStrip"></param>
 		public void MakeToolstrip(ToolStrip toolStrip)
 		{
-			var btnUp = new ToolStripButton();
-			var btnDown = new ToolStripButton();
-			var btnCut = new ToolStripButton();
-			var btnCopy = new ToolStripButton();
-			var btnPaste = new ToolStripButton();
-			var btnFill = new ToolStripButton();
+			var btnUp		= new ToolStripButton();
+			var btnDown		= new ToolStripButton();
+			var btnCut		= new ToolStripButton();
+			var btnCopy		= new ToolStripButton();
+			var btnPaste	= new ToolStripButton();
+			var btnFill		= new ToolStripButton();
 
 			//
 			// toolStrip1
@@ -143,11 +143,11 @@ namespace MapView.Forms.MainWindow
 			btnPaste.Enabled = false;
 			_pasteButtons.Add(btnPaste);
 
-			btnCut.Image = Resources.cut;
-			btnPaste.Image = Resources.paste;
-			btnCopy.Image = Resources.copy;
-			btnUp.Image = Resources.up;
-			btnDown.Image = Resources.down;
+			btnCut.Image	= Resources.cut;
+			btnPaste.Image	= Resources.paste;
+			btnCopy.Image	= Resources.copy;
+			btnUp.Image		= Resources.up;
+			btnDown.Image	= Resources.down;
 		}
 
 		private static void Refresh()

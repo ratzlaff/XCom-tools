@@ -66,19 +66,15 @@ namespace MapView.Forms.MainWindow
 			};
 
 			foreach (var frm in maps)
-			{
 				if (frm != null)
-				{
 					SetMap(map, frm);
-				}
-			}
 
 			MapViewPanel.Instance.MapView.Refresh();
 		}
 
 		private static void _tileView_SelectedTileTypeChanged(TileBase newTile)
 		{
-			if (newTile != null && newTile.Info != null )
+			if (newTile != null && newTile.Info != null)
 				TopView.TopViewControl.SetSelectedQuadrantFrom(newTile.Info.TileType);
 		}
 
