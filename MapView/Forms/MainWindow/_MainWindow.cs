@@ -372,8 +372,8 @@ namespace MapView
 					riKey.SetValue("Width", Width);
 					riKey.SetValue("Height", Height - 19);
 
-//					riKey.SetValue("Animation",onItem.Checked.ToString());
-//					riKey.SetValue("Doors",miDoors.Checked.ToString());
+//					riKey.SetValue("Animation", onItem.Checked.ToString());
+//					riKey.SetValue("Doors", miDoors.Checked.ToString());
 
 					riKey.Close();
 					mvKey.Close();
@@ -401,7 +401,7 @@ namespace MapView
 
 			var settings = new Settings();
 
-//			Color.FromArgb(175,69,100,129)
+//			Color.FromArgb(175, 69, 100, 129)
 
 			var eh = new ValueChangedDelegate(ChangeSetting);
 

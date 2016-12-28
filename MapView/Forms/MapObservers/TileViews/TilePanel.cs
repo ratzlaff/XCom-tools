@@ -8,14 +8,18 @@ using XCom.Interfaces.Base;
 
 namespace MapView.Forms.MapObservers.TileViews
 {
-	public class TilePanel : Panel
+	public class TilePanel
+		:
+		Panel
 	{
 		private TileBase[] tiles;
 
 		private int space = 2;
 		private int height = 40, width = 32;
+
 		private SolidBrush brush = new SolidBrush(Color.FromArgb(204, 204, 255));
 		private Pen pen = new Pen(Brushes.Red, 3);
+
 		private int startY = 0;
 		private int selectedNum;
 		private VScrollBar vert;
@@ -43,8 +47,8 @@ namespace MapView.Forms.MapObservers.TileViews
 		private TileType type;
 
 		public event SelectedTileTypeChanged TileChanged;
-//		private static PckFile extraFile;
 		private static Hashtable brushes;
+//		private static PckFile extraFile;
 
 //		public static PckFile ExtraFile
 //		{
@@ -91,6 +95,7 @@ namespace MapView.Forms.MapObservers.TileViews
 				vert.Visible = false;
 			else
 				vert.Visible = true;
+
 			Refresh();
 		}
 
@@ -127,7 +132,7 @@ namespace MapView.Forms.MapObservers.TileViews
 				{
 					if (type == TileType.All)
 					{
-						//tiles=value;
+//						tiles = value;
 						tiles = new TileBase[value.Count + 1];
 						tiles[0] = null;
 						for (int i = 0; i < value.Count; i++)
@@ -141,13 +146,16 @@ namespace MapView.Forms.MapObservers.TileViews
 								list.Add(value[i]);
 						tiles = list.ToArray();
 					}
-					if (selectedNum >= tiles.Length) selectedNum = 0;
+
+					if (selectedNum >= tiles.Length)
+						selectedNum = 0;
 				}
 				else
 				{
 					tiles = null;
 					selectedNum = 0;
 				}
+
 				OnResize(null);
 			}
 		}
@@ -158,40 +166,44 @@ namespace MapView.Forms.MapObservers.TileViews
 		{
 			var handledMouseEventArgs = e as HandledMouseEventArgs;
 			if (handledMouseEventArgs != null)
-			{
 				handledMouseEventArgs.Handled = true;
-			}
+
 			if (e.Delta < 0)
+			{
 				if (vert.Value + scrollAmount < vert.Maximum)
 					vert.Value += scrollAmount;
 				else
 					vert.Value = vert.Maximum;
+			}
 			else if (e.Delta > 0)
+			{
 				if (vert.Value - scrollAmount > vert.Minimum)
 					vert.Value -= scrollAmount;
 				else
 					vert.Value = vert.Minimum;
+			}
 		}
 
 		protected override void OnMouseDown(MouseEventArgs e)
 		{
 			this.Focus();
 
-			if (tiles == null) return;
+			if (tiles != null)
+			{
+				int x = e.X / (width + 2 * space);
+				int y = (e.Y - startY) / (height + 2 * space);
 
-			int x = e.X / (width + 2 * space);
-			int y = (e.Y - startY) / (height + 2 * space);
+				if (x >= numAcross)
+					x = numAcross - 1;
 
-			if (x >= numAcross)
-				x = numAcross - 1;
+				selectedNum = y * numAcross + x;
+	
+				selectedNum = (selectedNum < tiles.Length) ? selectedNum : tiles.Length - 1;
+				if (TileChanged != null)
+					TileChanged(SelectedTile);
 
-			selectedNum = y * numAcross + x;
-
-			selectedNum = (selectedNum < tiles.Length) ? selectedNum : tiles.Length - 1;
-			if (TileChanged != null)
-				TileChanged(SelectedTile);
-
-			Refresh();
+				Refresh();
+			}
 		}
 
 		protected override void OnPaint(PaintEventArgs e)
@@ -201,86 +213,95 @@ namespace MapView.Forms.MapObservers.TileViews
 
 		private void PaintTiles(PaintEventArgs e)
 		{
-			if (tiles == null) return;
-			Graphics g = e.Graphics;
-
-			int x = 0, y = 0;
-			var bottomWidth = width + 2 * space;
-			var bottomHeight = height + 2 * space;
-			foreach (var tile in tiles)
+			if (tiles != null)
 			{
-				var bottomTop = startY + y * bottomHeight;
-				var bottomLeft = x * bottomWidth;
-				var rect = new Rectangle(bottomLeft, bottomTop, bottomWidth, bottomHeight);
+				Graphics g = e.Graphics;
 
-				if (tile != null && (type == TileType.All || tile.Info.TileType == type))
+				int x = 0, y = 0;
+				var bottomWidth = width + 2 * space;
+				var bottomHeight = height + 2 * space;
+				foreach (var tile in tiles)
 				{
-					// Target Type
-					var targetType = tile.Info.TargetType.ToString();
-					if (brushes.ContainsKey(targetType))
+					var bottomTop = startY + y * bottomHeight;
+					var bottomLeft = x * bottomWidth;
+					var rect = new Rectangle(bottomLeft, bottomTop, bottomWidth, bottomHeight);
+
+					if (tile != null && (type == TileType.All || tile.Info.TileType == type))
 					{
-						g.FillRectangle((SolidBrush) brushes[targetType], rect);
+						// Target Type
+						var targetType = tile.Info.TargetType.ToString();
+						if (brushes.ContainsKey(targetType))
+						{
+							g.FillRectangle((SolidBrush) brushes[targetType], rect);
+						}
+
+						// Image
+						g.DrawImage(tile[MapViewPanel.Current].Image, bottomLeft,
+							bottomTop - tile.Info.TileOffset);
+
+						// Door text
+						if (tile.Info.HumanDoor || tile.Info.UFODoor)
+							g.DrawString("Door", this.Font, Brushes.Black, bottomLeft,
+								bottomTop + PckImage.Height - Font.Height);
+
+						x = (x + 1) % numAcross;
+						if (x == 0) y++;
 					}
-
-					// Image
-					g.DrawImage(tile[MapViewPanel.Current].Image, bottomLeft,
-						bottomTop - tile.Info.TileOffset);
-
-					// Door text
-					if (tile.Info.HumanDoor || tile.Info.UFODoor)
-						g.DrawString("Door", this.Font, Brushes.Black, bottomLeft,
-							bottomTop + PckImage.Height - Font.Height);
-
-					x = (x + 1) % numAcross;
-					if (x == 0) y++;
-				}
-				else if (tile == null)
-				{
-					g.FillRectangle(Brushes.AliceBlue, rect);
-
-					if (Globals.ExtraTiles != null)
+					else if (tile == null)
 					{
-						g.DrawImage(Globals.ExtraTiles[0].Image, bottomLeft,
-							bottomTop);
-					}
+						g.FillRectangle(Brushes.AliceBlue, rect);
 
-					x = (x + 1) % numAcross;
-					if (x == 0) y++;
+						if (Globals.ExtraTiles != null)
+						{
+							g.DrawImage(Globals.ExtraTiles[0].Image, bottomLeft,
+								bottomTop);
+						}
+
+						x = (x + 1) % numAcross;
+						if (x == 0) y++;
+					}
 				}
+
+//				g.DrawRectangle(
+//							brush,
+//							(selectedNum % numAcross) * (width + 2 * space),
+//							startY + (selectedNum / numAcross) * (height + 2 * space),
+//							width  + 2 * space,
+//							height + 2 * space)
+
+				for (int k = 0; k <= numAcross + 1; k++)
+					g.DrawLine(
+							Pens.Black,
+							k * bottomWidth,
+							startY,
+							k * bottomWidth,
+							startY + PreferredHeight);
+
+				for (int k = 0; k <= PreferredHeight; k += bottomHeight)
+					g.DrawLine(
+							Pens.Black,
+							0,
+							startY + k,
+							numAcross * bottomWidth,
+							startY + k);
+
+				g.DrawRectangle(
+							pen,
+							(selectedNum % numAcross) * bottomWidth,
+							startY + (selectedNum / numAcross) * bottomHeight,
+							bottomWidth,
+							bottomHeight);
 			}
-
-//			g.DrawRectangle(brush,(selectedNum%numAcross)*(width+2*space),startY+(selectedNum/numAcross)*(height+2*space),width+2*space,height+2*space)
-
-			for (int k = 0; k <= numAcross + 1; k++)
-				g.DrawLine(
-						Pens.Black,
-						k * bottomWidth,
-						startY,
-						k * bottomWidth,
-						startY + PreferredHeight);
-
-			for (int k = 0; k <= PreferredHeight; k += bottomHeight)
-				g.DrawLine(
-						Pens.Black,
-						0,
-						startY + k,
-						numAcross * bottomWidth,
-						startY + k);
-
-			g.DrawRectangle(
-						pen,
-						(selectedNum % numAcross) * bottomWidth,
-						startY + (selectedNum / numAcross) * bottomHeight,
-						bottomWidth,
-						bottomHeight);
 		}
 
 		public TileBase SelectedTile
 		{
 			get
 			{
-				if (selectedNum < 0 || selectedNum >= tiles.Length) return null;
-				return tiles[selectedNum];
+				if (selectedNum > -1 && selectedNum < tiles.Length)
+					return tiles[selectedNum];
+
+				return null;
 			}
 			set
 			{
