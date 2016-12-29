@@ -84,39 +84,68 @@ namespace MapView.Forms.MapObservers.RmpViews
 							overlayPos.Height - 6);
 
 				var textLeft = overlayPos.X + 5;
-				{
-					var text = "Tile " + GetTileCoordinates(Position.X, Position.Y);
-					g.DrawString(text, Font, Brushes.Black, textLeft, overlayPos.Y + 5);
-				}
+				var textTop  = overlayPos.Y + 5;
+
+				g.DrawString(
+							"Tile " + GetTileCoordinates(Position.X, Position.Y),
+							Font,
+							Brushes.Black,
+							textLeft,
+							textTop);
 
 				if (posT.Rmp != null)
 				{
-					{
-						var text = "Over: " + posT.Rmp.Index;
-						g.DrawString(text, Font, Brushes.Black, textLeft, overlayPos.Y + 5 + (textHeight ));
-					}
-					{
-						var text = "Spawns: " + RmpFile.UnitRankUFO[posT.Rmp.URank1];
-						g.DrawString(text, Font, Brushes.Black, textLeft, overlayPos.Y + 5 + textHeight * 2);
-					}
-					{
-						var text = "Importance: " + posT.Rmp.NodeImportance;
-						g.DrawString(text, Font, Brushes.Black, textLeft, overlayPos.Y + 5 + (textHeight * 3));
-					}
-					{
-						var text = "Spawn: " + posT.Rmp.Spawn;
-						g.DrawString(text, Font, Brushes.Black, textLeft, overlayPos.Y + 5 + (textHeight * 4));
-					}
+					g.DrawString(
+								"Over: " + posT.Rmp.Index,
+								Font,
+								Brushes.Black,
+								textLeft,
+								textTop + textHeight);
+					g.DrawString(
+								"Spawns: " + RmpFile.UnitRankUFO[posT.Rmp.URank1],
+								Font,
+								Brushes.Black,
+								textLeft,
+								textTop + textHeight * 2);
+					g.DrawString(
+								"Importance: " + posT.Rmp.NodeImportance,
+								Font,
+								Brushes.Black,
+								textLeft,
+								textTop + textHeight * 3);
+					g.DrawString(
+								"Spawn: " + posT.Rmp.Spawn,
+								Font,
+								Brushes.Black,
+								textLeft,
+								textTop + textHeight * 4);
 				}
 			}
 		}
 
 		private void DrawPoles(Graphics g)
 		{
-			g.DrawString("W", _font, Brushes.Black, 0, 0);
-			g.DrawString("N", _font, Brushes.Black, Width - 30, 0);
-			g.DrawString("S", _font, Brushes.Black, 0, Height - _font.Height);
-			g.DrawString("E", _font, brush: Brushes.Black, x: Width - 30, y: Height - _font.Height);
+			g.DrawString(
+						"W",
+						_font,
+						Brushes.Black,
+						0, 0);
+			g.DrawString(
+						"N",
+						_font,
+						Brushes.Black,
+						Width - 30, 0);
+			g.DrawString(
+						"S",
+						_font,
+						Brushes.Black,
+						0, Height - _font.Height);
+			g.DrawString(
+						"E",
+						_font,
+						brush: Brushes.Black,
+						x: Width - 30,
+						y: Height - _font.Height);
 		}
 
 		private void DrawGridLines(Graphics g)

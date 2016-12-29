@@ -765,17 +765,13 @@ namespace MapView.Forms.MapObservers.RmpViews
 							redPen.Color,
 							"Color of unselected link lines",
 							"Links",
-							pc,
-							false,
-							null);
+							pc, false, null);
 			settings.AddSetting(
 							"UnselectedLinkWidth",
 							2,
 							"Width of unselected link lines",
 							"Links",
-							pw,
-							false,
-							null);
+							pw, false, null);
 
 			var bluePen = new Pen(new SolidBrush(Color.Blue), 2);
 			pens["SelectedLinkColor"] = bluePen;
@@ -785,17 +781,13 @@ namespace MapView.Forms.MapObservers.RmpViews
 							bluePen.Color,
 							"Color of selected link lines",
 							"Links",
-							pc,
-							false,
-							null);
+							pc, false, null);
 			settings.AddSetting(
 							"SelectedLinkWidth",
 							2,
 							"Width of selected link lines",
 							"Links",
-							pw,
-							false,
-							null);
+							pw, false, null);
 
 			var wallPen = new Pen(new SolidBrush(Color.Black), 4);
 			pens["WallColor"] = wallPen;
@@ -805,17 +797,13 @@ namespace MapView.Forms.MapObservers.RmpViews
 							wallPen.Color,
 							"Color of wall indicators",
 							"View",
-							pc,
-							false,
-							null);
+							pc, false, null);
 			settings.AddSetting(
 							"WallWidth",
 							4,
 							"Width of wall indicators",
 							"View",
-							pw,
-							false,
-							null);
+							pw, false, null);
 
 			var gridPen = new Pen(new SolidBrush(Color.Black), 1);
 			pens["GridLineColor"] = gridPen;
@@ -825,17 +813,13 @@ namespace MapView.Forms.MapObservers.RmpViews
 							gridPen.Color,
 							"Color of grid lines",
 							"View",
-							pc,
-							false,
-							null);
+							pc, false, null);
 			settings.AddSetting(
 							"GridLineWidth",
 							1,
 							"Width of grid lines",
 							"View",
-							pw,
-							false,
-							null);
+							pw, false, null);
 
 			var selBrush = new SolidBrush(Color.Blue);
 			brushes["SelectedNodeColor"] = selBrush;
@@ -844,9 +828,7 @@ namespace MapView.Forms.MapObservers.RmpViews
 							selBrush.Color,
 							"Color of selected nodes",
 							"Nodes",
-							bc,
-							false,
-							null);
+							bc, false, null);
 
 			var spawnBrush = new SolidBrush(Color.GreenYellow);
 			brushes["SpawnNodeColor"] = spawnBrush;
@@ -855,9 +837,7 @@ namespace MapView.Forms.MapObservers.RmpViews
 							spawnBrush.Color,
 							"Color of spawn nodes",
 							"Nodes",
-							bc,
-							false,
-							null);
+							bc, false, null);
 
 			var nodeBrush = new SolidBrush(Color.Green);
 			brushes["UnselectedNodeColor"] = nodeBrush;
@@ -866,9 +846,7 @@ namespace MapView.Forms.MapObservers.RmpViews
 							nodeBrush.Color,
 							"Color of unselected nodes",
 							"Nodes",
-							bc,
-							false,
-							null);
+							bc, false, null);
 
 			var contentBrush = new SolidBrush(Color.DarkGray);
 			brushes["ContentTiles"] = contentBrush;
@@ -877,9 +855,7 @@ namespace MapView.Forms.MapObservers.RmpViews
 							contentBrush.Color,
 							"Color of map tiles with a content tile",
 							"Other",
-							bc,
-							false,
-							null);
+							bc, false, null);
 
 			connectNodesYoolStripMenuItem.SelectedIndex = 2;
 		}
