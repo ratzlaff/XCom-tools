@@ -39,6 +39,7 @@ namespace PckView
 			// 
 			// label1
 			// 
+			this.label1.Location = new System.Drawing.Point(-2, 8);
 			this.label1.Name = "label1";
 			this.label1.Size = new System.Drawing.Size(296, 23);
 			this.label1.TabIndex = 0;
@@ -47,20 +48,19 @@ namespace PckView
 			// 
 			// lblVer
 			// 
-			this.lblVer.Location = new System.Drawing.Point(0, 24);
+			this.lblVer.Location = new System.Drawing.Point(-2, 31);
 			this.lblVer.Name = "lblVer";
 			this.lblVer.Size = new System.Drawing.Size(296, 23);
 			this.lblVer.TabIndex = 3;
-			this.lblVer.Text = "Release version 1.0";
+			this.lblVer.Text = "Release version 1.6.0.0";
 			this.lblVer.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			// 
 			// About
 			// 
 			this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
-			this.ClientSize = new System.Drawing.Size(292, 47);
-			this.Controls.AddRange(new System.Windows.Forms.Control[] {
-																		  this.lblVer,
-																		  this.label1});
+			this.ClientSize = new System.Drawing.Size(292, 72);
+			this.Controls.Add(this.lblVer);
+			this.Controls.Add(this.label1);
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
 			this.MaximizeBox = false;
 			this.MinimizeBox = false;
@@ -68,7 +68,6 @@ namespace PckView
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
 			this.Text = "About";
 			this.ResumeLayout(false);
-
 		}
 		#endregion
 

@@ -9,16 +9,18 @@ namespace MapView
 	/// <summary>
 	/// Displays the About box
 	/// </summary>
-	public partial class AboutWindow : System.Windows.Forms.Form
+	public partial class AboutWindow
+		:
+		System.Windows.Forms.Form
 	{
 		public AboutWindow()
 		{
 			InitializeComponent();
 
 			string ver = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.Major + "."
-						+ System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.Minor + "."
-						+ System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.Build + "."
-						+ System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.Revision;
+					   + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.Minor + "."
+					   + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.Build + "."
+					   + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.Revision;
 
 #if DEBUG
 			lblVersion.Text = "MapView version " + ver + " Debug";
@@ -55,8 +57,8 @@ namespace MapView
 		private Point GetLocation(double point)
 		{
 			var loc = Location;
-			loc.X = (int) (_originalLocation.X + (Math.Sin(point) * 50));
-			loc.Y = (int) (_originalLocation.Y + (Math.Cos(point) * 50));
+			loc.X = (int)(_originalLocation.X + (Math.Sin(point) * 50));
+			loc.Y = (int)(_originalLocation.Y + (Math.Cos(point) * 50));
 			return loc;
 		}
 
@@ -66,6 +68,7 @@ namespace MapView
 			var locationBeforeMove = new Size(GetLocation(_lastPoint));
 			var distance = new Size(Location - locationBeforeMove);
 			_originalLocation += distance;
+
 			MoveTimer.Enabled = false;
 			MoveTimer.Enabled = true;
 			MoveTimer.Interval = 500;

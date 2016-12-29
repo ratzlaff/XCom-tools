@@ -240,6 +240,9 @@
     <Content Include="App.ico" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Forms\About.resx">
+      <DependentUpon>About.Designer.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\BmpForm.resx">
       <SubType>Designer</SubType>
       <DependentUpon>BmpForm.cs</DependentUpon>

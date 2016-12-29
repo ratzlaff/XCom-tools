@@ -7,7 +7,9 @@ using System.Diagnostics;
 
 namespace PckView
 {
-	public partial class About : System.Windows.Forms.Form
+	public partial class About
+		:
+		System.Windows.Forms.Form
 	{
 		public About()
 		{
@@ -15,9 +17,19 @@ namespace PckView
 
 			FileVersionInfo info = FileVersionInfo.GetVersionInfo(Assembly.GetExecutingAssembly().Location);
 #if DEBUG
-			lblVer.Text = string.Format("Debug version {0},{1},{2},{3}", info.FileMajorPart, info.FileMinorPart, info.FileBuildPart, info.FilePrivatePart);
+			lblVer.Text = string.Format(
+									"Debug version {0},{1},{2},{3}",
+									info.FileMajorPart,
+									info.FileMinorPart,
+									info.FileBuildPart,
+									info.FilePrivatePart);
 #else
-			lblVer.Text = string.Format("Release version {0},{1},{2},{3}", info.FileMajorPart, info.FileMinorPart, info.FileBuildPart, info.FilePrivatePart);
+			lblVer.Text = string.Format(
+									"Release version {0},{1},{2},{3}",
+									info.FileMajorPart,
+									info.FileMinorPart,
+									info.FileBuildPart,
+									info.FilePrivatePart);
 #endif
 		}
 	}

@@ -25,7 +25,9 @@ using DSShared.Loadable;
 
 namespace PckView
 {
-	public partial class PckViewForm : System.Windows.Forms.Form
+	public partial class PckViewForm
+		:
+		System.Windows.Forms.Form
 	{
 		private TotalViewPck _totalViewPck;
 		private Palette currPal;
@@ -109,14 +111,14 @@ namespace PckView
 			loadedTypes.OnLoad += new LoadOfType<IXCImageFile>.TypeLoadDelegate(loadedTypes_OnLoad);
 			sharedSpace["ImageMods"] = loadedTypes.AllLoaded;
 
-			//loadedTypes.OnLoad += new LoadOfType<IXCFile>.TypeLoadDelegate(sortLoaded);
+//			loadedTypes.OnLoad += new LoadOfType<IXCFile>.TypeLoadDelegate(sortLoaded);
 
 			loadedTypes.LoadFrom(Assembly.GetExecutingAssembly());
 			loadedTypes.LoadFrom(Assembly.GetAssembly(typeof(XCom.Interfaces.IXCImageFile)));
 
 			if (Directory.Exists(sharedSpace["CustomDir"].ToString()))
 			{
-				//Console.WriteLine("Custom directory exists: "+sharedSpace["CustomDir"].ToString());
+				//Console.WriteLine("Custom directory exists: " + sharedSpace["CustomDir"].ToString());
 				xConsole.AddLine("Custom directory exists: " + sharedSpace["CustomDir"].ToString());
 				foreach (string s in Directory.GetFiles(sharedSpace["CustomDir"].ToString()))
 					if (s.EndsWith(".dll"))
@@ -168,7 +170,7 @@ namespace PckView
 
 			osFilter.SetFilter(IXCImageFile.Filter.Open);
 			openDictionary.Clear();
-			openFile.Filter = loadedTypes.CreateFilter(osFilter,openDictionary);
+			openFile.Filter = loadedTypes.CreateFilter(osFilter, openDictionary);
 		}
 
 		private ContextMenu makeContextMenu()
@@ -198,7 +200,7 @@ namespace PckView
 			cm.MenuItems.Add(editImage);
 			editImage.Click += new EventHandler(editClick);
 			editImage.Enabled = false;
-			//editImage.Visible=false;
+//			editImage.Visible = false;
 			return cm;
 		}
 
@@ -206,30 +208,34 @@ namespace PckView
 		{
 			TotalViewPck totalViewPck = _totalViewPck;
 			if (tabs != null)
-			{
 				foreach (object o in tabs.SelectedTab.Controls)
 					if (o is TotalViewPck)
 						totalViewPck = (TotalViewPck)o;
-			}
-			if (totalViewPck == null) return;
 
-			if (totalViewPck.SelectedItems.Count != 1)
+			if (totalViewPck != null)
 			{
-				MessageBox.Show("Must select 1 item only", Text, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-				return;
+				if (totalViewPck.SelectedItems.Count != 1)
+				{
+					MessageBox.Show(
+								"Must select 1 item only",
+								Text,
+								MessageBoxButtons.OK,
+								MessageBoxIcon.Exclamation);
+				}
+				else
+				{
+					Form f = new Form();
+					RichTextBox rtb = new RichTextBox();
+					rtb.Dock = DockStyle.Fill;
+					f.Controls.Add(rtb);
+	
+					foreach (byte b in totalViewPck.SelectedItems[0].Image.Bytes)
+						rtb.Text += string.Format("{0:x} ", b);
+	
+					f.Text = "Bytes: " + totalViewPck.SelectedItems[0].Image.Bytes.Length;
+					f.Show();
+				}
 			}
-
-			Form f = new Form();
-			RichTextBox rtb = new RichTextBox();
-			rtb.Dock = DockStyle.Fill;
-			f.Controls.Add(rtb);
-
-
-			foreach (byte b in totalViewPck.SelectedItems[0].Image.Bytes)
-				rtb.Text += string.Format("{0:x} ", b);
-
-			f.Text = "Bytes: " + totalViewPck.SelectedItems[0].Image.Bytes.Length;
-			f.Show();
 		}
 
 		void addMany_Click(object sender, EventArgs e)
@@ -243,12 +249,16 @@ namespace PckView
 					foreach (string s in openBMP.FileNames)
 					{
 						Bitmap b = new Bitmap(s);
-						_totalViewPck.Collection.Add(Bmp.LoadTile(b,0,_totalViewPck.Pal,0,0,_totalViewPck.Collection.IXCFile.ImageSize.Width, _totalViewPck.Collection.IXCFile.ImageSize.Height));
+						_totalViewPck.Collection.Add(Bmp.LoadTile(
+															b,
+															0,
+															_totalViewPck.Pal,
+															0, 0,
+															_totalViewPck.Collection.IXCFile.ImageSize.Width,
+															_totalViewPck.Collection.IXCFile.ImageSize.Height));
 					}
-
 					Refresh();
 				}
-
 				UpdateText();
 			}
 		}
@@ -282,7 +292,7 @@ namespace PckView
 			mi2.Tag = p;
 			mi.MenuItems.Add(mi2);
 			mi2.Click += new EventHandler(palClick);
-			//palMI[mi2]=p;
+//			palMI[mi2] = p;
 			palMI[p] = mi2;
 
 			((Dictionary<string, Palette>)sharedSpace["Palettes"])[p.Name] = p;
@@ -315,7 +325,7 @@ namespace PckView
 				var selected = _totalViewPck.SelectedItems[_totalViewPck.SelectedItems.Count - 1];
 				BytesFormHelper.ReloadBytes(selected);
 			}
-			else //selected is null
+			else // selected is null
 			{
 				BytesFormHelper.ReloadBytes(null);
 
@@ -350,70 +360,78 @@ namespace PckView
 				_currentFilePath = null;
 				SaveMenuItem.Visible = false;
 
-				//Console.WriteLine(openFile.FilterIndex+" -> "+filterIndex[openFile.FilterIndex].GetType());
+				//Console.WriteLine(openFile.FilterIndex+" -> " + filterIndex[openFile.FilterIndex].GetType());
 #if !DEBUG
 				try
 				{
 #endif
-					IXCImageFile filterIdx = openDictionary[openFile.FilterIndex];//filterIndex[openFile.FilterIndex];
-					if (filterIdx.GetType() == typeof(xcForceCustom)) //special case
+					IXCImageFile filterIdx = openDictionary[openFile.FilterIndex]; //filterIndex[openFile.FilterIndex];
+					if (filterIdx.GetType() == typeof(xcForceCustom)) // special case
 					{
 						toLoad = filterIdx.LoadFile(path, fName);
 						recover = true;
 					}
-					else if (filterIdx.GetType() == typeof (xcCustom)) //for *.* files, try singles and then extensions
+					else if (filterIdx.GetType() == typeof (xcCustom)) // for *.* files, try singles and then extensions
 					{
-						//try singles
+						// try singles
 						foreach (XCom.Interfaces.IXCImageFile ixf in loadedTypes.AllLoaded)
 						{
 							if (ixf.SingleFileName != null && ixf.SingleFileName.ToLower() == fName.ToLower())
+							{
 								try
 								{
 									toLoad = ixf.LoadFile(path, fName);
 									break;
 								}
 								catch
-								{
-								}
+								{}
+							}
 						}
 
 						if (toLoad == null)
 						{
-							//singles not loaded, try non singles
+							// singles not loaded, try non singles
 							foreach (XCom.Interfaces.IXCImageFile ixf in loadedTypes.AllLoaded)
 							{
 								if (ixf.SingleFileName == null && ixf.FileExtension.ToLower() == ext.ToLower())
+								{
 									try
 									{
 										toLoad = ixf.LoadFile(path, fName);
 										break;
 									}
 									catch
-									{
-									}
+									{}
+								}
 							}
 
-							//nothing loaded, force the custom dialog
+							// nothing loaded, force the custom dialog
 							if (toLoad == null)
 								toLoad = xcCustom.LoadFile(path, fName, 0, 0);
 						}
 					}
 					else
 					{
-						toLoad = LoadImageCollection( filterIdx, path, fName);
+						toLoad = LoadImageCollection(filterIdx, path, fName);
 					}
 #if !DEBUG
 				}
 				catch (Exception ex)
 				{
-					if (MessageBox.Show(this, "Error loading file: " + fName + "\nPath: " + openFile.FileName + "\nError loading file, do you wish to try and recover?\n\nError Message: " + ex + ":" + ex.Message, "Error loading file", MessageBoxButtons.YesNo, MessageBoxIcon.Error) == DialogResult.Yes)
+					if (MessageBox.Show(
+									this,
+									"Error loading file: " + fName + "\nPath: " + openFile.FileName
+										+ "\nError loading file, do you wish to try and recover?\n\nError Message: "
+										+ ex + ":" + ex.Message,
+									"Error loading file",
+									MessageBoxButtons.YesNo,
+									MessageBoxIcon.Error) == DialogResult.Yes)
 					{
 						toLoad = xcCustom.LoadFile(path, fName, 0, 0);
 						recover = true;
 					}
 				}
 #endif
-
 				if (!recover && toLoad != null)
 				{
 					SetImages(toLoad);
@@ -426,35 +444,40 @@ namespace PckView
 		{
 			_currentFilePath = filePath;
 			_currentFileBpp = bpp;
+
 			SaveMenuItem.Visible = true;
 			IXCImageFile filterIdx = openDictionary[7];
+
 			var fileName = Path.GetFileName(filePath);
 			var path = Path.GetDirectoryName(filePath);
-			if (fileName == null) return;
-			var images = LoadImageCollection(filterIdx, path, fileName.ToLower());
-			SetImages(images);
-			UpdateText();
 
-			MapViewIntegrationMenuItem.Visible = true;
-			if (Settings.Default.MapViewIntegrationHelpShown < 2)
+			if (fileName != null)
 			{
-				MapViewIntegrationHelpPanel.Visible = true;
+				var images = LoadImageCollection(filterIdx, path, fileName.ToLower());
+				SetImages(images);
+				UpdateText();
+
+				MapViewIntegrationMenuItem.Visible = true;
+				if (Settings.Default.MapViewIntegrationHelpShown < 2)
+					MapViewIntegrationHelpPanel.Visible = true;
 			}
 		}
 
-		private static XCImageCollection LoadImageCollection(IXCImageFile filterIdx, string path,
-			string fName)
+		private static XCImageCollection LoadImageCollection(
+														IXCImageFile filterIdx,
+														string path,
+														string fName)
 		{
-			//load file based on its filterIndex
-			var toLoad = filterIdx.LoadFile(
-				path, fName, filterIdx.ImageSize.Width, filterIdx.ImageSize.Height);
-			return toLoad;
+			return filterIdx.LoadFile( // load file based on its filterIndex
+									path,
+									fName,
+									filterIdx.ImageSize.Width,
+									filterIdx.ImageSize.Height);
 		}
 
 		public void SetImages(XCImageCollection toLoad)
 		{
 			palClick(((MenuItem)palMI[toLoad.IXCFile.DefaultPalette]), null);
-
 			_totalViewPck.Collection = toLoad;
 		}
 
@@ -474,7 +497,10 @@ namespace PckView
 			if (saveFile.ShowDialog() == DialogResult.OK)
 			{
 				string dir = saveFile.FileName.Substring(0, saveFile.FileName.LastIndexOf("\\"));
-				saveDictionary[saveFile.FilterIndex].SaveCollection(dir, Path.GetFileNameWithoutExtension(saveFile.FileName), _totalViewPck.Collection);
+				saveDictionary[saveFile.FilterIndex].SaveCollection(
+																dir,
+																Path.GetFileNameWithoutExtension(saveFile.FileName),
+																_totalViewPck.Collection);
 			}
 		}
 
@@ -502,10 +528,13 @@ namespace PckView
 		{
 			if (_totalViewPck.SelectedItems.Count != 1)
 			{
-				MessageBox.Show("Must select 1 item only", Text, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-				return;
+				MessageBox.Show(
+							"Must select 1 item only",
+							Text,
+							MessageBoxButtons.OK,
+							MessageBoxIcon.Exclamation);
 			}
-			if (_totalViewPck.Collection != null )
+			else if (_totalViewPck.Collection != null )
 			{
 				var title = string.Empty ;
 				foreach (var selectedIndex in _totalViewPck.SelectedItems)
@@ -513,16 +542,21 @@ namespace PckView
 					if (title != string.Empty) title += ", ";
 					title += selectedIndex.Item.Index ;
 				}
+
 				openBMP.Title = "Selected number: " + title;
 				openBMP.Multiselect = false;
 				if (openBMP.ShowDialog() == DialogResult.OK)
 				{
 					var b = new Bitmap(openBMP.FileName);
-					var image = Bmp.Load(b, _totalViewPck.Pal, _totalViewPck.Collection.IXCFile.ImageSize.Width, _totalViewPck.Collection.IXCFile.ImageSize.Height, 1)[0];
+					var image = Bmp.Load(
+										b,
+										_totalViewPck.Pal,
+										_totalViewPck.Collection.IXCFile.ImageSize.Width,
+										_totalViewPck.Collection.IXCFile.ImageSize.Height,
+										1)[0];
 					_totalViewPck.ChangeItem(_totalViewPck.SelectedItems[0].Item.Index, image);
 					Refresh();
 				}
-
 				UpdateText();
 			}
 		}
@@ -541,11 +575,13 @@ namespace PckView
 
 		private void showBytes_Click(object sender, EventArgs e)
 		{
-			if (_totalViewPck.SelectedItems.Count == 0) return;
-			var selected = _totalViewPck.SelectedItems[_totalViewPck.SelectedItems.Count - 1];
+			if (_totalViewPck.SelectedItems.Count != 0)
+			{
+				showBytes.Checked = true;
 
-			showBytes.Checked = true ;
-			BytesFormHelper.ShowBytes(selected, bClosing, new Point(this.Right, this.Top));
+				var selected = _totalViewPck.SelectedItems[_totalViewPck.SelectedItems.Count - 1];
+				BytesFormHelper.ShowBytes(selected, bClosing, new Point(this.Right, this.Top));
+			}
 		}
 
 		private void bClosing( )
@@ -574,21 +610,22 @@ namespace PckView
 
 		private void editClick(object sender, EventArgs e)
 		{
-			if (_totalViewPck.SelectedItems.Count == 0) return;
-			var selected = _totalViewPck.SelectedItems[_totalViewPck.SelectedItems.Count - 1];
-
-			if (selected != null)
+			if (_totalViewPck.SelectedItems.Count != 0)
 			{
-				editor.CurrImage = (XCImage)selected.Image.Clone();
-
-				if (editor.Visible)
-					editor.BringToFront();
-				else
+				var selected = _totalViewPck.SelectedItems[_totalViewPck.SelectedItems.Count - 1];
+				if (selected != null)
 				{
-					editor.Left = Right;
-					editor.Top = Top;
-					editor.Palette = currPal;
-					editor.Show();
+					editor.CurrImage = (XCImage)selected.Image.Clone();
+
+					if (editor.Visible)
+						editor.BringToFront();
+					else
+					{
+						editor.Left = Right;
+						editor.Top = Top;
+						editor.Palette = currPal;
+						editor.Show();
+					}
 				}
 			}
 		}
@@ -613,9 +650,7 @@ namespace PckView
 		private void PckView_KeyDown(object sender, KeyEventArgs e)
 		{
 			if (e.KeyCode == Keys.Delete && deleteImage.Enabled)
-			{
 				removeClick(null, null);
-			}
 		}
 
 		private void miModList_Click(object sender, EventArgs e)
@@ -649,15 +684,15 @@ namespace PckView
 					string fName = file.Substring(0, file.LastIndexOf("."));
 					string ext = file.Substring(file.LastIndexOf(".") + 1);
 
-//					int countNum=0;
-//					int charPos=fName.Length-1;
-//					int tens=1;
-//					while(charPos>=0 && Char.IsDigit(fName[charPos]))
+//					int countNum = 0;
+//					int charPos = fName.Length - 1;
+//					int tens = 1;
+//					while (charPos >= 0 && Char.IsDigit(fName[charPos]))
 //					{
 //						int digit = int.Parse(fName[charPos].ToString());
 //						countNum += digit*tens;
-//						tens*=10;
-//						fName = fName.Substring(0,charPos--);
+//						tens *= 10;
+//						fName = fName.Substring(0, charPos--);
 //					}
 
 					string zeros = "";
@@ -677,9 +712,13 @@ namespace PckView
 					pw.Show();
 					foreach (XCImage xc in _totalViewPck.Collection)
 					{
-						//Console.WriteLine("Save to: "+path+@"\"+fName+(xc.FileNum+countNum)+"."+ext);
+						//Console.WriteLine("Save to: " + path + @"\" + fName + (xc.FileNum + countNum) + "." + ext);
 						//Console.WriteLine("Save: " + path + @"\" + fName + string.Format("{0:" + zeros + "}", xc.FileNum) + "." + ext);
-						Bmp.Save(path + @"\" + fName + string.Format("{0:" + zeros + "}", xc.FileNum) + "." + ext, xc.Image);
+						Bmp.Save(
+								path + @"\" + fName + string.Format(
+																"{0:" + zeros + "}",
+																xc.FileNum) + "." + ext,
+								xc.Image);
 						//Console.WriteLine("---");
 						pw.Value = xc.FileNum;
 					}
@@ -739,8 +778,11 @@ namespace PckView
 			_fileBackupManager.Backup(_currentFilePath);
 
 			// Save
-			PckFile.Save(dir, fileWithoutExt, _totalViewPck.Collection, _currentFileBpp);
-
+			PckFile.Save(
+						dir,
+						fileWithoutExt,
+						_totalViewPck.Collection,
+						_currentFileBpp);
 			SavedFile = true;
 		}
 
@@ -754,7 +796,7 @@ namespace PckView
 		{
 			MapViewIntegrationHelpPanel.Visible = false;
 			MapViewIntegrationMenuItem.Checked = false;
-			Settings.Default.MapViewIntegrationHelpShown ++;
+			Settings.Default.MapViewIntegrationHelpShown++;
 			Settings.Default.Save();
 		}
 

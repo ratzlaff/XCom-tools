@@ -8,39 +8,40 @@ namespace XCom
 		private StreamWriter sw;
 
 		private static LogFile myFile;
-		public static readonly string DefaultFile="debug.log";
-		private static bool debugOn=false;
+		public static readonly string DefaultFile = "debug.log";
+		private static bool debugOn = false;
 
 		private LogFile(string filename)
 		{
-			if(debugOn)
-				sw = new StreamWriter(File.Open(filename,FileMode.Create));
+			if (debugOn)
+				sw = new StreamWriter(File.Open(filename, FileMode.Create));
 		}
 
 		public static bool DebugOn
 		{
-			get{return debugOn;}
-			set{debugOn=value;}
+			get { return debugOn; }
+			set { debugOn = value; }
 		}
 
 		public static LogFile Instance
 		{
-			get{return Init(DefaultFile);}
+			get { return Init(DefaultFile); }
 		}
 
 		public static LogFile Init(string filename)
 		{
 #if DEBUG
-			debugOn=true;
+			debugOn = true;
 #endif
-			if(myFile==null)
+			if (myFile == null)
 				myFile = new LogFile(filename);
+
 			return myFile;
 		}
 
 		public void Write(string text)
 		{
-			if((debugOn || sw!=null) && sw!=null)
+			if ((debugOn || sw != null) && sw != null) // wft.
 			{
 				sw.Write(text);
 				sw.Flush();
@@ -49,7 +50,7 @@ namespace XCom
 
 		public void WriteLine(string text)
 		{
-			if((debugOn || sw!=null) && sw!=null)
+			if ((debugOn || sw != null) && sw != null) // wft.
 			{
 				sw.WriteLine(text);
 				sw.Flush();
@@ -58,7 +59,7 @@ namespace XCom
 
 		public void Close()
 		{
-			if((debugOn || sw!=null) && sw!=null)
+			if ((debugOn || sw != null) && sw != null) // wft.
 			{
 				sw.Close();
 			}

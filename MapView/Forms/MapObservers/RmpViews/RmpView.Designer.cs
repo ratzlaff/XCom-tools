@@ -92,7 +92,7 @@ namespace MapView.Forms.MapObservers.RmpViews
 			// 
 			// cbLink5
 			// 
-			this.cbLink5.Location = new System.Drawing.Point(46, 133);
+			this.cbLink5.Location = new System.Drawing.Point(46, 144);
 			this.cbLink5.Name = "cbLink5";
 			this.cbLink5.Size = new System.Drawing.Size(72, 21);
 			this.cbLink5.TabIndex = 20;
@@ -101,7 +101,7 @@ namespace MapView.Forms.MapObservers.RmpViews
 			// 
 			// cbLink4
 			// 
-			this.cbLink4.Location = new System.Drawing.Point(46, 109);
+			this.cbLink4.Location = new System.Drawing.Point(46, 117);
 			this.cbLink4.Name = "cbLink4";
 			this.cbLink4.Size = new System.Drawing.Size(72, 21);
 			this.cbLink4.TabIndex = 19;
@@ -110,7 +110,7 @@ namespace MapView.Forms.MapObservers.RmpViews
 			// 
 			// cbLink3
 			// 
-			this.cbLink3.Location = new System.Drawing.Point(46, 85);
+			this.cbLink3.Location = new System.Drawing.Point(46, 90);
 			this.cbLink3.Name = "cbLink3";
 			this.cbLink3.Size = new System.Drawing.Size(72, 21);
 			this.cbLink3.TabIndex = 18;
@@ -119,7 +119,7 @@ namespace MapView.Forms.MapObservers.RmpViews
 			// 
 			// cbLink2
 			// 
-			this.cbLink2.Location = new System.Drawing.Point(46, 61);
+			this.cbLink2.Location = new System.Drawing.Point(46, 63);
 			this.cbLink2.Name = "cbLink2";
 			this.cbLink2.Size = new System.Drawing.Size(72, 21);
 			this.cbLink2.TabIndex = 17;
@@ -137,73 +137,73 @@ namespace MapView.Forms.MapObservers.RmpViews
 			// 
 			// label1
 			// 
-			this.label1.Location = new System.Drawing.Point(6, 133);
+			this.label1.Location = new System.Drawing.Point(6, 148);
 			this.label1.Name = "label1";
-			this.label1.Size = new System.Drawing.Size(40, 21);
+			this.label1.Size = new System.Drawing.Size(34, 17);
 			this.label1.TabIndex = 15;
 			this.label1.Text = "Link5";
 			// 
 			// label2
 			// 
-			this.label2.Location = new System.Drawing.Point(6, 109);
+			this.label2.Location = new System.Drawing.Point(6, 120);
 			this.label2.Name = "label2";
-			this.label2.Size = new System.Drawing.Size(40, 21);
+			this.label2.Size = new System.Drawing.Size(34, 18);
 			this.label2.TabIndex = 14;
 			this.label2.Text = "Link4";
 			// 
 			// label3
 			// 
-			this.label3.Location = new System.Drawing.Point(6, 85);
+			this.label3.Location = new System.Drawing.Point(6, 94);
 			this.label3.Name = "label3";
-			this.label3.Size = new System.Drawing.Size(40, 21);
+			this.label3.Size = new System.Drawing.Size(34, 17);
 			this.label3.TabIndex = 13;
 			this.label3.Text = "Link3";
 			// 
 			// label4
 			// 
-			this.label4.Location = new System.Drawing.Point(6, 61);
+			this.label4.Location = new System.Drawing.Point(6, 66);
 			this.label4.Name = "label4";
-			this.label4.Size = new System.Drawing.Size(40, 21);
+			this.label4.Size = new System.Drawing.Size(34, 17);
 			this.label4.TabIndex = 12;
 			this.label4.Text = "Link2";
 			// 
 			// label5
 			// 
-			this.label5.Location = new System.Drawing.Point(6, 37);
+			this.label5.Location = new System.Drawing.Point(6, 40);
 			this.label5.Name = "label5";
-			this.label5.Size = new System.Drawing.Size(40, 21);
+			this.label5.Size = new System.Drawing.Size(34, 18);
 			this.label5.TabIndex = 11;
 			this.label5.Text = "Link1";
 			// 
 			// cbRank2
 			// 
-			this.cbRank2.Location = new System.Drawing.Point(90, 45);
+			this.cbRank2.Location = new System.Drawing.Point(90, 41);
 			this.cbRank2.Name = "cbRank2";
-			this.cbRank2.Size = new System.Drawing.Size(91, 21);
+			this.cbRank2.Size = new System.Drawing.Size(126, 21);
 			this.cbRank2.TabIndex = 8;
 			this.toolTip1.SetToolTip(this.cbRank2, "How likely an alien will go to this location");
 			this.cbRank2.SelectedIndexChanged += new System.EventHandler(this.cbRank2_SelectedIndexChanged);
 			// 
 			// cbRank1
 			// 
-			this.cbRank1.Location = new System.Drawing.Point(86, 43);
+			this.cbRank1.Location = new System.Drawing.Point(90, 44);
 			this.cbRank1.Name = "cbRank1";
-			this.cbRank1.Size = new System.Drawing.Size(91, 21);
+			this.cbRank1.Size = new System.Drawing.Size(126, 21);
 			this.cbRank1.TabIndex = 7;
 			this.toolTip1.SetToolTip(this.cbRank1, "Rank must be 0 if this isn\'t a UFO or UFO base, else will not spawn");
 			this.cbRank1.SelectedIndexChanged += new System.EventHandler(this.cbRank1_SelectedIndexChanged);
 			// 
 			// cbType
 			// 
-			this.cbType.Location = new System.Drawing.Point(90, 19);
+			this.cbType.Location = new System.Drawing.Point(90, 14);
 			this.cbType.Name = "cbType";
-			this.cbType.Size = new System.Drawing.Size(91, 21);
+			this.cbType.Size = new System.Drawing.Size(126, 21);
 			this.cbType.TabIndex = 6;
 			this.cbType.SelectedIndexChanged += new System.EventHandler(this.cbType_SelectedIndexChanged);
 			// 
 			// lblUsage
 			// 
-			this.lblUsage.Location = new System.Drawing.Point(8, 19);
+			this.lblUsage.Location = new System.Drawing.Point(12, 16);
 			this.lblUsage.Name = "lblUsage";
 			this.lblUsage.Size = new System.Drawing.Size(72, 21);
 			this.lblUsage.TabIndex = 5;
@@ -212,7 +212,7 @@ namespace MapView.Forms.MapObservers.RmpViews
 			// 
 			// lblRank2
 			// 
-			this.lblRank2.Location = new System.Drawing.Point(12, 45);
+			this.lblRank2.Location = new System.Drawing.Point(12, 41);
 			this.lblRank2.Name = "lblRank2";
 			this.lblRank2.Size = new System.Drawing.Size(72, 21);
 			this.lblRank2.TabIndex = 3;
@@ -221,7 +221,7 @@ namespace MapView.Forms.MapObservers.RmpViews
 			// 
 			// lblRank1
 			// 
-			this.lblRank1.Location = new System.Drawing.Point(8, 43);
+			this.lblRank1.Location = new System.Drawing.Point(12, 43);
 			this.lblRank1.Name = "lblRank1";
 			this.lblRank1.Size = new System.Drawing.Size(72, 21);
 			this.lblRank1.TabIndex = 2;
@@ -230,7 +230,7 @@ namespace MapView.Forms.MapObservers.RmpViews
 			// 
 			// rankLabel
 			// 
-			this.rankLabel.Location = new System.Drawing.Point(12, 19);
+			this.rankLabel.Location = new System.Drawing.Point(12, 14);
 			this.rankLabel.Name = "rankLabel";
 			this.rankLabel.Size = new System.Drawing.Size(72, 21);
 			this.rankLabel.TabIndex = 1;
@@ -239,7 +239,7 @@ namespace MapView.Forms.MapObservers.RmpViews
 			// 
 			// idxLabel
 			// 
-			this.idxLabel.Location = new System.Drawing.Point(6, 42);
+			this.idxLabel.Location = new System.Drawing.Point(6, 19);
 			this.idxLabel.Name = "idxLabel";
 			this.idxLabel.Size = new System.Drawing.Size(105, 16);
 			this.idxLabel.TabIndex = 0;
@@ -251,67 +251,67 @@ namespace MapView.Forms.MapObservers.RmpViews
 			this.gbNodeInfo.Controls.Add(this.lblUsage);
 			this.gbNodeInfo.Controls.Add(this.cbUsage);
 			this.gbNodeInfo.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.gbNodeInfo.Location = new System.Drawing.Point(0, 162);
+			this.gbNodeInfo.Location = new System.Drawing.Point(0, 152);
 			this.gbNodeInfo.Name = "gbNodeInfo";
-			this.gbNodeInfo.Size = new System.Drawing.Size(289, 74);
+			this.gbNodeInfo.Size = new System.Drawing.Size(289, 84);
 			this.gbNodeInfo.TabIndex = 1;
 			this.gbNodeInfo.TabStop = false;
-			this.gbNodeInfo.Text = "Node Spawn Information";
+			this.gbNodeInfo.Text = "Spawn data";
 			// 
 			// cbUsage
 			// 
-			this.cbUsage.Location = new System.Drawing.Point(86, 19);
+			this.cbUsage.Location = new System.Drawing.Point(90, 17);
 			this.cbUsage.Name = "cbUsage";
-			this.cbUsage.Size = new System.Drawing.Size(91, 21);
+			this.cbUsage.Size = new System.Drawing.Size(126, 21);
 			this.cbUsage.TabIndex = 10;
 			this.cbUsage.SelectedIndexChanged += new System.EventHandler(this.cbUsage_SelectedIndexChanged);
 			// 
 			// pasteNode
 			// 
-			this.pasteNode.Location = new System.Drawing.Point(98, 16);
+			this.pasteNode.Location = new System.Drawing.Point(98, 176);
 			this.pasteNode.Name = "pasteNode";
 			this.pasteNode.Size = new System.Drawing.Size(88, 23);
 			this.pasteNode.TabIndex = 35;
-			this.pasteNode.Text = "Paste Node";
+			this.pasteNode.Text = "Paste";
 			this.pasteNode.Click += new System.EventHandler(this.pasteNode_Click);
 			// 
 			// lblMouseOver
 			// 
 			this.lblMouseOver.ForeColor = System.Drawing.Color.Red;
-			this.lblMouseOver.Location = new System.Drawing.Point(192, 42);
+			this.lblMouseOver.Location = new System.Drawing.Point(192, 19);
 			this.lblMouseOver.Name = "lblMouseOver";
 			this.lblMouseOver.Size = new System.Drawing.Size(87, 16);
 			this.lblMouseOver.TabIndex = 2;
 			// 
 			// copyNode
 			// 
-			this.copyNode.Location = new System.Drawing.Point(6, 16);
+			this.copyNode.Location = new System.Drawing.Point(6, 176);
 			this.copyNode.Name = "copyNode";
 			this.copyNode.Size = new System.Drawing.Size(88, 23);
 			this.copyNode.TabIndex = 34;
-			this.copyNode.Text = "Copy Node";
+			this.copyNode.Text = "Copy";
 			this.copyNode.Click += new System.EventHandler(this.copyNode_Click);
 			// 
 			// btnRemove
 			// 
-			this.btnRemove.Location = new System.Drawing.Point(190, 16);
+			this.btnRemove.Location = new System.Drawing.Point(190, 176);
 			this.btnRemove.Name = "btnRemove";
 			this.btnRemove.Size = new System.Drawing.Size(88, 23);
 			this.btnRemove.TabIndex = 36;
-			this.btnRemove.Text = "Delete Node";
+			this.btnRemove.Text = "Delete";
 			this.btnRemove.Click += new System.EventHandler(this.btnRemove_Click);
 			// 
 			// idxLabel2
 			// 
 			this.idxLabel2.ForeColor = System.Drawing.Color.Purple;
-			this.idxLabel2.Location = new System.Drawing.Point(117, 42);
+			this.idxLabel2.Location = new System.Drawing.Point(117, 19);
 			this.idxLabel2.Name = "idxLabel2";
 			this.idxLabel2.Size = new System.Drawing.Size(69, 16);
 			this.idxLabel2.TabIndex = 2;
 			// 
 			// txtDist5
 			// 
-			this.txtDist5.Location = new System.Drawing.Point(182, 133);
+			this.txtDist5.Location = new System.Drawing.Point(238, 144);
 			this.txtDist5.Name = "txtDist5";
 			this.txtDist5.Size = new System.Drawing.Size(28, 20);
 			this.txtDist5.TabIndex = 32;
@@ -320,7 +320,7 @@ namespace MapView.Forms.MapObservers.RmpViews
 			// 
 			// txtDist4
 			// 
-			this.txtDist4.Location = new System.Drawing.Point(182, 109);
+			this.txtDist4.Location = new System.Drawing.Point(238, 117);
 			this.txtDist4.Name = "txtDist4";
 			this.txtDist4.Size = new System.Drawing.Size(28, 20);
 			this.txtDist4.TabIndex = 31;
@@ -329,7 +329,7 @@ namespace MapView.Forms.MapObservers.RmpViews
 			// 
 			// txtDist3
 			// 
-			this.txtDist3.Location = new System.Drawing.Point(182, 85);
+			this.txtDist3.Location = new System.Drawing.Point(238, 91);
 			this.txtDist3.Name = "txtDist3";
 			this.txtDist3.Size = new System.Drawing.Size(28, 20);
 			this.txtDist3.TabIndex = 30;
@@ -338,7 +338,7 @@ namespace MapView.Forms.MapObservers.RmpViews
 			// 
 			// txtDist2
 			// 
-			this.txtDist2.Location = new System.Drawing.Point(182, 61);
+			this.txtDist2.Location = new System.Drawing.Point(238, 63);
 			this.txtDist2.Name = "txtDist2";
 			this.txtDist2.Size = new System.Drawing.Size(28, 20);
 			this.txtDist2.TabIndex = 29;
@@ -347,7 +347,7 @@ namespace MapView.Forms.MapObservers.RmpViews
 			// 
 			// txtDist1
 			// 
-			this.txtDist1.Location = new System.Drawing.Point(182, 37);
+			this.txtDist1.Location = new System.Drawing.Point(238, 37);
 			this.txtDist1.Name = "txtDist1";
 			this.txtDist1.Size = new System.Drawing.Size(28, 20);
 			this.txtDist1.TabIndex = 28;
@@ -356,57 +356,57 @@ namespace MapView.Forms.MapObservers.RmpViews
 			// 
 			// label7
 			// 
-			this.label7.Location = new System.Drawing.Point(182, 21);
+			this.label7.Location = new System.Drawing.Point(238, 19);
 			this.label7.Name = "label7";
-			this.label7.Size = new System.Drawing.Size(32, 16);
+			this.label7.Size = new System.Drawing.Size(28, 12);
 			this.label7.TabIndex = 27;
 			this.label7.Text = "Dist";
 			// 
 			// cbUse5
 			// 
-			this.cbUse5.Location = new System.Drawing.Point(118, 133);
+			this.cbUse5.Location = new System.Drawing.Point(124, 144);
 			this.cbUse5.Name = "cbUse5";
-			this.cbUse5.Size = new System.Drawing.Size(64, 21);
+			this.cbUse5.Size = new System.Drawing.Size(108, 21);
 			this.cbUse5.TabIndex = 26;
 			this.cbUse5.SelectedIndexChanged += new System.EventHandler(this.cbUse5_SelectedIndexChanged);
 			// 
 			// cbUse4
 			// 
-			this.cbUse4.Location = new System.Drawing.Point(118, 109);
+			this.cbUse4.Location = new System.Drawing.Point(124, 117);
 			this.cbUse4.Name = "cbUse4";
-			this.cbUse4.Size = new System.Drawing.Size(64, 21);
+			this.cbUse4.Size = new System.Drawing.Size(108, 21);
 			this.cbUse4.TabIndex = 25;
 			this.cbUse4.SelectedIndexChanged += new System.EventHandler(this.cbUse4_SelectedIndexChanged);
 			// 
 			// cbUse3
 			// 
-			this.cbUse3.Location = new System.Drawing.Point(118, 85);
+			this.cbUse3.Location = new System.Drawing.Point(124, 90);
 			this.cbUse3.Name = "cbUse3";
-			this.cbUse3.Size = new System.Drawing.Size(64, 21);
+			this.cbUse3.Size = new System.Drawing.Size(108, 21);
 			this.cbUse3.TabIndex = 24;
 			this.cbUse3.SelectedIndexChanged += new System.EventHandler(this.cbUse3_SelectedIndexChanged);
 			// 
 			// cbUse2
 			// 
-			this.cbUse2.Location = new System.Drawing.Point(118, 61);
+			this.cbUse2.Location = new System.Drawing.Point(124, 63);
 			this.cbUse2.Name = "cbUse2";
-			this.cbUse2.Size = new System.Drawing.Size(64, 21);
+			this.cbUse2.Size = new System.Drawing.Size(108, 21);
 			this.cbUse2.TabIndex = 23;
 			this.cbUse2.SelectedIndexChanged += new System.EventHandler(this.cbUse2_SelectedIndexChanged);
 			// 
 			// cbUse1
 			// 
-			this.cbUse1.Location = new System.Drawing.Point(118, 37);
+			this.cbUse1.Location = new System.Drawing.Point(124, 37);
 			this.cbUse1.Name = "cbUse1";
-			this.cbUse1.Size = new System.Drawing.Size(64, 21);
+			this.cbUse1.Size = new System.Drawing.Size(108, 21);
 			this.cbUse1.TabIndex = 22;
 			this.cbUse1.SelectedIndexChanged += new System.EventHandler(this.cbUse1_SelectedIndexChanged);
 			// 
 			// label6
 			// 
-			this.label6.Location = new System.Drawing.Point(94, 21);
+			this.label6.Location = new System.Drawing.Point(124, 19);
 			this.label6.Name = "label6";
-			this.label6.Size = new System.Drawing.Size(72, 16);
+			this.label6.Size = new System.Drawing.Size(64, 15);
 			this.label6.TabIndex = 21;
 			this.label6.Text = "Use Info";
 			// 
@@ -416,7 +416,7 @@ namespace MapView.Forms.MapObservers.RmpViews
 			this._contentPane.Dock = System.Windows.Forms.DockStyle.Fill;
 			this._contentPane.Location = new System.Drawing.Point(0, 24);
 			this._contentPane.Name = "_contentPane";
-			this._contentPane.Size = new System.Drawing.Size(662, 192);
+			this._contentPane.Size = new System.Drawing.Size(660, 182);
 			this._contentPane.TabIndex = 2;
 			this._contentPane.Paint += new System.Windows.Forms.PaintEventHandler(this._contentPanePaint);
 			// 
@@ -429,7 +429,7 @@ namespace MapView.Forms.MapObservers.RmpViews
 									this.HeightDifTextbox});
 			this.menuStrip1.Location = new System.Drawing.Point(0, 0);
 			this.menuStrip1.Name = "menuStrip1";
-			this.menuStrip1.Size = new System.Drawing.Size(662, 24);
+			this.menuStrip1.Size = new System.Drawing.Size(660, 24);
 			this.menuStrip1.TabIndex = 0;
 			this.menuStrip1.Text = "menuStrip1";
 			// 
@@ -485,9 +485,12 @@ namespace MapView.Forms.MapObservers.RmpViews
 			// LinkGroupBox
 			// 
 			this.LinkGroupBox.Controls.Add(this.label5);
+			this.LinkGroupBox.Controls.Add(this.pasteNode);
 			this.LinkGroupBox.Controls.Add(this.txtDist5);
 			this.LinkGroupBox.Controls.Add(this.cbLink5);
+			this.LinkGroupBox.Controls.Add(this.copyNode);
 			this.LinkGroupBox.Controls.Add(this.txtDist4);
+			this.LinkGroupBox.Controls.Add(this.btnRemove);
 			this.LinkGroupBox.Controls.Add(this.cbLink3);
 			this.LinkGroupBox.Controls.Add(this.txtDist3);
 			this.LinkGroupBox.Controls.Add(this.cbLink2);
@@ -509,20 +512,20 @@ namespace MapView.Forms.MapObservers.RmpViews
 			this.LinkGroupBox.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.LinkGroupBox.Location = new System.Drawing.Point(289, 3);
 			this.LinkGroupBox.Name = "LinkGroupBox";
-			this.LinkGroupBox.Size = new System.Drawing.Size(373, 236);
+			this.LinkGroupBox.Size = new System.Drawing.Size(371, 236);
 			this.LinkGroupBox.TabIndex = 3;
 			this.LinkGroupBox.TabStop = false;
-			this.LinkGroupBox.Text = "Node Link Information";
+			this.LinkGroupBox.Text = "Link data";
 			// 
 			// panel1
 			// 
 			this.panel1.Controls.Add(this.LinkGroupBox);
 			this.panel1.Controls.Add(this.panel2);
 			this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
-			this.panel1.Location = new System.Drawing.Point(0, 216);
+			this.panel1.Location = new System.Drawing.Point(0, 206);
 			this.panel1.Name = "panel1";
 			this.panel1.Padding = new System.Windows.Forms.Padding(0, 3, 0, 0);
-			this.panel1.Size = new System.Drawing.Size(662, 239);
+			this.panel1.Size = new System.Drawing.Size(660, 239);
 			this.panel1.TabIndex = 4;
 			// 
 			// panel2
@@ -545,25 +548,25 @@ namespace MapView.Forms.MapObservers.RmpViews
 			this.groupBox1.Controls.Add(this.rankLabel);
 			this.groupBox1.Controls.Add(this.lblRank2);
 			this.groupBox1.Dock = System.Windows.Forms.DockStyle.Top;
-			this.groupBox1.Location = new System.Drawing.Point(0, 62);
+			this.groupBox1.Location = new System.Drawing.Point(0, 52);
 			this.groupBox1.Name = "groupBox1";
 			this.groupBox1.Size = new System.Drawing.Size(289, 100);
 			this.groupBox1.TabIndex = 11;
 			this.groupBox1.TabStop = false;
-			this.groupBox1.Text = "Patrol Information";
+			this.groupBox1.Text = "Patrol data";
 			// 
 			// AttackBaseCombo
 			// 
-			this.AttackBaseCombo.Location = new System.Drawing.Point(90, 72);
+			this.AttackBaseCombo.Location = new System.Drawing.Point(90, 68);
 			this.AttackBaseCombo.Name = "AttackBaseCombo";
-			this.AttackBaseCombo.Size = new System.Drawing.Size(91, 21);
+			this.AttackBaseCombo.Size = new System.Drawing.Size(126, 21);
 			this.AttackBaseCombo.TabIndex = 8;
 			this.toolTip1.SetToolTip(this.AttackBaseCombo, "How likely an alien may start shooting base modules.");
 			this.AttackBaseCombo.SelectedIndexChanged += new System.EventHandler(this.AttackBaseCombo_SelectedIndexChanged);
 			// 
 			// label8
 			// 
-			this.label8.Location = new System.Drawing.Point(12, 72);
+			this.label8.Location = new System.Drawing.Point(12, 68);
 			this.label8.Name = "label8";
 			this.label8.Size = new System.Drawing.Size(72, 21);
 			this.label8.TabIndex = 3;
@@ -573,18 +576,14 @@ namespace MapView.Forms.MapObservers.RmpViews
 			// groupBox2
 			// 
 			this.groupBox2.Controls.Add(this.lblMouseOver);
-			this.groupBox2.Controls.Add(this.pasteNode);
 			this.groupBox2.Controls.Add(this.idxLabel);
-			this.groupBox2.Controls.Add(this.copyNode);
-			this.groupBox2.Controls.Add(this.btnRemove);
 			this.groupBox2.Controls.Add(this.idxLabel2);
 			this.groupBox2.Dock = System.Windows.Forms.DockStyle.Top;
 			this.groupBox2.Location = new System.Drawing.Point(0, 0);
 			this.groupBox2.Name = "groupBox2";
-			this.groupBox2.Size = new System.Drawing.Size(289, 62);
+			this.groupBox2.Size = new System.Drawing.Size(289, 52);
 			this.groupBox2.TabIndex = 1;
 			this.groupBox2.TabStop = false;
-			this.groupBox2.Text = "Node Information";
 			// 
 			// RmpView
 			// 
@@ -592,7 +591,7 @@ namespace MapView.Forms.MapObservers.RmpViews
 			this.Controls.Add(this.panel1);
 			this.Controls.Add(this.menuStrip1);
 			this.Name = "RmpView";
-			this.Size = new System.Drawing.Size(662, 455);
+			this.Size = new System.Drawing.Size(660, 445);
 			this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.RmpView_KeyDown);
 			this.gbNodeInfo.ResumeLayout(false);
 			this.menuStrip1.ResumeLayout(false);

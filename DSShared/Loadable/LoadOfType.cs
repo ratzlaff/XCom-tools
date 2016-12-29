@@ -11,7 +11,9 @@ namespace DSShared.Loadable
 	/// Originally designed for user-created save/load plugins.
 	/// </summary>
 	/// <typeparam name="T">Objects of this type are stored in this class</typeparam>
-	public class LoadOfType<T> where T : IAssemblyLoadable,IOpenSave,new()
+	public class LoadOfType<T> where T
+		:
+		IAssemblyLoadable, IOpenSave, new()
 	{
 		/// <summary>
 		/// Delegate for use with the OnLoad event
@@ -25,16 +27,16 @@ namespace DSShared.Loadable
 		/// </summary>
 		public event TypeLoadDelegate OnLoad;
 
-		//private Dictionary<int, T> filterDictionary;
+//		private Dictionary<int, T> filterDictionary;
+//		private string openFileFilter = "";
 		private List<T> allLoaded;
-		//private string openFileFilter = "";
 
 		/// <summary>
 		/// Default constructor
 		/// </summary>
 		public LoadOfType()
 		{
-			//filterDictionary = new Dictionary<int, T>();
+//			filterDictionary = new Dictionary<int, T>();
 			allLoaded = new List<T>();
 		}
 
@@ -46,11 +48,9 @@ namespace DSShared.Loadable
 		//public List<T> FilterBy(IFilter<T> filterObj)
 		//{
 		//	List<T> filterList = new List<T>();
-
 		//	foreach (T obj in filterList)
 		//		if (filterObj.FilterObj(obj))
 		//			filterList.Add(obj);
-
 		//	return filterList;
 		//}
 
@@ -72,7 +72,6 @@ namespace DSShared.Loadable
 		//	{
 		//		if (openFileFilter == "")
 		//			CreateFilter();
-
 		//		return openFileFilter;
 		//	}
 		//}
@@ -101,7 +100,6 @@ namespace DSShared.Loadable
 		//	openFileFilter = "";
 		//	bool two = true;
 		//	int filterIdx = 1; //filter index starts at 1
-
 		//	foreach (T fc in allLoaded)
 		//	{
 		//		if (fc.FilterIndex != -1)
@@ -116,7 +114,6 @@ namespace DSShared.Loadable
 		//			filterDictionary[fc.FilterIndex] = fc;
 		//		}
 		//	}
-
 		//	return openFileFilter;
 		//}
 
@@ -124,7 +121,7 @@ namespace DSShared.Loadable
 		{
 			string fileFilter = "";
 			bool two = true;
-			int filterIdx = 1; //filter index starts at 1
+			int filterIdx = 1; // filter index starts at 1
 
 			filterDictionary.Clear();
 
@@ -141,7 +138,6 @@ namespace DSShared.Loadable
 					filterDictionary.Add(filterIdx++, fc);
 				}
 			}
-
 			return fileFilter;
 		}
 
@@ -161,8 +157,7 @@ namespace DSShared.Loadable
 		//	}
 
 		//	foreach (T fc in filterList)
-		//	{
-		//	}
+		//	{}
 		//	return fileFilter;
 		//}
 
@@ -185,37 +180,42 @@ namespace DSShared.Loadable
 		/// <returns>A list of objects of type T. The list contains all registered and unregistered objects</returns>
 		public List<T> LoadFrom(Assembly a)
 		{
-			//Get creatable objects from the assembly
+			// Get creatable objects from the assembly
 			List<T> objList = new List<T>();
 			foreach (Type t in a.GetTypes())
 			{
 				if (t.IsClass && !t.IsAbstract && typeof(T).IsAssignableFrom(t))
 				{
-					//if a class has no default constructor, it will fail this
-					//this is why the new() constraint is placed on the LoadOfType definition
-					ConstructorInfo ci = t.GetConstructor(new Type[] { });
+					// if a class has no default constructor, it will fail this
+					// this is why the new() constraint is placed on the LoadOfType definition
+					ConstructorInfo ci = t.GetConstructor(new Type[]{});
 					if (ci == null)
 					{
 						Console.Error.WriteLine("Error loading type: {0} -> No default constructor specified", t);
-						continue;
 					}
-
-					try
+					else
 					{
-						T fc = (T)ci.Invoke(new object[] { });
-						objList.Add(fc);
-
-						bool register = fc.RegisterFile();
-						if (register)
+						try
 						{
-							allLoaded.Add(fc);
-							if (OnLoad != null)
-								OnLoad(this, new TypeLoadArgs(fc));
+							T fc = (T)ci.Invoke(new object[] { });
+							objList.Add(fc);
+	
+							bool register = fc.RegisterFile();
+							if (register)
+							{
+								allLoaded.Add(fc);
+								if (OnLoad != null)
+									OnLoad(this, new TypeLoadArgs(fc));
+							}
 						}
-					}
-					catch(Exception ex)
-					{
-						Console.Error.WriteLine("Error loading type: {0} -> {1}:{2}", t, ex.Message,ex.InnerException.Message);
+						catch(Exception ex)
+						{
+							Console.Error.WriteLine(
+												"Error loading type: {0} -> {1}:{2}",
+												t,
+												ex.Message,
+												ex.InnerException.Message);
+						}
 					}
 				}
 			}
