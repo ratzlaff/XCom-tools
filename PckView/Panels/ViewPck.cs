@@ -130,7 +130,7 @@ namespace PckView
 
 		private void moving(object sender, MouseEventArgs e)
 		{
-			if (myFile!=null)
+			if (myFile != null)
 			{
 				int x = e.X / GetSpecialWidth(myFile.IXCFile.ImageSize.Width);
 				int y = (e.Y-_startY) / (myFile.IXCFile.ImageSize.Height + 2 * space);
@@ -282,7 +282,7 @@ namespace PckView
 					Collection.Remove(index);
 				}
 
-				if (Collection.Count == lowestIndex && lowestIndex > 0)
+				if (lowestIndex > 0 && lowestIndex == Collection.Count)
 					lowestIndex = Collection.Count - 1;
 
 				ClearSelection(lowestIndex);

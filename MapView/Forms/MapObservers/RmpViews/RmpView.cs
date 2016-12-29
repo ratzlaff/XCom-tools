@@ -132,8 +132,7 @@ namespace MapView.Forms.MapObservers.RmpViews
 				lblMouseOver.Text = @"";
 			}
 
-			_rmpPanel.Position.X = e.X;
-			_rmpPanel.Position.Y = e.Y;
+			_rmpPanel.Position = new Point(e.X, e.Y);
 			_rmpPanel.Refresh();
 		}
 
@@ -390,8 +389,7 @@ namespace MapView.Forms.MapObservers.RmpViews
 					if (route != null)
 					{
 						_currEntry = route;
-						_rmpPanel.ClickPoint.X = _currEntry.Col;
-						_rmpPanel.ClickPoint.Y = _currEntry.Row;
+						_rmpPanel.ClickPoint = new Point(_currEntry.Col, _currEntry.Row);
 					}
 
 					if ((_rmpPanel.Map = _map) != null)
