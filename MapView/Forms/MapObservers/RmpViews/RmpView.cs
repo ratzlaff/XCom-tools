@@ -177,82 +177,101 @@ namespace MapView.Forms.MapObservers.RmpViews
 		private void ConnectNodes(RmpEntry selEntry)
 		{
 			var connectType = GetConnectNodeTypes();
-			if (connectType == ConnectNodeTypes.DontConnect) return;
-			if (_currEntry.Equals(selEntry)) return;
+			if (connectType != ConnectNodeTypes.DontConnect
+				&& !_currEntry.Equals(selEntry))
 			{
 				var spaceAt = CompareLinks(_currEntry, selEntry.Index);
 				if (spaceAt.HasValue)
 				{
 					_currEntry[spaceAt.Value].Index = selEntry.Index;
-					_currEntry[spaceAt.Value].Distance = calcLinkDistance(_currEntry, selEntry, null);
+					_currEntry[spaceAt.Value].Distance = calcLinkDistance(
+																	_currEntry,
+																	selEntry,
+																	null);
 				}
-			}
 
-			if (connectType == ConnectNodeTypes.ConnectTwoWays)
-			{
-				var spaceAt = CompareLinks(selEntry, _currEntry.Index);
-				if (spaceAt.HasValue)
+				if (connectType == ConnectNodeTypes.ConnectTwoWays)
 				{
-					selEntry[spaceAt.Value].Index = _currEntry.Index;
-					selEntry[spaceAt.Value].Distance = calcLinkDistance(selEntry, _currEntry, null);
+					spaceAt = CompareLinks(selEntry, _currEntry.Index);
+					if (spaceAt.HasValue)
+					{
+						selEntry[spaceAt.Value].Index = _currEntry.Index;
+						selEntry[spaceAt.Value].Distance = calcLinkDistance(
+																		selEntry,
+																		_currEntry,
+																		null);
+					}
 				}
 			}
 		}
 
 		private void ConnectNewNode(RmpEntry prevEntry)
 		{
-			if (prevEntry == null) return;
-			var connectType = GetConnectNodeTypes();
-			if (connectType == ConnectNodeTypes.DontConnect) return;
-
-			var prevEntryLink = GetNextAvailableLink(prevEntry);
-			if (prevEntryLink != null)
+			if (prevEntry != null)
 			{
-				prevEntryLink.Index = (byte)(_map.Rmp.Length - 1);
-				prevEntryLink.Distance = calcLinkDistance(prevEntry, _currEntry, null);
-			}
+				var connectType = GetConnectNodeTypes();
+				if (connectType != ConnectNodeTypes.DontConnect)
+				{
+					var prevEntryLink = GetNextAvailableLink(prevEntry);
+					if (prevEntryLink != null)
+					{
+						prevEntryLink.Index = (byte)(_map.Rmp.Length - 1);
+						prevEntryLink.Distance = calcLinkDistance(
+															prevEntry,
+															_currEntry,
+															null);
+					}
 
-			if (connectType == ConnectNodeTypes.ConnectTwoWays)
-			{
-				var firstLink = _currEntry[0];
-				firstLink.Index = prevEntry.Index;
-				firstLink.Distance = calcLinkDistance(_currEntry, prevEntry, txtDist1);
+					if (connectType == ConnectNodeTypes.ConnectTwoWays)
+					{
+						var firstLink = _currEntry[0];
+						firstLink.Index = prevEntry.Index;
+						firstLink.Distance = calcLinkDistance(
+														_currEntry,
+														prevEntry,
+														txtDist1);
+					}
+				}
 			}
 		}
 
 		private static Link GetNextAvailableLink(RmpEntry prevEntry)
 		{
 			for (int pI = 0; pI < prevEntry.NumLinks; pI++)
-			{
 				if (prevEntry[pI].Index == 0xFF)
 					return prevEntry[pI];
-			}
+
 			return null;
 		}
 
 		private int? CompareLinks(RmpEntry list, int index)
 		{
-			if (list == null) return null;
-			var existingLink = false;
-			var spaceAvailable = false;
-			var spaceAt = 512;
-			for (int i = 0; i < 5; i++)
+			if (list != null)
 			{
-				if (list[i].Index == index)
-				{
-					existingLink = true;
-					break;
-				}
-				if (list[i].Index == (byte) LinkTypes.NotUsed)
-				{
-					spaceAvailable = true;
-					if (i < spaceAt)
-						spaceAt = i;
-				}
-			}
+				var existingLink = false;
+				var spaceAvailable = false;
+				var spaceAt = 512;
 
-			if (existingLink || !spaceAvailable) return null;
-			return spaceAt;
+				for (int i = 0; i < 5; i++)
+				{
+					if (list[i].Index == index)
+					{
+						existingLink = true;
+						break;
+					}
+
+					if (list[i].Index == (byte) LinkTypes.NotUsed)
+					{
+						spaceAvailable = true;
+						if (i < spaceAt)
+							spaceAt = i;
+					}
+				}
+	
+				if (!existingLink && spaceAvailable)
+					return spaceAt;
+			}
+			return null;
 		}
 
 		private void FillGui()
@@ -263,107 +282,105 @@ namespace MapView.Forms.MapObservers.RmpViews
 				groupBox1.Enabled = false;
 				groupBox2.Enabled = false;
 				LinkGroupBox.Enabled = false;
-				return;
 			}
-			gbNodeInfo.Enabled = true;
-			groupBox1.Enabled = true;
-			groupBox2.Enabled = true;
-			gbNodeInfo.SuspendLayout();
-			LinkGroupBox.Enabled = true;
-			LinkGroupBox.SuspendLayout();
-
-			_loadingGui = true;
-
-			_byteList.Clear();
-
-			cbLink1.Items.Clear();
-			cbLink2.Items.Clear();
-			cbLink3.Items.Clear();
-			cbLink4.Items.Clear();
-			cbLink5.Items.Clear();
-
-			for (byte i = 0; i < _map.Rmp.Length; i++)
+			else
 			{
-				if (i == _currEntry.Index)
-					continue;
+				gbNodeInfo.Enabled = true;
+				groupBox1.Enabled = true;
+				groupBox2.Enabled = true;
+				gbNodeInfo.SuspendLayout();
+				LinkGroupBox.Enabled = true;
+				LinkGroupBox.SuspendLayout();
 
-				_byteList.Add(i);
+				_loadingGui = true;
+
+				_byteList.Clear();
+
+				cbLink1.Items.Clear();
+				cbLink2.Items.Clear();
+				cbLink3.Items.Clear();
+				cbLink4.Items.Clear();
+				cbLink5.Items.Clear();
+
+				for (byte i = 0; i < _map.Rmp.Length; i++)
+					if (i != _currEntry.Index)
+						_byteList.Add(i);
+
+				var items2 = new object[]
+				{
+					LinkTypes.ExitEast,
+					LinkTypes.ExitNorth,
+					LinkTypes.ExitSouth,
+					LinkTypes.ExitWest,
+					LinkTypes.NotUsed
+				};
+
+				_byteList.AddRange(items2);
+
+				object[] bArr = _byteList.ToArray();
+
+				cbLink1.Items.AddRange(bArr);
+				cbLink2.Items.AddRange(bArr);
+				cbLink3.Items.AddRange(bArr);
+				cbLink4.Items.AddRange(bArr);
+				cbLink5.Items.AddRange(bArr);
+
+				cbType.SelectedItem = _currEntry.UType;
+
+				if (_map.Tiles[0][0].Palette == Palette.UFOBattle)
+					cbRank1.SelectedItem = RmpFile.UnitRankUFO[_currEntry.URank1];
+				else
+					cbRank1.SelectedItem = RmpFile.UnitRankTFTD[_currEntry.URank1];
+
+				cbRank2.SelectedItem = _currEntry.NodeImportance;
+				AttackBaseCombo.SelectedItem = _currEntry.BaseModuleAttack;
+				cbUsage.SelectedItem = RmpFile.SpawnUsage[(byte)_currEntry.Spawn];
+
+				idxLabel2.Text = "Index: " + _currEntry.Index;
+
+				if (_currEntry[0].Index < 0xFB)
+					cbLink1.SelectedItem = _currEntry[0].Index;
+				else
+					cbLink1.SelectedItem = (LinkTypes)_currEntry[0].Index;
+
+				if (_currEntry[1].Index < 0xFB)
+					cbLink2.SelectedItem = _currEntry[1].Index;
+				else
+					cbLink2.SelectedItem = (LinkTypes)_currEntry[1].Index;
+
+				if (_currEntry[2].Index < 0xFB)
+					cbLink3.SelectedItem = _currEntry[2].Index;
+				else
+					cbLink3.SelectedItem = (LinkTypes)_currEntry[2].Index;
+
+				if (_currEntry[3].Index < 0xFB)
+					cbLink4.SelectedItem = _currEntry[3].Index;
+				else
+					cbLink4.SelectedItem = (LinkTypes)_currEntry[3].Index;
+
+				if (_currEntry[4].Index < 0xFB)
+					cbLink5.SelectedItem = _currEntry[4].Index;
+				else
+					cbLink5.SelectedItem = (LinkTypes)_currEntry[4].Index;
+
+				cbUse1.SelectedItem = _currEntry[0].UType;
+				cbUse2.SelectedItem = _currEntry[1].UType;
+				cbUse3.SelectedItem = _currEntry[2].UType;
+				cbUse4.SelectedItem = _currEntry[3].UType;
+				cbUse5.SelectedItem = _currEntry[4].UType;
+
+				txtDist1.Text = _currEntry[0].Distance + "";
+				txtDist2.Text = _currEntry[1].Distance + "";
+				txtDist3.Text = _currEntry[2].Distance + "";
+				txtDist4.Text = _currEntry[3].Distance + "";
+				txtDist5.Text = _currEntry[4].Distance + "";
+
+				gbNodeInfo.ResumeLayout();
+				gbNodeInfo.ResumeLayout();
+				LinkGroupBox.ResumeLayout();
+
+				_loadingGui = false;
 			}
-
-			var items2 = new object[]
-			{
-				LinkTypes.ExitEast,
-				LinkTypes.ExitNorth,
-				LinkTypes.ExitSouth,
-				LinkTypes.ExitWest,
-				LinkTypes.NotUsed
-			};
-
-			_byteList.AddRange(items2);
-
-			object[] bArr = _byteList.ToArray();
-
-			cbLink1.Items.AddRange(bArr);
-			cbLink2.Items.AddRange(bArr);
-			cbLink3.Items.AddRange(bArr);
-			cbLink4.Items.AddRange(bArr);
-			cbLink5.Items.AddRange(bArr);
-
-			cbType.SelectedItem = _currEntry.UType;
-
-			if (_map.Tiles[0][0].Palette == Palette.UFOBattle)
-				cbRank1.SelectedItem = RmpFile.UnitRankUFO[_currEntry.URank1];
-			else
-				cbRank1.SelectedItem = RmpFile.UnitRankTFTD[_currEntry.URank1];
-
-			cbRank2.SelectedItem = _currEntry.NodeImportance;
-			AttackBaseCombo.SelectedItem = _currEntry.BaseModuleAttack;
-			cbUsage.SelectedItem = RmpFile.SpawnUsage[(byte) _currEntry.Spawn];
-
-			idxLabel2.Text = "Index: " + _currEntry.Index;
-
-			if (_currEntry[0].Index < 0xFB)
-				cbLink1.SelectedItem = _currEntry[0].Index;
-			else
-				cbLink1.SelectedItem = (LinkTypes) _currEntry[0].Index;
-
-			if (_currEntry[1].Index < 0xFB)
-				cbLink2.SelectedItem = _currEntry[1].Index;
-			else
-				cbLink2.SelectedItem = (LinkTypes) _currEntry[1].Index;
-
-			if (_currEntry[2].Index < 0xFB)
-				cbLink3.SelectedItem = _currEntry[2].Index;
-			else
-				cbLink3.SelectedItem = (LinkTypes) _currEntry[2].Index;
-
-			if (_currEntry[3].Index < 0xFB)
-				cbLink4.SelectedItem = _currEntry[3].Index;
-			else
-				cbLink4.SelectedItem = (LinkTypes) _currEntry[3].Index;
-
-			if (_currEntry[4].Index < 0xFB)
-				cbLink5.SelectedItem = _currEntry[4].Index;
-			else
-				cbLink5.SelectedItem = (LinkTypes) _currEntry[4].Index;
-
-			cbUse1.SelectedItem = _currEntry[0].UType;
-			cbUse2.SelectedItem = _currEntry[1].UType;
-			cbUse3.SelectedItem = _currEntry[2].UType;
-			cbUse4.SelectedItem = _currEntry[3].UType;
-			cbUse5.SelectedItem = _currEntry[4].UType;
-
-			txtDist1.Text = _currEntry[0].Distance + "";
-			txtDist2.Text = _currEntry[1].Distance + "";
-			txtDist3.Text = _currEntry[2].Distance + "";
-			txtDist4.Text = _currEntry[3].Distance + "";
-			txtDist5.Text = _currEntry[4].Distance + "";
-
-			gbNodeInfo.ResumeLayout();
-			gbNodeInfo.ResumeLayout();
-			LinkGroupBox.ResumeLayout();
-
-			_loadingGui = false;
 		}
 
 		public void SetMap(object sender, SetMapEventArgs e)
@@ -389,12 +406,15 @@ namespace MapView.Forms.MapObservers.RmpViews
 					if (route != null)
 					{
 						_currEntry = route;
-						_rmpPanel.ClickPoint = new Point(_currEntry.Col, _currEntry.Row);
+						_rmpPanel.ClickPoint = new Point(
+													_currEntry.Col,
+													_currEntry.Row);
 					}
 
 					if ((_rmpPanel.Map = _map) != null)
 					{
 						cbRank1.Items.Clear();
+
 						if (_map.Tiles[0][0].Palette == Palette.UFOBattle)
 							cbRank1.Items.AddRange(RmpFile.UnitRankUFO);
 						else
@@ -409,7 +429,7 @@ namespace MapView.Forms.MapObservers.RmpViews
 				}
 			}
 		}
-		 
+
 		public override void SelectedTileChanged(IMap_Base sender, SelectedTileChangedEventArgs e)
 		{
 			Text = string.Format(
@@ -453,58 +473,66 @@ namespace MapView.Forms.MapObservers.RmpViews
 			if (result != null)
 				result.Text = dist.ToString();
 
-			return (byte) dist;
+			return (byte)dist;
 		}
 
-		private void cbLink_SelectedIndexChanged(ComboBox sender, int senderIndex, TextBox senderOut)
+		private void cbLink_SelectedIndexChanged(
+											ComboBox sender,
+											int senderIndex,
+											TextBox senderOut)
 		{
-			if (_loadingGui) return;
-
-			var selIdx = sender.SelectedItem as byte?;
-			if (!selIdx.HasValue)
+			if (!_loadingGui)
 			{
-				selIdx = (byte?) (sender.SelectedItem as LinkTypes?);
-			}
+				var selIdx = sender.SelectedItem as byte?;
+				if (!selIdx.HasValue)
+					selIdx = (byte?) (sender.SelectedItem as LinkTypes?);
 
-			if (!selIdx.HasValue)
-			{
-				MessageBox.Show(@"Error: Determining SelectedIndex value failed");
-				return;
-			}
-
-			try
-			{
-				_currEntry[senderIndex].Index = selIdx.Value;
-				if (_currEntry[senderIndex].Index < 0xFB)
+				if (!selIdx.HasValue)
 				{
-					RmpEntry connected = _map.Rmp[_currEntry[senderIndex].Index];
-					_currEntry[senderIndex].Distance = calcLinkDistance(_currEntry, connected, senderOut);
+					MessageBox.Show(@"Error: Determining SelectedIndex value failed");
+				}
+				else
+				{
+					try
+					{
+						_currEntry[senderIndex].Index = selIdx.Value;
+						if (_currEntry[senderIndex].Index < 0xFB)
+						{
+							RmpEntry connected = _map.Rmp[_currEntry[senderIndex].Index];
+							_currEntry[senderIndex].Distance = calcLinkDistance(_currEntry, connected, senderOut);
+						}
+					}
+					catch (Exception ex)
+					{
+						MessageBox.Show("Error: " + ex.Message);
+					}
+					Refresh();
 				}
 			}
-			catch (Exception ex)
-			{
-				MessageBox.Show("Error: " + ex.Message);
-			}
-			Refresh();
 		}
 
 		private void cbLink_Leave(ComboBox sender, int senderIndex)
 		{
-			if (_loadingGui) return;
-			var connectType = GetConnectNodeTypes();
-			if (connectType == ConnectNodeTypes.DontConnect) return;
-			if (connectType == ConnectNodeTypes.ConnectOneWay) return;
-
-			if (sender.SelectedItem != null)
+			if (!_loadingGui)
 			{
-				RmpEntry connected = _map.Rmp[_currEntry[senderIndex].Index];
-				var spaceAt = CompareLinks(connected, (byte)sender.SelectedItem);
-				if (spaceAt.HasValue)
+				var connectType = GetConnectNodeTypes();
+				if (   connectType != ConnectNodeTypes.DontConnect
+					&& connectType != ConnectNodeTypes.ConnectOneWay
+					&& sender.SelectedItem != null)
 				{
-					connected[spaceAt.Value].Index = _currEntry.Index;
-					connected[spaceAt.Value].Distance = calcLinkDistance(connected, _currEntry, null);
+					RmpEntry connected = _map.Rmp[_currEntry[senderIndex].Index];
+
+					var spaceAt = CompareLinks(connected, (byte)sender.SelectedItem);
+					if (spaceAt.HasValue)
+					{
+						connected[spaceAt.Value].Index = _currEntry.Index;
+						connected[spaceAt.Value].Distance = calcLinkDistance(
+																		connected,
+																		_currEntry,
+																		null);
+					}
+					Refresh();
 				}
-				Refresh();
 			}
 		}
 
@@ -566,31 +594,31 @@ namespace MapView.Forms.MapObservers.RmpViews
 		private void cbUse1_SelectedIndexChanged(object sender, EventArgs e)
 		{
 
-			_currEntry[0].UType = (UnitType) cbUse1.SelectedItem;
+			_currEntry[0].UType = (UnitType)cbUse1.SelectedItem;
 			Refresh();
 		}
 
 		private void cbUse2_SelectedIndexChanged(object sender, EventArgs e)
 		{
-			_currEntry[1].UType = (UnitType) cbUse2.SelectedItem;
+			_currEntry[1].UType = (UnitType)cbUse2.SelectedItem;
 			Refresh();
 		}
 
 		private void cbUse3_SelectedIndexChanged(object sender, EventArgs e)
 		{
-			_currEntry[2].UType = (UnitType) cbUse3.SelectedItem;
+			_currEntry[2].UType = (UnitType)cbUse3.SelectedItem;
 			Refresh();
 		}
 
 		private void cbUse4_SelectedIndexChanged(object sender, EventArgs e)
 		{
-			_currEntry[3].UType = (UnitType) cbUse4.SelectedItem;
+			_currEntry[3].UType = (UnitType)cbUse4.SelectedItem;
 			Refresh();
 		}
 
 		private void cbUse5_SelectedIndexChanged(object sender, EventArgs e)
 		{
-			_currEntry[4].UType = (UnitType) cbUse5.SelectedItem;
+			_currEntry[4].UType = (UnitType)cbUse5.SelectedItem;
 			Refresh();
 		}
 
@@ -749,7 +777,7 @@ namespace MapView.Forms.MapObservers.RmpViews
 		{
 			var brushes = _rmpPanel.MapBrushes;
 			var pens = _rmpPanel.MapPens;
-			 
+
 			var bc = new ValueChangedDelegate(BrushChanged);
 			var pc = new ValueChangedDelegate(PenColorChanged);
 			var pw = new ValueChangedDelegate(PenWidthChanged);
@@ -899,7 +927,7 @@ namespace MapView.Forms.MapObservers.RmpViews
 			_currEntry = null;
 			_rmpPanel.ClearSelected();
 		}
-		 
+
 		private void RemoveSelected()
 		{
 			if (_currEntry != null)
@@ -922,13 +950,11 @@ namespace MapView.Forms.MapObservers.RmpViews
 
 		private void RmpView_KeyDown(object sender, KeyEventArgs e)
 		{
-			if (e.Control && e.KeyCode == Keys.S)
+			if (e.Control && e.KeyCode == Keys.S
+				&& _map != null)
 			{
-				if (_map != null)
-				{
-					_map.Save();
-					e.Handled = true;
-				}
+				_map.Save();
+				e.Handled = true;
 			}
 		}
 
@@ -954,9 +980,11 @@ namespace MapView.Forms.MapObservers.RmpViews
 			var changeCount = 0;
 			foreach (RmpEntry rmp in _map.Rmp)
 			{
-				if (rmp.URank1 == 0) continue;
-				changeCount++;
-				rmp.URank1 = 0;
+				if (rmp.URank1 != 0)
+				{
+					changeCount++;
+					rmp.URank1 = 0;
+				}
 			}
 
 			if (changeCount > 0)
@@ -979,8 +1007,6 @@ namespace MapView.Forms.MapObservers.RmpViews
 		}
 		
 		void _contentPanePaint(object sender, PaintEventArgs e)
-		{
-			
-		}
+		{}
 	}
 }

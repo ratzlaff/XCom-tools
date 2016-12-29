@@ -5,7 +5,9 @@ using XCom.Interfaces.Base;
 
 namespace MapView.Forms.MapObservers.RmpViews
 {
-	public class MapPanelClickEventArgs:EventArgs
+	public class MapPanelClickEventArgs
+		:
+		EventArgs
 	{
 		public MapLocation ClickLocation { get; set; }
 

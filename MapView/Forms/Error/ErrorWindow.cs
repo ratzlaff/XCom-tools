@@ -3,9 +3,12 @@ using System.Windows.Forms;
 
 namespace MapView.Forms.Error
 {
-	public partial class ErrorWindow : Form
+	public partial class ErrorWindow
+		:
+		Form
 	{
 		private readonly Exception _exception;
+
 		public ErrorWindow(Exception exception)
 		{
 			_exception = exception;
@@ -16,7 +19,7 @@ namespace MapView.Forms.Error
 		{
 			ErrorDetailsPanel.Dock = DockStyle.Fill;
 		}
-		
+
 		private void ErrorWindow_Load(object sender, EventArgs e)
 		{
 			ErrorDetailsPanel.Click += ErrorDetailsPanel_Click;

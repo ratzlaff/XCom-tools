@@ -10,6 +10,7 @@ namespace MapView
 		public static void Main()
 		{
 #if RELEASE
+// NOTE: "RELEASE" doesn't seem to be defined anywhere.
 			ReleaseRun();
 #else
 			TestRun();

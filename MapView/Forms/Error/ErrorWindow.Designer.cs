@@ -36,74 +36,70 @@ namespace MapView.Forms.Error
 			this.panel1.SuspendLayout();
 			this.ErrorDetailsPanel.SuspendLayout();
 			this.SuspendLayout();
-			//
+			// 
 			// label1
-			//
-			this.label1.Anchor = (System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-																		| System.Windows.Forms.AnchorStyles.Right));
-			this.label1.Font = new System.Drawing.Font(
-													"Microsoft Sans Serif",
-													16F,
-													System.Drawing.FontStyle.Regular,
-													System.Drawing.GraphicsUnit.Point,
-													(byte)(0));
-			this.label1.Location = new System.Drawing.Point(12, 9);
+			// 
+			this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+									| System.Windows.Forms.AnchorStyles.Right)));
+			this.label1.Font = new System.Drawing.Font("Comic Sans MS", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.label1.Location = new System.Drawing.Point(8, 0);
 			this.label1.Name = "label1";
-			this.label1.Size = new System.Drawing.Size(465, 118);
+			this.label1.Size = new System.Drawing.Size(472, 160);
 			this.label1.TabIndex = 0;
-			this.label1.Text = "Fuck You!/r/nFixyourdamncode!!!/r/noh sry.";
-			//
+			this.label1.Text = "Fuck You!\r\nFixyourdamncode!!!\r\n\r\noh sry.";
+			this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			// 
 			// panel1
-			//
-			this.panel1.Anchor = (System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-																		| System.Windows.Forms.AnchorStyles.Left)
-																		| System.Windows.Forms.AnchorStyles.Right));
+			// 
+			this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+									| System.Windows.Forms.AnchorStyles.Left) 
+									| System.Windows.Forms.AnchorStyles.Right)));
 			this.panel1.Controls.Add(this.ErrorDetailsPanel);
-			this.panel1.Location = new System.Drawing.Point(12, 130);
+			this.panel1.Location = new System.Drawing.Point(12, 160);
 			this.panel1.Name = "panel1";
-			this.panel1.Size = new System.Drawing.Size(465, 172);
+			this.panel1.Size = new System.Drawing.Size(465, 144);
 			this.panel1.TabIndex = 1;
-			//
+			// 
 			// ErrorDetailsPanel
-			//
+			// 
 			this.ErrorDetailsPanel.Controls.Add(this.DetailsLabel);
 			this.ErrorDetailsPanel.Dock = System.Windows.Forms.DockStyle.Top;
 			this.ErrorDetailsPanel.Location = new System.Drawing.Point(0, 0);
 			this.ErrorDetailsPanel.Margin = new System.Windows.Forms.Padding(0);
 			this.ErrorDetailsPanel.Name = "ErrorDetailsPanel";
-			this.ErrorDetailsPanel.Size = new System.Drawing.Size(465, 18);
+			this.ErrorDetailsPanel.Size = new System.Drawing.Size(465, 144);
 			this.ErrorDetailsPanel.TabIndex = 0;
 			this.ErrorDetailsPanel.TabStop = false;
 			this.ErrorDetailsPanel.Text = "Error Details";
-			//
+			// 
 			// DetailsLabel
-			//
+			// 
 			this.DetailsLabel.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.DetailsLabel.Location = new System.Drawing.Point(3, 16);
 			this.DetailsLabel.Multiline = true;
 			this.DetailsLabel.Name = "DetailsLabel";
 			this.DetailsLabel.ReadOnly = true;
 			this.DetailsLabel.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-			this.DetailsLabel.Size = new System.Drawing.Size(459, 0);
+			this.DetailsLabel.Size = new System.Drawing.Size(459, 125);
 			this.DetailsLabel.TabIndex = 1;
 			this.DetailsLabel.Text = "Error Details go here";
-			//
+			// 
 			// CloseButton
-			//
-			this.CloseButton.Anchor = (System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right));
+			// 
+			this.CloseButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
 			this.CloseButton.DialogResult = System.Windows.Forms.DialogResult.OK;
-			this.CloseButton.Location = new System.Drawing.Point(325, 308);
+			this.CloseButton.Location = new System.Drawing.Point(328, 317);
 			this.CloseButton.Name = "CloseButton";
 			this.CloseButton.Size = new System.Drawing.Size(152, 43);
 			this.CloseButton.TabIndex = 2;
 			this.CloseButton.Text = "Close";
 			this.CloseButton.UseVisualStyleBackColor = true;
-			//
+			// 
 			// ErrorWindow
-			//
+			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(489, 363);
+			this.ClientSize = new System.Drawing.Size(489, 365);
 			this.Controls.Add(this.CloseButton);
 			this.Controls.Add(this.panel1);
 			this.Controls.Add(this.label1);
@@ -115,7 +111,6 @@ namespace MapView.Forms.Error
 			this.ErrorDetailsPanel.ResumeLayout(false);
 			this.ErrorDetailsPanel.PerformLayout();
 			this.ResumeLayout(false);
-
 		}
 
 		#endregion
