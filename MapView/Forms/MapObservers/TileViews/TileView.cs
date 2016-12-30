@@ -179,8 +179,9 @@ namespace MapView.Forms.MapObservers.TileViews
 		{
 			set
 			{
-				for(int i=0;i<panels.Length;i++)
+				for (int i = 0; i < panels.Length; i++)
 					panels[i].Tiles = value;
+
 				OnResize(null);
 			}
 		}
@@ -194,8 +195,8 @@ namespace MapView.Forms.MapObservers.TileViews
 			}
 			set
 			{
-				tabs.SelectedIndex=0;
-				all.SelectedTile=value;
+				tabs.SelectedIndex = 0;
+				all.SelectedTile = value;
 				Refresh();
 			}
 		}

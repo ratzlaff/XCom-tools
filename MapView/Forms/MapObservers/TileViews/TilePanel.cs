@@ -221,7 +221,7 @@ namespace MapView.Forms.MapObservers.TileViews
 				Graphics g = e.Graphics;
 
 				int x = 0, y = 0;
-				var bottomWidth = width + 2 * space;
+				var bottomWidth  = width  + 2 * space;
 				var bottomHeight = height + 2 * space;
 
 				foreach (var tile in tiles)
@@ -257,7 +257,8 @@ namespace MapView.Forms.MapObservers.TileViews
 									bottomTop + PckImage.Height - Font.Height);
 
 						x = (x + 1) % numAcross;
-						if (x == 0) y++;
+						if (x == 0)
+							y++;
 					}
 					else if (tile == null)
 					{
@@ -269,7 +270,8 @@ namespace MapView.Forms.MapObservers.TileViews
 									bottomLeft, bottomTop);
 
 						x = (x + 1) % numAcross;
-						if (x == 0) y++;
+						if (x == 0)
+							y++;
 					}
 				}
 
@@ -314,6 +316,7 @@ namespace MapView.Forms.MapObservers.TileViews
 
 				return null;
 			}
+
 			set
 			{
 				if (value == null)

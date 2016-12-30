@@ -26,10 +26,10 @@ namespace MapView.Forms.McdViewer
 			InfoBs.DataSource = info;
 
 			rtb.Text = "";
-			rtb.SelectionColor = Color.Gray;
+			rtb.SelectionColor = Color.DarkGray;
 			rtb.AppendText(info.Reference0To30);
 			rtb.AppendText("\n");
-			rtb.SelectionColor = Color.Gray;
+			rtb.SelectionColor = Color.DarkGray;
 			rtb.AppendText(info.Reference30To62);
 			rtb.AppendText("\n\n");
 			rtb.SelectionColor = Color.Black;
