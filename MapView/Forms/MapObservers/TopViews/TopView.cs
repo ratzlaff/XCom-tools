@@ -256,8 +256,7 @@ namespace MapView.Forms.MapObservers.TopViews
 		 
 		private void TopView_KeyDown(object sender, KeyEventArgs e)
 		{
-			if (e.Control
-				&& e.KeyCode == Keys.S
+			if (e.Control && e.KeyCode == Keys.S
 				&& Map != null)
 			{
 				Map.Save();

@@ -14,6 +14,7 @@ namespace MapView.Forms.MapObservers.RmpViews
 		public Point Position = new Point(-1, -1);
 
 		private readonly Font _font = new Font("Arial", 12, FontStyle.Bold);
+
 		private readonly DrawContentService _drawContentService = new DrawContentService();
 
 		private SolidPenBrush _wallColor;
@@ -268,7 +269,9 @@ namespace MapView.Forms.MapObservers.RmpViews
 									Brushes.Red);
 
 							var spawn = (int)rmpEntry.Spawn;
-							if (spawn > 0) spawn += 5;
+							if (spawn > 0)
+								spawn += 5;
+
 							DrawBox(
 									g,
 									boxX + 3, boxY,
@@ -484,7 +487,7 @@ namespace MapView.Forms.MapObservers.RmpViews
 
 							default:
 								if (   map.Rmp[l.Index] != null
-								    && map.Rmp[l.Index].Height == map.CurrentHeight)
+									&& map.Rmp[l.Index].Height == map.CurrentHeight)
 								{
 									int toRow = map.Rmp[l.Index].Row;
 									int toCol = map.Rmp[l.Index].Col;

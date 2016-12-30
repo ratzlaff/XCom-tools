@@ -905,7 +905,7 @@ namespace MapView.Forms.MapObservers.RmpViews
 							"Other",
 							bc, false, null);
 
-			connectNodesYoolStripMenuItem.SelectedIndex = 2;
+			connectNodesYoolStripMenuItem.SelectedIndex = 0;
 		}
 
 		private void copyNode_Click(object sender, EventArgs e)

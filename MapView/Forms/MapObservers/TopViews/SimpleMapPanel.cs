@@ -40,8 +40,10 @@ namespace MapView.Forms.MapObservers.TopViews
 			if (map != null)
 			{
 				int oldWid = DrawContentService.HWidth;
-				var hWidth = DrawContentService.HWidth;
+
+				var hWidth  = DrawContentService.HWidth;
 				var hHeight = DrawContentService.HHeight;
+
 				if (map.MapSize.Rows > 0 || map.MapSize.Cols > 0)
 				{
 					if (height > width / 2) // use width
@@ -112,18 +114,16 @@ namespace MapView.Forms.MapObservers.TopViews
 
 			var hWidth  = DrawContentService.HWidth;
 			var hHeight = DrawContentService.HHeight;
+
 			var sel1 = new Point(
 							_offX + (s.X - s.Y) * hWidth,
 							_offY + (s.X + s.Y) * hHeight);
-
 			var sel2 = new Point(
 							_offX + (e.X - s.Y) * hWidth + hWidth,
 							_offY + (e.X + s.Y) * hHeight + hHeight);
-
 			var sel3 = new Point(
 							_offX + (e.X - e.Y) * hWidth,
 							_offY + (e.X + e.Y) * hHeight + hHeight + hHeight);
-
 			var sel4 = new Point(
 							_offX + (s.X - e.Y) * hWidth - hWidth,
 							_offY + (s.X + e.Y) * hHeight + hHeight);
