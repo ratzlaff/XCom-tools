@@ -48,10 +48,10 @@ namespace MapView
 
 			loadDefaults();
 
-			Palette.TFTDBattle.SetTransparent(true);
 			Palette.UFOBattle.SetTransparent(true);
-			Palette.TFTDBattle.Grayscale.SetTransparent(true);
+			Palette.TFTDBattle.SetTransparent(true);
 			Palette.UFOBattle.Grayscale.SetTransparent(true);
+			Palette.TFTDBattle.Grayscale.SetTransparent(true);
 
 			#region Setup SharedSpace information and paths
 
@@ -552,11 +552,11 @@ namespace MapView
 				var rmpService = new RmpService();
 				rmpService.ReviewRouteEntries(map);
 
-				statusMapName.Text = "Map: " + imd.Name;
+				statusMapName.Text = imd.Name;
 
 				if (map != null)
 				{
-					tsMapSize.Text = "Size: " + map.MapSize;
+					tsMapSize.Text = map.MapSize.ToString();
 				}
 				else
 				{

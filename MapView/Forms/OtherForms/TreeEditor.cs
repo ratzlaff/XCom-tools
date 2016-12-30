@@ -38,7 +38,7 @@ namespace MapView
 			foreach(object o in GameInfo.GetTileInfo().Tilesets.Keys)
 				al.Add(o);
 
-			al.Sort();		
+			al.Sort();
 			ArrayList al2 = new ArrayList();
 			foreach(string o in al) //tileset
 			{
@@ -72,7 +72,7 @@ namespace MapView
 			foreach(object o in GameInfo.GetTileInfo().Tilesets.Keys)
 				al.Add(o);
 
-			al.Sort();		
+			al.Sort();
 			ArrayList al2 = new ArrayList();
 			foreach(string o in al) //tileset
 			{
@@ -144,9 +144,9 @@ namespace MapView
 			this.boxRename = new System.Windows.Forms.GroupBox();
 			this.boxRename.SuspendLayout();
 			this.SuspendLayout();
-			// 
+			//
 			// treeLeft
-			// 
+			//
 			this.treeLeft.CheckBoxes = true;
 			this.treeLeft.Dock = System.Windows.Forms.DockStyle.Left;
 			this.treeLeft.ImageIndex = -1;
@@ -155,9 +155,9 @@ namespace MapView
 			this.treeLeft.Size = new System.Drawing.Size(160, 221);
 			this.treeLeft.TabIndex = 0;
 			this.treeLeft.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeLeft_AfterSelect);
-			// 
+			//
 			// treeRight
-			// 
+			//
 			this.treeRight.Dock = System.Windows.Forms.DockStyle.Right;
 			this.treeRight.ImageIndex = -1;
 			this.treeRight.Location = new System.Drawing.Point(275, 0);
@@ -166,44 +166,44 @@ namespace MapView
 			this.treeRight.Size = new System.Drawing.Size(160, 221);
 			this.treeRight.TabIndex = 1;
 			this.treeRight.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeRight_AfterSelect);
-			// 
+			//
 			// btnMove
-			// 
+			//
 			this.btnMove.Enabled = false;
 			this.btnMove.Location = new System.Drawing.Point(180, 99);
 			this.btnMove.Name = "btnMove";
 			this.btnMove.TabIndex = 3;
 			this.btnMove.Text = "->";
 			this.btnMove.Click += new System.EventHandler(this.btnMove_Click);
-			// 
+			//
 			// txtName
-			// 
+			//
 			this.txtName.Location = new System.Drawing.Point(8, 16);
 			this.txtName.Name = "txtName";
 			this.txtName.TabIndex = 5;
 			this.txtName.Text = "";
-			// 
+			//
 			// btnRename
-			// 
+			//
 			this.btnRename.Location = new System.Drawing.Point(20, 40);
 			this.btnRename.Name = "btnRename";
 			this.btnRename.TabIndex = 6;
 			this.btnRename.Text = "Rename";
 			this.btnRename.Click += new System.EventHandler(this.btnRename_Click);
-			// 
+			//
 			// btnDone
-			// 
+			//
 			this.btnDone.Location = new System.Drawing.Point(180, 192);
 			this.btnDone.Name = "btnDone";
 			this.btnDone.TabIndex = 7;
 			this.btnDone.Text = "Done";
 			this.btnDone.Click += new System.EventHandler(this.btnDone_Click);
-			// 
+			//
 			// boxRename
-			// 
+			//
 			this.boxRename.Controls.AddRange(new System.Windows.Forms.Control[] {
-																					this.btnRename,
-																					this.txtName});
+																			this.btnRename,
+																			this.txtName});
 			this.boxRename.Dock = System.Windows.Forms.DockStyle.Top;
 			this.boxRename.Location = new System.Drawing.Point(160, 0);
 			this.boxRename.Name = "boxRename";
@@ -211,17 +211,17 @@ namespace MapView
 			this.boxRename.TabIndex = 8;
 			this.boxRename.TabStop = false;
 			this.boxRename.Text = "Rename Selected";
-			// 
+			//
 			// TreeEditor
-			// 
+			//
 			this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
 			this.ClientSize = new System.Drawing.Size(435, 221);
 			this.Controls.AddRange(new System.Windows.Forms.Control[] {
-																		  this.boxRename,
-																		  this.btnDone,
-																		  this.btnMove,
-																		  this.treeRight,
-																		  this.treeLeft});
+																	this.boxRename,
+																	this.btnDone,
+																	this.btnMove,
+																	this.treeRight,
+																	this.treeLeft});
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
 			this.MaximizeBox = false;
 			this.MinimizeBox = false;
@@ -261,7 +261,7 @@ namespace MapView
 
 				sel.Text=txtName.Text;
 
-				tSet.Subsets[sel.Text]=subset;				
+				tSet.Subsets[sel.Text]=subset;
 			}
 
 			populateRight();*/
@@ -271,7 +271,7 @@ namespace MapView
 		{
 			TreeNode t = treeLeft.SelectedNode;
 
-			if(t.Parent!=null) 
+			if(t.Parent!=null)
 			{
 				if(t.Parent.Parent!=null)//inner node
 					return (IXCTileset)GameInfo.GetTileInfo().Tilesets[t.Parent.Parent.Text];
@@ -335,5 +335,4 @@ namespace MapView
 			populateLeft();
 		}
 	}
-}
-*/
+} */

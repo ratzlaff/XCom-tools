@@ -6,7 +6,9 @@ using System.Windows.Forms;
 
 namespace MapView
 {
-	public class Dialog : System.Windows.Forms.Form
+	public class Dialog
+		:
+		System.Windows.Forms.Form
 	{
 		private System.Windows.Forms.Label txt;
 		private System.Windows.Forms.Button btnOk;
@@ -15,7 +17,7 @@ namespace MapView
 		public Dialog(string text)
 		{
 			InitializeComponent();
-			txt.Text=text;
+			txt.Text = text;
 		}
 
 		public static void ShowDialog(IWin32Window parent, string text)
@@ -50,29 +52,29 @@ namespace MapView
 			this.txt = new System.Windows.Forms.Label();
 			this.btnOk = new System.Windows.Forms.Button();
 			this.SuspendLayout();
-			// 
+			//
 			// txt
-			// 
+			//
 			this.txt.Dock = System.Windows.Forms.DockStyle.Top;
 			this.txt.Name = "txt";
 			this.txt.Size = new System.Drawing.Size(292, 72);
 			this.txt.TabIndex = 0;
-			// 
+			//
 			// btnOk
-			// 
+			//
 			this.btnOk.Location = new System.Drawing.Point(104, 72);
 			this.btnOk.Name = "btnOk";
 			this.btnOk.TabIndex = 1;
 			this.btnOk.Text = "Ok";
 			this.btnOk.Click += new System.EventHandler(this.btnOk_Click);
-			// 
+			//
 			// Dialog
-			// 
+			//
 			this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
 			this.ClientSize = new System.Drawing.Size(292, 103);
 			this.Controls.AddRange(new System.Windows.Forms.Control[] {
-																		  this.btnOk,
-																		  this.txt});
+																	this.btnOk,
+																	this.txt});
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
 			this.Name = "Dialog";
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;

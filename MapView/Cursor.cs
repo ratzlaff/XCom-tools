@@ -24,7 +24,7 @@ namespace MapView
 			state = CursorState.Select;
 			this.cursorFile=cursorFile;
 
-			foreach(PckImage pi in cursorFile)
+			foreach (PckImage pi in cursorFile)
 				pi.Image.MakeTransparent(cursorFile.Pal.Transparent);
 		}
 
@@ -36,10 +36,14 @@ namespace MapView
 
 		public PckFile PckFile
 		{
-			get{return cursorFile;}
+			get {return cursorFile; }
 		}
 
-		public void DrawHigh(Graphics g, int x, int y, bool over, bool top)
+		public void DrawHigh(
+						Graphics g,
+						int x, int y,
+						bool over,
+						bool top)
 		{
 			Bitmap image;
 			if (top && state != CursorState.Aim)
@@ -61,17 +65,23 @@ namespace MapView
 					(int)(image.Height * Globals.PckImageScale));
 		}
 
-		public void DrawLow(Graphics g, int x, int y, int i,bool over,bool top)
+		public void DrawLow(
+						Graphics g,
+						int x, int y,
+						int i,
+						bool over,
+						bool top)
 		{
 			Bitmap image;
+
 			if (top && state != CursorState.Aim)
 			{
-				if(over)
+				if (over)
 					image = cursorFile[4].Image;
 				else
 					image = cursorFile[3].Image;
 
-				switch(state)
+				switch (state)
 				{
 					case CursorState.SelectMControl:
 						image = cursorFile[11 + i % 2].Image;

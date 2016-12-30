@@ -17,6 +17,7 @@ namespace MapView.SettingServices
 				foreach (string s in settingsHash.Keys)
 					if (settingsHash.ContainsKey(s))
 						settingsHash[s].Save(s, sw);
+
 				sw.Flush();
 				sw.Close();
 			}

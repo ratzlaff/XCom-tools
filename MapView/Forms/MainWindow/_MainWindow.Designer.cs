@@ -213,7 +213,7 @@ namespace MapView
 			this.mapList.Dock = System.Windows.Forms.DockStyle.Left;
 			this.mapList.Location = new System.Drawing.Point(0, 0);
 			this.mapList.Name = "mapList";
-			this.mapList.Size = new System.Drawing.Size(249, 298);
+			this.mapList.Size = new System.Drawing.Size(249, 335);
 			this.mapList.TabIndex = 0;
 			this.mapList.BeforeSelect += new System.Windows.Forms.TreeViewCancelEventHandler(this.mapList_BeforeSelect);
 			this.mapList.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.mapList_AfterSelect);
@@ -229,9 +229,9 @@ namespace MapView
 			this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
 									this.statusMapName,
 									this.tsMapSize});
-			this.statusStrip1.Location = new System.Drawing.Point(257, 276);
+			this.statusStrip1.Location = new System.Drawing.Point(257, 313);
 			this.statusStrip1.Name = "statusStrip1";
-			this.statusStrip1.Size = new System.Drawing.Size(310, 22);
+			this.statusStrip1.Size = new System.Drawing.Size(335, 22);
 			this.statusStrip1.TabIndex = 2;
 			this.statusStrip1.Text = "statusStrip1";
 			// 
@@ -242,7 +242,7 @@ namespace MapView
 									| System.Windows.Forms.ToolStripStatusLabelBorderSides.Right) 
 									| System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
 			this.statusMapName.Name = "statusMapName";
-			this.statusMapName.Size = new System.Drawing.Size(75, 17);
+			this.statusMapName.Size = new System.Drawing.Size(150, 17);
 			// 
 			// tsMapSize
 			// 
@@ -251,7 +251,7 @@ namespace MapView
 									| System.Windows.Forms.ToolStripStatusLabelBorderSides.Right) 
 									| System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
 			this.tsMapSize.Name = "tsMapSize";
-			this.tsMapSize.Size = new System.Drawing.Size(75, 17);
+			this.tsMapSize.Size = new System.Drawing.Size(100, 17);
 			// 
 			// toolStripContainer1
 			// 
@@ -262,7 +262,7 @@ namespace MapView
 			// 
 			// toolStripContainer1.ContentPanel
 			// 
-			this.toolStripContainer1.ContentPanel.Size = new System.Drawing.Size(310, 251);
+			this.toolStripContainer1.ContentPanel.Size = new System.Drawing.Size(335, 288);
 			this.toolStripContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
 			// 
 			// toolStripContainer1.LeftToolStripPanel
@@ -274,7 +274,7 @@ namespace MapView
 			// toolStripContainer1.RightToolStripPanel
 			// 
 			this.toolStripContainer1.RightToolStripPanel.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
-			this.toolStripContainer1.Size = new System.Drawing.Size(310, 276);
+			this.toolStripContainer1.Size = new System.Drawing.Size(335, 313);
 			this.toolStripContainer1.TabIndex = 3;
 			this.toolStripContainer1.Text = "toolStripContainer1";
 			// 
@@ -346,7 +346,7 @@ namespace MapView
 			this.cSplitList.Location = new System.Drawing.Point(249, 0);
 			this.cSplitList.MinimumSize = new System.Drawing.Size(5, 5);
 			this.cSplitList.Name = "cSplitList";
-			this.cSplitList.Size = new System.Drawing.Size(8, 298);
+			this.cSplitList.Size = new System.Drawing.Size(8, 335);
 			this.cSplitList.TabIndex = 1;
 			this.cSplitList.TabStop = false;
 			// 
@@ -354,7 +354,7 @@ namespace MapView
 			// 
 			this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
 			this.BackColor = System.Drawing.SystemColors.Control;
-			this.ClientSize = new System.Drawing.Size(567, 298);
+			this.ClientSize = new System.Drawing.Size(592, 335);
 			this.Controls.Add(this.toolStripContainer1);
 			this.Controls.Add(this.statusStrip1);
 			this.Controls.Add(this.cSplitList);

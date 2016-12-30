@@ -12,18 +12,18 @@ namespace MapView
 
 		public Args(ArgType type)
 		{
-			this.type=type;
+			this.type = type;
 		}
 
 		public ArgType Type
 		{
-			get{return type;}
+			get { return type; }
 		}
 		
 		public MapLocation Location
 		{
-			get{return location;}
-			set{location=value;}
+			get { return location; }
+			set { location = value; }
 		}
 	}
 }

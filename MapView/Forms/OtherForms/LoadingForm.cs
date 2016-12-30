@@ -6,7 +6,9 @@ using System.Windows.Forms;
 
 namespace MapView
 {
-	public class LoadingForm : System.Windows.Forms.Form
+	public class LoadingForm
+		:
+		System.Windows.Forms.Form
 	{
 		private System.Windows.Forms.ProgressBar progress;
 		private System.ComponentModel.Container components = null;
@@ -18,8 +20,8 @@ namespace MapView
 
 		public void Update(int curr, int total)
 		{
-			progress.Maximum=total;
-			progress.Value=curr;
+			progress.Maximum = total;
+			progress.Value = curr;
 		}
 
 		#region Windows Form Designer generated code
@@ -46,21 +48,21 @@ namespace MapView
 		{
 			this.progress = new System.Windows.Forms.ProgressBar();
 			this.SuspendLayout();
-			// 
+			//
 			// progress
-			// 
+			//
 			this.progress.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.progress.Name = "progress";
 			this.progress.Size = new System.Drawing.Size(292, 29);
 			this.progress.TabIndex = 0;
-			// 
+			//
 			// LoadingForm
-			// 
+			//
 			this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
 			this.ClientSize = new System.Drawing.Size(292, 29);
 			this.ControlBox = false;
 			this.Controls.AddRange(new System.Windows.Forms.Control[] {
-																		  this.progress});
+																	this.progress});
 			this.Name = "LoadingForm";
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
 			this.ResumeLayout(false);
