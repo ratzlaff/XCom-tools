@@ -42,7 +42,7 @@ namespace MapView.Forms.McdViewer
 			this.rtb.Enabled = false;
 			this.rtb.Location = new System.Drawing.Point(0, 0);
 			this.rtb.Name = "rtb";
-			this.rtb.Size = new System.Drawing.Size(283, 410);
+			this.rtb.Size = new System.Drawing.Size(527, 475);
 			this.rtb.TabIndex = 0;
 			this.rtb.Text = "";
 			// 
@@ -56,7 +56,7 @@ namespace MapView.Forms.McdViewer
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.AutoValidate = System.Windows.Forms.AutoValidate.EnablePreventFocusChange;
 			this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-			this.ClientSize = new System.Drawing.Size(283, 410);
+			this.ClientSize = new System.Drawing.Size(527, 475);
 			this.Controls.Add(this.rtb);
 			this.Name = "McdViewerForm";
 			this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Show;

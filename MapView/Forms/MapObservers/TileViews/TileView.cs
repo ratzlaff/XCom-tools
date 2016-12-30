@@ -255,7 +255,7 @@ namespace MapView.Forms.MapObservers.TileViews
 				if (MCDInfoForm == null)
 				{
 					MCDInfoForm = new McdViewerForm();
-					MCDInfoForm.Size = new Size(480, 670);
+//					MCDInfoForm.Size = new Size(480, 670); // not req'd.
 					MCDInfoForm.Closing += infoTabClosing;
 
 					var tile = SelectedTile;
@@ -268,9 +268,9 @@ namespace MapView.Forms.MapObservers.TileViews
 				}
 
 				MCDInfoForm.Visible = true;
-				MCDInfoForm.Location = new Point(
-											this.Location.X-MCDInfoForm.Width,
-											this.Location.Y);
+//				MCDInfoForm.Location = new Point( // this is f'd.
+//											this.Location.X - MCDInfoForm.Width,
+//											this.Location.Y);
 				MCDInfoForm.Show();
 				mcdInfoTab.Checked = true;
 			}

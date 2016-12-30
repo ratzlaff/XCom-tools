@@ -51,9 +51,13 @@ namespace MapView
 		public MapView()
 		{
 			map = null;
-			_dragStart = _dragEnd = new Point(-1, -1);
 
-			SetStyle(ControlStyles.DoubleBuffer | ControlStyles.UserPaint | ControlStyles.AllPaintingInWmPaint, true);
+			_dragStart =
+			_dragEnd   = new Point(-1, -1);
+
+			SetStyle(
+					ControlStyles.DoubleBuffer | ControlStyles.UserPaint | ControlStyles.AllPaintingInWmPaint,
+					true);
 
 			gridColor = Color.FromArgb(175, 69, 100, 129);
 			transBrush = new SolidBrush(gridColor);
@@ -72,13 +76,17 @@ namespace MapView
 					for (int c = dragStart.X; c < map.MapSize.Cols && (c - dragStart.X) < copied.GetLength(1); c++)
 					{
 						var tile = map[r, c] as XCMapTile;
-						if (tile == null) continue;
-						var copyTile = copied[r - dragStart.Y, c - dragStart.X] as XCMapTile;
-						if (copyTile == null) continue;
-						tile.Ground = copyTile.Ground;
-						tile.Content = copyTile.Content;
-						tile.West = copyTile.West;
-						tile.North = copyTile.North;
+						if (tile != null)
+						{
+							var copyTile = copied[r - dragStart.Y, c - dragStart.X] as XCMapTile;
+							if (copyTile != null)
+							{
+								tile.Ground		= copyTile.Ground;
+								tile.Content	= copyTile.Content;
+								tile.West		= copyTile.West;
+								tile.North		= copyTile.North;
+							}
+						}
 					}
 
 				map.MapChanged = true;
@@ -184,11 +192,17 @@ namespace MapView
 		{
 			if (map != null)
 			{
-				var dragStart = ConvertCoordsDiamond(e.X, e.Y, map.CurrentHeight);
-				var dragEnd = ConvertCoordsDiamond(e.X, e.Y, map.CurrentHeight);
+				var dragStart = ConvertCoordsDiamond(
+												e.X, e.Y,
+												map.CurrentHeight);
+				var dragEnd = ConvertCoordsDiamond(
+												e.X, e.Y,
+												map.CurrentHeight);
 				SetDrag(dragStart, dragEnd);
 
-				map.SelectedTile = new MapLocation(DragEnd.Y, DragEnd.X, map.CurrentHeight);
+				map.SelectedTile = new MapLocation(
+												DragEnd.Y, DragEnd.X,
+												map.CurrentHeight);
 
 				Focus();
 				Refresh();
@@ -212,7 +226,9 @@ namespace MapView
 		{
 			if (map != null)
 			{
-				Point temp = ConvertCoordsDiamond(e.X, e.Y, map.CurrentHeight);
+				Point temp = ConvertCoordsDiamond(
+											e.X, e.Y,
+											map.CurrentHeight);
 
 				if (temp.X != DragEnd.X || temp.Y != DragEnd.Y)
 				{

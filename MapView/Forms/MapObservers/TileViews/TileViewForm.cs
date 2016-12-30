@@ -9,6 +9,9 @@ namespace MapView.Forms.MapObservers.TileViews
 			InitializeComponent();
 		}
 
-		public MapObserverControl MapObserver { get { return TileViewControl; } }
+		public MapObserverControl MapObserver
+		{
+			get { return TileViewControl; }
+		}
 	}
 }
