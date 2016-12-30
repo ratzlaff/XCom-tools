@@ -98,7 +98,7 @@ namespace XCom
 
 			Console.WriteLine("image data");
 
-			for(int i = image.Height - 1; i >= 0; i--)
+			for (int i = image.Height - 1; i >= 0; i--)
 			{
 				for (int j = 0; j < image.Width; j++)
 					bw.Write(table[image.GetPixel(j, i)]);
@@ -501,7 +501,7 @@ namespace XCom
 			in24.Init(image.Width, image.Height, 24);
 
 			for (int row = 0; row < image.Height; row++)
-				for(int col = 0; col < image.Width; col++)
+				for (int col = 0; col < image.Width; col++)
 				{
 					Color c = image.GetPixel(col,row);
 					*(in24.m_pBitmap + (row * in24.m_Xres * 3) + (col * 3 + 0)) = c.B;

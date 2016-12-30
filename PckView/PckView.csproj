@@ -113,9 +113,8 @@
       <Name>DSShared</Name>
     </ProjectReference>
     <ProjectReference Include="..\XCom\XCom.csproj">
+      <Project>{66DC3C20-8041-48DD-962B-DEA050F89179}</Project>
       <Name>XCom</Name>
-      <Project>{5B263FC6-BA2E-44D4-A940-9BC367D9469B}</Project>
-      <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
     </ProjectReference>
     <Reference Include="System">
       <Name>System</Name>
