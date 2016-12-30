@@ -4,6 +4,8 @@ using System.IO;
 
 namespace DSShared
 {
+	/// <summary>
+	/// </summary>
 	public class VarCollection
 	{
 		//private Hashtable vars;
@@ -12,8 +14,12 @@ namespace DSShared
 		private string baseVar;
 		private StreamReader sr;
 
+		/// <summary>
+		/// </summary>
 		public static readonly char Separator = ':';
 
+		/// <summary>
+		/// </summary>
 		public VarCollection()
 		{
 			vars = new Dictionary<string, Variable>();
@@ -21,6 +27,8 @@ namespace DSShared
 			baseVar = "";
 		}
 
+		/// <summary>
+		/// </summary>
 		public VarCollection(StreamReader sr)
 		{
 			this.sr = sr;
@@ -28,18 +36,24 @@ namespace DSShared
 			other = null;
 		}
 
+		/// <summary>
+		/// </summary>
 		public VarCollection(string baseVar)
 			: this()
 		{
 			this.baseVar = baseVar;
 		}
 
+		/// <summary>
+		/// </summary>
 		public VarCollection(VarCollection other)
 			: this()
 		{
 			this.other = other;
 		}
 
+		/// <summary>
+		/// </summary>
 		public void AddVar(string flag, string val)
 		{
 			if (vars[val] == null)
@@ -48,16 +62,22 @@ namespace DSShared
 				((Variable)vars[val]).Inc(flag + Separator);
 		}
 
+		/// <summary>
+		/// </summary>
 		public Dictionary<string, Variable> Vars
 		{
 			get { return vars; }
 		}
 
+		/// <summary>
+		/// </summary>
 		public StreamReader BaseStream
 		{
 			get { return sr; }
 		}
 
+		/// <summary>
+		/// </summary>
 		public string ParseVar(string line)
 		{
 			foreach (string s in vars.Keys)
@@ -69,11 +89,15 @@ namespace DSShared
 			return line;
 		}
 
+		/// <summary>
+		/// </summary>
 		public ICollection<string> Variables
 		{
 			get { return vars.Keys; }
 		}
 
+		/// <summary>
+		/// </summary>
 		public string this[string var]
 		{
 			get
@@ -91,11 +115,15 @@ namespace DSShared
 			}
 		}
 
+		/// <summary>
+		/// </summary>
 		public bool ReadLine(out KeyVal output)
 		{
 			return (output = ReadLine()) != null;
 		}
 
+		/// <summary>
+		/// </summary>
 		public KeyVal ReadLine()
 		{
 			string line = ReadLine(sr, this);
@@ -108,11 +136,15 @@ namespace DSShared
 				return new KeyVal(line, "");
 		}
 
+		/// <summary>
+		/// </summary>
 		public string ReadLine(StreamReader sr)
 		{
 			return ReadLine(sr, this);
 		}
 
+		/// <summary>
+		/// </summary>
 		public static string ReadLine(StreamReader sr, VarCollection vars)
 		{
 			string line = "";
@@ -145,33 +177,45 @@ namespace DSShared
 		}
 	}
 
+	/// <summary>
+	/// </summary>
 	public class KeyVal
 	{
 		private string keyword, rest;
 		private Dictionary<string, KeyVal> kvHash;
 
+		/// <summary>
+		/// </summary>
 		public KeyVal(string keyword, string rest)
 		{
 			this.keyword = keyword;
 			this.rest = rest;
 		}
 
+		/// <summary>
+		/// </summary>
 		public string Keyword
 		{
 			get { return keyword; }
 		}
 
+		/// <summary>
+		/// </summary>
 		public string Rest
 		{
 			get { return rest; }
 		}
 
+		/// <summary>
+		/// </summary>
 		public Dictionary<string, KeyVal> SubHash
 		{
 			get { return kvHash; }
 			set { kvHash = value; }
 		}
 
+		/// <summary>
+		/// </summary>
 		public override string ToString()
 		{
 			return keyword + ':' + rest;

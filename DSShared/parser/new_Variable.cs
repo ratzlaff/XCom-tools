@@ -4,6 +4,8 @@ using System.Collections.Generic;
 
 namespace DSShared
 {
+	/// <summary>
+	/// </summary>
 	public class Variable
 	{
 		private static int count = 0;
@@ -12,6 +14,8 @@ namespace DSShared
 		private string varValue;
 		private List<string> list;
 
+		/// <summary>
+		/// </summary>
 		public Variable(string prefix, string post)
 		{
 			varName = "${var" + (count++) + "}";
@@ -20,17 +24,23 @@ namespace DSShared
 			list.Add(prefix);
 		}
 
+		/// <summary>
+		/// </summary>
 		public string Name
 		{
 			get { return varName; }
 		}
 
+		/// <summary>
+		/// </summary>
 		public string Value
 		{
 			get { return varValue; }
 			set { varValue = value; }
 		}
 
+		/// <summary>
+		/// </summary>
 		public Variable(string baseVar, string prefix, string post)
 		{
 			varName = "${var" + baseVar + (count++) + "}";
@@ -39,16 +49,22 @@ namespace DSShared
 			list.Add(prefix);
 		}
 
+		/// <summary>
+		/// </summary>
 		public void Inc(string prefix)
 		{
 			list.Add(prefix);
 		}
 
+		/// <summary>
+		/// </summary>
 		public void Write(StreamWriter sw)
 		{
 			Write(sw, "");
 		}
 
+		/// <summary>
+		/// </summary>
 		public void Write(StreamWriter sw, string pref)
 		{
 			if (list.Count > 1)

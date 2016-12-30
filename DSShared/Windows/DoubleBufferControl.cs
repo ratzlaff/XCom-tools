@@ -9,13 +9,23 @@ using System.Windows.Forms;
 
 namespace DSShared.Windows
 {
-	public class DoubleBufferControl : Control
+	/// <summary>
+	/// </summary>
+	public class DoubleBufferControl
+		:
+		Control
 	{
+		/// <summary>
+		/// </summary>
 		public DoubleBufferControl()
 		{
-			SetStyle(ControlStyles.AllPaintingInWmPaint | ControlStyles.UserPaint | ControlStyles.OptimizedDoubleBuffer, true);
+			SetStyle(
+					ControlStyles.AllPaintingInWmPaint | ControlStyles.UserPaint | ControlStyles.OptimizedDoubleBuffer,
+					true);
 		}
 
+		/// <summary>
+		/// </summary>
 		protected override void OnPaint(PaintEventArgs e)
 		{
 			if (DesignMode)
@@ -24,16 +34,19 @@ namespace DSShared.Windows
 				e.Graphics.DrawLine(Pens.Black, 0, 0, Width, Height);
 				e.Graphics.DrawLine(Pens.Black, 0, Height, Width, 0);
 				ControlPaint.DrawBorder3D(e.Graphics, ClientRectangle, Border3DStyle.Flat);
-				return;
 			}
-
-			Render(e.Graphics);
+			else
+				Render(e.Graphics);
 		}
 
-		protected virtual void Render(Graphics backBuffer) { }
+		/// <summary>
+		/// </summary>
+		protected virtual void Render(Graphics backBuffer){}
 	}
 
-/*	public class DoubleBufferControl : Control
+/*	public class DoubleBufferControl
+		:
+		Control
 	{
 		private BufferedGraphicsContext context;
 		private BufferedGraphics backBuffer;
@@ -45,7 +58,9 @@ namespace DSShared.Windows
 			this.Resize += new System.EventHandler(this.doubleBufferControl_Resize);
 			this.ResumeLayout(false);
 
-			SetStyle(ControlStyles.AllPaintingInWmPaint | ControlStyles.UserPaint | ControlStyles.OptimizedDoubleBuffer, true);
+			SetStyle(
+					ControlStyles.AllPaintingInWmPaint | ControlStyles.UserPaint | ControlStyles.OptimizedDoubleBuffer,
+					true);
 
 			context = BufferedGraphicsManager.Current;
 			context.MaximumBuffer = new Size(this.Width + 1, this.Height + 1);
@@ -67,24 +82,25 @@ namespace DSShared.Windows
 				base.OnPaint(e);
 				e.Graphics.DrawLine(Pens.Black,0,0,Width,Height);
 				e.Graphics.DrawLine(Pens.Black,0,Height,Width,0);
-				return;
 			}
-
-			try
+			else
 			{
-				//draw to back buffer
-				Render(backBuffer.Graphics);
+				try
+				{
+					// draw to back buffer
+					Render(backBuffer.Graphics);
 
-				// paint the picture in from the back buffer into the form draw area
-				backBuffer.Render(e.Graphics);
-			}
-			catch (Exception ex)
-			{
-				Console.WriteLine(ex.Message+"\n"+ex.StackTrace);
+					// paint the picture in from the back buffer into the form draw area
+					backBuffer.Render(e.Graphics);
+				}
+				catch (Exception ex)
+				{
+					Console.WriteLine(ex.Message+"\n"+ex.StackTrace);
+				}
 			}
 		}
 
-		protected virtual void Render(Graphics backBuffer) { }
+		protected virtual void Render(Graphics backBuffer){}
 
 		private void removePaintMethods()
 		{

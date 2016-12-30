@@ -143,7 +143,7 @@ namespace MapView.Forms.MapObservers.RmpViews
 			{
 				if (_currEntry != null && e.MouseEventArgs.Button == MouseButtons.Right)
 				{
-					RmpEntry selEntry = ((XCMapTile) e.ClickTile).Rmp;
+					RmpEntry selEntry = ((XCMapTile)e.ClickTile).Rmp;
 					if (selEntry != null)
 					{
 						ConnectNodes(selEntry);
@@ -159,7 +159,7 @@ namespace MapView.Forms.MapObservers.RmpViews
 
 				var prevEntry = _currEntry;
 
-				_currEntry = ((XCMapTile) e.ClickTile).Rmp;
+				_currEntry = ((XCMapTile)e.ClickTile).Rmp;
 				if (_currEntry == null && e.MouseEventArgs.Button == MouseButtons.Right)
 				{
 					_currEntry = _map.AddRmp(e.ClickLocation);
@@ -176,7 +176,7 @@ namespace MapView.Forms.MapObservers.RmpViews
 
 		private void ConnectNodes(RmpEntry selEntry)
 		{
-			var connectType = GetConnectNodeTypes();
+			var connectType = GetConnectNodeType();
 			if (connectType != ConnectNodeTypes.DontConnect
 				&& !_currEntry.Equals(selEntry))
 			{
@@ -209,7 +209,7 @@ namespace MapView.Forms.MapObservers.RmpViews
 		{
 			if (prevEntry != null)
 			{
-				var connectType = GetConnectNodeTypes();
+				var connectType = GetConnectNodeType();
 				if (connectType != ConnectNodeTypes.DontConnect)
 				{
 					var prevEntryLink = GetNextAvailableLink(prevEntry);
@@ -446,17 +446,17 @@ namespace MapView.Forms.MapObservers.RmpViews
 
 		private void cbType_SelectedIndexChanged(object sender, EventArgs e)
 		{
-			_currEntry.UType = (UnitType) cbType.SelectedItem;
+			_currEntry.UType = (UnitType)cbType.SelectedItem;
 		}
 
 		private void cbRank1_SelectedIndexChanged(object sender, EventArgs e)
 		{
-			_currEntry.URank1 = (byte) ((StrEnum) cbRank1.SelectedItem).Enum;
+			_currEntry.URank1 = (byte)((StrEnum)cbRank1.SelectedItem).Enum;
 		}
 
 		private void cbRank2_SelectedIndexChanged(object sender, EventArgs e)
 		{
-			_currEntry.NodeImportance = (NodeImportance) cbRank2.SelectedItem;
+			_currEntry.NodeImportance = (NodeImportance)cbRank2.SelectedItem;
 		}
 
 		private void AttackBaseCombo_SelectedIndexChanged(object sender, EventArgs e)
@@ -499,7 +499,10 @@ namespace MapView.Forms.MapObservers.RmpViews
 						if (_currEntry[senderIndex].Index < 0xFB)
 						{
 							RmpEntry connected = _map.Rmp[_currEntry[senderIndex].Index];
-							_currEntry[senderIndex].Distance = calcLinkDistance(_currEntry, connected, senderOut);
+							_currEntry[senderIndex].Distance = calcLinkDistance(
+																			_currEntry,
+																			connected,
+																			senderOut);
 						}
 					}
 					catch (Exception ex)
@@ -511,27 +514,31 @@ namespace MapView.Forms.MapObservers.RmpViews
 			}
 		}
 
+		// NOTE: The problem with these 'leave' functions is that the current
+		// node is no longer valid but the functions try to manipulate it anyway.
+		// TODO: Study and rethink (ie. fix) auto-node-connections.
 		private void cbLink_Leave(ComboBox sender, int senderIndex)
 		{
-			if (!_loadingGui)
+			if (_currEntry != null) // kL: bypass.
 			{
-				var connectType = GetConnectNodeTypes();
-				if (   connectType != ConnectNodeTypes.DontConnect
-					&& connectType != ConnectNodeTypes.ConnectOneWay
-					&& sender.SelectedItem != null)
+				if (!_loadingGui && sender.SelectedItem != null)
 				{
-					RmpEntry connected = _map.Rmp[_currEntry[senderIndex].Index];
-
-					var spaceAt = CompareLinks(connected, (byte)sender.SelectedItem);
-					if (spaceAt.HasValue)
+					var connectType = GetConnectNodeType();
+					if (connectType == ConnectNodeTypes.ConnectTwoWays)
 					{
-						connected[spaceAt.Value].Index = _currEntry.Index;
-						connected[spaceAt.Value].Distance = calcLinkDistance(
-																		connected,
-																		_currEntry,
-																		null);
+						RmpEntry connected = _map.Rmp[_currEntry[senderIndex].Index];
+	
+						var spaceAt = CompareLinks(connected, (byte)sender.SelectedItem);
+						if (spaceAt.HasValue)
+						{
+							connected[spaceAt.Value].Index = _currEntry.Index;
+							connected[spaceAt.Value].Distance = calcLinkDistance(
+																			connected,
+																			_currEntry,
+																			null);
+						}
+						Refresh();
 					}
-					Refresh();
 				}
 			}
 		}
@@ -622,6 +629,21 @@ namespace MapView.Forms.MapObservers.RmpViews
 			Refresh();
 		}
 
+		private void txtDist1_Leave(object sender, EventArgs e)
+		{
+			if (_currEntry != null) // kL: stop excepting on mousewheel up/down
+			{
+				try
+				{
+					_currEntry[0].Distance = byte.Parse(txtDist1.Text);
+				}
+				catch
+				{
+					txtDist1.Text = _currEntry[0].Distance + "";
+				}
+			}
+		}
+
 		private void txtDist1_KeyDown(object sender, KeyEventArgs e)
 		{
 			switch (e.KeyCode)
@@ -639,27 +661,18 @@ namespace MapView.Forms.MapObservers.RmpViews
 			}
 		}
 
-		private void txtDist1_Leave(object sender, EventArgs e)
-		{
-			try
-			{
-				_currEntry[0].Distance = byte.Parse(txtDist1.Text);
-			}
-			catch
-			{
-				txtDist1.Text = _currEntry[0].Distance + "";
-			}
-		}
-
 		private void txtDist2_Leave(object sender, EventArgs e)
 		{
-			try
+			if (_currEntry != null) // kL: stop excepting on mousewheel up/down
 			{
-				_currEntry[1].Distance = byte.Parse(txtDist2.Text);
-			}
-			catch
-			{
-				txtDist2.Text = _currEntry[1].Distance + "";
+				try
+				{
+					_currEntry[1].Distance = byte.Parse(txtDist2.Text);
+				}
+				catch
+				{
+					txtDist2.Text = _currEntry[1].Distance + "";
+				}
 			}
 		}
 
@@ -682,13 +695,16 @@ namespace MapView.Forms.MapObservers.RmpViews
 
 		private void txtDist3_Leave(object sender, EventArgs e)
 		{
-			try
+			if (_currEntry != null) // kL: stop excepting on mousewheel up/down
 			{
-				_currEntry[2].Distance = byte.Parse(txtDist3.Text);
-			}
-			catch
-			{
-				txtDist3.Text = _currEntry[2].Distance + "";
+				try
+				{
+					_currEntry[2].Distance = byte.Parse(txtDist3.Text);
+				}
+				catch
+				{
+					txtDist3.Text = _currEntry[2].Distance + "";
+				}
 			}
 		}
 
@@ -711,13 +727,16 @@ namespace MapView.Forms.MapObservers.RmpViews
 
 		private void txtDist4_Leave(object sender, EventArgs e)
 		{
-			try
+			if (_currEntry != null) // kL: stop excepting on mousewheel up/down
 			{
-				_currEntry[3].Distance = byte.Parse(txtDist4.Text);
-			}
-			catch
-			{
-				txtDist4.Text = _currEntry[3].Distance + "";
+				try
+				{
+					_currEntry[3].Distance = byte.Parse(txtDist4.Text);
+				}
+				catch
+				{
+					txtDist4.Text = _currEntry[3].Distance + "";
+				}
 			}
 		}
 
@@ -740,13 +759,16 @@ namespace MapView.Forms.MapObservers.RmpViews
 
 		private void txtDist5_Leave(object sender, EventArgs e)
 		{
-			try
+			if (_currEntry != null) // kL: stop excepting on mousewheel up/down
 			{
-				_currEntry[4].Distance = byte.Parse(txtDist5.Text);
-			}
-			catch
-			{
-				txtDist5.Text = _currEntry[4].Distance + "";
+				try
+				{
+					_currEntry[4].Distance = byte.Parse(txtDist5.Text);
+				}
+				catch
+				{
+					txtDist5.Text = _currEntry[4].Distance + "";
+				}
 			}
 		}
 
@@ -903,15 +925,15 @@ namespace MapView.Forms.MapObservers.RmpViews
 			var nodeData = Clipboard.GetText().Split('|');
 			if (nodeData[0] == "MVNode")
 			{
-				cbType.SelectedIndex = Int32.Parse(nodeData[1]);
-				cbRank1.SelectedIndex = Int32.Parse(nodeData[2]);
-				cbRank2.SelectedIndex = Int32.Parse(nodeData[4]);
-				AttackBaseCombo.SelectedIndex = Int32.Parse(nodeData[4]);
-				cbUsage.SelectedIndex = Int32.Parse(nodeData[5]);
+				cbType.SelectedIndex			= Int32.Parse(nodeData[1]);
+				cbRank1.SelectedIndex			= Int32.Parse(nodeData[2]);
+				cbRank2.SelectedIndex			= Int32.Parse(nodeData[4]);
+				AttackBaseCombo.SelectedIndex	= Int32.Parse(nodeData[4]);
+				cbUsage.SelectedIndex			= Int32.Parse(nodeData[5]);
 			}
 		}
 
-		private ConnectNodeTypes GetConnectNodeTypes()
+		private ConnectNodeTypes GetConnectNodeType()
 		{
 			if (connectNodesYoolStripMenuItem.Text == @"Connect One way")
 				return ConnectNodeTypes.ConnectOneWay;

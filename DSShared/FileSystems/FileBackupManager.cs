@@ -6,6 +6,8 @@ using System.Text;
 
 namespace DSShared.FileSystems
 {
+	/// <summary>
+	/// </summary>
 	public interface IFileBackupManager
 	{
 		/// <summary>
@@ -14,6 +16,8 @@ namespace DSShared.FileSystems
 		void Backup(string filePath);
 	}
 
+	/// <summary>
+	/// </summary>
 	public class FileBackupManager : IFileBackupManager
 	{
 		/// <summary>

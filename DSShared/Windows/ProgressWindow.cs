@@ -6,12 +6,18 @@ using System.Windows.Forms;
 
 namespace DSShared.Windows
 {
-	public class ProgressWindow : System.Windows.Forms.Form
+	/// <summary>
+	/// </summary>
+	public class ProgressWindow
+		:
+		System.Windows.Forms.Form
 	{
 		private System.Windows.Forms.ProgressBar progress;
 		private System.ComponentModel.Container components = null;
 		private Form parent;
 
+		/// <summary>
+		/// </summary>
 		public ProgressWindow(Form parent)
 		{
 			InitializeComponent();
@@ -25,32 +31,44 @@ namespace DSShared.Windows
 			}
 		}
 
+		/// <summary>
+		/// </summary>
 		public new void Show()
 		{
 			if (parent != null)
 				parent.Enabled = false;
+
 			base.Show();
 		}
 
+		/// <summary>
+		/// </summary>
 		public new void Hide()
 		{
 			if (parent != null)
 				parent.Enabled = true;
+
 			base.Hide();
 		}
 
+		/// <summary>
+		/// </summary>
 		public int Maximum
 		{
 			get { return progress.Maximum; }
 			set { progress.Maximum = value; }
 		}
 
+		/// <summary>
+		/// </summary>
 		public int Value
 		{
 			get { return progress.Value; }
 			set { progress.Value = value; }
 		}
 
+		/// <summary>
+		/// </summary>
 		public int Minimum
 		{
 			get { return progress.Minimum; }
@@ -94,8 +112,7 @@ namespace DSShared.Windows
 			this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
 			this.ClientSize = new System.Drawing.Size(320, 32);
 			this.ControlBox = false;
-			this.Controls.AddRange(new System.Windows.Forms.Control[] {
-																		  this.progress});
+			this.Controls.AddRange(new System.Windows.Forms.Control[] { this.progress });
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
 			this.Name = "ProgressWindow";
 			this.ShowInTaskbar = false;
