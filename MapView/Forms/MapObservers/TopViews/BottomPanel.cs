@@ -25,7 +25,7 @@ namespace MapView.Forms.MapObservers.TopViews
 			_mapTile = null;
 			SetStyle(ControlStyles.AllPaintingInWmPaint | ControlStyles.DoubleBuffer | ControlStyles.UserPaint, true);
 			SelectedQuadrant = XCMapTile.MapQuadrant.Ground;
-			
+
 			Globals.LoadExtras();
 
 			_drawService = new BottomPanelDrawService();
@@ -44,7 +44,7 @@ namespace MapView.Forms.MapObservers.TopViews
 		public Dictionary<string, Pen> Pens
 		{
 			get { return _drawService.Pens; }
-			set { _drawService .Pens= value; }
+			set { _drawService.Pens = value; }
 		}
 
 		[Browsable(false)]

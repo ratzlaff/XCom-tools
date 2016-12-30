@@ -35,32 +35,35 @@ namespace MapView.Forms.McdViewer
 			this.InfoBs = new System.Windows.Forms.BindingSource(this.components);
 			((System.ComponentModel.ISupportInitialize)(this.InfoBs)).BeginInit();
 			this.SuspendLayout();
-			//
+			// 
 			// rtb
-			//
+			// 
 			this.rtb.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.rtb.Enabled = false;
 			this.rtb.Location = new System.Drawing.Point(0, 0);
 			this.rtb.Name = "rtb";
-			this.rtb.Size = new System.Drawing.Size(359, 420);
+			this.rtb.Size = new System.Drawing.Size(283, 410);
 			this.rtb.TabIndex = 0;
 			this.rtb.Text = "";
-			//
+			// 
 			// InfoBs
-			//
+			// 
 			this.InfoBs.DataSource = typeof(XCom.McdEntry);
-			//
+			// 
 			// McdViewerForm
-			//
+			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(359, 420);
+			this.AutoValidate = System.Windows.Forms.AutoValidate.EnablePreventFocusChange;
+			this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+			this.ClientSize = new System.Drawing.Size(283, 410);
 			this.Controls.Add(this.rtb);
 			this.Name = "McdViewerForm";
-			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
+			this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Show;
+			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
 			this.Text = "MCD viewer";
 			((System.ComponentModel.ISupportInitialize)(this.InfoBs)).EndInit();
 			this.ResumeLayout(false);
-
 		}
 
 		#endregion

@@ -9,12 +9,14 @@ using XCom;
 
 namespace MapView.Forms.McdViewer
 {
-	public partial class McdViewerForm : Form
+	public partial class McdViewerForm
+		:
+		Form
 	{
 		public McdViewerForm()
 		{
 			InitializeComponent();
-			 
+
 			rtb.WordWrap = false;
 			rtb.ReadOnly = true;
 		}
@@ -53,22 +55,22 @@ namespace MapView.Forms.McdViewer
 			//rtb.AppendText(string.Format("Unknown data: {0}\n",info[27])); // unsigned char u28;
 			//rtb.AppendText(string.Format("Unknown data: {0}\n",info[28])); // unsigned char u29;
 			//rtb.AppendText(string.Format("Unknown data: {0}\n",info[29])); // unsigned char u30;
-			rtb.AppendText(string.Format("UFO Door?: {0}\n", info.UFODoor));
+			rtb.AppendText(string.Format("UFO Door: {0}\n", info.UFODoor));
 //			unsigned char UFO_Door;	// If it's a UFO door it uses only Frame[0] until it is walked through, then
 									// it animates once and becomes Alt_MCD. It changes back at the end of the turn
-			rtb.AppendText(string.Format("SeeThru?: {0}\n", info.StopLOS));
+			rtb.AppendText(string.Format("SeeThru: {0}\n", info.StopLOS));
 //			unsigned char Stop_LOS; // You cannot see through this tile.
-			rtb.AppendText(string.Format("No Floor?: {0}\n", info.NoGround));
+			rtb.AppendText(string.Format("No Floor: {0}\n", info.NoGround));
 //			unsigned char No_Floor; // If 1, then a non-flying unit can't stand here
-			rtb.AppendText(string.Format("Big Wall?: {0}\n", info.BigWall));
+			rtb.AppendText(string.Format("Big Wall: {0}\n", info.BigWall));
 //			unsigned char Big_Wall; // It's an object (tile type 3), but it acts like a wall
-			rtb.AppendText(string.Format("Grav Lift?: {0}\n", info.GravLift));
+			rtb.AppendText(string.Format("Grav Lift: {0}\n", info.GravLift));
 //			unsigned char Gravlift;
-			rtb.AppendText(string.Format("People Door?: {0}\n", info.HumanDoor));
+			rtb.AppendText(string.Format("People Door: {0}\n", info.HumanDoor));
 //			unsigned char Door; // It's a human style door--you walk through it and it changes to Alt_MCD
-			rtb.AppendText(string.Format("Block fire?: {0}\n", info.BlockFire));
+			rtb.AppendText(string.Format("Block fire: {0}\n", info.BlockFire));
 //			unsigned char Block_Fire; // If 1, fire won't go through the tile
-			rtb.AppendText(string.Format("Block Smoke?: {0}\n", info.BlockSmoke));
+			rtb.AppendText(string.Format("Block Smoke: {0}\n", info.BlockSmoke));
 //			unsigned char Block_Smoke; // If 1, smoke won't go through the tile
 			//rtb.AppendText(string.Format("Unknown data: {0}\n",info[38]));
 //			unsigned char u39;
@@ -114,11 +116,11 @@ namespace MapView.Forms.McdViewer
 //			unsigned char HE_Strength; // The strength of the explosion caused when it's destroyed. 0 means no explosion.
 			rtb.AppendText(string.Format("smoke blockage: {0}\n", info.SmokeBlockage));
 //			unsigned char Smoke_Blockage; // ? Not sure about this
-			rtb.AppendText(string.Format("# turns to burn: {0}\n", info.Fuel));
+			rtb.AppendText(string.Format("turns to burn: {0}\n", info.Fuel));
 //			unsigned char Fuel; // The number of turns the tile will burn when set aflame
-			rtb.AppendText(string.Format("amount of light produced: {0}\n", info.LightSource));
+			rtb.AppendText(string.Format("light produced: {0}\n", info.LightSource));
 //			unsigned char Light_Source; // The amount of light this tile produces
-			rtb.AppendText(string.Format("special properties: {0}\n", info.TargetType));
+			rtb.AppendText(string.Format("special: {0}\n", info.TargetType));
 //			unsigned char Target_Type; // The special properties of the tile
 			//rtb.AppendText(string.Format("Unknown data: {0}\n",info[60]));
 //			unsigned char u61;

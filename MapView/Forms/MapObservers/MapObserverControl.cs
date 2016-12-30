@@ -6,9 +6,13 @@ using XCom.Interfaces.Base;
 
 namespace MapView
 {
-	public class MapObserverControl  : UserControl,  IMap_Observer
+	public class MapObserverControl
+		:
+		UserControl,
+		IMap_Observer
 	{
 		private IMap_Base _map;
+
 		private RegistryInfo _registryInfo;
 		private readonly Dictionary<string, IMap_Observer> _moreObservers;
 
@@ -18,9 +22,11 @@ namespace MapView
 			Settings = new Settings();
 		}
 
-		public virtual void LoadDefaultSettings(){}
+		public virtual void LoadDefaultSettings()
+		{}
 
-		public Settings Settings { get; set; }
+		public Settings Settings
+		{ get; set; }
 
 		public Dictionary<string, IMap_Observer> MoreObservers
 		{
