@@ -10,7 +10,7 @@ namespace XCom
 	{
 		public SPKImage(Palette p, Stream s, int width, int height)
 		{
-			//int transparent=254;	
+			//int transparent=254;
 			idx = new byte[width*height];
 			for(int i=0;i<idx.Length;i++)
 				idx[i]=254;
@@ -36,8 +36,8 @@ namespace XCom
 						{
 							long val = data.ReadUInt16()*2;
 							while((val--)>0)
-							{							
-								idx[pix++] = data.ReadByte();							
+							{
+								idx[pix++] = data.ReadByte();
 							}
 							break;
 						}

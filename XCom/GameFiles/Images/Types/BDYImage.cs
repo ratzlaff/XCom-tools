@@ -129,7 +129,7 @@ namespace XCom
 								data.Write((byte)(tmp.Count-1));
 								count+=tmp.Count;
 								for(int i=0;i<tmp.Count;i++)
-									data.Write((byte)tmp[i].data);					
+									data.Write((byte)tmp[i].data);
 							}
 						}
 						else
@@ -137,7 +137,7 @@ namespace XCom
 							data.Write((byte)(tmp.Count-1));
 							count+=tmp.Count;
 							for(int i=0;i<tmp.Count;i++)
-								data.Write((byte)tmp[i].data);				
+								data.Write((byte)tmp[i].data);
 						}
 						tmp = new List<BdyNode>();
 					}

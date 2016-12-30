@@ -18,11 +18,11 @@ namespace XCom
 
 		private ColorPalette cp;
 
-		private static Hashtable palHash=new Hashtable();
+		private static Hashtable palHash = new Hashtable();
 
-		private static readonly char COMMENT='#';
+		private static readonly char COMMENT = '#';
 
-		private static readonly string embedPath="XCom._Embedded.";
+		private static readonly string embedPath = "XCom._Embedded.";
 
 		/// <summary>
 		/// The UFO Palette embedded in this assembly
@@ -167,7 +167,7 @@ namespace XCom
 			}
 			b.Dispose();
 
-			//checkPalette();
+//			checkPalette();
 		}
 
 /*		private void checkPalette()
@@ -236,7 +236,7 @@ namespace XCom
 						p[i] = Color.FromArgb(s,s,s);
 					}
 				}
-				return (Palette)palHash[name+"#gray"];
+				return (Palette)palHash[name + "#gray"];
 			}
 		}
 

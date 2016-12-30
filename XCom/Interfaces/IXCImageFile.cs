@@ -11,18 +11,27 @@ namespace XCom.Interfaces
 	/// Class that contains all information needed to read/save image files and collections.
 	/// This class should not be instantiated directly. Upon startup, objects from derived classes will be created and tracked
 	/// </summary>
-	public class IXCImageFile:IAssemblyLoadable,IOpenSave
+	public class IXCImageFile
+		:
+		IAssemblyLoadable,IOpenSave
 	{
-		protected Palette defPal = Palette.TFTDBattle;
+		protected Palette defPal = Palette.UFOBattle;
+//		protected Palette defPal = Palette.TFTDBattle;
 		protected System.Drawing.Size imageSize;
-		protected xcFileOptions fileOptions=new xcFileOptions();
+		protected xcFileOptions fileOptions = new xcFileOptions();
 		protected string ext = ".bad";
 		protected string expDesc = "Bad Description";
-//		private int fIdx=0;
+//		private int fIdx = 0;
 		protected string author = "Author", desc = "Description";
 		protected string singleFile = null;
 
-		public enum Filter { Save, Open, Custom, Bmp };
+		public enum Filter
+		{
+			Save,
+			Open,
+			Custom,
+			Bmp
+		};
 
 		#region AssemblyLoadable implementation
 
@@ -55,15 +64,22 @@ namespace XCom.Interfaces
 		/// <summary>
 		/// See: AssemblyLoadable.ExplorerDescription
 		/// </summary>
-		public virtual string ExplorerDescription { get { return expDesc; } }
+		public virtual string ExplorerDescription
+		{
+			get { return expDesc; }
+		}
 		#endregion
 
 		/// <summary>
 		/// read only access to the file extension
 		/// </summary>
-		public virtual string FileExtension { get { return ext; } }
+		public virtual string FileExtension
+		{
+			get { return ext; }
+		}
 
-		public void Unload() { }
+		public void Unload()
+		{}
 
 		/// <summary>
 		/// It is not recommended to instantiate objects of this type directly.
@@ -80,7 +96,9 @@ namespace XCom.Interfaces
 		/// <summary>
 		/// Creates an object of this class with width and height of 0
 		/// </summary>
-		public IXCImageFile() : this(0, 0) { }
+		public IXCImageFile()
+			:
+			this(0, 0){}
 
 		/// <summary>
 		/// Who wrote this class
@@ -106,7 +124,12 @@ namespace XCom.Interfaces
 		/// <param name="imgWid"></param>
 		/// <param name="imgHei"></param>
 		/// <returns></returns>
-		protected virtual XCImageCollection LoadFileOverride(string directory, string file, int imgWid, int imgHei,Palette pal)
+		protected virtual XCImageCollection LoadFileOverride(
+														string directory,
+														string file,
+														int imgWid,
+														int imgHei,
+														Palette pal)
 		{
 			throw new Exception("Override not yet implemented: IXCFile::LoadFileOverride(...)");
 		}
@@ -119,26 +142,49 @@ namespace XCom.Interfaces
 		/// <returns></returns>
 		public XCImageCollection LoadFile(string directory, string file)
 		{
-			return LoadFile(directory, file, ImageSize.Width, ImageSize.Height);
+			return LoadFile(
+						directory,
+						file,
+						ImageSize.Width,
+						ImageSize.Height);
 		}
 
 		/// <summary>
-		/// Method that calls the overloaded load function in order to do some similar functionality
-		/// across all instances of this class
+		/// Method that calls the overloaded load function in order to do some
+		/// similar functionality across all instances of this class
 		/// </summary>
 		/// <param name="directory"></param>
 		/// <param name="file"></param>
 		/// <param name="imgWid"></param>
 		/// <param name="imgHei"></param>
 		/// <returns></returns>
-		public XCImageCollection LoadFile(string directory, string file,int imgWid,int imgHei)
+		public XCImageCollection LoadFile(
+										string directory,
+										string file,
+										int imgWid,
+										int imgHei)
 		{
-			return LoadFile(directory, file, imgWid, imgHei, defPal);
+			return LoadFile(
+						directory,
+						file,
+						imgWid,
+						imgHei,
+						defPal);
 		}
 
-		public XCImageCollection LoadFile(string directory, string file, int imgWid, int imgHei, Palette pal)
+		public XCImageCollection LoadFile(
+										string directory,
+										string file,
+										int imgWid,
+										int imgHei,
+										Palette pal)
 		{
-			XCImageCollection ixc = LoadFileOverride(directory, file, imgWid, imgHei, pal);
+			XCImageCollection ixc = LoadFileOverride(
+												directory,
+												file,
+												imgWid,
+												imgHei,
+												pal);
 
 			if (ixc != null)
 			{
@@ -153,13 +199,12 @@ namespace XCom.Interfaces
 			return ixc;
 		}
 
-
 		/// <summary>
 		/// flags that tell the system where each mod should be displayed
 		/// </summary>
 		public xcFileOptions FileOptions
 		{
-			get{return fileOptions;}
+			get { return fileOptions; }
 		}
 
 		/// <summary>
@@ -176,18 +221,27 @@ namespace XCom.Interfaces
 		/// <summary>
 		/// Defines the initial coloring of the sprites when loaded
 		/// </summary>
-		public virtual Palette DefaultPalette{get{return defPal;}}
+		public virtual Palette DefaultPalette
+		{
+			get { return defPal; }
+		}
 
 		/// <summary>
 		/// Image size that will be loaded
 		/// </summary>
-		public System.Drawing.Size ImageSize{get{return imageSize;}}
+		public System.Drawing.Size ImageSize
+		{
+			get { return imageSize; }
+		}
 
 		/// <summary>
 		/// The complete file.extension that this object will open. If null, then this object will open files
 		/// based on the FileExtension property
 		/// </summary>
-		public virtual string SingleFileName { get { return singleFile; } }
+		public virtual string SingleFileName
+		{
+			get { return singleFile; }
+		}
 	}
 
 	public class xcFileOptions
@@ -196,19 +250,30 @@ namespace XCom.Interfaces
 		private int bitDepth = 8;
 		private int space = 1;
 
-		public xcFileOptions():this(true,true,true,true)
-		{
+		public xcFileOptions()
+			:
+			this(true, true, true, true)
+		{}
 
-		}
-
-		public xcFileOptions(bool save, bool bmp, bool open, bool custom)
+		public xcFileOptions(
+						bool save,
+						bool bmp,
+						bool open,
+						bool custom)
 		{
 			filters = new Dictionary<IXCImageFile.Filter, bool>();
-
-			Init(save, bmp, open, custom);
+			Init(
+				save,
+				bmp,
+				open,
+				custom);
 		}
 
-		public void Init(bool save, bool bmp, bool open, bool custom)
+		public void Init(
+					bool save,
+					bool bmp,
+					bool open,
+					bool custom)
 		{
 			filters[IXCImageFile.Filter.Bmp] = bmp;
 			filters[IXCImageFile.Filter.Custom] = custom;

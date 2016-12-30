@@ -81,6 +81,7 @@ namespace PckView
 			{
 				return view != null ? view.Pal : null;
 			}
+
 			set
 			{
 				if (view != null)
@@ -108,6 +109,7 @@ namespace PckView
 		{
 			get { return view.SelectedItems; }
 		}
+
 		public void ChangeItem(int index, XCImage image)
 		{
 			view.ChangeItem(index, image);
@@ -125,6 +127,7 @@ namespace PckView
 						statusBPP.Text = "Bpp: " + ((PckFile)view.Collection).Bpp + "  ";
 					else
 						statusBPP.Text = "";
+
 					if (XCImageCollectionSet != null)
 						XCImageCollectionSet(this, new XCImageCollectionSetEventArgs(value));
 				}
@@ -153,9 +156,9 @@ namespace PckView
 
 		private void tileChooser_SelectedIndexChanged(object sender, System.EventArgs e)
 		{
-			//view.Pck = ImageCollection.GetPckFile(tileChooser.SelectedItem.ToString());
+//			view.Pck = ImageCollection.GetPckFile(tileChooser.SelectedItem.ToString());
 			view.Refresh();
-			//scroll.Maximum = Math.Max((view.Height-Height+tileChooser.Height+50),scroll.Minimum);
+//			scroll.Maximum = Math.Max((view.Height - Height + tileChooser.Height + 50), scroll.Minimum);
 			scroll.Value = scroll.Minimum;
 			scroll_Scroll(null, null);
 		}

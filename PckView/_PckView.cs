@@ -81,24 +81,33 @@ namespace PckView
 			_totalViewPck.ViewClicked += new PckViewMouseClicked(viewClicked);
 			_totalViewPck.XCImageCollectionSet += new XCImageCollectionHandler(v_XCImageCollectionSet);
 			_totalViewPck.ContextMenu = makeContextMenu();
-		 
+
 			SaveMenuItem.Visible = false ;
 
 			sharedSpace["Palettes"] = new Dictionary<string, Palette>();
 			palMI = new Dictionary<Palette, MenuItem>();
 
-			AddPalette(Palette.TFTDBattle, miPalette);
-			AddPalette(Palette.TFTDGeo, miPalette);
-			AddPalette(Palette.TFTDGraph, miPalette);
-			AddPalette(Palette.TFTDResearch, miPalette);
-			AddPalette(Palette.UFOBattle, miPalette);
-			AddPalette(Palette.UFOGeo, miPalette);
-			AddPalette(Palette.UFOGraph, miPalette);
-			AddPalette(Palette.UFOResearch, miPalette);
-			currPal = Palette.TFTDBattle;
+			AddPalette(Palette.UFOBattle,		miPalette);
+			AddPalette(Palette.UFOGeo,			miPalette);
+			AddPalette(Palette.UFOGraph,		miPalette);
+			AddPalette(Palette.UFOResearch,		miPalette);
+			AddPalette(Palette.TFTDBattle,		miPalette);
+			AddPalette(Palette.TFTDGeo,			miPalette);
+			AddPalette(Palette.TFTDGraph,		miPalette);
+			AddPalette(Palette.TFTDResearch,	miPalette);
+
+			currPal = Palette.UFOBattle;
+//			currPal = Palette.TFTDBattle;
+
+			palMI[currPal].Checked = true;	// kL_ufoPalette
+			_totalViewPck.Pal = currPal;	// kL_ufoPalette
 
 			editor = new Editor(null);
 			editor.Closing += new CancelEventHandler(editorClosing);
+
+			if (editor != null)				// kL_ufoPalette
+				editor.Palette = currPal;	// kL_ufoPalette
+
 
 			RegistryInfo ri = new RegistryInfo(this, "PckView");
 			ri.AddProperty("FilterIndex");
@@ -121,14 +130,18 @@ namespace PckView
 				//Console.WriteLine("Custom directory exists: " + sharedSpace["CustomDir"].ToString());
 				xConsole.AddLine("Custom directory exists: " + sharedSpace["CustomDir"].ToString());
 				foreach (string s in Directory.GetFiles(sharedSpace["CustomDir"].ToString()))
+				{
 					if (s.EndsWith(".dll"))
 					{
 						xConsole.AddLine("Loading dll: " + s);
 						loadedTypes.LoadFrom(Assembly.LoadFrom(s));
 					}
 					else if (s.EndsWith(xcProfile.PROFILE_EXT))
+					{
 						foreach (xcProfile ip in ImgProfile.LoadFile(s))
 							loadedTypes.Add(ip);
+					}
+				}
 			}
 
 			osFilter = new OpenSaveFilter();
@@ -152,7 +165,10 @@ namespace PckView
 
 			if (e.Collection != null)
 			{
-				bytesMenu.Enabled = miPalette.Enabled = transItem.Enabled = e.Collection.IXCFile.FileOptions.BitDepth == 8;
+				bytesMenu.Enabled =
+				miPalette.Enabled =
+				transItem.Enabled = e.Collection.IXCFile.FileOptions.BitDepth == 8;
+
 				xConsole.AddLine("bpp is: " + e.Collection.IXCFile.FileOptions.BitDepth);
 			}
 		}
@@ -201,12 +217,14 @@ namespace PckView
 			editImage.Click += new EventHandler(editClick);
 			editImage.Enabled = false;
 //			editImage.Visible = false;
+
 			return cm;
 		}
 
 		void sb_Click(object sender, EventArgs e)
 		{
 			TotalViewPck totalViewPck = _totalViewPck;
+
 			if (tabs != null)
 				foreach (object o in tabs.SelectedTab.Controls)
 					if (o is TotalViewPck)
@@ -228,10 +246,10 @@ namespace PckView
 					RichTextBox rtb = new RichTextBox();
 					rtb.Dock = DockStyle.Fill;
 					f.Controls.Add(rtb);
-	
+
 					foreach (byte b in totalViewPck.SelectedItems[0].Image.Bytes)
 						rtb.Text += string.Format("{0:x} ", b);
-	
+
 					f.Text = "Bytes: " + totalViewPck.SelectedItems[0].Image.Bytes.Length;
 					f.Show();
 				}
@@ -244,6 +262,7 @@ namespace PckView
 			{
 				openBMP.Title = "Hold shift to select multiple files";
 				openBMP.Multiselect = true;
+
 				if (openBMP.ShowDialog() == DialogResult.OK)
 				{
 					foreach (string s in openBMP.FileNames)
@@ -314,7 +333,7 @@ namespace PckView
 
 			_totalViewPck.Refresh();
 		}
-		
+
 		private void viewClicked(object sender, PckViewMouseClickArgs e)
 		{
 			if (_totalViewPck.SelectedItems.Count > 0)
@@ -375,7 +394,6 @@ namespace PckView
 					{
 						// try singles
 						foreach (XCom.Interfaces.IXCImageFile ixf in loadedTypes.AllLoaded)
-						{
 							if (ixf.SingleFileName != null && ixf.SingleFileName.ToLower() == fName.ToLower())
 							{
 								try
@@ -386,13 +404,10 @@ namespace PckView
 								catch
 								{}
 							}
-						}
 
-						if (toLoad == null)
+						if (toLoad == null) // singles not loaded, try non singles
 						{
-							// singles not loaded, try non singles
 							foreach (XCom.Interfaces.IXCImageFile ixf in loadedTypes.AllLoaded)
-							{
 								if (ixf.SingleFileName == null && ixf.FileExtension.ToLower() == ext.ToLower())
 								{
 									try
@@ -403,10 +418,8 @@ namespace PckView
 									catch
 									{}
 								}
-							}
 
-							// nothing loaded, force the custom dialog
-							if (toLoad == null)
+							if (toLoad == null) // nothing loaded, force the custom dialog
 								toLoad = xcCustom.LoadFile(path, fName, 0, 0);
 						}
 					}

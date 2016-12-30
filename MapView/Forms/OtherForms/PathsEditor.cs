@@ -16,7 +16,9 @@ namespace MapView
 	/// <summary>
 	/// Summary description for PathsEditor.
 	/// </summary>
-	public class PathsEditor : System.Windows.Forms.Form
+	public class PathsEditor
+		:
+		System.Windows.Forms.Form
 	{
 		private System.Windows.Forms.MainMenu mainMenu;
 		private System.Windows.Forms.MenuItem miFile;
@@ -90,66 +92,63 @@ namespace MapView
 
 		public PathsEditor(string pathsPath)
 		{
-			paths=pathsPath;
+			paths = pathsPath;
 			InitializeComponent();
 
-			//txtCursor.Text = GameInfo.CursorPath;
-			//txtCursor.Text = GameInfo.MiscInfo.CursorFile;
+//			txtCursor.Text = GameInfo.CursorPath;
+//			txtCursor.Text = GameInfo.MiscInfo.CursorFile;
 			txtMap.Text = GameInfo.TilesetInfo.Path;
 			txtImages.Text = GameInfo.ImageInfo.Path;
-			txtImage2.Text=GameInfo.ImageInfo.Path;
-			//txtPalettes.Text = GameInfo.PalettePath;
+			txtImage2.Text = GameInfo.ImageInfo.Path;
+//			txtPalettes.Text = GameInfo.PalettePath;
 
 			populateImageList();
 
 			populateTree();
 
-			cbPalette.Items.Add(Palette.TFTDBattle);
 			cbPalette.Items.Add(Palette.UFOBattle);
+			cbPalette.Items.Add(Palette.TFTDBattle);
 		}
 
 		private void populateTree()
 		{
 			treeMaps.Nodes.Clear();
 			ArrayList al = new ArrayList();
-			foreach(object o in GameInfo.TilesetInfo.Tilesets.Keys)
+			foreach (object o in GameInfo.TilesetInfo.Tilesets.Keys)
 				al.Add(o);
 
 			al.Sort();
 			ArrayList al2 = new ArrayList();
-			foreach(string o in al) //tileset
+			foreach (string o in al) // tileset
 			{
 				ITileset it = GameInfo.TilesetInfo.Tilesets[o];
-				if(it==null)
-					continue;
-
-				TreeNode t = treeMaps.Nodes.Add(o); //make the node for the tileset
-				
-				al2.Clear();
-
-				foreach(string o2 in it.Subsets.Keys) //subsets
-					al2.Add(o2);
-
-				al2.Sort();
-				foreach(string o2 in al2)
+				if (it != null)
 				{
-					Dictionary<string, IMapDesc> subset = it.Subsets[o2];
-					if(subset==null)
-						continue;
+					TreeNode t = treeMaps.Nodes.Add(o); // make the node for the tileset
 
-					TreeNode subsetNode = t.Nodes.Add(o2);
+					al2.Clear();
 
-					ArrayList sKeys = new ArrayList();
-					foreach(string sKey in subset.Keys)
-						sKeys.Add(sKey);
+					foreach (string o2 in it.Subsets.Keys) // subsets
+						al2.Add(o2);
 
-					sKeys.Sort();
-
-					foreach(string sKey in sKeys)
+					al2.Sort();
+					foreach (string o2 in al2)
 					{
-						if(subset[sKey]==null)
-							continue;
-						subsetNode.Nodes.Add(sKey);
+						Dictionary<string, IMapDesc> subset = it.Subsets[o2];
+						if (subset != null)
+						{
+							TreeNode subsetNode = t.Nodes.Add(o2);
+
+							ArrayList sKeys = new ArrayList();
+							foreach (string sKey in subset.Keys)
+								sKeys.Add(sKey);
+
+							sKeys.Sort();
+
+							foreach (string sKey in sKeys)
+								if (subset[sKey] != null)
+									subsetNode.Nodes.Add(sKey);
+						}
 					}
 				}
 			}
@@ -159,11 +158,11 @@ namespace MapView
 		{
 			ImageInfo ii = GameInfo.ImageInfo;
 			ArrayList al = new ArrayList();
-			foreach(object o in ii.Images.Keys)
+			foreach (object o in ii.Images.Keys)
 				al.Add(o);
 
 			al.Sort();
-			foreach(object o in al)
+			foreach (object o in al)
 			{
 				lstImages.Items.Add(o);
 				listAllImages.Items.Add(o);
@@ -172,8 +171,8 @@ namespace MapView
 
 		public static bool SaveRegistry
 		{
-			get{return saveRegistry;}
-			set{saveRegistry=value;}
+			get { return saveRegistry; }
+			set { saveRegistry = value; }
 		}
 
 		#region Windows Form Designer generated code
@@ -182,14 +181,14 @@ namespace MapView
 		/// </summary>
 		protected override void Dispose( bool disposing )
 		{
-			if( disposing )
+			if ( disposing )
 			{
-				if(components != null)
+				if (components != null)
 				{
 					components.Dispose();
 				}
 			}
-			base.Dispose( disposing );
+			base.Dispose(disposing);
 		}
 
 		/// <summary>
@@ -868,7 +867,6 @@ namespace MapView
 			this.tabImages.ResumeLayout(false);
 			this.tabImages.PerformLayout();
 			this.ResumeLayout(false);
-
 		}
 		#endregion
 
@@ -1180,7 +1178,7 @@ namespace MapView
 
 			try
 			{
-		GameInfo.TilesetInfo.Save(path + file + ".new");
+				GameInfo.TilesetInfo.Save(path + file + ".new");
 
 				if(File.Exists(txtMap.Text))
 				{

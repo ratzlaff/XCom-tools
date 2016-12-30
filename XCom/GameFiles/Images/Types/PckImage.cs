@@ -9,7 +9,9 @@ using XCom.Interfaces;
 namespace XCom
 {
 //	[xImage(32,40)]
-	public class PckImage:XCImage
+	public class PckImage
+		:
+		XCImage
 	{
 		private PckFile pckFile;
 		private int mapID;
@@ -264,14 +266,14 @@ namespace XCom
 
 		public override string ToString()
 		{
-			string ret="";
+			string ret = "";
 
 			if (pckFile!=null)
 				ret += pckFile.ToString();
 
 			ret += fileNum + "\n";
 
-			for(int i = 0; i < expanded.Length; i++)
+			for (int i = 0; i < expanded.Length; i++)
 			{
 				ret += expanded[i];
 				if (expanded[i] == 255)

@@ -9,17 +9,18 @@ using XCom.Interfaces.Base;
 
 namespace XCom
 {
-	public delegate void ParseLineDelegate(KeyVal kv,VarCollection vars);
+	public delegate void ParseLineDelegate(KeyVal kv, VarCollection vars);
 
 	public class GameInfo
 	{
-		private static Palette currentPalette = Palette.TFTDBattle;
+		private static Palette currentPalette = Palette.UFOBattle;
+//		private static Palette currentPalette = Palette.TFTDBattle;
 
 		private static ImageInfo imageInfo;
 		private static TilesetDesc tileInfo;
 //		private static IWarningHandler WarningHandler;
 
-		private static Dictionary<Palette,Dictionary<string,PckFile>> pckHash;
+		private static Dictionary<Palette, Dictionary<string, PckFile>> pckHash;
 
 		public static event ParseLineDelegate ParseLine;
 
@@ -35,16 +36,18 @@ namespace XCom
 			xConsole.Init(20);
 			KeyVal kv = null;
 
-			while((kv=vars.ReadLine())!=null)
+			while ((kv = vars.ReadLine()) != null)
 			{
 				switch (kv.Keyword)
 				{
-		/* mapedit */case "mapdata":
+					case "mapdata": /* mapedit */
 						tileInfo = new TilesetDesc(kv.Rest, vars);
 						break;
-		/* mapedit */case "images":
+
+					case "images": /* mapedit */
 						imageInfo = new ImageInfo(kv.Rest, vars);
 						break;
+
 					default:
 						if (ParseLine != null)
 							ParseLine(kv, vars);
@@ -59,7 +62,7 @@ namespace XCom
 
 		public static ImageInfo ImageInfo
 		{
-			get{return imageInfo;}
+			get { return imageInfo; }
 		}
 
 		public static TilesetDesc TilesetInfo
@@ -69,8 +72,8 @@ namespace XCom
 
 		public static Palette DefaultPalette
 		{
-			get{return currentPalette;}
-			set{currentPalette=value;}
+			get { return currentPalette; }
+			set { currentPalette = value; }
 		}
 
 		public static PckFile GetPckFile(string imageSet, Palette p)
@@ -80,10 +83,14 @@ namespace XCom
 
 		public static PckFile GetPckFile(string imageSet)
 		{
-			return GetPckFile(imageSet,currentPalette);
+			return GetPckFile(imageSet, currentPalette);
 		}
 
-		public static PckFile CachePck(string basePath,string basename,int bpp, Palette p)
+		public static PckFile CachePck(
+									string basePath,
+									string basename,
+									int bpp,
+									Palette p)
 		{
 			if (pckHash == null)
 				pckHash = new Dictionary<Palette, Dictionary<string, PckFile>>();
@@ -94,26 +101,29 @@ namespace XCom
 			//if(pckHash[p][basePath+basename]==null)
 			var path = basePath + basename;
 			var paleteHash = pckHash[p];
+
 			if (!paleteHash.ContainsKey(path))
 			{
 				using (var pckStream = File.OpenRead(path + ".PCK"))
 				using (var tabStream = File.OpenRead(path + ".TAB"))
 				{
-					paleteHash.Add(path, new PckFile(pckStream, tabStream, bpp, p));
+					paleteHash.Add(path, new PckFile(
+													pckStream,
+													tabStream,
+													bpp,
+													p));
 				}
 			}
 
-			return pckHash[p][basePath+basename];
+			return pckHash[p][basePath + basename];
 		}
 
 		public static void ClearPckCache(string basePath, string basename)
 		{
 			var path = basePath + basename;
 			foreach (var paleteHash in pckHash.Values)
-			{
-				if (!paleteHash.ContainsKey(path)) continue;
-				paleteHash.Remove(path);
-			}
+				if (paleteHash.ContainsKey(path))
+					paleteHash.Remove(path);
 		}
 	}
 }

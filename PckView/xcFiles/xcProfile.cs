@@ -5,26 +5,32 @@ using System.Collections.Generic;
 
 namespace PckView
 {
-	public class xcProfile : IXCImageFile
+	public class xcProfile
+		:
+		IXCImageFile
 	{
 		private IXCImageFile codec;
-		public static readonly string PROFILE_EXT=".pvp";
+		public static readonly string PROFILE_EXT = ".pvp";
 
-		public xcProfile():base(0,0)
+		public xcProfile()
+			:
+			base(0, 0)
 		{
 			fileOptions.Init(false, false, false, false);
-			//fileOptions.BmpDialog = false;
-			//fileOptions.OpenDialog = false;
-			//fileOptions.SaveDialog = false;
-			//fileOptions.CustomDialog = false;
+//			fileOptions.BmpDialog = false;
+//			fileOptions.OpenDialog = false;
+//			fileOptions.SaveDialog = false;
+//			fileOptions.CustomDialog = false;
 
 			ext = PROFILE_EXT;
 			author = "Ben Ratzlaff";
 			desc = "Provides profile support";
 		}
 
-		public xcProfile(ImgProfile profile):base(0,0)
-		{			
+		public xcProfile(ImgProfile profile)
+			:
+			base(0, 0)
+		{
 			imageSize = new System.Drawing.Size(profile.ImgWid, profile.ImgHei);
 			codec = profile.ImgType;
 			expDesc = profile.Description;
@@ -35,13 +41,13 @@ namespace PckView
 			if (profile.OpenSingle != "")
 				singleFile = profile.OpenSingle;
 
-			//fileOptions.BmpDialog = true;
-			//fileOptions.OpenDialog = true;
+//			fileOptions.BmpDialog = true;
+//			fileOptions.OpenDialog = true;
 
-			//since we are loading off of an already generic implementation
-			//we should let that implementation determine how this format be saved
-			//fileOptions.SaveDialog = false;
-			//fileOptions.CustomDialog = false;
+			// since it is loading off of an already generic implementation
+			// it should let that implementation determine how this format be saved
+//			fileOptions.SaveDialog = false;
+//			fileOptions.CustomDialog = false;
 
 			fileOptions.Init(false, true, true, false);
 
@@ -53,20 +59,41 @@ namespace PckView
 			}
 			catch
 			{
-				defPal = XCom.Palette.TFTDBattle;
+				defPal = XCom.Palette.UFOBattle;
+//				defPal = XCom.Palette.TFTDBattle;
 			}
 		}
 
-		public IXCImageFile Codec { get { return codec; } set { codec = value; } }
-
-		protected override XCom.XCImageCollection LoadFileOverride(string directory,string file,int imgWid,int imgHei,Palette pal)
+		public IXCImageFile Codec
 		{
-			return codec.LoadFile(directory,file,imgWid,imgHei,pal);
+			get { return codec; }
+			set { codec = value; }
 		}
 
-		public override void SaveCollection(string directory, string file,XCom.XCImageCollection images)
+		protected override XCom.XCImageCollection LoadFileOverride(
+																string directory,
+																string file,
+																int imgWid,
+																int imgHei,
+																Palette pal)
 		{
-			codec.SaveCollection(directory,file,images);
+			return codec.LoadFile(
+								directory,
+								file,
+								imgWid,
+								imgHei,
+								pal);
+		}
+
+		public override void SaveCollection(
+										string directory,
+										string file,
+										XCom.XCImageCollection images)
+		{
+			codec.SaveCollection(
+							directory,
+							file,
+							images);
 		}
 	}
 }

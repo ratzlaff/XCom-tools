@@ -9,59 +9,61 @@ namespace XCom
 	{
 		protected string name,path;
 		private Palette pal;
-		protected int scale=1;
+		protected int scale = 1;
 		private XCom.Interfaces.IXCImageFile ixcFile;
 
 		public string Name
 		{
-			get{return name;}
-			set{name=value;}
+			get { return name; }
+			set { name = value; }
 		}
 
 		public string Path
 		{
-			get{return path;}
-			set{path=value;}
+			get { return path; }
+			set { path = value; }
 		}
 
 		public IXCImageFile IXCFile
 		{
-			get{return ixcFile;}
-			set{ixcFile = value;}
+			get { return ixcFile; }
+			set { ixcFile = value; }
 		}
 
 		public void Hq2x()
 		{
 			foreach(XCImage i in this)
 				i.Hq2x();
-			scale*=2;
+
+			scale *= 2;
 		}
 
 		public virtual Palette Pal
 		{
-			get{return pal;}
+			get { return pal; }
 			set
 			{
 				foreach(XCImage i in this)
 					i.Image.Palette = value.Colors;
-				pal=value;
+
+				pal = value;
 			}
 		}
 
 		public new XCImage this[int i]
 		{
-			get{return (i<Count && i>=0 ? base[i]:null);}
+			get { return (i < Count && i >= 0 ? base[i] : null); }
 			set
 			{
-				if(i<Count && i>=0)
-					base[i]=value;
-				else 
+				if (i < Count && i >= 0)
+					base[i] = value;
+				else
 				{
 					value.FileNum = Count;
-					Add(value);					
+					Add(value);
 				}
 			}
-		}	
+		}
 
 		public void Remove(int i)
 		{
