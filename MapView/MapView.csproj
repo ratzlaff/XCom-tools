@@ -172,9 +172,7 @@
     </Compile>
     <Compile Include="Forms\MapObservers\TopViews\ContentTypeService.cs" />
     <Compile Include="Forms\MapObservers\TopViews\SolidPenBrush.cs" />
-    <Compile Include="Forms\MapObservers\TopViews\TopViewForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="Forms\MapObservers\TopViews\TopViewForm.cs" />
     <Compile Include="Forms\MapObservers\TopViews\TopViewForm.Designer.cs">
       <DependentUpon>TopViewForm.cs</DependentUpon>
     </Compile>

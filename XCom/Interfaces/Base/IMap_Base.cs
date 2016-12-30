@@ -18,6 +18,7 @@ namespace XCom.Interfaces.Base
 		protected byte _currentHeight;
 		protected MapLocation Selected;
 		protected MapTileList MapData;
+
 		public bool MapChanged { get; set; }
 
 		protected IMap_Base(string name, List<TileBase> tiles)
@@ -25,7 +26,7 @@ namespace XCom.Interfaces.Base
 			Name = name;
 			Tiles = tiles;
 		}
-		 
+
 		public string Name { get; protected set; }
 
 		public List<TileBase> Tiles { get; protected set; }
@@ -47,6 +48,7 @@ namespace XCom.Interfaces.Base
 			{
 				var e = new HeightChangedEventArgs(_currentHeight, _currentHeight - 1);
 				_currentHeight--;
+
 				if (HeightChanged != null)
 					HeightChanged(this, e);
 			}
@@ -61,6 +63,7 @@ namespace XCom.Interfaces.Base
 			{
 				_currentHeight++;
 				var e = new HeightChangedEventArgs(_currentHeight, _currentHeight + 1);
+
 				if (HeightChanged != null)
 					HeightChanged(this, e);
 			}
@@ -79,6 +82,7 @@ namespace XCom.Interfaces.Base
 				{
 					var e = new HeightChangedEventArgs(_currentHeight, value);
 					_currentHeight = value;
+
 					if (HeightChanged != null)
 						HeightChanged(this, e);
 				}
@@ -98,12 +102,13 @@ namespace XCom.Interfaces.Base
 			get { return Selected; }
 			set
 			{
-				if (value.Row >= 0 && value.Row < this.MapSize.Rows &&
-					value.Col >= 0 && value.Col < this.MapSize.Cols)
+				if (   value.Row >= 0 && value.Row < this.MapSize.Rows
+					&& value.Col >= 0 && value.Col < this.MapSize.Cols)
 				{
 					Selected = value;
 					var tile = this[Selected.Row, Selected.Col];
 					var stc = new SelectedTileChangedEventArgs(value, tile);
+
 					if (SelectedTileChanged != null)
 						SelectedTileChanged(this, stc);
 				}
@@ -121,9 +126,12 @@ namespace XCom.Interfaces.Base
 		{
 			get
 			{
-				if (MapData == null) return null;
-				return MapData[row, col, height];
+				if (MapData != null)
+					return MapData[row, col, height];
+
+				return null;
 			}
+
 			set
 			{
 				MapData[row, col, height] = value;
@@ -151,16 +159,27 @@ namespace XCom.Interfaces.Base
 			set { this[position.Row, position.Col, position.Height] = value; }
 		}
 
-		public virtual void ResizeTo(int newR, int newC, int newH, bool addHeightToCelling)
+		public virtual void ResizeTo(
+								int newR,
+								int newC,
+								int newH,
+								bool addHeightToCelling)
 		{
 			var mapResizeService = new MapResizeService();
-			var newMap = mapResizeService.ResizeMap(newR, newC, newH, MapSize, MapData, addHeightToCelling);
-			if (newMap == null) return;
-
-			MapData = newMap;
-			MapSize = new MapSize(newR, newC, newH);
-			_currentHeight = (byte) (MapSize.Height - 1);
-			MapChanged = true;
+			var newMap = mapResizeService.ResizeMap(
+												newR,
+												newC,
+												newH,
+												MapSize,
+												MapData,
+												addHeightToCelling);
+			if (newMap != null)
+			{
+				MapData = newMap;
+				MapSize = new MapSize(newR, newC, newH);
+				_currentHeight = (byte)(MapSize.Height - 1);
+				MapChanged = true;
+			}
 		}
 
 		/// <summary>
@@ -170,12 +189,18 @@ namespace XCom.Interfaces.Base
 		public void SaveGif(string file)
 		{
 			var palette = GetFirstGroundPalette();
-			if (palette == null) throw new ApplicationException("At least 1 ground tile is required");
-			var rowPlusCols = MapSize.Rows + MapSize.Cols;
-			var b = Bmp.MakeBitmap(rowPlusCols * (PckImage.Width / 2),
-				(MapSize.Height - _currentHeight) * 24 + rowPlusCols * 8, palette.Colors);
+			if (palette == null)
+				throw new ApplicationException("At least 1 ground tile is required");
 
-			var start = new Point((MapSize.Rows - 1) * (PckImage.Width / 2), -(24 * _currentHeight));
+			var rowPlusCols = MapSize.Rows + MapSize.Cols;
+			var b = Bmp.MakeBitmap(
+								rowPlusCols * (PckImage.Width / 2),
+								(MapSize.Height - _currentHeight) * 24 + rowPlusCols * 8,
+								palette.Colors);
+
+			var start = new Point(
+								(MapSize.Rows - 1) * (PckImage.Width / 2),
+								-(24 * _currentHeight));
 
 			int curr = 0;
 
@@ -208,9 +233,7 @@ namespace XCom.Interfaces.Base
 			try
 			{
 				var rect = Bmp.GetBoundsRect(b, Bmp.DefaultTransparentIndex);
-
 				var b2 = Bmp.Crop(b, rect);
-
 				b2.Save(file, ImageFormat.Gif);
 			}
 			catch
@@ -225,10 +248,9 @@ namespace XCom.Interfaces.Base
 				for (int r = 0; r < MapSize.Rows; r++)
 					for (int c = 0; c < MapSize.Cols; c++)
 					{
-						var tile = ((XCMapTile) this[r, c, h]);
-						if (tile.Ground == null) continue;
-						var curPal = tile.Ground[0].Palette;
-						return curPal;
+						var tile = (XCMapTile)this[r, c, h];
+						if (tile.Ground != null)
+							return tile.Ground[0].Palette;
 					}
 
 			return null;
