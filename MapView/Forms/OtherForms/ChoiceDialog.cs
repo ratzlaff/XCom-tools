@@ -57,54 +57,58 @@ namespace MapView
 			this.cancel = new System.Windows.Forms.Button();
 			this.exist = new System.Windows.Forms.Button();
 			this.SuspendLayout();
-			//
+			// 
 			// txt
-			//
+			// 
 			this.txt.Dock = System.Windows.Forms.DockStyle.Top;
+			this.txt.Location = new System.Drawing.Point(0, 0);
 			this.txt.Name = "txt";
-			this.txt.Size = new System.Drawing.Size(292, 48);
+			this.txt.Size = new System.Drawing.Size(292, 45);
 			this.txt.TabIndex = 0;
-			//
+			// 
 			// overwrite
-			//
-			this.overwrite.Location = new System.Drawing.Point(29, 48);
+			// 
+			this.overwrite.Location = new System.Drawing.Point(20, 45);
 			this.overwrite.Name = "overwrite";
+			this.overwrite.Size = new System.Drawing.Size(80, 30);
 			this.overwrite.TabIndex = 1;
 			this.overwrite.Text = "Overwrite";
 			this.overwrite.Click += new System.EventHandler(this.overwrite_Click);
-			//
+			// 
 			// cancel
-			//
-			this.cancel.Location = new System.Drawing.Point(189, 48);
+			// 
+			this.cancel.Font = new System.Drawing.Font("Verdana", 7F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.cancel.Location = new System.Drawing.Point(190, 45);
 			this.cancel.Name = "cancel";
+			this.cancel.Size = new System.Drawing.Size(80, 30);
 			this.cancel.TabIndex = 2;
 			this.cancel.Text = "Cancel";
 			this.cancel.Click += new System.EventHandler(this.cancel_Click);
-			//
+			// 
 			// exist
-			//
-			this.exist.Location = new System.Drawing.Point(109, 48);
+			// 
+			this.exist.Location = new System.Drawing.Point(105, 45);
 			this.exist.Name = "exist";
+			this.exist.Size = new System.Drawing.Size(80, 30);
 			this.exist.TabIndex = 3;
-			this.exist.Text = "Use Existing";
+			this.exist.Text = "Existing";
 			this.exist.Click += new System.EventHandler(this.exist_Click);
-			//
+			// 
 			// ChoiceDialog
-			//
-			this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
-			this.ClientSize = new System.Drawing.Size(292, 77);
-			this.Controls.AddRange(new System.Windows.Forms.Control[] {
-																	this.exist,
-																	this.cancel,
-																	this.overwrite,
-																	this.txt});
+			// 
+			this.AutoScaleBaseSize = new System.Drawing.Size(5, 12);
+			this.ClientSize = new System.Drawing.Size(292, 75);
+			this.Controls.Add(this.exist);
+			this.Controls.Add(this.cancel);
+			this.Controls.Add(this.overwrite);
+			this.Controls.Add(this.txt);
+			this.Font = new System.Drawing.Font("Verdana", 7F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.MaximizeBox = false;
 			this.MinimizeBox = false;
 			this.Name = "ChoiceDialog";
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
 			this.Text = "Decisions Decisions";
 			this.ResumeLayout(false);
-
 		}
 		#endregion
 

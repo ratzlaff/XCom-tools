@@ -1,4 +1,5 @@
-/*using System;
+/*
+using System;
 using System.Drawing;
 using System.Collections;
 using System.Collections.Generic;
@@ -11,7 +12,9 @@ using XCom.Interfaces.Base;
 
 namespace MapView
 {
-	public class TreeEditor : System.Windows.Forms.Form
+	public class TreeEditor
+		:
+		System.Windows.Forms.Form
 	{
 		private System.Windows.Forms.TreeView treeLeft;
 		private System.Windows.Forms.TreeView treeRight;
@@ -27,7 +30,6 @@ namespace MapView
 			InitializeComponent();
 
 			populateLeft();
-
 			populateRight();
 		}
 
@@ -35,32 +37,30 @@ namespace MapView
 		{
 			treeRight.Nodes.Clear();
 			ArrayList al = new ArrayList();
-			foreach(object o in GameInfo.GetTileInfo().Tilesets.Keys)
+			foreach (object o in GameInfo.GetTileInfo().Tilesets.Keys)
 				al.Add(o);
 
 			al.Sort();
 			ArrayList al2 = new ArrayList();
-			foreach(string o in al) //tileset
+			foreach (string o in al) //tileset
 			{
 				IXCTileset it = (IXCTileset)GameInfo.GetTileInfo().Tilesets[o];
-				if(it==null)
-					continue;
-
-				TreeNode t = treeRight.Nodes.Add(o); //make the node for the tileset
-				
-				al2.Clear();
-
-				foreach(string o2 in it.Subsets.Keys) //subsets
-					al2.Add(o2);
-
-				al2.Sort();
-				foreach(string o2 in al2)
+				if (it != null)
 				{
-					Dictionary<string, IXCMapData> subset = it.Subsets[o2];
-					if(subset==null)
-						continue;
+					TreeNode t = treeRight.Nodes.Add(o); // make the node for the tileset
+					
+					al2.Clear();
 
-					TreeNode subsetNode = t.Nodes.Add(o2);
+					foreach (string o2 in it.Subsets.Keys) // subsets
+						al2.Add(o2);
+
+					al2.Sort();
+					foreach (string o2 in al2)
+					{
+						Dictionary<string, IXCMapData> subset = it.Subsets[o2];
+						if (subset != null)
+							TreeNode subsetNode = t.Nodes.Add(o2);
+					}
 				}
 			}
 		}
@@ -69,44 +69,41 @@ namespace MapView
 		{
 			treeLeft.Nodes.Clear();
 			ArrayList al = new ArrayList();
-			foreach(object o in GameInfo.GetTileInfo().Tilesets.Keys)
+			foreach (object o in GameInfo.GetTileInfo().Tilesets.Keys)
 				al.Add(o);
 
 			al.Sort();
 			ArrayList al2 = new ArrayList();
-			foreach(string o in al) //tileset
+			foreach (string o in al) // tileset
 			{
 				IXCTileset it = (IXCTileset)GameInfo.GetTileInfo().Tilesets[o];
-				if(it==null)
-					continue;
-
-				TreeNode t = treeLeft.Nodes.Add(o); //make the node for the tileset
-				
-				al2.Clear();
-
-				foreach(string o2 in it.Subsets.Keys) //subsets
-					al2.Add(o2);
-
-				al2.Sort();
-				foreach(string o2 in al2)
+				if (it != null)
 				{
-					Dictionary<string, IMapData> subset = it.Subsets[o2];
-					if(subset==null)
-						continue;
+					TreeNode t = treeLeft.Nodes.Add(o); //make the node for the tileset
 
-					TreeNode subsetNode = t.Nodes.Add(o2);
+					al2.Clear();
 
-					ArrayList sKeys = new ArrayList();
-					foreach(string sKey in subset.Keys)
-						sKeys.Add(sKey);
+					foreach(string o2 in it.Subsets.Keys) //subsets
+						al2.Add(o2);
 
-					sKeys.Sort();
-
-					foreach(string sKey in sKeys)
+					al2.Sort();
+					foreach(string o2 in al2)
 					{
-						if(subset[sKey]==null)
-							continue;
-						subsetNode.Nodes.Add(sKey);
+						Dictionary<string, IMapData> subset = it.Subsets[o2];
+						if (subset != null)
+						{
+							TreeNode subsetNode = t.Nodes.Add(o2);
+
+							ArrayList sKeys = new ArrayList();
+							foreach (string sKey in subset.Keys)
+								sKeys.Add(sKey);
+
+							sKeys.Sort();
+
+							foreach (string sKey in sKeys)
+								if (subset[sKey] != null)
+									subsetNode.Nodes.Add(sKey);
+						}
 					}
 				}
 			}
@@ -119,16 +116,12 @@ namespace MapView
 		/// </summary>
 		protected override void Dispose( bool disposing )
 		{
-			if( disposing )
-			{
-				if(components != null)
-				{
-					components.Dispose();
-				}
-			}
+			if (disposing && components != null)
+				components.Dispose();
+
 			base.Dispose( disposing );
 		}
-		
+
 		/// <summary>
 		/// Required method for Designer support - do not modify
 		/// the contents of this method with the code editor.
@@ -230,7 +223,6 @@ namespace MapView
 			this.Text = "Move Maps";
 			this.boxRename.ResumeLayout(false);
 			this.ResumeLayout(false);
-
 		}
 		#endregion
 
@@ -242,91 +234,84 @@ namespace MapView
 
 		private void btnRename_Click(object sender, System.EventArgs e)
 		{
-/*			TreeNode sel = treeLeft.SelectedNode;
-
-			if(sel.Parent==null) //top node
-			{
-				IXCTileset tSet = getCurrset();
-				GameInfo.GetTileInfo()[sel.Text]=null;
-
-				sel.Text=txtName.Text;
-				tSet.Name=sel.Text;
-				GameInfo.GetTileInfo()[sel.Text]=tSet;
-			}
-			else if(sel.Parent.Parent==null)
-			{
-				IXCTileset tSet = getCurrset();
-				Hashtable subset = (Hashtable)tSet.Subsets[sel.Text];
-				tSet.Subsets[sel.Text]=null;
-
-				sel.Text=txtName.Text;
-
-				tSet.Subsets[sel.Text]=subset;
-			}
-
-			populateRight();*/
-/*		}
+//			TreeNode sel = treeLeft.SelectedNode;
+//
+//			if (sel.Parent == null) // top node
+//			{
+//				IXCTileset tSet = getCurrset();
+//				GameInfo.GetTileInfo()[sel.Text] = null;
+//
+//				sel.Text = txtName.Text;
+//				tSet.Name = sel.Text;
+//				GameInfo.GetTileInfo()[sel.Text] = tSet;
+//			}
+//			else if (sel.Parent.Parent == null)
+//			{
+//				IXCTileset tSet = getCurrset();
+//				Hashtable subset = (Hashtable)tSet.Subsets[sel.Text];
+//				tSet.Subsets[sel.Text] = null;
+//
+//				sel.Text = txtName.Text;
+//
+//				tSet.Subsets[sel.Text] = subset;
+//			}
+//
+//			populateRight();
+		}
 
 		private IXCTileset getCurrset()
 		{
 			TreeNode t = treeLeft.SelectedNode;
-
-			if(t.Parent!=null)
+			if (t.Parent != null)
 			{
-				if(t.Parent.Parent!=null)//inner node
+				if (t.Parent.Parent != null) // inner node
 					return (IXCTileset)GameInfo.GetTileInfo().Tilesets[t.Parent.Parent.Text];
-				else //subset node
-					return (IXCTileset)GameInfo.GetTileInfo().Tilesets[t.Parent.Text];
+
+				return (IXCTileset)GameInfo.GetTileInfo().Tilesets[t.Parent.Text];
 			}
-			else //parent node
-				return (IXCTileset)GameInfo.GetTileInfo().Tilesets[t.Text];
+			return (IXCTileset)GameInfo.GetTileInfo().Tilesets[t.Text];  // parent node
 		}
 
 		private void treeLeft_AfterSelect(object sender, System.Windows.Forms.TreeViewEventArgs e)
 		{
-			boxRename.Enabled=true;
-			if(treeLeft.SelectedNode.Parent!=null)
+			boxRename.Enabled = true;
+			if (treeLeft.SelectedNode.Parent != null)
 			{
-				if(treeLeft.SelectedNode.Parent.Parent!=null) //map
+				if (treeLeft.SelectedNode.Parent.Parent != null) // map
 				{
-					boxRename.Enabled=false;
+					boxRename.Enabled = false;
 				}
-				else //subset
-				{
-
-				}
+//				else // subset
+//				{}
 			}
-			else //top level node
-			{
-
-			}
+//			else // top level node
+//			{}
 		}
 
 		private void treeRight_AfterSelect(object sender, System.Windows.Forms.TreeViewEventArgs e)
 		{
-			btnMove.Enabled=false;
-			if(treeRight.SelectedNode.Parent!=null)
-				btnMove.Enabled=true;
+			btnMove.Enabled = false;
+			if (treeRight.SelectedNode.Parent != null)
+				btnMove.Enabled = true;
 		}
 
 		private void btnMove_Click(object sender, System.EventArgs e)
 		{
 			TreeNode destSet = treeRight.SelectedNode;
 
-			for(int i=0;i<treeLeft.Nodes.Count;i++)
+			for (int i = 0; i < treeLeft.Nodes.Count; i++)
 			{
 				TreeNode top = treeLeft.Nodes[i];
-				for(int j=0;j<top.Nodes.Count;j++)
+				for (int j = 0; j < top.Nodes.Count; j++)
 				{
 					TreeNode sub = top.Nodes[j];
-					for(int k=0;k<sub.Nodes.Count;k++)
+					for (int k = 0; k < sub.Nodes.Count; k++)
 					{
 						TreeNode map = sub.Nodes[k];
-						if(map.Checked)
+						if (map.Checked)
 						{
 							IXCMapData imd = ((IXCTileset)GameInfo.GetTileInfo().Tilesets[top.Text]).RemoveMap(map.Text, sub.Text);
 							((IXCTileset)GameInfo.GetTileInfo().Tilesets[destSet.Parent.Text]).AddMap(imd, destSet.Text);
-							
 						}
 					}
 				}
@@ -335,4 +320,5 @@ namespace MapView
 			populateLeft();
 		}
 	}
-} */
+}
+*/

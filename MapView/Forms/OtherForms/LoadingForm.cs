@@ -28,16 +28,12 @@ namespace MapView
 		/// <summary>
 		/// Clean up any resources being used.
 		/// </summary>
-		protected override void Dispose( bool disposing )
+		protected override void Dispose(bool disposing)
 		{
-			if( disposing )
-			{
-				if(components != null)
-				{
-					components.Dispose();
-				}
-			}
-			base.Dispose( disposing );
+			if (disposing && components != null)
+				components.Dispose();
+
+			base.Dispose(disposing);
 		}
 		
 		/// <summary>
@@ -48,25 +44,25 @@ namespace MapView
 		{
 			this.progress = new System.Windows.Forms.ProgressBar();
 			this.SuspendLayout();
-			//
+			// 
 			// progress
-			//
+			// 
 			this.progress.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.progress.Location = new System.Drawing.Point(0, 0);
 			this.progress.Name = "progress";
-			this.progress.Size = new System.Drawing.Size(292, 29);
+			this.progress.Size = new System.Drawing.Size(292, 27);
 			this.progress.TabIndex = 0;
-			//
+			// 
 			// LoadingForm
-			//
-			this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
-			this.ClientSize = new System.Drawing.Size(292, 29);
+			// 
+			this.AutoScaleBaseSize = new System.Drawing.Size(5, 12);
+			this.ClientSize = new System.Drawing.Size(292, 27);
 			this.ControlBox = false;
-			this.Controls.AddRange(new System.Windows.Forms.Control[] {
-																	this.progress});
+			this.Controls.Add(this.progress);
+			this.Font = new System.Drawing.Font("Verdana", 7F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.Name = "LoadingForm";
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
 			this.ResumeLayout(false);
-
 		}
 		#endregion
 	}

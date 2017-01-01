@@ -36,39 +36,35 @@ namespace MapView
 			this.label1 = new System.Windows.Forms.Label();
 			this.propertyGrid = new global::MapView.CustomPropertyGrid();
 			this.SuspendLayout();
-			//
+			// 
 			// label1
-			//
+			// 
 			this.label1.Location = new System.Drawing.Point(200, 64);
 			this.label1.Name = "label1";
+			this.label1.Size = new System.Drawing.Size(100, 23);
 			this.label1.TabIndex = 0;
 			this.label1.Text = "label1";
-			//
+			// 
 			// propertyGrid
-			//
-			this.propertyGrid.CommandsVisibleIfAvailable = true;
+			// 
 			this.propertyGrid.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.propertyGrid.LargeButtons = false;
 			this.propertyGrid.LineColor = System.Drawing.SystemColors.ScrollBar;
+			this.propertyGrid.Location = new System.Drawing.Point(0, 0);
 			this.propertyGrid.Name = "propertyGrid";
-			this.propertyGrid.Size = new System.Drawing.Size(232, 325);
+			this.propertyGrid.Size = new System.Drawing.Size(242, 325);
 			this.propertyGrid.TabIndex = 0;
-			this.propertyGrid.Text = "PropertyGrid";
 			this.propertyGrid.TypeName = "DefType";
-			this.propertyGrid.ViewBackColor = System.Drawing.SystemColors.Window;
-			this.propertyGrid.ViewForeColor = System.Drawing.SystemColors.WindowText;
-			//
+			// 
 			// PropertyForm
-			//
-			this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
-			this.ClientSize = new System.Drawing.Size(232, 325);
-			this.Controls.AddRange(new System.Windows.Forms.Control[] {
-																	this.propertyGrid,
-																	this.label1});
+			// 
+			this.AutoScaleBaseSize = new System.Drawing.Size(5, 12);
+			this.ClientSize = new System.Drawing.Size(242, 325);
+			this.Controls.Add(this.propertyGrid);
+			this.Controls.Add(this.label1);
+			this.Font = new System.Drawing.Font("Verdana", 7F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.Name = "PropertyForm";
 			this.Text = "Custom PropertyGrid";
 			this.ResumeLayout(false);
-
 		}
 		#endregion
 	}

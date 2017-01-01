@@ -38,38 +38,38 @@ namespace MapView
 			// 
 			// label1
 			// 
-			this.label1.Location = new System.Drawing.Point(10, 82);
+			this.label1.Location = new System.Drawing.Point(5, 90);
 			this.label1.Name = "label1";
-			this.label1.Size = new System.Drawing.Size(296, 16);
+			this.label1.Size = new System.Drawing.Size(305, 15);
 			this.label1.TabIndex = 0;
 			this.label1.Text = "AUTHORED - Ben Ratzlaff";
 			this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			// 
 			// label2
 			// 
-			this.label2.Location = new System.Drawing.Point(10, 98);
+			this.label2.Location = new System.Drawing.Point(5, 105);
 			this.label2.Name = "label2";
-			this.label2.Size = new System.Drawing.Size(296, 16);
+			this.label2.Size = new System.Drawing.Size(305, 15);
 			this.label2.TabIndex = 1;
 			this.label2.Text = "ASSISTED - BladeFireLight / J Farceur";
 			this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			// 
 			// lblVersion
 			// 
-			this.lblVersion.Location = new System.Drawing.Point(10, 12);
+			this.lblVersion.Location = new System.Drawing.Point(5, 10);
 			this.lblVersion.Name = "lblVersion";
-			this.lblVersion.Size = new System.Drawing.Size(300, 52);
+			this.lblVersion.Size = new System.Drawing.Size(305, 60);
 			this.lblVersion.TabIndex = 2;
-			this.lblVersion.Text = "MapView 1.6.0.0 kL_r\r\n\r\n2016 dec 28";
+			this.lblVersion.Text = "MapView 1.6.0.0 kL_r\r\n\r\n2016 dec 31";
 			this.lblVersion.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			// 
 			// label3
 			// 
-			this.label3.Location = new System.Drawing.Point(10, 114);
+			this.label3.Location = new System.Drawing.Point(5, 120);
 			this.label3.Name = "label3";
-			this.label3.Size = new System.Drawing.Size(296, 16);
+			this.label3.Size = new System.Drawing.Size(305, 15);
 			this.label3.TabIndex = 3;
-			this.label3.Text = "REVISED TheBigSot";
+			this.label3.Text = "REVISED - TheBigSot";
 			this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			// 
 			// MoveTimer
@@ -80,22 +80,23 @@ namespace MapView
 			// 
 			// label4
 			// 
-			this.label4.Location = new System.Drawing.Point(10, 130);
+			this.label4.Location = new System.Drawing.Point(5, 135);
 			this.label4.Name = "label4";
-			this.label4.Size = new System.Drawing.Size(296, 16);
+			this.label4.Size = new System.Drawing.Size(305, 15);
 			this.label4.TabIndex = 3;
-			this.label4.Text = "EDITED - kevL";
+			this.label4.Text = "REVISED - kevL";
 			this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			// 
 			// AboutWindow
 			// 
-			this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
+			this.AutoScaleBaseSize = new System.Drawing.Size(5, 12);
 			this.ClientSize = new System.Drawing.Size(314, 177);
 			this.Controls.Add(this.label4);
 			this.Controls.Add(this.label3);
 			this.Controls.Add(this.lblVersion);
 			this.Controls.Add(this.label2);
 			this.Controls.Add(this.label1);
+			this.Font = new System.Drawing.Font("Verdana", 7F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
 			this.Name = "AboutWindow";
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;

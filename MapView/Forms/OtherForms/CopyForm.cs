@@ -1,4 +1,5 @@
-/*using System;
+/*
+using System;
 using System.Drawing;
 using System.Collections;
 using System.ComponentModel;
@@ -6,7 +7,9 @@ using System.Windows.Forms;
 
 namespace MapView
 {
-	public class CopyForm : System.Windows.Forms.Form
+	public class CopyForm
+		:
+		System.Windows.Forms.Form
 	{
 		private CopyGroup copyGroup;
 		private Settings settings;
@@ -19,7 +22,7 @@ namespace MapView
 
 		public CopyGroup CopyGroup
 		{
-			get{return copyGroup;}
+			get { return copyGroup; }
 		}
 
 		private void loadDefaults()
@@ -29,7 +32,7 @@ namespace MapView
 
 		public Settings Settings
 		{
-			get{return settings;}
+			get { return settings; }
 		}
 
 		#region Windows Form Designer generated code
@@ -56,7 +59,7 @@ namespace MapView
 			this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
 			this.ClientSize = new System.Drawing.Size(232, 237);
 			this.Controls.AddRange(new System.Windows.Forms.Control[] {
-																		  this.copyGroup});
+																	this.copyGroup});
 			this.MaximizeBox = false;
 			this.MinimizeBox = false;
 			this.Name = "CopyForm";
@@ -64,7 +67,6 @@ namespace MapView
 			this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
 			this.Text = "CopyForm";
 			this.ResumeLayout(false);
-
 		}
 		#endregion
 	}

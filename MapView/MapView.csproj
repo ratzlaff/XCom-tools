@@ -179,6 +179,7 @@
       <DependentUpon>TopViewForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\OtherForms\ChoiceDialogChoices.cs" />
+    <Compile Include="Forms\OtherForms\CopyForm.cs" />
     <Compile Include="Forms\OtherForms\ExportForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -242,9 +243,6 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Forms\OtherForms\ChoiceDialog.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\OtherForms\CopyForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="CopyGroup.cs">
@@ -369,6 +367,27 @@
     <EmbeddedResource Include="Forms\OtherForms\ChangeMapSizeForm.resx">
       <DependentUpon>ChangeMapSizeForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\OtherForms\ChoiceDialog.resx">
+      <DependentUpon>ChoiceDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\OtherForms\Dialog.resx">
+      <DependentUpon>Dialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\OtherForms\HelpScreen.resx">
+      <DependentUpon>HelpScreen.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\OtherForms\LoadingForm.resx">
+      <DependentUpon>LoadingForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\OtherForms\MapInfoForm.resx">
+      <DependentUpon>MapInfoForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\OtherForms\NewMapForm.resx">
+      <DependentUpon>NewMapForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\OtherForms\NoDirForm.resx">
+      <DependentUpon>NoDirForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\OtherForms\PathsEditor.resx">
       <DependentUpon>PathsEditor.cs</DependentUpon>
     </EmbeddedResource>
@@ -383,6 +402,15 @@
     <EmbeddedResource Include="Forms\MapObservers\TopViews\TopView.resx">
       <SubType>Designer</SubType>
       <DependentUpon>TopView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\OtherForms\PropertyForm.resx">
+      <DependentUpon>PropertyForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\OtherForms\SubsetForm.resx">
+      <DependentUpon>SubsetForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\OtherForms\TilesetForm.resx">
+      <DependentUpon>TilesetForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="_Embedded\ImagesTFTD.dat" />
     <EmbeddedResource Include="_Embedded\ImagesUFO.dat" />

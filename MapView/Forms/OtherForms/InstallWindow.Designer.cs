@@ -13,7 +13,7 @@ namespace MapView
 		/// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
 		protected override void Dispose(bool disposing)
 		{
-			if (disposing && (components != null))
+			if (disposing && components != null)
 			{
 				components.Dispose();
 			}
@@ -44,17 +44,17 @@ namespace MapView
 			// txtUFO
 			// 
 			this.txtUFO.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.txtUFO.Location = new System.Drawing.Point(88, 0);
+			this.txtUFO.Location = new System.Drawing.Point(85, 0);
 			this.txtUFO.Name = "txtUFO";
-			this.txtUFO.Size = new System.Drawing.Size(324, 20);
+			this.txtUFO.Size = new System.Drawing.Size(325, 19);
 			this.txtUFO.TabIndex = 0;
 			// 
 			// txtTFTD
 			// 
 			this.txtTFTD.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.txtTFTD.Location = new System.Drawing.Point(88, 0);
+			this.txtTFTD.Location = new System.Drawing.Point(85, 0);
 			this.txtTFTD.Name = "txtTFTD";
-			this.txtTFTD.Size = new System.Drawing.Size(324, 20);
+			this.txtTFTD.Size = new System.Drawing.Size(325, 19);
 			this.txtTFTD.TabIndex = 1;
 			// 
 			// label1
@@ -62,7 +62,7 @@ namespace MapView
 			this.label1.Dock = System.Windows.Forms.DockStyle.Left;
 			this.label1.Location = new System.Drawing.Point(0, 0);
 			this.label1.Name = "label1";
-			this.label1.Size = new System.Drawing.Size(88, 25);
+			this.label1.Size = new System.Drawing.Size(85, 25);
 			this.label1.TabIndex = 2;
 			this.label1.Text = "UFO Directory";
 			this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -72,7 +72,7 @@ namespace MapView
 			this.label2.Dock = System.Windows.Forms.DockStyle.Left;
 			this.label2.Location = new System.Drawing.Point(0, 0);
 			this.label2.Name = "label2";
-			this.label2.Size = new System.Drawing.Size(88, 25);
+			this.label2.Size = new System.Drawing.Size(85, 25);
 			this.label2.TabIndex = 3;
 			this.label2.Text = "TFTD Directory";
 			this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -80,9 +80,9 @@ namespace MapView
 			// btnFindUFO
 			// 
 			this.btnFindUFO.Dock = System.Windows.Forms.DockStyle.Right;
-			this.btnFindUFO.Location = new System.Drawing.Point(412, 0);
+			this.btnFindUFO.Location = new System.Drawing.Point(410, 0);
 			this.btnFindUFO.Name = "btnFindUFO";
-			this.btnFindUFO.Size = new System.Drawing.Size(40, 25);
+			this.btnFindUFO.Size = new System.Drawing.Size(42, 25);
 			this.btnFindUFO.TabIndex = 4;
 			this.btnFindUFO.Text = "Find";
 			this.btnFindUFO.Click += new System.EventHandler(this.btnFindUFO_Click);
@@ -90,9 +90,9 @@ namespace MapView
 			// btnFindTFTD
 			// 
 			this.btnFindTFTD.Dock = System.Windows.Forms.DockStyle.Right;
-			this.btnFindTFTD.Location = new System.Drawing.Point(412, 0);
+			this.btnFindTFTD.Location = new System.Drawing.Point(410, 0);
 			this.btnFindTFTD.Name = "btnFindTFTD";
-			this.btnFindTFTD.Size = new System.Drawing.Size(40, 25);
+			this.btnFindTFTD.Size = new System.Drawing.Size(42, 25);
 			this.btnFindTFTD.TabIndex = 5;
 			this.btnFindTFTD.Text = "Find";
 			this.btnFindTFTD.Click += new System.EventHandler(this.btnFindTFTD_Click);
@@ -100,9 +100,9 @@ namespace MapView
 			// okButton
 			// 
 			this.okButton.Anchor = System.Windows.Forms.AnchorStyles.Top;
-			this.okButton.Location = new System.Drawing.Point(191, 56);
+			this.okButton.Location = new System.Drawing.Point(155, 55);
 			this.okButton.Name = "okButton";
-			this.okButton.Size = new System.Drawing.Size(120, 23);
+			this.okButton.Size = new System.Drawing.Size(135, 25);
 			this.okButton.TabIndex = 6;
 			this.okButton.Text = "The paths are correct";
 			this.okButton.Click += new System.EventHandler(this.okButton_Click);
@@ -131,11 +131,12 @@ namespace MapView
 			// 
 			// InstallWindow
 			// 
-			this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
+			this.AutoScaleBaseSize = new System.Drawing.Size(5, 12);
 			this.ClientSize = new System.Drawing.Size(452, 84);
 			this.Controls.Add(this.panel2);
 			this.Controls.Add(this.panel1);
 			this.Controls.Add(this.okButton);
+			this.Font = new System.Drawing.Font("Verdana", 7F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
 			this.Name = "InstallWindow";
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
@@ -145,7 +146,6 @@ namespace MapView
 			this.panel2.ResumeLayout(false);
 			this.panel2.PerformLayout();
 			this.ResumeLayout(false);
-
 		}
 		#endregion
 

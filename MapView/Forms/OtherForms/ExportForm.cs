@@ -1,4 +1,5 @@
-/*using System;
+/*
+using System;
 using System.Drawing;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -9,7 +10,9 @@ using XCom.Interfaces;
 
 namespace MapView
 {
-	public class ExportForm : System.Windows.Forms.Form
+	public class ExportForm
+		:
+		System.Windows.Forms.Form
 	{
 		private System.Windows.Forms.GroupBox groupBox1;
 		private System.Windows.Forms.ToolTip toolTip;
@@ -137,11 +140,11 @@ namespace MapView
 			// groupImages
 			// 
 			this.groupImages.Controls.AddRange(new System.Windows.Forms.Control[] {
-																					  this.checkMaxImages,
-																					  this.txtNumImages,
-																					  this.checkMinimal,
-																					  this.checkPalette,
-																					  this.groupBox2});
+																				this.checkMaxImages,
+																				this.txtNumImages,
+																				this.checkMinimal,
+																				this.checkPalette,
+																				this.groupBox2});
 			this.groupImages.Location = new System.Drawing.Point(112, 0);
 			this.groupImages.Name = "groupImages";
 			this.groupImages.Size = new System.Drawing.Size(200, 112);
@@ -169,8 +172,8 @@ namespace MapView
 			// groupBox2
 			// 
 			this.groupBox2.Controls.AddRange(new System.Windows.Forms.Control[] {
-																					this.radio2,
-																					this.radio4});
+																			this.radio2,
+																			this.radio4});
 			this.groupBox2.Location = new System.Drawing.Point(8, 64);
 			this.groupBox2.Name = "groupBox2";
 			this.groupBox2.Size = new System.Drawing.Size(80, 40);
@@ -215,8 +218,8 @@ namespace MapView
 			// panel1
 			// 
 			this.panel1.Controls.AddRange(new System.Windows.Forms.Control[] {
-																				 this.btnCancel,
-																				 this.btnSave});
+																			this.btnCancel,
+																			this.btnSave});
 			this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
 			this.panel1.Location = new System.Drawing.Point(112, 249);
 			this.panel1.Name = "panel1";
@@ -253,11 +256,11 @@ namespace MapView
 			this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
 			this.ClientSize = new System.Drawing.Size(312, 273);
 			this.Controls.AddRange(new System.Windows.Forms.Control[] {
-																		  this.btnInfo,
-																		  this.checkExportImages,
-																		  this.panel1,
-																		  this.groupImages,
-																		  this.groupBox1});
+																	this.btnInfo,
+																	this.checkExportImages,
+																	this.panel1,
+																	this.groupImages,
+																	this.groupBox1});
 			this.Name = "ExportForm";
 			this.Text = "Export";
 			this.groupBox1.ResumeLayout(false);
@@ -276,45 +279,50 @@ namespace MapView
 
 		private void checkChanged(object sender, EventArgs e)
 		{
-			mpkFile.SetOption(mpkOptionsBool[(CheckBox)sender],((CheckBox)sender).Checked);
-			if(sender==checkExportImages)
-				groupImages.Enabled=checkExportImages.Checked;
+			mpkFile.SetOption(mpkOptionsBool[(CheckBox)sender], ((CheckBox)sender).Checked);
+			if (sender == checkExportImages)
+				groupImages.Enabled = checkExportImages.Checked;
 		}
 
 		private void checkMaxImages_CheckedChanged(object sender, System.EventArgs e)
 		{
-			int num=0;
+			int num = 0;
 			try
 			{
-				num=int.Parse(txtNumImages.Text);
+				num = int.Parse(txtNumImages.Text);
 			}
 			catch
 			{
-				txtNumImages.Text="100";
-				num=100;
+				txtNumImages.Text = "100";
+				num = 100;
 			}
-			if(checkMaxImages.Checked)
-				mpkFile.SetOption(MpkOption.NumImages,num);
+
+			if (checkMaxImages.Checked)
+				mpkFile.SetOption(MpkOption.NumImages, num);
 			else
-				mpkFile.SetOption(MpkOption.NumImages,0);
+				mpkFile.SetOption(MpkOption.NumImages, 0);
 		}
 
 		private void radio2_CheckedChanged(object sender, System.EventArgs e)
 		{
-			if(radio2.Checked)
-				mpkFile.SetOption(MpkOption.Bpp,2);
+			if (radio2.Checked)
+				mpkFile.SetOption(MpkOption.Bpp, 2);
 			else
-				mpkFile.SetOption(MpkOption.Bpp,4);
+				mpkFile.SetOption(MpkOption.Bpp, 4);
 		}
 
 		private void btnInfo_Click(object sender, System.EventArgs e)
-		{
-		
-		}
+		{}
 
 		public List<string> Maps
 		{
-			set{maps=value;mapList.Items.Clear();foreach(string s in maps)mapList.Items.Add(s,true);}
+			set
+			{
+				maps = value;
+				mapList.Items.Clear();
+				foreach(string s in maps)
+					mapList.Items.Add(s,true);
+			}
 		}
 	}
 }

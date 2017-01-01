@@ -6,7 +6,9 @@ using System.Windows.Forms;
 
 namespace MapView
 {
-	public class SubsetForm : System.Windows.Forms.Form
+	public class SubsetForm
+		:
+		System.Windows.Forms.Form
 	{
 		private System.Windows.Forms.Label label1;
 		private System.Windows.Forms.TextBox txtName;
@@ -18,12 +20,12 @@ namespace MapView
 		public SubsetForm()
 		{
 			InitializeComponent();
-			name=null;
+			name = null;
 		}
 
 		public string SubsetName
 		{
-			get{return name;}
+			get { return name; }
 		}
 
 		#region Windows Form Designer generated code
@@ -31,18 +33,14 @@ namespace MapView
 		/// <summary>
 		/// Clean up any resources being used.
 		/// </summary>
-		protected override void Dispose( bool disposing )
+		protected override void Dispose(bool disposing)
 		{
-			if( disposing )
-			{
-				if(components != null)
-				{
-					components.Dispose();
-				}
-			}
-			base.Dispose( disposing );
+			if (disposing && components != null)
+				components.Dispose();
+
+			base.Dispose(disposing);
 		}
-		
+
 		/// <summary>
 		/// Required method for Designer support - do not modify
 		/// the contents of this method with the code editor.
@@ -56,35 +54,36 @@ namespace MapView
 			// 
 			// label1
 			// 
+			this.label1.Location = new System.Drawing.Point(5, 5);
 			this.label1.Name = "label1";
-			this.label1.Size = new System.Drawing.Size(128, 16);
+			this.label1.Size = new System.Drawing.Size(80, 15);
 			this.label1.TabIndex = 0;
 			this.label1.Text = "Subset Name";
 			// 
 			// txtName
 			// 
-			this.txtName.Location = new System.Drawing.Point(0, 16);
+			this.txtName.Location = new System.Drawing.Point(0, 20);
 			this.txtName.Name = "txtName";
-			this.txtName.Size = new System.Drawing.Size(128, 20);
+			this.txtName.Size = new System.Drawing.Size(145, 19);
 			this.txtName.TabIndex = 1;
-			this.txtName.Text = "";
 			// 
 			// btnOk
 			// 
-			this.btnOk.Location = new System.Drawing.Point(24, 40);
+			this.btnOk.Location = new System.Drawing.Point(30, 45);
 			this.btnOk.Name = "btnOk";
+			this.btnOk.Size = new System.Drawing.Size(80, 25);
 			this.btnOk.TabIndex = 2;
 			this.btnOk.Text = "Ok";
 			this.btnOk.Click += new System.EventHandler(this.btnOk_Click);
 			// 
 			// SubsetForm
 			// 
-			this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
-			this.ClientSize = new System.Drawing.Size(128, 69);
-			this.Controls.AddRange(new System.Windows.Forms.Control[] {
-																		  this.btnOk,
-																		  this.txtName,
-																		  this.label1});
+			this.AutoScaleBaseSize = new System.Drawing.Size(5, 12);
+			this.ClientSize = new System.Drawing.Size(144, 72);
+			this.Controls.Add(this.btnOk);
+			this.Controls.Add(this.txtName);
+			this.Controls.Add(this.label1);
+			this.Font = new System.Drawing.Font("Verdana", 7F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
 			this.MaximizeBox = false;
 			this.MinimizeBox = false;
@@ -92,7 +91,7 @@ namespace MapView
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
 			this.Text = "SubsetForm";
 			this.ResumeLayout(false);
-
+			this.PerformLayout();
 		}
 		#endregion
 

@@ -181,13 +181,9 @@ namespace MapView
 		/// </summary>
 		protected override void Dispose( bool disposing )
 		{
-			if ( disposing )
-			{
-				if (components != null)
-				{
+			if (disposing && components != null)
 					components.Dispose();
-				}
-			}
+
 			base.Dispose(disposing);
 		}
 
@@ -269,30 +265,33 @@ namespace MapView
 			this.grpMapGroup.SuspendLayout();
 			this.tabImages.SuspendLayout();
 			this.SuspendLayout();
-			//
+			// 
 			// mainMenu
-			//
-			this.mainMenu.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] { this.miFile });
-			//
+			// 
+			this.mainMenu.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
+									this.miFile});
+			// 
 			// miFile
-			//
+			// 
 			this.miFile.Index = 0;
-			this.miFile.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] { this.menuItem1, this.closeItem});
+			this.miFile.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
+									this.menuItem1,
+									this.closeItem});
 			this.miFile.Text = "File";
-			//
+			// 
 			// menuItem1
-			//
+			// 
 			this.menuItem1.Index = 0;
 			this.menuItem1.Text = "Import map settings";
-			//
+			// 
 			// closeItem
-			//
+			// 
 			this.closeItem.Index = 1;
 			this.closeItem.Text = "Close";
 			this.closeItem.Click += new System.EventHandler(this.closeItem_Click);
-			//
+			// 
 			// tabs
-			//
+			// 
 			this.tabs.Controls.Add(this.tabPaths);
 			this.tabs.Controls.Add(this.tabMaps);
 			this.tabs.Controls.Add(this.tabImages);
@@ -300,11 +299,11 @@ namespace MapView
 			this.tabs.Location = new System.Drawing.Point(0, 0);
 			this.tabs.Name = "tabs";
 			this.tabs.SelectedIndex = 0;
-			this.tabs.Size = new System.Drawing.Size(432, 427);
+			this.tabs.Size = new System.Drawing.Size(594, 522);
 			this.tabs.TabIndex = 0;
-			//
+			// 
 			// tabPaths
-			//
+			// 
 			this.tabPaths.Controls.Add(this.btnSave);
 			this.tabPaths.Controls.Add(this.runInstaller);
 			this.tabPaths.Controls.Add(this.btnFindImage);
@@ -319,154 +318,156 @@ namespace MapView
 			this.tabPaths.Controls.Add(this.label3);
 			this.tabPaths.Controls.Add(this.label2);
 			this.tabPaths.Controls.Add(this.label1);
-			this.tabPaths.Location = new System.Drawing.Point(4, 22);
+			this.tabPaths.Location = new System.Drawing.Point(4, 21);
 			this.tabPaths.Name = "tabPaths";
-			this.tabPaths.Size = new System.Drawing.Size(424, 401);
+			this.tabPaths.Size = new System.Drawing.Size(586, 497);
 			this.tabPaths.TabIndex = 0;
 			this.tabPaths.Text = "Paths";
-			//
+			this.tabPaths.Click += new System.EventHandler(this.TabPathsClick);
+			// 
 			// btnSave
-			//
-			this.btnSave.Location = new System.Drawing.Point(8, 192);
+			// 
+			this.btnSave.Location = new System.Drawing.Point(5, 140);
 			this.btnSave.Name = "btnSave";
-			this.btnSave.Size = new System.Drawing.Size(80, 23);
+			this.btnSave.Size = new System.Drawing.Size(85, 25);
 			this.btnSave.TabIndex = 14;
 			this.btnSave.Text = "Save paths";
 			this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
-			//
+			// 
 			// runInstaller
-			//
-			this.runInstaller.Location = new System.Drawing.Point(144, 296);
+			// 
+			this.runInstaller.Location = new System.Drawing.Point(145, 180);
 			this.runInstaller.Name = "runInstaller";
-			this.runInstaller.Size = new System.Drawing.Size(88, 23);
+			this.runInstaller.Size = new System.Drawing.Size(90, 35);
 			this.runInstaller.TabIndex = 13;
 			this.runInstaller.Text = "Run installer";
 			this.runInstaller.Click += new System.EventHandler(this.runInstaller_Click);
-			//
+			// 
 			// btnFindImage
-			//
-			this.btnFindImage.Anchor = (System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right));
-			this.btnFindImage.Location = new System.Drawing.Point(376, 32);
+			// 
+			this.btnFindImage.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.btnFindImage.Location = new System.Drawing.Point(455, 35);
 			this.btnFindImage.Name = "btnFindImage";
-			this.btnFindImage.Size = new System.Drawing.Size(48, 23);
+			this.btnFindImage.Size = new System.Drawing.Size(70, 20);
 			this.btnFindImage.TabIndex = 11;
-			this.btnFindImage.Text = "Find";
+			this.btnFindImage.Text = "Browse ...";
 			this.btnFindImage.Click += new System.EventHandler(this.btnFindImage_Click);
-			//
+			// 
 			// btnFindMap
-			//
-			this.btnFindMap.Anchor = (System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right));
-			this.btnFindMap.Location = new System.Drawing.Point(376, 8);
+			// 
+			this.btnFindMap.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.btnFindMap.Location = new System.Drawing.Point(455, 10);
 			this.btnFindMap.Name = "btnFindMap";
-			this.btnFindMap.Size = new System.Drawing.Size(48, 23);
+			this.btnFindMap.Size = new System.Drawing.Size(70, 20);
 			this.btnFindMap.TabIndex = 10;
-			this.btnFindMap.Text = "Find";
+			this.btnFindMap.Text = "Browse ...";
 			this.btnFindMap.Click += new System.EventHandler(this.btnFindMap_Click);
-			//
+			// 
 			// txtPalettes
-			//
-			this.txtPalettes.Anchor = (System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-																			| System.Windows.Forms.AnchorStyles.Right));
-			this.txtPalettes.Location = new System.Drawing.Point(64, 80);
+			// 
+			this.txtPalettes.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+									| System.Windows.Forms.AnchorStyles.Right)));
+			this.txtPalettes.Location = new System.Drawing.Point(70, 85);
 			this.txtPalettes.Name = "txtPalettes";
-			this.txtPalettes.Size = new System.Drawing.Size(352, 20);
+			this.txtPalettes.Size = new System.Drawing.Size(380, 19);
 			this.txtPalettes.TabIndex = 9;
 			this.txtPalettes.Visible = false;
-			//
+			// 
 			// label10
-			//
-			this.label10.Location = new System.Drawing.Point(0, 80);
+			// 
+			this.label10.Location = new System.Drawing.Point(5, 90);
 			this.label10.Name = "label10";
-			this.label10.Size = new System.Drawing.Size(64, 20);
+			this.label10.Size = new System.Drawing.Size(60, 15);
 			this.label10.TabIndex = 8;
 			this.label10.Text = "Palettes:";
 			this.label10.Visible = false;
-			//
+			// 
 			// btnClearRegistry
-			//
-			this.btnClearRegistry.Location = new System.Drawing.Point(8, 296);
+			// 
+			this.btnClearRegistry.Location = new System.Drawing.Point(5, 180);
 			this.btnClearRegistry.Name = "btnClearRegistry";
-			this.btnClearRegistry.Size = new System.Drawing.Size(128, 23);
+			this.btnClearRegistry.Size = new System.Drawing.Size(130, 35);
 			this.btnClearRegistry.TabIndex = 7;
 			this.btnClearRegistry.Text = "Clear Registry Settings";
 			this.btnClearRegistry.Click += new System.EventHandler(this.btnClearRegistry_Click);
-			//
+			// 
 			// lblReminder
-			//
-			this.lblReminder.Location = new System.Drawing.Point(8, 160);
+			// 
+			this.lblReminder.Location = new System.Drawing.Point(5, 120);
 			this.lblReminder.Name = "lblReminder";
-			this.lblReminder.Size = new System.Drawing.Size(264, 32);
+			this.lblReminder.Size = new System.Drawing.Size(425, 15);
 			this.lblReminder.TabIndex = 6;
-			this.lblReminder.Text = "None of your changes will be made until you click the save button below";
-			//
+			this.lblReminder.Text = "None of your changes will be made until you click the Save button.";
+			// 
 			// txtCursor
-			//
-			this.txtCursor.Anchor = (System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-																		| System.Windows.Forms.AnchorStyles.Right));
-			this.txtCursor.Location = new System.Drawing.Point(64, 56);
+			// 
+			this.txtCursor.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+									| System.Windows.Forms.AnchorStyles.Right)));
+			this.txtCursor.Location = new System.Drawing.Point(70, 60);
 			this.txtCursor.Name = "txtCursor";
-			this.txtCursor.Size = new System.Drawing.Size(352, 20);
+			this.txtCursor.Size = new System.Drawing.Size(380, 19);
 			this.txtCursor.TabIndex = 5;
-			//
+			// 
 			// txtImages
-			//
-			this.txtImages.Anchor = (System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-																		| System.Windows.Forms.AnchorStyles.Right));
-			this.txtImages.Location = new System.Drawing.Point(64, 32);
+			// 
+			this.txtImages.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+									| System.Windows.Forms.AnchorStyles.Right)));
+			this.txtImages.Location = new System.Drawing.Point(70, 35);
 			this.txtImages.Name = "txtImages";
-			this.txtImages.Size = new System.Drawing.Size(312, 20);
+			this.txtImages.Size = new System.Drawing.Size(380, 19);
 			this.txtImages.TabIndex = 4;
-			//
+			// 
 			// txtMap
-			//
-			this.txtMap.Anchor = (System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-																	| System.Windows.Forms.AnchorStyles.Right));
-			this.txtMap.Location = new System.Drawing.Point(64, 8);
+			// 
+			this.txtMap.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+									| System.Windows.Forms.AnchorStyles.Right)));
+			this.txtMap.Location = new System.Drawing.Point(70, 10);
 			this.txtMap.Name = "txtMap";
-			this.txtMap.Size = new System.Drawing.Size(312, 20);
+			this.txtMap.Size = new System.Drawing.Size(380, 19);
 			this.txtMap.TabIndex = 3;
-			//
+			// 
 			// label3
-			//
-			this.label3.Location = new System.Drawing.Point(0, 56);
+			// 
+			this.label3.Location = new System.Drawing.Point(5, 65);
 			this.label3.Name = "label3";
-			this.label3.Size = new System.Drawing.Size(64, 20);
+			this.label3.Size = new System.Drawing.Size(60, 15);
 			this.label3.TabIndex = 2;
 			this.label3.Text = "Cursor:";
-			//
+			// 
 			// label2
-			//
-			this.label2.Location = new System.Drawing.Point(0, 32);
+			// 
+			this.label2.Location = new System.Drawing.Point(5, 40);
 			this.label2.Name = "label2";
-			this.label2.Size = new System.Drawing.Size(64, 20);
+			this.label2.Size = new System.Drawing.Size(65, 15);
 			this.label2.TabIndex = 1;
 			this.label2.Text = "Images:";
-			//
+			// 
 			// label1
-			//
-			this.label1.Location = new System.Drawing.Point(0, 8);
+			// 
+			this.label1.Location = new System.Drawing.Point(5, 15);
 			this.label1.Name = "label1";
-			this.label1.Size = new System.Drawing.Size(64, 20);
+			this.label1.Size = new System.Drawing.Size(65, 15);
 			this.label1.TabIndex = 0;
 			this.label1.Text = "Map Data:";
-			//
+			this.label1.Click += new System.EventHandler(this.Label1Click);
+			// 
 			// tabMaps
-			//
+			// 
 			this.tabMaps.Controls.Add(this.grpMap);
 			this.tabMaps.Controls.Add(this.grpMapGroup);
 			this.tabMaps.Controls.Add(this.treeMaps);
 			this.tabMaps.Controls.Add(this.btnSaveMapEdit);
 			this.tabMaps.Controls.Add(this.btnEditTree);
-			this.tabMaps.Location = new System.Drawing.Point(4, 22);
+			this.tabMaps.Location = new System.Drawing.Point(4, 21);
 			this.tabMaps.Name = "tabMaps";
-			this.tabMaps.Size = new System.Drawing.Size(424, 401);
+			this.tabMaps.Size = new System.Drawing.Size(586, 497);
 			this.tabMaps.TabIndex = 1;
 			this.tabMaps.Text = "Map Files";
-			//
+			// 
 			// grpMap
-			//
-			this.grpMap.Anchor = (System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-																	| System.Windows.Forms.AnchorStyles.Left));
+			// 
+			this.grpMap.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+									| System.Windows.Forms.AnchorStyles.Left)));
 			this.grpMap.Controls.Add(this.btnPaste);
 			this.grpMap.Controls.Add(this.btnCopy);
 			this.grpMap.Controls.Add(this.btnUp);
@@ -478,104 +479,106 @@ namespace MapView
 			this.grpMap.Controls.Add(this.listMapImages);
 			this.grpMap.Controls.Add(this.label8);
 			this.grpMap.Enabled = false;
-			this.grpMap.Location = new System.Drawing.Point(152, 184);
+			this.grpMap.Location = new System.Drawing.Point(152, 170);
 			this.grpMap.Name = "grpMap";
-			this.grpMap.Size = new System.Drawing.Size(272, 215);
+			this.grpMap.Size = new System.Drawing.Size(433, 326);
 			this.grpMap.TabIndex = 2;
 			this.grpMap.TabStop = false;
 			this.grpMap.Text = "Map File";
-			//
+			// 
 			// btnPaste
-			//
-			this.btnPaste.Location = new System.Drawing.Point(104, 176);
+			// 
+			this.btnPaste.Location = new System.Drawing.Point(190, 255);
 			this.btnPaste.Name = "btnPaste";
-			this.btnPaste.Size = new System.Drawing.Size(56, 23);
+			this.btnPaste.Size = new System.Drawing.Size(55, 25);
 			this.btnPaste.TabIndex = 9;
 			this.btnPaste.Text = "Paste";
 			this.btnPaste.Click += new System.EventHandler(this.btnPaste_Click);
-			//
+			// 
 			// btnCopy
-			//
-			this.btnCopy.Location = new System.Drawing.Point(104, 152);
+			// 
+			this.btnCopy.Location = new System.Drawing.Point(190, 230);
 			this.btnCopy.Name = "btnCopy";
-			this.btnCopy.Size = new System.Drawing.Size(56, 23);
+			this.btnCopy.Size = new System.Drawing.Size(55, 25);
 			this.btnCopy.TabIndex = 8;
 			this.btnCopy.Text = "Copy";
 			this.btnCopy.Click += new System.EventHandler(this.btnCopy_Click);
-			//
+			// 
 			// btnUp
-			//
-			this.btnUp.Location = new System.Drawing.Point(104, 32);
+			// 
+			this.btnUp.Location = new System.Drawing.Point(190, 50);
 			this.btnUp.Name = "btnUp";
-			this.btnUp.Size = new System.Drawing.Size(56, 23);
+			this.btnUp.Size = new System.Drawing.Size(55, 25);
 			this.btnUp.TabIndex = 7;
 			this.btnUp.Text = "Up";
 			this.btnUp.Click += new System.EventHandler(this.btnUp_Click);
-			//
+			// 
 			// btnDown
-			//
-			this.btnDown.Location = new System.Drawing.Point(104, 56);
+			// 
+			this.btnDown.Location = new System.Drawing.Point(190, 75);
 			this.btnDown.Name = "btnDown";
-			this.btnDown.Size = new System.Drawing.Size(56, 23);
+			this.btnDown.Size = new System.Drawing.Size(55, 25);
 			this.btnDown.TabIndex = 6;
 			this.btnDown.Text = "Down";
 			this.btnDown.Click += new System.EventHandler(this.btnDown_Click);
-			//
+			// 
 			// button2
-			//
-			this.button2.Location = new System.Drawing.Point(104, 112);
+			// 
+			this.button2.Location = new System.Drawing.Point(190, 155);
 			this.button2.Name = "button2";
-			this.button2.Size = new System.Drawing.Size(56, 23);
+			this.button2.Size = new System.Drawing.Size(55, 25);
 			this.button2.TabIndex = 5;
 			this.button2.Text = "->";
 			this.button2.Click += new System.EventHandler(this.button2_Click);
-			//
+			// 
 			// btnMoveLeft
-			//
-			this.btnMoveLeft.Location = new System.Drawing.Point(104, 88);
+			// 
+			this.btnMoveLeft.Location = new System.Drawing.Point(190, 130);
 			this.btnMoveLeft.Name = "btnMoveLeft";
-			this.btnMoveLeft.Size = new System.Drawing.Size(56, 23);
+			this.btnMoveLeft.Size = new System.Drawing.Size(55, 25);
 			this.btnMoveLeft.TabIndex = 4;
 			this.btnMoveLeft.Text = "<-";
 			this.btnMoveLeft.Click += new System.EventHandler(this.btnMoveLeft_Click);
-			//
+			// 
 			// listAllImages
-			//
-			this.listAllImages.Anchor = (System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-																			| System.Windows.Forms.AnchorStyles.Left));
-			this.listAllImages.Location = new System.Drawing.Point(168, 32);
+			// 
+			this.listAllImages.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+									| System.Windows.Forms.AnchorStyles.Left)));
+			this.listAllImages.ItemHeight = 12;
+			this.listAllImages.Location = new System.Drawing.Point(250, 30);
 			this.listAllImages.Name = "listAllImages";
 			this.listAllImages.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
-			this.listAllImages.Size = new System.Drawing.Size(96, 173);
+			this.listAllImages.Size = new System.Drawing.Size(180, 280);
 			this.listAllImages.TabIndex = 3;
-			//
+			// 
 			// label9
-			//
-			this.label9.Location = new System.Drawing.Point(168, 16);
+			// 
+			this.label9.Location = new System.Drawing.Point(255, 15);
 			this.label9.Name = "label9";
-			this.label9.Size = new System.Drawing.Size(96, 16);
+			this.label9.Size = new System.Drawing.Size(55, 15);
 			this.label9.TabIndex = 2;
 			this.label9.Text = "Available Images";
-			//
+			// 
 			// listMapImages
-			//
-			this.listMapImages.Anchor = (System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-																			| System.Windows.Forms.AnchorStyles.Left));
-			this.listMapImages.Location = new System.Drawing.Point(8, 32);
+			// 
+			this.listMapImages.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+									| System.Windows.Forms.AnchorStyles.Left)));
+			this.listMapImages.ItemHeight = 12;
+			this.listMapImages.Location = new System.Drawing.Point(5, 30);
 			this.listMapImages.Name = "listMapImages";
-			this.listMapImages.Size = new System.Drawing.Size(88, 173);
+			this.listMapImages.Size = new System.Drawing.Size(180, 280);
 			this.listMapImages.TabIndex = 1;
-			//
+			// 
 			// label8
-			//
-			this.label8.Location = new System.Drawing.Point(8, 16);
+			// 
+			this.label8.Location = new System.Drawing.Point(10, 15);
 			this.label8.Name = "label8";
-			this.label8.Size = new System.Drawing.Size(100, 16);
+			this.label8.Size = new System.Drawing.Size(65, 15);
 			this.label8.TabIndex = 0;
 			this.label8.Text = "Image List";
-			//
+			// 
 			// grpMapGroup
-			//
+			// 
 			this.grpMapGroup.Controls.Add(this.label11);
 			this.grpMapGroup.Controls.Add(this.txtBlank);
 			this.grpMapGroup.Controls.Add(this.cbPalette);
@@ -587,269 +590,271 @@ namespace MapView
 			this.grpMapGroup.Enabled = false;
 			this.grpMapGroup.Location = new System.Drawing.Point(152, 0);
 			this.grpMapGroup.Name = "grpMapGroup";
-			this.grpMapGroup.Size = new System.Drawing.Size(272, 184);
+			this.grpMapGroup.Size = new System.Drawing.Size(433, 170);
 			this.grpMapGroup.TabIndex = 1;
 			this.grpMapGroup.TabStop = false;
 			this.grpMapGroup.Text = "Map Group";
-			//
+			// 
 			// label11
-			//
-			this.label11.Location = new System.Drawing.Point(8, 96);
+			// 
+			this.label11.Location = new System.Drawing.Point(10, 95);
 			this.label11.Name = "label11";
-			this.label11.Size = new System.Drawing.Size(100, 16);
+			this.label11.Size = new System.Drawing.Size(75, 15);
 			this.label11.TabIndex = 7;
 			this.label11.Text = "Blanks Path";
-			//
+			// 
 			// txtBlank
-			//
-			this.txtBlank.Anchor = (System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-																		| System.Windows.Forms.AnchorStyles.Right));
-			this.txtBlank.Location = new System.Drawing.Point(8, 112);
+			// 
+			this.txtBlank.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+									| System.Windows.Forms.AnchorStyles.Right)));
+			this.txtBlank.Location = new System.Drawing.Point(5, 112);
 			this.txtBlank.Name = "txtBlank";
-			this.txtBlank.Size = new System.Drawing.Size(256, 20);
+			this.txtBlank.Size = new System.Drawing.Size(421, 19);
 			this.txtBlank.TabIndex = 6;
-			//
+			// 
 			// cbPalette
-			//
+			// 
 			this.cbPalette.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-			this.cbPalette.Location = new System.Drawing.Point(8, 152);
+			this.cbPalette.Location = new System.Drawing.Point(60, 140);
 			this.cbPalette.Name = "cbPalette";
-			this.cbPalette.Size = new System.Drawing.Size(104, 21);
+			this.cbPalette.Size = new System.Drawing.Size(110, 20);
 			this.cbPalette.TabIndex = 5;
 			this.cbPalette.SelectedIndexChanged += new System.EventHandler(this.cbPalette_SelectedIndexChanged);
-			//
+			// 
 			// label7
-			//
-			this.label7.Location = new System.Drawing.Point(8, 136);
+			// 
+			this.label7.Location = new System.Drawing.Point(10, 145);
 			this.label7.Name = "label7";
-			this.label7.Size = new System.Drawing.Size(100, 16);
+			this.label7.Size = new System.Drawing.Size(45, 15);
 			this.label7.TabIndex = 4;
 			this.label7.Text = "Palette";
-			//
+			// 
 			// label6
-			//
-			this.label6.Location = new System.Drawing.Point(8, 56);
+			// 
+			this.label6.Location = new System.Drawing.Point(10, 55);
 			this.label6.Name = "label6";
-			this.label6.Size = new System.Drawing.Size(100, 16);
+			this.label6.Size = new System.Drawing.Size(60, 15);
 			this.label6.TabIndex = 3;
 			this.label6.Text = "Rmp Path";
-			//
+			// 
 			// label5
-			//
-			this.label5.Location = new System.Drawing.Point(8, 16);
+			// 
+			this.label5.Location = new System.Drawing.Point(10, 15);
 			this.label5.Name = "label5";
-			this.label5.Size = new System.Drawing.Size(100, 16);
+			this.label5.Size = new System.Drawing.Size(60, 15);
 			this.label5.TabIndex = 2;
 			this.label5.Text = "Root Path";
-			//
+			// 
 			// txtRmp
-			//
-			this.txtRmp.Anchor = (System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-																		| System.Windows.Forms.AnchorStyles.Right));
-			this.txtRmp.Location = new System.Drawing.Point(8, 72);
+			// 
+			this.txtRmp.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+									| System.Windows.Forms.AnchorStyles.Right)));
+			this.txtRmp.Location = new System.Drawing.Point(5, 72);
 			this.txtRmp.Name = "txtRmp";
-			this.txtRmp.Size = new System.Drawing.Size(256, 20);
+			this.txtRmp.Size = new System.Drawing.Size(421, 19);
 			this.txtRmp.TabIndex = 1;
-			this.txtRmp.Leave += new System.EventHandler(this.txtRmp_Leave);
 			this.txtRmp.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtRmp_KeyPress);
-			//
+			this.txtRmp.Leave += new System.EventHandler(this.txtRmp_Leave);
+			// 
 			// txtRoot
-			//
-			this.txtRoot.Anchor = (System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-																		| System.Windows.Forms.AnchorStyles.Right));
-			this.txtRoot.Location = new System.Drawing.Point(8, 32);
+			// 
+			this.txtRoot.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+									| System.Windows.Forms.AnchorStyles.Right)));
+			this.txtRoot.Location = new System.Drawing.Point(5, 32);
 			this.txtRoot.Name = "txtRoot";
-			this.txtRoot.Size = new System.Drawing.Size(256, 20);
+			this.txtRoot.Size = new System.Drawing.Size(421, 19);
 			this.txtRoot.TabIndex = 0;
-			this.txtRoot.Leave += new System.EventHandler(this.txtRoot_Leave);
 			this.txtRoot.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtRoot_KeyPress);
-			//
+			this.txtRoot.Leave += new System.EventHandler(this.txtRoot_Leave);
+			// 
 			// treeMaps
-			//
-			this.treeMaps.Anchor = (System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-																		| System.Windows.Forms.AnchorStyles.Left));
+			// 
+			this.treeMaps.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+									| System.Windows.Forms.AnchorStyles.Left)));
 			this.treeMaps.ContextMenu = this.cmTree;
 			this.treeMaps.Location = new System.Drawing.Point(0, 24);
 			this.treeMaps.Name = "treeMaps";
-			this.treeMaps.Size = new System.Drawing.Size(152, 376);
+			this.treeMaps.Size = new System.Drawing.Size(155, 472);
 			this.treeMaps.TabIndex = 0;
 			this.treeMaps.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeMaps_AfterSelect);
-			//
+			// 
 			// cmTree
-			//
+			// 
 			this.cmTree.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
-																			this.newGroup,
-																			this.delGroup,
-																			this.addSub,
-																			this.delSub,
-																			this.addMap,
-																			this.delMap });
-			//
+									this.newGroup,
+									this.delGroup,
+									this.addSub,
+									this.delSub,
+									this.addMap,
+									this.delMap});
+			// 
 			// newGroup
-			//
+			// 
 			this.newGroup.Index = 0;
 			this.newGroup.Text = "New group";
 			this.newGroup.Click += new System.EventHandler(this.newGroup_Click);
-			//
+			// 
 			// delGroup
-			//
+			// 
 			this.delGroup.Index = 1;
 			this.delGroup.Text = "Delete group";
 			this.delGroup.Click += new System.EventHandler(this.delGroup_Click);
-			//
+			// 
 			// addSub
-			//
+			// 
 			this.addSub.Index = 2;
 			this.addSub.Text = "Add sub-group";
 			this.addSub.Click += new System.EventHandler(this.addSub_Click);
-			//
+			// 
 			// delSub
-			//
+			// 
 			this.delSub.Index = 3;
 			this.delSub.Text = "Delete sub-group";
 			this.delSub.Click += new System.EventHandler(this.delSub_Click);
-			//
+			// 
 			// addMap
-			//
+			// 
 			this.addMap.Index = 4;
 			this.addMap.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
-																			this.addNewMap,
-																			this.addExistingMap });
+									this.addNewMap,
+									this.addExistingMap});
 			this.addMap.Text = "Add map";
-			//
+			// 
 			// addNewMap
-			//
+			// 
 			this.addNewMap.Index = 0;
 			this.addNewMap.Text = "New Map";
 			this.addNewMap.Click += new System.EventHandler(this.addNewMap_Click);
-			//
+			// 
 			// addExistingMap
-			//
+			// 
 			this.addExistingMap.Index = 1;
 			this.addExistingMap.Text = "Existing Map";
 			this.addExistingMap.Click += new System.EventHandler(this.addExistingMap_Click);
-			//
+			// 
 			// delMap
-			//
+			// 
 			this.delMap.Index = 5;
 			this.delMap.Text = "Delete map";
 			this.delMap.Click += new System.EventHandler(this.delMap_Click);
-			//
+			// 
 			// btnSaveMapEdit
-			//
-			this.btnSaveMapEdit.Location = new System.Drawing.Point(0, 0);
+			// 
+			this.btnSaveMapEdit.Location = new System.Drawing.Point(0, 5);
 			this.btnSaveMapEdit.Name = "btnSaveMapEdit";
-			this.btnSaveMapEdit.Size = new System.Drawing.Size(48, 23);
+			this.btnSaveMapEdit.Size = new System.Drawing.Size(70, 20);
 			this.btnSaveMapEdit.TabIndex = 8;
 			this.btnSaveMapEdit.Text = "Save";
 			this.btnSaveMapEdit.Click += new System.EventHandler(this.btnSaveMapEdit_Click);
-			//
+			// 
 			// btnEditTree
-			//
-			this.btnEditTree.Location = new System.Drawing.Point(48, 0);
+			// 
+			this.btnEditTree.Location = new System.Drawing.Point(75, 5);
 			this.btnEditTree.Name = "btnEditTree";
-			this.btnEditTree.Size = new System.Drawing.Size(64, 23);
+			this.btnEditTree.Size = new System.Drawing.Size(75, 20);
 			this.btnEditTree.TabIndex = 6;
 			this.btnEditTree.Text = "Edit Tree";
 			this.btnEditTree.Click += new System.EventHandler(this.moveMaps_Click);
-			//
+			// 
 			// tabImages
-			//
+			// 
 			this.tabImages.Controls.Add(this.lblImage2);
 			this.tabImages.Controls.Add(this.txtImage2);
 			this.tabImages.Controls.Add(this.btnSaveImages);
 			this.tabImages.Controls.Add(this.label4);
 			this.tabImages.Controls.Add(this.txtImagePath);
 			this.tabImages.Controls.Add(this.lstImages);
-			this.tabImages.Location = new System.Drawing.Point(4, 22);
+			this.tabImages.Location = new System.Drawing.Point(4, 21);
 			this.tabImages.Name = "tabImages";
-			this.tabImages.Size = new System.Drawing.Size(424, 401);
+			this.tabImages.Size = new System.Drawing.Size(586, 497);
 			this.tabImages.TabIndex = 2;
 			this.tabImages.Text = "Image Files";
-			//
+			// 
 			// lblImage2
-			//
-			this.lblImage2.Location = new System.Drawing.Point(120, 208);
+			// 
+			this.lblImage2.Location = new System.Drawing.Point(190, 190);
 			this.lblImage2.Name = "lblImage2";
-			this.lblImage2.Size = new System.Drawing.Size(100, 16);
+			this.lblImage2.Size = new System.Drawing.Size(95, 15);
 			this.lblImage2.TabIndex = 14;
 			this.lblImage2.Text = "Image.dat path";
-			//
+			// 
 			// txtImage2
-			//
-			this.txtImage2.Anchor = (System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-																		| System.Windows.Forms.AnchorStyles.Right));
-			this.txtImage2.Location = new System.Drawing.Point(120, 224);
+			// 
+			this.txtImage2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+									| System.Windows.Forms.AnchorStyles.Right)));
+			this.txtImage2.Location = new System.Drawing.Point(185, 210);
 			this.txtImage2.Name = "txtImage2";
 			this.txtImage2.ReadOnly = true;
-			this.txtImage2.Size = new System.Drawing.Size(272, 20);
+			this.txtImage2.Size = new System.Drawing.Size(400, 19);
 			this.txtImage2.TabIndex = 12;
-			//
+			// 
 			// btnSaveImages
-			//
-			this.btnSaveImages.Location = new System.Drawing.Point(120, 248);
+			// 
+			this.btnSaveImages.Location = new System.Drawing.Point(190, 268);
 			this.btnSaveImages.Name = "btnSaveImages";
-			this.btnSaveImages.Size = new System.Drawing.Size(75, 23);
+			this.btnSaveImages.Size = new System.Drawing.Size(85, 35);
 			this.btnSaveImages.TabIndex = 3;
 			this.btnSaveImages.Text = "Save";
 			this.btnSaveImages.Click += new System.EventHandler(this.btnSaveImages_Click);
-			//
+			// 
 			// label4
-			//
-			this.label4.Location = new System.Drawing.Point(120, 96);
+			// 
+			this.label4.Location = new System.Drawing.Point(190, 88);
 			this.label4.Name = "label4";
-			this.label4.Size = new System.Drawing.Size(56, 16);
+			this.label4.Size = new System.Drawing.Size(30, 15);
 			this.label4.TabIndex = 2;
 			this.label4.Text = "Path";
-			//
+			// 
 			// txtImagePath
-			//
-			this.txtImagePath.Anchor = (System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-																			| System.Windows.Forms.AnchorStyles.Right));
-			this.txtImagePath.Location = new System.Drawing.Point(120, 112);
+			// 
+			this.txtImagePath.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+									| System.Windows.Forms.AnchorStyles.Right)));
+			this.txtImagePath.Location = new System.Drawing.Point(185, 110);
 			this.txtImagePath.Name = "txtImagePath";
 			this.txtImagePath.ReadOnly = true;
-			this.txtImagePath.Size = new System.Drawing.Size(296, 20);
+			this.txtImagePath.Size = new System.Drawing.Size(400, 19);
 			this.txtImagePath.TabIndex = 1;
 			this.txtImagePath.TextChanged += new System.EventHandler(this.txtImagePath_TextChanged);
-			//
+			// 
 			// lstImages
-			//
+			// 
 			this.lstImages.ContextMenu = this.imagesCM;
 			this.lstImages.Dock = System.Windows.Forms.DockStyle.Left;
+			this.lstImages.ItemHeight = 12;
 			this.lstImages.Location = new System.Drawing.Point(0, 0);
 			this.lstImages.Name = "lstImages";
-			this.lstImages.Size = new System.Drawing.Size(120, 394);
+			this.lstImages.Size = new System.Drawing.Size(180, 497);
 			this.lstImages.TabIndex = 0;
 			this.lstImages.SelectedIndexChanged += new System.EventHandler(this.lstImages_SelectedIndexChanged);
-			//
+			// 
 			// imagesCM
-			//
+			// 
 			this.imagesCM.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
-																				this.addImageset,
-																				this.delImageset });
-			//
+									this.addImageset,
+									this.delImageset});
+			// 
 			// addImageset
-			//
+			// 
 			this.addImageset.Index = 0;
 			this.addImageset.Text = "Add";
 			this.addImageset.Click += new System.EventHandler(this.addImageset_Click);
-			//
+			// 
 			// delImageset
-			//
+			// 
 			this.delImageset.Index = 1;
 			this.delImageset.Text = "Remove";
 			this.delImageset.Click += new System.EventHandler(this.delImageset_Click);
-			//
+			// 
 			// openFile
-			//
+			// 
 			this.openFile.Filter = "map files|*.map|dat files|*.dat|Pck files|*.pck|All files|*.*";
-			//
+			// 
 			// PathsEditor
-			//
-			this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
-			this.ClientSize = new System.Drawing.Size(432, 427);
+			// 
+			this.AutoScaleBaseSize = new System.Drawing.Size(5, 12);
+			this.ClientSize = new System.Drawing.Size(594, 522);
 			this.Controls.Add(this.tabs);
+			this.Font = new System.Drawing.Font("Verdana", 7F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
 			this.MaximizeBox = false;
 			this.Menu = this.mainMenu;
@@ -857,6 +862,7 @@ namespace MapView
 			this.Name = "PathsEditor";
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
 			this.Text = "PathsEditor";
+			this.Load += new System.EventHandler(this.PathsEditorLoad);
 			this.tabs.ResumeLayout(false);
 			this.tabPaths.ResumeLayout(false);
 			this.tabPaths.PerformLayout();
@@ -880,101 +886,118 @@ namespace MapView
 			TreeNode t = e.Node;
 			IXCTileset it = null;
 
-			grpMapGroup.Enabled=true;
-			grpMap.Enabled=false;
-			delMap.Enabled=false;
+			grpMapGroup.Enabled = true;
+			grpMap.Enabled = false;
+			delMap.Enabled = false;
 
-			if(t.Parent!=null)
+			if (t.Parent != null)
 			{
-				addMap.Enabled=true;
-				delSub.Enabled=true;
+				addMap.Enabled = true;
+				delSub.Enabled = true;
 
-				if(t.Parent.Parent!=null)//inner node
+				if (t.Parent.Parent != null) // inner node
 				{
-					grpMapGroup.Enabled=false;
-					grpMap.Enabled=true;
-					delMap.Enabled=true;
+					grpMapGroup.Enabled = false;
+					grpMap.Enabled = true;
+					delMap.Enabled = true;
 
 					it = (IXCTileset)GameInfo.TilesetInfo.Tilesets[t.Parent.Parent.Text];
 
 					XCMapDesc imd = (XCMapDesc)it[t.Text];
-					listMapImages.Items.Clear();
-					if(imd != null)
-						foreach(string s in imd.Dependencies)
-							listMapImages.Items.Add(s);
-					else
-						it.AddMap(new XCMapDesc(t.Text, it.MapPath, it.BlankPath, it.RmpPath, new string[] {}, it.Palette), t.Parent.Text);
-				}
-				else //subset node
-					it = (IXCTileset)GameInfo.TilesetInfo.Tilesets[t.Parent.Text];
 
+					listMapImages.Items.Clear();
+
+					if (imd != null)
+					{
+						foreach (string s in imd.Dependencies)
+							listMapImages.Items.Add(s);
+					}
+					else
+					{
+						it.AddMap(
+								new XCMapDesc(
+											t.Text,
+											it.MapPath,
+											it.BlankPath,
+											it.RmpPath, new string[]{},
+											it.Palette),
+								t.Parent.Text);
+					}
+				}
+				else // subset node
+				{
+					it = (IXCTileset)GameInfo.TilesetInfo.Tilesets[t.Parent.Text];
+				}
 			}
-			else //parent node
+			else // parent node
 			{
 				it = (IXCTileset)GameInfo.TilesetInfo.Tilesets[t.Text];
-				addMap.Enabled=false;
-				delMap.Enabled=false;
-				delSub.Enabled=false;
+				addMap.Enabled = false;
+				delMap.Enabled = false;
+				delSub.Enabled = false;
 			}
 
 			txtRoot.Text = it.MapPath;
 			txtRmp.Text = it.RmpPath;
-			txtBlank.Text=it.BlankPath;
+			txtBlank.Text = it.BlankPath;
 			cbPalette.SelectedItem = it.Palette;
 		}
 
 		private void txtRoot_Leave(object sender, System.EventArgs e)
 		{
 			IXCTileset it = getCurrset();
-			if(!Directory.Exists(txtRoot.Text))
+			if (!Directory.Exists(txtRoot.Text)
+				&& NoDirForm.Show(txtRoot.Text) != DialogResult.OK)
 			{
-				if(NoDirForm.Show(txtRoot.Text)!=DialogResult.OK)
-					txtRoot.Text = it.MapPath;
+				txtRoot.Text = it.MapPath;
 			}
 			it.MapPath = txtRoot.Text;
 		}
 
 		private void txtRoot_KeyPress(object sender, System.Windows.Forms.KeyPressEventArgs e)
 		{
-			if(e.KeyChar==13)
-				txtRoot_Leave(null,null);
+			if (e.KeyChar == 13)
+				txtRoot_Leave(null, null);
 		}
 
 		private void txtRmp_Leave(object sender, System.EventArgs e)
 		{
 			IXCTileset it = getCurrset();
-			if(!Directory.Exists(txtRmp.Text))
+			if (!Directory.Exists(txtRmp.Text)
+				&& NoDirForm.Show(txtRmp.Text) != DialogResult.OK)
 			{
-				if(NoDirForm.Show(txtRmp.Text)!=DialogResult.OK)
-					txtRmp.Text = it.RmpPath;
+				txtRmp.Text = it.RmpPath;
 			}
-
 			it.RmpPath = txtRmp.Text;
 		}
 
 		private void txtRmp_KeyPress(object sender, System.Windows.Forms.KeyPressEventArgs e)
 		{
-			if(e.KeyChar==13)
-				txtRmp_Leave(null,null);
+			if (e.KeyChar == 13)
+				txtRmp_Leave(null, null);
 		}
 
 		private void btnUp_Click(object sender, System.EventArgs e)
 		{
 			IXCTileset it = getCurrset();
 			string[] dep = ((XCMapDesc)it[treeMaps.SelectedNode.Text]).Dependencies;
-			for(int i=1;i<dep.Length;i++)
+
+			for (int i = 1; i < dep.Length; i++)
 			{
-				if(dep[i]==(string)listMapImages.SelectedItem)
+				if (dep[i] == (string)listMapImages.SelectedItem)
 				{
-					string old = dep[i-1];
-					dep[i-1]=dep[i];
-					dep[i]=old;
+					string old = dep[i - 1];
+					dep[i - 1] = dep[i];
+					dep[i] = old;
+
 					((XCMapDesc)it[treeMaps.SelectedNode.Text]).Dependencies = dep;
+
 					listMapImages.Items.Clear();
 
 					foreach(string s in dep)
 						listMapImages.Items.Add(s);
-					listMapImages.SelectedItem = dep[i-1];
+
+					listMapImages.SelectedItem = dep[i - 1];
 					return;
 				}
 			}
@@ -984,19 +1007,23 @@ namespace MapView
 		{
 			IXCTileset it = getCurrset();
 			string[] dep = ((XCMapDesc)it[treeMaps.SelectedNode.Text]).Dependencies;
-			for(int i=0;i<dep.Length-1;i++)
+
+			for (int i = 0; i < dep.Length - 1; i++)
 			{
-				if(dep[i]==(string)listMapImages.SelectedItem)
+				if (dep[i] == (string)listMapImages.SelectedItem)
 				{
-					string old = dep[i+1];
-					dep[i+1]=dep[i];
-					dep[i]=old;
+					string old = dep[i + 1];
+					dep[i + 1] = dep[i];
+					dep[i] = old;
+
 					((XCMapDesc)it[treeMaps.SelectedNode.Text]).Dependencies = dep;
 					
 					listMapImages.Items.Clear();
+
 					foreach(string s in dep)
 						listMapImages.Items.Add(s);
-					listMapImages.SelectedItem = dep[i+1];
+
+					listMapImages.SelectedItem = dep[i + 1];
 					return;
 				}
 			}
@@ -1010,7 +1037,8 @@ namespace MapView
 			((XCMapDesc)it[treeMaps.SelectedNode.Text]).Dependencies = (string[])dep.ToArray(typeof(string));
 			
 			listMapImages.Items.Clear();
-			foreach(string s in dep)
+
+			foreach (string s in dep)
 				listMapImages.Items.Add(s);
 		}
 
@@ -1018,13 +1046,15 @@ namespace MapView
 		{
 			IXCTileset it = getCurrset();
 			ArrayList dep = new ArrayList(((XCMapDesc)it[treeMaps.SelectedNode.Text]).Dependencies);
-			foreach(object o in listAllImages.SelectedItems)
-				if(!dep.Contains(o))
+
+			foreach (object o in listAllImages.SelectedItems)
+				if (!dep.Contains(o))
 				{
 					dep.Add(o);
 					((XCMapDesc)it[treeMaps.SelectedNode.Text]).Dependencies = (string[])dep.ToArray(typeof(string));
 				
 					listMapImages.Items.Clear();
+
 					foreach(string s in dep)
 						listMapImages.Items.Add(s);
 				}
@@ -1032,48 +1062,49 @@ namespace MapView
 
 		private void btnClearRegistry_Click(object sender, System.EventArgs e)
 		{
-			RegistryKey swKey = Registry.CurrentUser.OpenSubKey("Software",true);
+			RegistryKey swKey = Registry.CurrentUser.OpenSubKey("Software", true);
 			swKey.DeleteSubKeyTree("MapView");
-			saveRegistry=false;
+			saveRegistry = false;
 		}
 
 		private void btnFindMap_Click(object sender, System.EventArgs e)
 		{
-			openFile.Title="Find the map data file";
-			openFile.Multiselect=false;
-			openFile.FilterIndex=1;
-			if(openFile.ShowDialog()==DialogResult.OK)
+			openFile.Title = "Find the map data file";
+			openFile.Multiselect = false;
+			openFile.FilterIndex = 1;
+			if (openFile.ShowDialog() == DialogResult.OK)
 				txtMap.Text = openFile.FileName;
 		}
 
 		private void btnFindImage_Click(object sender, System.EventArgs e)
 		{
-			openFile.Title="Find the image data file";
-			openFile.Multiselect=false;
-			openFile.FilterIndex=1;
-			if(openFile.ShowDialog()==DialogResult.OK)
+			openFile.Title = "Find the image data file";
+			openFile.Multiselect = false;
+			openFile.FilterIndex = 1;
+
+			if (openFile.ShowDialog() == DialogResult.OK)
 				txtImages.Text = openFile.FileName;
 		}
 
 /*		private void miSave_Click(object sender, System.EventArgs e)
 		{
-			StreamWriter sw = new StreamWriter(new FileStream(this.paths,FileMode.Create));
+			StreamWriter sw = new StreamWriter(new FileStream(this.paths, FileMode.Create));
 			
-			GameInfo.CursorPath = txtCursor.Text;
-			GameInfo.MapPath = txtMap.Text;
-			GameInfo.ImagePath = txtImages.Text;
-			//GameInfo.PalettePath = txtPalettes.Text;
+			GameInfo.CursorPath		= txtCursor.Text;
+			GameInfo.MapPath		= txtMap.Text;
+			GameInfo.ImagePath		= txtImages.Text;
+//			GameInfo.PalettePath	= txtPalettes.Text;
 
-			sw.WriteLine("mapdata:"+txtMap.Text);
-			sw.WriteLine("images:"+txtImages.Text);
-			sw.WriteLine("cursor:"+txtCursor.Text);
-			//sw.WriteLine("palettes:"+txtPalettes.Text);
+			sw.WriteLine("mapdata:" + txtMap.Text);
+			sw.WriteLine("images:" + txtImages.Text);
+			sw.WriteLine("cursor:" + txtCursor.Text);
+//			sw.WriteLine("palettes:" + txtPalettes.Text);
 
 			sw.Flush();
 			sw.Close();
 
-			//GameInfo.GetImageInfo().Save(new FileStream(txtImages.Text,FileMode.Create));
-			//GameInfo.GetTileInfo().Save(new FileStream(txtMap.Text,FileMode.Create));
+//			GameInfo.GetImageInfo().Save(new FileStream(txtImages.Text, FileMode.Create));
+//			GameInfo.GetTileInfo().Save(new FileStream(txtMap.Text, FileMode.Create));
 		}*/
 
 		private void txtImagePath_TextChanged(object sender, System.EventArgs e)
@@ -1086,6 +1117,7 @@ namespace MapView
 			openFile.Title = "Add images";
 			openFile.Multiselect = true;
 			openFile.FilterIndex = 2;
+
 			if (openFile.ShowDialog(this) == DialogResult.OK)
 			{
 				foreach (string s in openFile.FileNames)
@@ -1121,17 +1153,17 @@ namespace MapView
 
 		private void btnSave_Click(object sender, System.EventArgs e)
 		{
-			StreamWriter sw = new StreamWriter(new FileStream(this.paths,FileMode.Create));
+			StreamWriter sw = new StreamWriter(new FileStream(this.paths, FileMode.Create));
 			
-			//GameInfo.CursorPath = txtCursor.Text;
-			//GameInfo.MapPath = txtMap.Text;
-			//GameInfo.ImagePath = txtImages.Text;
-			//GameInfo.PalettePath = txtPalettes.Text;
+//			GameInfo.CursorPath		= txtCursor.Text;
+//			GameInfo.MapPath		= txtMap.Text;
+//			GameInfo.ImagePath		= txtImages.Text;
+//			GameInfo.PalettePath	= txtPalettes.Text;
 
-			sw.WriteLine("mapdata:"+txtMap.Text);
-			sw.WriteLine("images:"+txtImages.Text);
-			sw.WriteLine("cursor:"+txtCursor.Text);
-			//sw.WriteLine("palettes:"+txtPalettes.Text);
+			sw.WriteLine("mapdata:" + txtMap.Text);
+			sw.WriteLine("images:" + txtImages.Text);
+			sw.WriteLine("cursor:" + txtCursor.Text);
+//			sw.WriteLine("palettes:" + txtPalettes.Text);
 
 			sw.Flush();
 			sw.Close();
@@ -1147,55 +1179,60 @@ namespace MapView
 			TilesetForm tf = new TilesetForm();
 			tf.ShowDialog(this);
 
-			if(tf.TilesetText!=null)
+			if (tf.TilesetText != null)
 			{
-				IXCTileset tSet = (IXCTileset)GameInfo.TilesetInfo.AddTileset(tf.TilesetText, tf.MapPath, tf.RmpPath, tf.BlankPath);
-				//addTileset(tSet.Name);
+				IXCTileset tSet = (IXCTileset)GameInfo.TilesetInfo.AddTileset(
+																		tf.TilesetText,
+																		tf.MapPath,
+																		tf.RmpPath,
+																		tf.BlankPath);
+//				addTileset(tSet.Name);
 				treeMaps.Nodes.Add(tSet.Name);
 
-				txtRoot.Text=tSet.MapPath;
-				txtRmp.Text=tSet.RmpPath;
+				txtRoot.Text = tSet.MapPath;
+				txtRmp.Text = tSet.RmpPath;
 
-				//saveMapedit();
+//				saveMapedit();
 			}
 		}
 
 		private void cbPalette_SelectedIndexChanged(object sender, System.EventArgs e)
 		{
-			if(treeMaps.SelectedNode.Parent==null)
+			if (treeMaps.SelectedNode.Parent == null)
 				getCurrset().Palette = (Palette)cbPalette.SelectedItem;
 		}
 
 		private void saveMapedit()
 		{
 			System.Windows.Forms.Cursor oldCur = System.Windows.Forms.Cursor.Current;
-			System.Windows.Forms.Cursor.Current=Cursors.WaitCursor;
+			System.Windows.Forms.Cursor.Current = Cursors.WaitCursor;
 
-			string path=txtMap.Text.Substring(0,txtMap.Text.LastIndexOf("\\")+1);
-			string file=txtMap.Text.Substring(txtMap.Text.LastIndexOf("\\")+1);
+			string path = txtMap.Text.Substring(0, txtMap.Text.LastIndexOf("\\") + 1);
+			string file = txtMap.Text.Substring(txtMap.Text.LastIndexOf("\\") + 1);
 			string ext = file.Substring(file.LastIndexOf("."));
-			file = file.Substring(0,file.LastIndexOf("."));
+			file = file.Substring(0, file.LastIndexOf("."));
 
 			try
 			{
 				GameInfo.TilesetInfo.Save(path + file + ".new");
 
-				if(File.Exists(txtMap.Text))
+				if (File.Exists(txtMap.Text))
 				{
-					if(File.Exists(path+file+".old"))
-						File.Delete(path+file+".old");
-					File.Move(txtMap.Text,path+file+".old");
+					if (File.Exists(path + file + ".old"))
+						File.Delete(path + file + ".old");
+
+					File.Move(txtMap.Text, path + file + ".old");
 				}
 
-				File.Move(path+file+".new",txtMap.Text);
+				File.Move(path + file + ".new", txtMap.Text);
 
-				System.Windows.Forms.Cursor.Current=oldCur;
-				Text="PathsEditor : Saved Mapedit.dat";
+				System.Windows.Forms.Cursor.Current = oldCur;
+				Text = "PathsEditor: Saved Mapedit.dat";
 			}
 			catch(Exception e)
 			{
-				if(File.Exists(path+file+".new"))
-					File.Delete(path+file+".new");
+				if (File.Exists(path + file + ".new"))
+					File.Delete(path + file + ".new");
 
 				throw e;
 			}
@@ -1210,14 +1247,14 @@ namespace MapView
 		{
 			SubsetForm ss = new SubsetForm();
 			ss.ShowDialog(this);
-			if(ss.SubsetName!=null)
+			if (ss.SubsetName != null)
 			{
 				IXCTileset it = getCurrset();
 				TreeNode t = treeMaps.SelectedNode;
 
 				it.Subsets[ss.SubsetName] = new Dictionary<string, IMapDesc>();
-				//it.NewSubset(ss.SubsetName);
-				//saveMapedit();
+//				it.NewSubset(ss.SubsetName);
+//				saveMapedit();
 				populateTree();
 			}
 		}
@@ -1225,78 +1262,85 @@ namespace MapView
 		private IXCTileset getCurrset()
 		{
 			TreeNode t = treeMaps.SelectedNode;
-
-			if(t.Parent!=null)
+			if (t.Parent != null)
 			{
-				if(t.Parent.Parent!=null)//inner node
-					return (IXCTileset)GameInfo.TilesetInfo.Tilesets[t.Parent.Parent.Text];
-				else //subset node
-					return (IXCTileset)GameInfo.TilesetInfo.Tilesets[t.Parent.Text];
+				if (t.Parent.Parent != null)
+					return (IXCTileset)GameInfo.TilesetInfo.Tilesets[t.Parent.Parent.Text]; // inner node
+
+				return (IXCTileset)GameInfo.TilesetInfo.Tilesets[t.Parent.Text]; // subset node
 			}
-			else //parent node
-				return (IXCTileset)GameInfo.TilesetInfo.Tilesets[t.Text];
+			return (IXCTileset)GameInfo.TilesetInfo.Tilesets[t.Text]; // parent node
 		}
 
-/*		private void btnSave2_Click(object sender, System.EventArgs e)
-		{
-			saveMapedit();
-		}*/
+//		private void btnSave2_Click(object sender, System.EventArgs e)
+//		{
+//			saveMapedit();
+//		}
 
 		private void addNewMap_Click(object sender, System.EventArgs e)
 		{
 			NewMapForm nfm = new NewMapForm();
 			nfm.ShowDialog(this);
 
-			if(nfm.MapName!=null)
+			if (nfm.MapName != null)
 			{
-				if(treeMaps.SelectedNode.Parent!=null) //add to here
+				if (treeMaps.SelectedNode.Parent != null) // add to here
 				{
-					string path=txtRoot.Text+nfm.MapName+".MAP";
-					if(File.Exists(path))
+					string path = txtRoot.Text+nfm.MapName+".MAP";
+					if (File.Exists(path))
 					{
 						ChoiceDialog cd = new ChoiceDialog(path);
 						cd.ShowDialog(this);
-						switch(cd.Choice)
+						switch (cd.Choice)
 						{
 							case Choice.Cancel:
-								return;
-							case Choice.Overwrite:
-								XCMapFile.NewMap(File.OpenWrite(txtRoot.Text+nfm.MapName+".MAP"),nfm.MapRows,nfm.MapCols,nfm.MapHeight);
-								FileStream fs = File.OpenWrite(txtRmp.Text+nfm.MapName+".RMP");
-								fs.Close();
-								break;
 							case Choice.UseExisting:
+								return;
+
+							case Choice.Overwrite:
+								XCMapFile.NewMap(
+											File.OpenWrite(txtRoot.Text + nfm.MapName + ".MAP"),
+											nfm.MapRows,
+											nfm.MapCols,
+											nfm.MapHeight);
+								FileStream fs = File.OpenWrite(txtRmp.Text + nfm.MapName + ".RMP");
+								fs.Close();
 								break;
 						}
 					}
 					else
 					{
-						XCMapFile.NewMap(File.OpenWrite(txtRoot.Text+nfm.MapName+".MAP"),nfm.MapRows,nfm.MapCols,nfm.MapHeight);
-						FileStream fs = File.OpenWrite(txtRmp.Text+nfm.MapName+".RMP");
+						XCMapFile.NewMap(
+									File.OpenWrite(txtRoot.Text + nfm.MapName + ".MAP"),
+									nfm.MapRows,
+									nfm.MapCols,
+									nfm.MapHeight);
+						FileStream fs = File.OpenWrite(txtRmp.Text + nfm.MapName + ".RMP");
 						fs.Close();
 					}
 
 					IXCTileset tSet;
-					string sSet="";
+					string sSet = "";
 
-					if(treeMaps.SelectedNode.Parent.Parent==null)//subset
+					if (treeMaps.SelectedNode.Parent.Parent == null) // subset
 					{
 						tSet = (IXCTileset)GameInfo.TilesetInfo.Tilesets[treeMaps.SelectedNode.Parent.Text];
 						treeMaps.SelectedNode.Nodes.Add(nfm.MapName);
 						sSet = treeMaps.SelectedNode.Text;
 					}
-					else //subset is parent
+					else // subset is parent
 					{
 						tSet = (IXCTileset)GameInfo.TilesetInfo.Tilesets[treeMaps.SelectedNode.Parent.Parent.Text];
 						treeMaps.SelectedNode.Parent.Nodes.Add(nfm.MapName);
 						sSet = treeMaps.SelectedNode.Parent.Text;
 					}
 
-					//Type1MapData tmd = new Type1MapData(nfm.MapName,nfm.mapp
+//					Type1MapData tmd = new Type1MapData(nfm.MapName, nfm.mapp
 					
-					tSet.AddMap(nfm.MapName,sSet);
-					//Console.WriteLine("map added: "+tSet.Name);
-					//saveMapedit();
+					tSet.AddMap(nfm.MapName, sSet);
+					//Console.WriteLine("map added: " + tSet.Name);
+
+//					saveMapedit();
 				}
 //				else //top node, baaaaad
 //				{
@@ -1308,28 +1352,28 @@ namespace MapView
 
 		private void addExistingMap_Click(object sender, System.EventArgs e)
 		{
-			openFile.InitialDirectory=txtRoot.Text;
-			openFile.Title="Select maps from this directory only";
-			openFile.Multiselect=true;
-			openFile.RestoreDirectory=true;
+			openFile.InitialDirectory = txtRoot.Text;
+			openFile.Title = "Select maps from this directory only";
+			openFile.Multiselect = true;
+			openFile.RestoreDirectory = true;
 
-			if(openFile.ShowDialog()==DialogResult.OK)
+			if (openFile.ShowDialog() == DialogResult.OK)
 			{
-				if(treeMaps.SelectedNode.Parent!=null) //add to here
+				if (treeMaps.SelectedNode.Parent != null) // add to here
 				{
 					TreeNode subset;
-					if(treeMaps.SelectedNode.Parent.Parent==null)
+					if (treeMaps.SelectedNode.Parent.Parent == null)
 						subset = treeMaps.SelectedNode;
 					else
 						subset = treeMaps.SelectedNode.Parent;
 
 					IXCTileset tSet = (IXCTileset)GameInfo.TilesetInfo.Tilesets[subset.Parent.Text];
-					foreach(string file in openFile.FileNames)
+					foreach (string file in openFile.FileNames)
 					{
-						int start = file.LastIndexOf(@"\")+1;
+						int start = file.LastIndexOf(@"\") + 1;
 						int end = file.LastIndexOf(".");
 
-						string name = file.Substring(start,end-start);
+						string name = file.Substring(start, end-start);
 						try
 						{
 							tSet.AddMap(name, subset.Text);
@@ -1341,9 +1385,9 @@ namespace MapView
 						}
 					}
 
-					//saveMapedit();
+//					saveMapedit();
 				}
-//				else //top node, baaaaad
+//				else // top node, baaaaad
 //				{
 //					tSet = GameInfo.GetTileInfo()[treeMaps.SelectedNode.Parent.Text];
 //					treeMaps.SelectedNode.Parent.Nodes.Add(nfm.MapName);
@@ -1355,35 +1399,35 @@ namespace MapView
 		{
 			IXCTileset tSet = getCurrset();
 			GameInfo.TilesetInfo.Tilesets[tSet.Name] = null;
-			if(treeMaps.SelectedNode.Parent==null)
+			if (treeMaps.SelectedNode.Parent == null)
 				treeMaps.Nodes.Remove(treeMaps.SelectedNode);
 			else
 			{
-				if(treeMaps.SelectedNode.Parent.Parent==null)
+				if (treeMaps.SelectedNode.Parent.Parent == null)
 					treeMaps.Nodes.Remove(treeMaps.SelectedNode.Parent);
 				else
 					treeMaps.Nodes.Remove(treeMaps.SelectedNode.Parent.Parent);
 			}
 
-			//saveMapedit();
+//			saveMapedit();
 		}
 
 		private void delSub_Click(object sender, System.EventArgs e)
 		{
-			TreeNode subset=null;
+			TreeNode subset = null;
 
-			if(treeMaps.SelectedNode.Parent!=null)
+			if (treeMaps.SelectedNode.Parent != null)
 			{
-				if(treeMaps.SelectedNode.Parent.Parent==null)
+				if (treeMaps.SelectedNode.Parent.Parent == null)
 					subset = treeMaps.SelectedNode;
 				else
 					subset = treeMaps.SelectedNode.Parent;
 			}
 
-			if(subset!=null)
+			if (subset != null)
 			{
 				IXCTileset tSet = getCurrset();
-				tSet.Subsets[subset.Text]=null;
+				tSet.Subsets[subset.Text] = null;
 				subset.Parent.Nodes.Remove(subset);
 			}
 		}
@@ -1392,17 +1436,17 @@ namespace MapView
 		{
 			TreeNode map = null;
 
-			if(treeMaps.SelectedNode.Parent!=null)
+			if (treeMaps.SelectedNode.Parent != null
+				&& treeMaps.SelectedNode.Parent.Parent != null)
 			{
-				if(treeMaps.SelectedNode.Parent.Parent!=null)
-					map = treeMaps.SelectedNode;
+				map = treeMaps.SelectedNode;
 			}
 
-			if(map!=null)
+			if (map != null)
 			{
 				IXCTileset tSet = getCurrset();
-				tSet.Subsets[map.Parent.Text][map.Text]=null;
-				tSet[map.Text]=null;
+				tSet.Subsets[map.Parent.Text][map.Text] = null;
+				tSet[map.Text] = null;
 
 				map.Parent.Nodes.Remove(map);
 			}
@@ -1410,11 +1454,11 @@ namespace MapView
 
 		private void moveMaps_Click(object sender, System.EventArgs e)
 		{
-			//TreeEditor mmf = new TreeEditor();
-			//mmf.ShowDialog(this);
-			//populateTree();
+//			TreeEditor mmf = new TreeEditor();
+//			mmf.ShowDialog(this);
+//			populateTree();
 
-			//saveMapedit();
+//			saveMapedit();
 		}
 
 		private void closeItem_Click(object sender, System.EventArgs e)
@@ -1427,8 +1471,8 @@ namespace MapView
 			IXCTileset it = getCurrset();
 			images = new string[((XCMapDesc)it[treeMaps.SelectedNode.Text]).Dependencies.Length];
 
-			for(int i=0;i<((XCMapDesc)it[treeMaps.SelectedNode.Text]).Dependencies.Length;i++)
-				images[i]=((XCMapDesc)it[treeMaps.SelectedNode.Text]).Dependencies[i];
+			for (int i = 0; i < ((XCMapDesc)it[treeMaps.SelectedNode.Text]).Dependencies.Length; i++)
+				images[i] = ((XCMapDesc)it[treeMaps.SelectedNode.Text]).Dependencies[i];
 		}
 
 		private void btnPaste_Click(object sender, System.EventArgs e)
@@ -1438,11 +1482,26 @@ namespace MapView
 
 			listMapImages.Items.Clear();
 
-			for(int i=0;i<images.Length;i++)
+			for (int i = 0; i < images.Length; i++)
 			{
-				((XCMapDesc)it[treeMaps.SelectedNode.Text]).Dependencies[i]=images[i];
+				((XCMapDesc)it[treeMaps.SelectedNode.Text]).Dependencies[i] = images[i];
 				listMapImages.Items.Add(images[i]);
 			}
+		}
+		
+		void Label1Click(object sender, EventArgs e)
+		{
+			// TODO: Implement Label1Click
+		}
+		
+		void PathsEditorLoad(object sender, EventArgs e)
+		{
+			// TODO: Implement PathsEditorLoad
+		}
+		
+		void TabPathsClick(object sender, EventArgs e)
+		{
+			// TODO: Implement TabPathsClick
 		}
 	}
 }
