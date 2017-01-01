@@ -18,6 +18,12 @@ namespace MapView.Forms.MapObservers.RmpViews
 			InitializeComponent();
 		}
 
-		public MapObserverControl MapObserver { get { return RouteViewControl; } }
+		public MapObserverControl MapObserver
+		{
+			get { return RouteViewControl; }
+		}
+
+//		void RmpViewFormLoad(object sender, EventArgs e)
+//		{}
 	}
 }
