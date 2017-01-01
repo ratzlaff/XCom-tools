@@ -92,31 +92,31 @@ namespace MapView.Forms.MapObservers.RmpViews
 
 			ClearSelected();
 
-			base.Text = @"Waypoint View";
+			base.Text = "Route View";
 		}
 
 		private void options_click(object sender, EventArgs e)
 		{
 			var pf = new PropertyForm("rmpViewOptions", Settings);
-			pf.Text = @"Waypoint Settings";
+			pf.Text = "Route Settings";
 			pf.Show();
 		}
 
 		private void BrushChanged(object sender, string key, object val)
 		{
-			_rmpPanel.MapBrushes[key].Color = (Color) val;
+			_rmpPanel.MapBrushes[key].Color = (Color)val;
 			Refresh();
 		}
 
 		private void PenColorChanged(object sender, string key, object val)
 		{
-			_rmpPanel.MapPens[key].Color = (Color) val;
+			_rmpPanel.MapPens[key].Color = (Color)val;
 			Refresh();
 		}
 
 		private void PenWidthChanged(object sender, string key, object val)
 		{
-			_rmpPanel.MapPens[key].Width = (int) val;
+			_rmpPanel.MapPens[key].Width = (int)val;
 			Refresh();
 		}
 		
@@ -125,11 +125,11 @@ namespace MapView.Forms.MapObservers.RmpViews
 			XCMapTile t = _rmpPanel.GetTile(e.X, e.Y);
 			if (t != null && t.Rmp != null)
 			{
-				lblMouseOver.Text = @"Mouse Over: " + t.Rmp.Index;
+				lblMouseOver.Text = "Over " + t.Rmp.Index;
 			}
 			else
 			{
-				lblMouseOver.Text = @"";
+				lblMouseOver.Text = "";
 			}
 
 			_rmpPanel.Position = new Point(e.X, e.Y);
@@ -260,7 +260,7 @@ namespace MapView.Forms.MapObservers.RmpViews
 						break;
 					}
 
-					if (list[i].Index == (byte) LinkTypes.NotUsed)
+					if (list[i].Index == (byte)LinkTypes.NotUsed)
 					{
 						spaceAvailable = true;
 						if (i < spaceAt)
@@ -336,7 +336,7 @@ namespace MapView.Forms.MapObservers.RmpViews
 				AttackBaseCombo.SelectedItem = _currEntry.BaseModuleAttack;
 				cbUsage.SelectedItem = RmpFile.SpawnUsage[(byte)_currEntry.Spawn];
 
-				idxLabel2.Text = "Index: " + _currEntry.Index;
+				idxLabel2.Text = "Current " + _currEntry.Index;
 
 				if (_currEntry[0].Index < 0xFB)
 					cbLink1.SelectedItem = _currEntry[0].Index;
@@ -433,7 +433,7 @@ namespace MapView.Forms.MapObservers.RmpViews
 		public override void SelectedTileChanged(IMap_Base sender, SelectedTileChangedEventArgs e)
 		{
 			Text = string.Format(
-							"Waypoint view: r:{0} c:{1} ",
+							"Position\nr:{0} c:{1}",
 							e.MapPosition.Row, e.MapPosition.Col);
 		}
 
@@ -485,11 +485,11 @@ namespace MapView.Forms.MapObservers.RmpViews
 			{
 				var selIdx = sender.SelectedItem as byte?;
 				if (!selIdx.HasValue)
-					selIdx = (byte?) (sender.SelectedItem as LinkTypes?);
+					selIdx = (byte?)(sender.SelectedItem as LinkTypes?);
 
 				if (!selIdx.HasValue)
 				{
-					MessageBox.Show(@"Error: Determining SelectedIndex value failed");
+					MessageBox.Show("ERROR: Determining SelectedIndex value failed");
 				}
 				else
 				{
@@ -507,7 +507,7 @@ namespace MapView.Forms.MapObservers.RmpViews
 					}
 					catch (Exception ex)
 					{
-						MessageBox.Show("Error: " + ex.Message);
+						MessageBox.Show("ERROR: " + ex.Message);
 					}
 					Refresh();
 				}
@@ -935,10 +935,10 @@ namespace MapView.Forms.MapObservers.RmpViews
 
 		private ConnectNodeTypes GetConnectNodeType()
 		{
-			if (connectNodesYoolStripMenuItem.Text == @"Connect One way")
+			if (connectNodesYoolStripMenuItem.Text == "Connect One way")
 				return ConnectNodeTypes.ConnectOneWay;
 
-			if (connectNodesYoolStripMenuItem.Text == @"Connect Two ways")
+			if (connectNodesYoolStripMenuItem.Text == "Connect Two ways")
 				return ConnectNodeTypes.ConnectTwoWays;
 
 			return ConnectNodeTypes.DontConnect;

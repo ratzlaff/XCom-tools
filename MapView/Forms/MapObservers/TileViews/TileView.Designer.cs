@@ -91,6 +91,7 @@ namespace MapView.Forms.MapObservers.TileViews
 			// 
 			// ViewToolStrip
 			// 
+			this.ViewToolStrip.Font = new System.Drawing.Font("Verdana", 7F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.ViewToolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
 									this.toolStripButton1,
 									this.toolStripButton2,
@@ -143,7 +144,7 @@ namespace MapView.Forms.MapObservers.TileViews
 			// editPCKToolStripMenuItem
 			// 
 			this.editPCKToolStripMenuItem.Name = "editPCKToolStripMenuItem";
-			this.editPCKToolStripMenuItem.Size = new System.Drawing.Size(116, 22);
+			this.editPCKToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
 			this.editPCKToolStripMenuItem.Text = "Edit PCK";
 			this.editPCKToolStripMenuItem.Click += new System.EventHandler(this.EditPckMenuItem_Click);
 			// 
@@ -162,7 +163,7 @@ namespace MapView.Forms.MapObservers.TileViews
 			// optionsToolStripMenuItem
 			// 
 			this.optionsToolStripMenuItem.Name = "optionsToolStripMenuItem";
-			this.optionsToolStripMenuItem.Size = new System.Drawing.Size(113, 22);
+			this.optionsToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
 			this.optionsToolStripMenuItem.Text = "Options";
 			this.optionsToolStripMenuItem.Click += new System.EventHandler(this.options_click);
 			// 

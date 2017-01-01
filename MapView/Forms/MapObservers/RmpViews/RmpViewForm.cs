@@ -22,8 +22,5 @@ namespace MapView.Forms.MapObservers.RmpViews
 		{
 			get { return RouteViewControl; }
 		}
-
-//		void RmpViewFormLoad(object sender, EventArgs e)
-//		{}
 	}
 }

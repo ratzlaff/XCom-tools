@@ -280,7 +280,7 @@ namespace MapView.Forms.MapObservers.RmpViews
 			// lblMouseOver
 			// 
 			this.lblMouseOver.Font = new System.Drawing.Font("Verdana", 7F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.lblMouseOver.ForeColor = System.Drawing.Color.Crimson;
+			this.lblMouseOver.ForeColor = System.Drawing.Color.Sienna;
 			this.lblMouseOver.Location = new System.Drawing.Point(195, 15);
 			this.lblMouseOver.Name = "lblMouseOver";
 			this.lblMouseOver.Size = new System.Drawing.Size(85, 30);
@@ -426,6 +426,7 @@ namespace MapView.Forms.MapObservers.RmpViews
 			// 
 			// menuStrip1
 			// 
+			this.menuStrip1.Font = new System.Drawing.Font("Verdana", 7F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
 									this.miEdit,
 									this.connectNodesYoolStripMenuItem,
@@ -464,6 +465,7 @@ namespace MapView.Forms.MapObservers.RmpViews
 			// connectNodesYoolStripMenuItem
 			// 
 			this.connectNodesYoolStripMenuItem.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.connectNodesYoolStripMenuItem.Font = new System.Drawing.Font("Verdana", 7F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.connectNodesYoolStripMenuItem.Items.AddRange(new object[] {
 									"Dont connect",
 									"Connect One way",
@@ -482,6 +484,7 @@ namespace MapView.Forms.MapObservers.RmpViews
 			// 
 			// HeightDifTextbox
 			// 
+			this.HeightDifTextbox.Font = new System.Drawing.Font("Verdana", 7F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.HeightDifTextbox.Name = "HeightDifTextbox";
 			this.HeightDifTextbox.Size = new System.Drawing.Size(100, 20);
 			this.HeightDifTextbox.ToolTipText = "This amount will be added to the link\'s vertical position. Helps in UFO maps when" +
@@ -598,6 +601,7 @@ namespace MapView.Forms.MapObservers.RmpViews
 			this.Controls.Add(this._contentPane);
 			this.Controls.Add(this.panel1);
 			this.Controls.Add(this.menuStrip1);
+			this.Font = new System.Drawing.Font("Verdana", 7F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.Name = "RmpView";
 			this.Size = new System.Drawing.Size(660, 440);
 			this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.RmpView_KeyDown);

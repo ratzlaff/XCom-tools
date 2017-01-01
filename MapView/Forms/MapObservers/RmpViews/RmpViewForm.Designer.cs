@@ -34,22 +34,23 @@ namespace MapView.Forms.MapObservers.RmpViews
 			// RouteViewControl
 			// 
 			this.RouteViewControl.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.RouteViewControl.Font = new System.Drawing.Font("Verdana", 7F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.RouteViewControl.Location = new System.Drawing.Point(0, 0);
 			this.RouteViewControl.Name = "RouteViewControl";
-			this.RouteViewControl.Size = new System.Drawing.Size(592, 415);
+			this.RouteViewControl.Size = new System.Drawing.Size(592, 383);
 			this.RouteViewControl.TabIndex = 0;
 			// 
 			// RmpViewForm
 			// 
-			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(592, 415);
+			this.ClientSize = new System.Drawing.Size(592, 383);
 			this.Controls.Add(this.RouteViewControl);
+			this.Font = new System.Drawing.Font("Verdana", 7F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.KeyPreview = true;
 			this.Name = "RmpViewForm";
 			this.ShowInTaskbar = false;
 			this.Text = "Waypoint View";
-//			this.Load += new System.EventHandler(this.RmpViewFormLoad);
 			this.ResumeLayout(false);
 		}
 

@@ -213,7 +213,7 @@ namespace MapView
 			this.mapList.Dock = System.Windows.Forms.DockStyle.Left;
 			this.mapList.Location = new System.Drawing.Point(0, 0);
 			this.mapList.Name = "mapList";
-			this.mapList.Size = new System.Drawing.Size(249, 335);
+			this.mapList.Size = new System.Drawing.Size(249, 350);
 			this.mapList.TabIndex = 0;
 			this.mapList.BeforeSelect += new System.Windows.Forms.TreeViewCancelEventHandler(this.mapList_BeforeSelect);
 			this.mapList.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.mapList_AfterSelect);
@@ -226,10 +226,11 @@ namespace MapView
 			// 
 			// statusStrip1
 			// 
+			this.statusStrip1.Font = new System.Drawing.Font("Verdana", 7F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
 									this.statusMapName,
 									this.tsMapSize});
-			this.statusStrip1.Location = new System.Drawing.Point(257, 313);
+			this.statusStrip1.Location = new System.Drawing.Point(257, 328);
 			this.statusStrip1.Name = "statusStrip1";
 			this.statusStrip1.Size = new System.Drawing.Size(335, 22);
 			this.statusStrip1.TabIndex = 2;
@@ -241,6 +242,7 @@ namespace MapView
 			this.statusMapName.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)((((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Top) 
 									| System.Windows.Forms.ToolStripStatusLabelBorderSides.Right) 
 									| System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
+			this.statusMapName.Font = new System.Drawing.Font("Verdana", 7F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.statusMapName.Name = "statusMapName";
 			this.statusMapName.Size = new System.Drawing.Size(150, 17);
 			// 
@@ -262,7 +264,7 @@ namespace MapView
 			// 
 			// toolStripContainer1.ContentPanel
 			// 
-			this.toolStripContainer1.ContentPanel.Size = new System.Drawing.Size(335, 288);
+			this.toolStripContainer1.ContentPanel.Size = new System.Drawing.Size(335, 303);
 			this.toolStripContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
 			// 
 			// toolStripContainer1.LeftToolStripPanel
@@ -274,7 +276,7 @@ namespace MapView
 			// toolStripContainer1.RightToolStripPanel
 			// 
 			this.toolStripContainer1.RightToolStripPanel.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
-			this.toolStripContainer1.Size = new System.Drawing.Size(335, 313);
+			this.toolStripContainer1.Size = new System.Drawing.Size(335, 328);
 			this.toolStripContainer1.TabIndex = 3;
 			this.toolStripContainer1.Text = "toolStripContainer1";
 			// 
@@ -286,6 +288,7 @@ namespace MapView
 			// toolStrip
 			// 
 			this.toolStrip.Dock = System.Windows.Forms.DockStyle.None;
+			this.toolStrip.Font = new System.Drawing.Font("Verdana", 7F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.toolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
 									this.drawSelectionBoxButton,
 									this.ZoomInButton,
@@ -293,16 +296,17 @@ namespace MapView
 									this.AutoZoomButton});
 			this.toolStrip.Location = new System.Drawing.Point(3, 0);
 			this.toolStrip.Name = "toolStrip";
-			this.toolStrip.Size = new System.Drawing.Size(152, 25);
+			this.toolStrip.Size = new System.Drawing.Size(194, 25);
 			this.toolStrip.TabIndex = 0;
 			// 
 			// drawSelectionBoxButton
 			// 
 			this.drawSelectionBoxButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+			this.drawSelectionBoxButton.Font = new System.Drawing.Font("Verdana", 7F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.drawSelectionBoxButton.Image = ((System.Drawing.Image)(resources.GetObject("drawSelectionBoxButton.Image")));
 			this.drawSelectionBoxButton.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.drawSelectionBoxButton.Name = "drawSelectionBoxButton";
-			this.drawSelectionBoxButton.Size = new System.Drawing.Size(73, 22);
+			this.drawSelectionBoxButton.Size = new System.Drawing.Size(84, 22);
 			this.drawSelectionBoxButton.Text = "Selection Box";
 			this.drawSelectionBoxButton.ToolTipText = "Draws a selection box in the floor";
 			this.drawSelectionBoxButton.Click += new System.EventHandler(this.drawSelectionBoxButton_Click);
@@ -332,6 +336,7 @@ namespace MapView
 			this.AutoZoomButton.Checked = true;
 			this.AutoZoomButton.CheckState = System.Windows.Forms.CheckState.Checked;
 			this.AutoZoomButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.AutoZoomButton.Font = new System.Drawing.Font("Verdana", 7F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.AutoZoomButton.Image = global::MapView.Properties.Resources._11_Search_16;
 			this.AutoZoomButton.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.AutoZoomButton.Name = "AutoZoomButton";
@@ -346,19 +351,20 @@ namespace MapView
 			this.cSplitList.Location = new System.Drawing.Point(249, 0);
 			this.cSplitList.MinimumSize = new System.Drawing.Size(5, 5);
 			this.cSplitList.Name = "cSplitList";
-			this.cSplitList.Size = new System.Drawing.Size(8, 335);
+			this.cSplitList.Size = new System.Drawing.Size(8, 350);
 			this.cSplitList.TabIndex = 1;
 			this.cSplitList.TabStop = false;
 			// 
 			// MainWindow
 			// 
-			this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
+			this.AutoScaleBaseSize = new System.Drawing.Size(5, 12);
 			this.BackColor = System.Drawing.SystemColors.Control;
-			this.ClientSize = new System.Drawing.Size(592, 335);
+			this.ClientSize = new System.Drawing.Size(592, 350);
 			this.Controls.Add(this.toolStripContainer1);
 			this.Controls.Add(this.statusStrip1);
 			this.Controls.Add(this.cSplitList);
 			this.Controls.Add(this.mapList);
+			this.Font = new System.Drawing.Font("Verdana", 7F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.Menu = this.mainMenu;
 			this.Name = "MainWindow";

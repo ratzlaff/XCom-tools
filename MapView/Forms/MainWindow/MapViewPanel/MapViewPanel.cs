@@ -30,7 +30,7 @@ namespace MapView
 			_vert.Scroll += vert_Scroll;
 			_vert.Dock = DockStyle.Right;
 
-			Controls.AddRange(new Control[]{_vert, _horiz});
+			Controls.AddRange(new Control[]{ _vert, _horiz });
 
 			SetView(new MapView());
 		}

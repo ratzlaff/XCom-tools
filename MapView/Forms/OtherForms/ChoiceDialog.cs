@@ -6,8 +6,6 @@ using System.Windows.Forms;
 
 namespace MapView
 {
-	public enum Choice{Overwrite,UseExisting,Cancel};
-
 	public class ChoiceDialog
 		:
 		System.Windows.Forms.Form
@@ -23,7 +21,7 @@ namespace MapView
 		public ChoiceDialog(string file)
 		{
 			InitializeComponent();
-			txt.Text = "The file " + file + " already exsts, do you want to overwrite the existing file, use the existing file, or cancel";
+			txt.Text = "The file " + file + " already exists. Do you want to overwrite the existing file, use the existing file, or cancel";
 		}
 
 		public Choice Choice

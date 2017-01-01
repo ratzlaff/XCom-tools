@@ -178,6 +178,7 @@
     <Compile Include="Forms\MapObservers\TopViews\TopViewForm.Designer.cs">
       <DependentUpon>TopViewForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\OtherForms\ChoiceDialogChoices.cs" />
     <Compile Include="Forms\OtherForms\ExportForm.cs">
       <SubType>Form</SubType>
     </Compile>

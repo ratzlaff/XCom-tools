@@ -43,7 +43,7 @@ namespace MapView.Forms.McdViewer
 			this.rtb.Name = "rtb";
 			this.rtb.ReadOnly = true;
 			this.rtb.ShowSelectionMargin = true;
-			this.rtb.Size = new System.Drawing.Size(522, 460);
+			this.rtb.Size = new System.Drawing.Size(522, 425);
 			this.rtb.TabIndex = 0;
 			this.rtb.Text = "";
 			// 
@@ -53,12 +53,13 @@ namespace MapView.Forms.McdViewer
 			// 
 			// McdViewerForm
 			// 
-			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.AutoValidate = System.Windows.Forms.AutoValidate.EnablePreventFocusChange;
 			this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-			this.ClientSize = new System.Drawing.Size(522, 460);
+			this.ClientSize = new System.Drawing.Size(522, 425);
 			this.Controls.Add(this.rtb);
+			this.Font = new System.Drawing.Font("Verdana", 7F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.Name = "McdViewerForm";
 			this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
