@@ -7,7 +7,8 @@ using XCom;
 namespace MapView
 {
 	public delegate string ConvertObject(object o);
-	public delegate void ValueChangedDelegate(object sender,string keyword,object val);
+	public delegate void ValueChangedDelegate(object sender, string keyword, object val);
+
 	/// <summary>
 	/// A wrapper around a Hashtable for Setting objects. Setting objects are intended to use with the CustomPropertyGrid
 	/// </summary>
@@ -23,35 +24,37 @@ namespace MapView
 			if (converters == null)
 				converters = new Dictionary<Type, ConvertObject>();
 
-			converters[t]=o;
+			converters[t] = o;
 		}
 
 		public Settings()
 		{
-			settings = new Dictionary<string,Setting>();
-			propObj = new Dictionary<string,PropObj>();
+			settings = new Dictionary<string, Setting>();
+			propObj = new Dictionary<string, PropObj>();
 
-			if(converters == null)
+			if (converters == null)
 			{
 				converters = new Dictionary<Type,ConvertObject>();
-				converters[typeof(Color)]=new ConvertObject(convertColor);
+				converters[typeof(Color)] = new ConvertObject(convertColor);
 			}
 		}
 
-		public static void ReadSettings(VarCollection vc,KeyVal kv,Settings currSettings)
+		public static void ReadSettings(VarCollection vc, KeyVal kv, Settings currSettings)
 		{
-			while((kv = vc.ReadLine())!=null)
+			while ((kv = vc.ReadLine()) != null)
 			{
-				switch(kv.Keyword)
+				switch (kv.Keyword)
 				{
-					case "}": //all done
+					case "}": // all done
 						return;
-					case "{": //starting out
+
+					case "{": // starting out
 						break;
+
 					default:
-						if(currSettings [kv.Keyword]!=null)
+						if (currSettings [kv.Keyword] != null)
 						{
-							currSettings[kv.Keyword].Value=kv.Rest;
+							currSettings[kv.Keyword].Value = kv.Rest;
 							currSettings[kv.Keyword].FireUpdate(kv.Keyword);
 						}
 						break;
@@ -64,7 +67,7 @@ namespace MapView
 		/// </summary>
 		public Dictionary<string,Setting>.KeyCollection Keys
 		{
-			get{return settings.Keys;}
+			get { return settings.Keys; }
 		}
 
 		/// <summary>
@@ -77,8 +80,10 @@ namespace MapView
 				key = key.Replace(" ", "");
 				if (settings.ContainsKey(key))
 					return settings[key];
+
 				return null;
 			}
+
 			set
 			{
 				key = key.Replace(" ", "");
@@ -86,7 +91,8 @@ namespace MapView
 					settings.Add(key, value);
 				else
 				{
-					settings[key] = value; value.Name = key;
+					settings[key] = value;
+					value.Name = key;
 				}
 			}
 		}
@@ -101,12 +107,16 @@ namespace MapView
 		/// <param name="update">event handler to recieve the PropertyValueChanged event</param>
 		/// <param name="reflect">if true, an internal event handler will be created - the refObj must not be null and the name must be the name of a property of the type that refObj is</param>
 		/// <param name="refObj">the object that will recieve the changed property values</param>
-		public void AddSetting(string name, object val,
-			string desc, string category, ValueChangedDelegate update, bool reflect, object refObj)
+		public void AddSetting(
+							string name,
+							object val,
+							string desc,
+							string category,
+							ValueChangedDelegate update,
+							bool reflect,
+							object refObj)
 		{
-			//take out all spaces
-			name = name.Replace(" ", "");
-
+			name = name.Replace(" ", ""); // take out all spaces
 
 			Setting setting;
 			if (!settings.ContainsKey(name))
@@ -139,45 +149,47 @@ namespace MapView
 		/// <returns>The Setting object tied to the string</returns>
 		public Setting GetSetting(string key, object defaultvalue)
 		{
-			if(!settings.ContainsKey(key))
+			if (!settings.ContainsKey(key))
 			{
 				var item = new Setting(defaultvalue, null, null);
-				settings.Add(key ,item);
+				settings.Add(key, item);
 				item.Name = key;
 			}
-
 			return settings[key];
 		}
 
 		private void reflectEvent(object sender,string key, object val)
 		{
-			//System.Windows.Forms.PropertyValueChangedEventArgs pe = (System.Windows.Forms.PropertyValueChangedEventArgs)e;
+//			System.Windows.Forms.PropertyValueChangedEventArgs pe = (System.Windows.Forms.PropertyValueChangedEventArgs)e;
 			propObj[key].SetValue(val);
 		}
 
-		public void Save(string name,System.IO.StreamWriter sw)
+		public void Save(string name, System.IO.StreamWriter sw)
 		{
 			sw.WriteLine(name);
 			sw.WriteLine("{");
 			
 			foreach(string s in settings.Keys)
-				sw.WriteLine("\t"+s+":"+convert(this[s].Value));
+				sw.WriteLine("\t" + s + ":" + convert(this[s].Value));
+
 			sw.WriteLine("}");
 		}
 
 		private string convert(object o)
 		{
-			if(converters.ContainsKey(o.GetType()))
+			if (converters.ContainsKey(o.GetType()))
 				return converters[o.GetType()](o);
+
 			return o.ToString();
 		}
 
 		private static string convertColor(object o)
 		{
 			Color c = (Color)o;
-			if(c.IsKnownColor || c.IsNamedColor || c.IsSystemColor)
+			if (c.IsKnownColor || c.IsNamedColor || c.IsSystemColor)
 				return c.Name;
-			return c.A+","+c.R+","+c.G+","+c.B;
+
+			return c.A + "," + c.R + "," + c.G + "," + c.B;
 		}
 	}
 
@@ -207,11 +219,20 @@ namespace MapView
 		private static object parseColorString(string s)
 		{
 			string[] vals = s.Split(',');
-			if(vals.Length==1)
+			if (vals.Length == 1)
 				return Color.FromName(s);
-			if(vals.Length==3)
-				return Color.FromArgb(int.Parse(vals[0]),int.Parse(vals[1]),int.Parse(vals[2]));
-			return Color.FromArgb(int.Parse(vals[0]),int.Parse(vals[1]),int.Parse(vals[2]),int.Parse(vals[3]));
+
+			if (vals.Length == 3)
+				return Color.FromArgb(
+								int.Parse(vals[0]),
+								int.Parse(vals[1]),
+								int.Parse(vals[2]));
+
+			return Color.FromArgb(
+								int.Parse(vals[0]),
+								int.Parse(vals[1]),
+								int.Parse(vals[2]),
+								int.Parse(vals[3]));
 		}
 
 		public Setting(object val, string desc, string category)
@@ -233,31 +254,27 @@ namespace MapView
 		{
 			get
 			{
-				if (Value is bool)return (bool)Value;
+				if (Value is bool)
+					return (bool)Value;
+
 				return false;
 			}
 		}
 
 		public object Value
 		{
-			get{return _val;}
+			get { return _val; }
 			set
 			{
-				if (_val != null)
+				if (_val == null)
 				{
-					var type = _val.GetType();
-					if (converters.ContainsKey(type) && value is string)
-					{
-						_val = converters[type]((string)value);
-					}
-					else
-					{
-						_val = value;
-					}
+					_val = value;
 				}
 				else
 				{
-					_val = value;
+					var type = _val.GetType();
+					if (converters.ContainsKey(type) && value is string)
+						_val = converters[type]((string)value);
 				}
 			}
 		}
@@ -270,14 +287,14 @@ namespace MapView
 
 		public void FireUpdate(string key, object val)
 		{
-			if(ValueChanged!=null)
-				ValueChanged(this,key,val);
+			if (ValueChanged != null)
+				ValueChanged(this, key, val);
 		}
 
 		public void FireUpdate(string key)
 		{
-			if(ValueChanged!=null)
-				ValueChanged(this,key,_val);
+			if (ValueChanged != null)
+				ValueChanged(this, key, _val);
 		}
 	}
 
@@ -288,13 +305,13 @@ namespace MapView
 
 		public PropObj(object obj, string property)
 		{
-			this.obj=obj;
-			pi=obj.GetType().GetProperty(property);
+			this.obj = obj;
+			pi = obj.GetType().GetProperty(property);
 		}
 
 		public void SetValue(object o)
 		{
-			pi.SetValue(obj,o,new object[]{});
+			pi.SetValue(obj, o, new object[]{});
 		}
 	}
 }

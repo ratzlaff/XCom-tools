@@ -60,7 +60,6 @@ namespace MapView
 			this.lblVersion.Name = "lblVersion";
 			this.lblVersion.Size = new System.Drawing.Size(305, 60);
 			this.lblVersion.TabIndex = 2;
-			this.lblVersion.Text = "MapView 1.6.0.0 kL_r\r\n\r\n2016 dec 31";
 			this.lblVersion.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			// 
 			// label3

@@ -23,10 +23,11 @@ namespace MapView
 					   + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.Revision;
 
 #if DEBUG
-			lblVersion.Text = "MapView version " + ver + " Debug";
+			lblVersion.Text = "MapView " + ver + " kL_d";
 #else
-			lblVersion.Text = "MapView version " + ver + " Release";
+			lblVersion.Text = "MapView " + ver + " kL_r";
 #endif
+			lblVersion.Text += "\n\n2017 jan 3";
 		}
 
 		private Point _originalLocation;

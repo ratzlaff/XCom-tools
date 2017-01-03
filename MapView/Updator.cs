@@ -13,7 +13,7 @@ namespace MapView
 
 		public string DisplayDescription
 		{
-			get { return "Map Editor for XCcom ufo & tftd"; }
+			get { return "Map Editor for XCom ufo & tftd"; }
 		}
 	}
 }
