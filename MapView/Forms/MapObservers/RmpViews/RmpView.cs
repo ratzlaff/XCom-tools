@@ -138,6 +138,8 @@ namespace MapView.Forms.MapObservers.RmpViews
 
 		private void RmpPanel_PanelClick(object sender, MapPanelClickEventArgs e)
 		{
+			_rmpPanel.Focus();
+
 			idxLabel.Text = Text;
 			try
 			{

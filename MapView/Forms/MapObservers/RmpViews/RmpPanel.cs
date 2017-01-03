@@ -26,8 +26,6 @@ namespace MapView.Forms.MapObservers.RmpViews
 
 		protected override void OnPaint(PaintEventArgs e)
 		{
-			this.Focus();
-
 			var graphics = e.Graphics;
 
 			try
