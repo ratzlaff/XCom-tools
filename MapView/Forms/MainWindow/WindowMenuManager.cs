@@ -76,16 +76,11 @@ namespace MapView.Forms.MainWindow
 		{
 			foreach (MenuItem mi in _showMenu.MenuItems)
 			{
+				mi.PerformClick();
+
 				var settingName = GetWindowSettingName(mi);
-				if (_settings[settingName].ValueBool)
-				{
+				if (!_settings[settingName].ValueBool)
 					mi.PerformClick();
-				}
-				else
-				{
-					mi.PerformClick();
-					mi.PerformClick();
-				}
 			}
 			_showMenu.Enabled = true;
 		}
