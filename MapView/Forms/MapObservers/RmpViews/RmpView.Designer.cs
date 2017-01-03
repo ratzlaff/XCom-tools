@@ -472,6 +472,7 @@ namespace MapView.Forms.MapObservers.RmpViews
 									"Connect Two ways"});
 			this.connectNodesYoolStripMenuItem.Name = "connectNodesYoolStripMenuItem";
 			this.connectNodesYoolStripMenuItem.Size = new System.Drawing.Size(154, 20);
+			this.connectNodesYoolStripMenuItem.Click += new System.EventHandler(this.ConnectNodesYoolStripMenuItemClick);
 			// 
 			// extraHeightToolStripMenuItem
 			// 

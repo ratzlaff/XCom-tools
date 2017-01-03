@@ -1027,8 +1027,13 @@ namespace MapView.Forms.MapObservers.RmpViews
 							MessageBoxIcon.Warning);
 			}
 		}
-		
+
 		void _contentPanePaint(object sender, PaintEventArgs e)
 		{}
+
+		void ConnectNodesYoolStripMenuItemClick(object sender, EventArgs e)
+		{
+			// TODO: Implement ConnectNodesYoolStripMenuItemClick
+		}
 	}
 }
