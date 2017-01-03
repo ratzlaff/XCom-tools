@@ -12,15 +12,14 @@ namespace DSShared.DB_Access
 		private OleDbConnection connection;
 
 		private Access_DBInterface()
-		{
-		}
+		{}
 
 		/// <summary>
 		/// Gets the OleDbConnection used for an access database. This will be null until Initialize is called
 		/// </summary>
 		public OleDbConnection Connection
 		{
-			get{return connection;}
+			get { return connection; }
 		}
 
 		/// <summary>
@@ -30,7 +29,7 @@ namespace DSShared.DB_Access
 		/// <param name="dbFile"></param>
 		public static void Initialize(string dbFile)
 		{
-			string connStr = @"Provider=Microsoft.Jet.OLEDB.4.0; Data Source="+dbFile;
+			string connStr = @"Provider=Microsoft.Jet.OLEDB.4.0; Data Source=" + dbFile;
 			Instance.connection = new OleDbConnection(connStr);
 		}
 
@@ -41,8 +40,9 @@ namespace DSShared.DB_Access
 		{
 			get
 			{
-				if(instanceObject==null)
-					instanceObject=new Access_DBInterface();
+				if (instanceObject == null)
+					instanceObject = new Access_DBInterface();
+
 				return instanceObject;
 			}
 		}

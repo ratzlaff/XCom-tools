@@ -11,7 +11,7 @@ namespace DSShared.DB_Access
 	/// </summary>
 	/// <param name="table">Table that was just accessed</param>
 	/// <param name="rows">Collection of rows that was just accessed</param>
-	public delegate void FinishGetAllDelegate(string table,ArrayList rows);
+	public delegate void FinishGetAllDelegate(string table, ArrayList rows);
 
 	/// <summary>
 	/// Provides basic support for insert, update and delete operations. Properties of the extended class
@@ -21,13 +21,15 @@ namespace DSShared.DB_Access
 	/// Before creation of a an object that extends this class, make sure your type is registered with the 
 	/// DBTableTypeCache
 	/// </summary>
-	public abstract class Access_DBTable:IComparable
+	public abstract class Access_DBTable
+		:
+		IComparable
 	{
 		/// <summary>
 		/// The DBTableType that was setup upon initial table registration
 		/// </summary>
 		protected DSShared.DB.DBTableType myType;
-		private static string paramPrefix="@DSS";
+		private static string paramPrefix = "@DSS";
 
 		/// <summary>
 		/// When a GetAll() method is called, this event is fired right before the list of rows is 
@@ -55,12 +57,17 @@ namespace DSShared.DB_Access
 		/// <returns></returns>
 		public static Hashtable GetAllHash(string table, bool cache, params WhereCol[] whereQuery)
 		{
-			if(cache && DSShared.DB.DBTableTypeCache.Instance.GetHash(table)!=null)
+			if (cache && DSShared.DB.DBTableTypeCache.Instance.GetHash(table) != null)
 				return DSShared.DB.DBTableTypeCache.Instance.GetHash(table);
 
 			Access_DBInterface.Instance.Connection.Open();
 			OleDbTransaction trans = Access_DBInterface.Instance.Connection.BeginTransaction();
-			Hashtable hash = GetAllHash(Access_DBInterface.Instance.Connection,trans,table,cache,whereQuery);
+			Hashtable hash = GetAllHash(
+									Access_DBInterface.Instance.Connection,
+									trans,
+									table,
+									cache,
+									whereQuery);
 			trans.Commit();
 			Access_DBInterface.Instance.Connection.Close();
 
@@ -75,7 +82,7 @@ namespace DSShared.DB_Access
 		/// <returns></returns>
 		public static Hashtable GetAllHash(string table, bool cache)
 		{
-			return GetAllHash(table,cache,null);
+			return GetAllHash(table, cache, null);
 		}
 
 		/// <summary>
@@ -89,29 +96,40 @@ namespace DSShared.DB_Access
 		/// <param name="cache">If true, values will be retrieved from the cache if available</param>
 		/// <param name="whereQuery">List of columns to limit the search with. If you cache an incomplete row list, that list will be returned in future cached retrievals</param>
 		/// <returns>A table of [key:int] [value:Access_DBTable] objects. The key is based on autonumber columns</returns>
-		public static Hashtable GetAllHash(OleDbConnection conn,OleDbTransaction trans,string table,bool cache,params WhereCol[] whereQuery)
+		public static Hashtable GetAllHash(
+										OleDbConnection conn,
+										OleDbTransaction trans,
+										string table,
+										bool cache,
+										params WhereCol[] whereQuery)
 		{
-			if(cache && DSShared.DB.DBTableTypeCache.Instance.GetHash(table)!=null)
+			if (cache && DSShared.DB.DBTableTypeCache.Instance.GetHash(table) != null)
 				return DSShared.DB.DBTableTypeCache.Instance.GetHash(table);
 
-			ArrayList list = GetAll(conn,trans,table,cache,whereQuery);
+			ArrayList list = GetAll(
+								conn,
+								trans,
+								table,
+								cache,
+								whereQuery);
 
 			DSShared.DB.DBTableType thisType = DSShared.DB.DBTableTypeCache.Instance.GetType(table);
 
-			if(thisType.AutoNumber!=null)
+			if (thisType.AutoNumber != null)
 			{
 				PropertyInfo pi = thisType.AutoNumber;
 				Hashtable hash = new Hashtable();
-				foreach(Access_DBTable dt in list)
-					hash[pi.GetGetMethod().Invoke(dt,null)]=dt;
 
-				if(cache)
-					DSShared.DB.DBTableTypeCache.Instance.CacheHash(table,hash);
+				foreach (Access_DBTable dt in list)
+					hash[pi.GetGetMethod().Invoke(dt, null)] = dt;
+
+				if (cache)
+					DSShared.DB.DBTableTypeCache.Instance.CacheHash(table, hash);
 
 				return hash;
 			}
 
-			throw new Exception("Call GetAllHash on table: "+table+" invalid since it does not have an autonumber defined");
+			throw new Exception("Call GetAllHash on table: " + table + " invalid since it does not have an autonumber defined");
 		}
 
 		/// <summary>
@@ -122,7 +140,7 @@ namespace DSShared.DB_Access
 		/// <returns>A list of Access_DBTable in the order returned by the query</returns>
 		public static ArrayList GetAll(string table, bool cache)
 		{
-			return GetAll(table,cache,null);
+			return GetAll(table, cache, null);
 		}
 
 		/// <summary>
@@ -133,14 +151,22 @@ namespace DSShared.DB_Access
 		/// <param name="cache">If true, cache'ing will be used</param>
 		/// <param name="whereQuery">List of columns to limit the search with. If you cache an incomplete row list, that list will be returned in future cached retrievals</param>
 		/// <returns>A list of Access_DBTable in the order returned by the query</returns>
-		public static ArrayList GetAll(string table, bool cache,params WhereCol[] whereQuery)
+		public static ArrayList GetAll(
+									string table,
+									bool cache,
+									params WhereCol[] whereQuery)
 		{
-			if(cache && DSShared.DB.DBTableTypeCache.Instance.GetList(table)!=null)
+			if (cache && DSShared.DB.DBTableTypeCache.Instance.GetList(table) != null)
 				return DSShared.DB.DBTableTypeCache.Instance.GetList(table);
 
 			Access_DBInterface.Instance.Connection.Open();
 			OleDbTransaction trans = Access_DBInterface.Instance.Connection.BeginTransaction();
-			ArrayList list = GetAll(Access_DBInterface.Instance.Connection,trans,table,cache,whereQuery);
+			ArrayList list = GetAll(
+								Access_DBInterface.Instance.Connection,
+								trans,
+								table,
+								cache,
+								whereQuery);
 			trans.Commit();
 			Access_DBInterface.Instance.Connection.Close();
 
@@ -158,60 +184,70 @@ namespace DSShared.DB_Access
 		/// <param name="cache">If true, cache'ing will be used</param>
 		/// <param name="whereQuery">List of columns to limit the search with. If you cache an incomplete row list, that list will be returned in future cached retrievals</param>
 		/// <returns>A list of Access_DBTable in the order returned by the query</returns>
-		public static ArrayList GetAll(OleDbConnection conn,OleDbTransaction trans,string table,bool cache,params WhereCol[] whereQuery)
+		public static ArrayList GetAll(
+									OleDbConnection conn,
+									OleDbTransaction trans,
+									string table,
+									bool cache,
+									params WhereCol[] whereQuery)
 		{
 			DSShared.DB.DBTableType thisTable = DSShared.DB.DBTableTypeCache.Instance.CacheTable(table);
 
-			OleDbCommand comm = new OleDbCommand("SELECT * FROM "+thisTable.TableName,conn,trans);
+			OleDbCommand comm = new OleDbCommand("SELECT * FROM " + thisTable.TableName, conn, trans);
 
-			if(whereQuery!=null && whereQuery.Length>0)
+			if (whereQuery != null && whereQuery.Length > 0)
 			{
-				bool flag=false;
-				comm.CommandText+=" WHERE ";
-				int i=0;
-				foreach(WhereCol dbc in whereQuery)
+				bool flag = false;
+				comm.CommandText += " WHERE ";
+				int i = 0;
+
+				foreach (WhereCol dbc in whereQuery)
 				{
-					if(flag)
-						comm.CommandText+=" AND ";
+					if (flag)
+						comm.CommandText += " AND ";
 					else
-						flag=true;
+						flag = true;
 
-					string paramID = paramPrefix+(i++);
+					string paramID = paramPrefix + (i++);
 
-					comm.CommandText+=dbc.Column+"="+paramID;
+					comm.CommandText += dbc.Column + "=" + paramID;
 					comm.Parameters.AddWithValue(paramID, dbc.Data);
-					//comm.Parameters.Add(paramID,dbc.Data);
+//					comm.Parameters.Add(paramID, dbc.Data);
 				}
 			}
 
 			OleDbDataReader res = comm.ExecuteReader();
 			ArrayList list = new ArrayList();
 			Type myType = DSShared.DB.DBTableTypeCache.Instance.GetTableType(thisTable.TableName);
-			while(res.Read())
+
+			while (res.Read())
 			{
-				//if null object here, then the type does not have a default constructor defined
+				// if null object here, then the type does not have a default constructor defined
 				object newObject = myType.GetConstructor(new Type[]{}).Invoke(null);
-				foreach(PropertyInfo pi in thisTable.Columns)
+				foreach (PropertyInfo pi in thisTable.Columns)
 				{
-					if(thisTable[pi]!=null)
-						pi.SetValue(newObject,res[thisTable[pi].ColumnName],null);
+					if (thisTable[pi] != null)
+						pi.SetValue(
+								newObject,
+								res[thisTable[pi].ColumnName],
+								null);
 				}
 				
 				//Console.WriteLine("Type: "+objType);
 				list.Add(newObject);
 
-				//((DBTable)newObject).FinishGet(conn2);
+//				((DBTable)newObject).FinishGet(conn2);
 			}
 			res.Close();
 
-			foreach(Access_DBTable dbt in list)
-				dbt.FinishGet(conn,trans);
+			foreach (Access_DBTable dbt in list)
+				dbt.FinishGet(conn, trans);
 
-			if(cache)
-				DSShared.DB.DBTableTypeCache.Instance.CacheList(table,list);
+			if (cache)
+				DSShared.DB.DBTableTypeCache.Instance.CacheList(table, list);
 
-			if(FinishGetAll!=null)
-				FinishGetAll(table,list);
+			if (FinishGetAll != null)
+				FinishGetAll(table, list);
 
 			return list;
 		}
@@ -223,28 +259,32 @@ namespace DSShared.DB_Access
 		/// <param name="trans">Transaction to use for the delete</param>
 		/// <param name="table">Name of the table to delete</param>
 		/// <param name="whereQuery">Columns to base the delete query on</param>
-		public static void Delete(OleDbConnection conn,OleDbTransaction trans,string table, params WhereCol[]whereQuery)
+		public static void Delete(
+								OleDbConnection conn,
+								OleDbTransaction trans,
+								string table,
+								params WhereCol[]whereQuery)
 		{
 			DSShared.DB.DBTableType thisTable = DSShared.DB.DBTableTypeCache.Instance.CacheTable(table);
 
-			OleDbCommand comm = new OleDbCommand("DELETE FROM "+thisTable.TableName+" WHERE ",conn,trans);
+			OleDbCommand comm = new OleDbCommand("DELETE FROM " + thisTable.TableName + " WHERE ", conn, trans);
 
-			if(whereQuery!=null && whereQuery.Length>0)
+			if (whereQuery != null && whereQuery.Length > 0)
 			{
-				bool flag=false;
-				int i=0;
-				foreach(WhereCol dbc in whereQuery)
+				bool flag = false;
+				int i = 0;
+				foreach (WhereCol dbc in whereQuery)
 				{
-					if(flag)
-						comm.CommandText+=" AND ";
+					if (flag)
+						comm.CommandText += " AND ";
 					else
-						flag=true;
+						flag = true;
 
-					string paramID = paramPrefix+(i++);
+					string paramID = paramPrefix + (i++);
 
-					comm.CommandText+=dbc.Column+"="+paramID;
+					comm.CommandText += dbc.Column + "=" + paramID;
 					comm.Parameters.AddWithValue(paramID, dbc.Data);
-					//comm.Parameters.Add(paramID,dbc.Data);
+//					comm.Parameters.Add(paramID,dbc.Data);
 				}
 			}
 
@@ -258,7 +298,8 @@ namespace DSShared.DB_Access
 		/// </summary>
 		/// <param name="conn">Connection that was used for the GetAll()</param>
 		/// <param name="trans">Transaction used for the GetAll()</param>
-		protected virtual void FinishGet(OleDbConnection conn, OleDbTransaction trans){}
+		protected virtual void FinishGet(OleDbConnection conn, OleDbTransaction trans)
+		{}
 
 		/// <summary>
 		/// It is up to the implementing class to determine how this table is saved,
@@ -266,7 +307,8 @@ namespace DSShared.DB_Access
 		/// </summary>
 		/// <param name="conn">Connection to use for the save</param>
 		/// <param name="trans">Transaction to use for the save</param>
-		public virtual void Save(OleDbConnection conn,OleDbTransaction trans){}
+		public virtual void Save(OleDbConnection conn,OleDbTransaction trans)
+		{}
 
 		/// <summary>
 		/// It is up to the implementing class to determine how this table compares to other tables
@@ -293,7 +335,7 @@ namespace DSShared.DB_Access
 		/// </summary>
 		public string TableName
 		{
-			get{return myType.TableName;}
+			get { return myType.TableName; }
 		}
 
 		/// <summary>
@@ -301,9 +343,9 @@ namespace DSShared.DB_Access
 		/// </summary>
 		public void PrintTableInfo()
 		{
-			Console.WriteLine("Table: "+myType.TableName);
-			foreach(PropertyInfo pi in myType.Columns)
-				Console.WriteLine("Property: "+pi.Name+" -> col "+myType[pi].ColumnName+(myType.AutoNumber==pi?" autonumber":""));
+			Console.WriteLine("Table: " + myType.TableName);
+			foreach (PropertyInfo pi in myType.Columns)
+				Console.WriteLine("Property: " + pi.Name + " -> col " + myType[pi].ColumnName + (myType.AutoNumber == pi ? " autonumber" : ""));
 		}
 
 		/// <summary>
@@ -338,8 +380,8 @@ namespace DSShared.DB_Access
 		/// <param name="trans"></param>
 		public virtual void Delete(OleDbConnection conn,OleDbTransaction trans)
 		{
-			if(myType.AutoNumber!=null)
-				Delete(conn,trans,myType[myType.AutoNumber].ColumnName);
+			if (myType.AutoNumber != null)
+				Delete(conn, trans, myType[myType.AutoNumber].ColumnName);
 			else
 				throw new Exception("Calling delete on a table with no autonumber");
 		}
@@ -349,10 +391,10 @@ namespace DSShared.DB_Access
 		/// </summary>
 		/// <param name="conn">Connection to use</param>
 		/// <param name="trans">Transaction to use</param>
-		public void Update(OleDbConnection conn,OleDbTransaction trans)
+		public void Update(OleDbConnection conn, OleDbTransaction trans)
 		{
-			if(myType.AutoNumber!=null)
-				Update(conn,trans,myType[myType.AutoNumber].ColumnName);
+			if (myType.AutoNumber != null)
+				Update(conn, trans, myType[myType.AutoNumber].ColumnName);
 			else
 				throw new Exception("Calling update on a table with no autonumber");
 		}
@@ -363,89 +405,92 @@ namespace DSShared.DB_Access
 		/// <param name="conn">Connection to use</param>
 		/// <param name="trans">Transaction to use</param>
 		/// <param name="whereCols">Columns to limit the updates to</param>
-		public virtual void Update(OleDbConnection conn,OleDbTransaction trans,params string[]whereCols)
+		public virtual void Update(
+								OleDbConnection conn,
+								OleDbTransaction trans,
+								params string[]whereCols)
 		{
-			//figure out which propertyInfo objects we wont be updating
+			// figure out which propertyInfo objects we wont be updating
 			Hashtable updateHash = new Hashtable();
-			foreach(string uc in whereCols)
+			foreach (string uc in whereCols)
 			{
-				foreach(PropertyInfo pi in myType.Columns)
+				foreach (PropertyInfo pi in myType.Columns)
 				{
 					DSShared.DB.DBColumnAttribute attr = myType[pi];
-					if(uc==attr.ColumnName)
+					if (uc == attr.ColumnName)
 					{
-						updateHash[pi]=true;
+						updateHash[pi] = true;
 						break;
 					}
 				}
 			}
 
-			string commStr = "UPDATE "+myType.TableName+" SET ";
+			string commStr = "UPDATE " + myType.TableName + " SET ";
 			OleDbCommand comm = new OleDbCommand();
-			comm.Connection=conn;
-			comm.Transaction=trans;
+			comm.Connection = conn;
+			comm.Transaction = trans;
 
-			bool flag=false;
+			bool flag = false;
 
-			int i=0;
-			//build SET clause
-			foreach(PropertyInfo pi in myType.Columns)
+			int i = 0;
+			// build SET clause
+			foreach (PropertyInfo pi in myType.Columns)
 			{
-				if(updateHash[pi]!=null) //if true, this property is part of the WHERE clause
-					continue;
-
-				object val = pi.GetValue(this,null);
-				DSShared.DB.DBColumnAttribute attr = myType[pi];
-
-				if(!attr.IsAutoNumber && val!=null)
+				if (updateHash[pi] == null) // if exists, this property is part of the WHERE clause
 				{
-					if(flag)
-						commStr+=",";
-					else
-						flag=true;
+					object val = pi.GetValue(this, null);
+					DSShared.DB.DBColumnAttribute attr = myType[pi];
 
-					commStr+=attr.ColumnName;
-					string paramID = paramPrefix+(i++);
-					commStr+="="+paramID;
+					if (!attr.IsAutoNumber && val != null)
+					{
+						if (flag)
+							commStr += ",";
+						else
+							flag = true;
 
-					if(val is DateTime)
-						comm.Parameters.AddWithValue(paramID, val.ToString());
-						//comm.Parameters.Add(paramID,val.ToString());
-					else
-						comm.Parameters.AddWithValue(paramID, val);
-						//comm.Parameters.Add(paramID,val);
+						commStr += attr.ColumnName;
+						string paramID = paramPrefix + (i++);
+						commStr += "=" + paramID;
+
+						if (val is DateTime)
+							comm.Parameters.AddWithValue(paramID, val.ToString());
+//							comm.Parameters.Add(paramID, val.ToString());
+						else
+							comm.Parameters.AddWithValue(paramID, val);
+//							comm.Parameters.Add(paramID, val);
+					}
 				}
 			}
 
-			commStr +=" WHERE ";
-			flag=false;
+			commStr += " WHERE ";
+			flag = false;
 
-			foreach(PropertyInfo pi in updateHash.Keys)
+			foreach (PropertyInfo pi in updateHash.Keys)
 			{
-				object val = pi.GetValue(this,null);
+				object val = pi.GetValue(this, null);
 				DSShared.DB.DBColumnAttribute attr = myType[pi];
 
-				if(val!=null)
+				if (val != null)
 				{
-					if(flag)
-						commStr+=",";
+					if (flag)
+						commStr += ",";
 					else
-						flag=true;
+						flag = true;
 
-					commStr+=attr.ColumnName;
-					string paramID = paramPrefix+(i++);
-					commStr+="="+paramID;
+					commStr += attr.ColumnName;
+					string paramID = paramPrefix + (i++);
+					commStr += "=" + paramID;
 
 					if (val is DateTime)
 						comm.Parameters.AddWithValue(paramID, val.ToString());
-					//comm.Parameters.Add(paramID,val.ToString());
+//						comm.Parameters.Add(paramID,val.ToString());
 					else
 						comm.Parameters.AddWithValue(paramID, val);
-					//comm.Parameters.Add(paramID,val);
+//						comm.Parameters.Add(paramID,val);
 				}
 			}
 
-			comm.CommandText=commStr;
+			comm.CommandText = commStr;
 			comm.ExecuteNonQuery();
 		}
 
@@ -455,55 +500,55 @@ namespace DSShared.DB_Access
 		/// </summary>
 		/// <param name="conn"></param>
 		/// <param name="trans"></param>
-		public virtual void Insert(OleDbConnection conn,OleDbTransaction trans)
+		public virtual void Insert(OleDbConnection conn, OleDbTransaction trans)
 		{
-			string commStr = string.Format("INSERT INTO {0} (",myType.TableName);
+			string commStr = string.Format("INSERT INTO {0} (", myType.TableName);
 			string valStr = "VALUES(";
 
 			OleDbCommand comm = new OleDbCommand();
-			comm.Connection=conn;
-			comm.Transaction=trans;
+			comm.Connection = conn;
+			comm.Transaction = trans;
 
-			bool flag=false;
+			bool flag = false;
 
-			int i=0;
-			foreach(PropertyInfo pi in myType.Columns)
+			int i = 0;
+			foreach (PropertyInfo pi in myType.Columns)
 			{
-				object val = pi.GetValue(this,null);
+				object val = pi.GetValue(this, null);
 				DSShared.DB.DBColumnAttribute attr = myType[pi];
 
-				if(!attr.IsAutoNumber && val!=null)
+				if (!attr.IsAutoNumber && val != null)
 				{
-					if(flag)
+					if (flag)
 					{
-						commStr+=",";
-						valStr+=",";
+						commStr += ",";
+						valStr += ",";
 					}
 					else
-						flag=true;
+						flag = true;
 
-					commStr+=attr.ColumnName;
-					string paramID = paramPrefix+(i++);
-					valStr+=paramID;
+					commStr += attr.ColumnName;
+					string paramID = paramPrefix + (i++);
+					valStr += paramID;
 
 					if (val is DateTime)
 						comm.Parameters.AddWithValue(paramID, val.ToString());
-					//comm.Parameters.Add(paramID,val.ToString());
+//						comm.Parameters.Add(paramID, val.ToString());
 					else
 						comm.Parameters.AddWithValue(paramID, val);
-					//comm.Parameters.Add(paramID,val);
+//						comm.Parameters.Add(paramID, val);
 
-					//Console.WriteLine("Insert: "+columns[c].Name+":"+columns[c].Value+" type: "+columns[c].Value.GetType());
+					//Console.WriteLine("Insert: " + columns[c].Name + ":" + columns[c].Value + " type: " + columns[c].Value.GetType());
 				}
 			}
 
-			comm.CommandText=commStr+") "+valStr+")";
+			comm.CommandText = commStr + ") " + valStr + ")";
 			comm.ExecuteNonQuery();
 
-			if(myType.AutoNumber!=null)
+			if (myType.AutoNumber != null)
 			{
-				comm = new OleDbCommand("SELECT @@IDENTITY",conn,trans);
-				myType.AutoNumber.SetValue(this,Convert.ToInt32(comm.ExecuteScalar()),null);
+				comm = new OleDbCommand("SELECT @@IDENTITY", conn, trans);
+				myType.AutoNumber.SetValue(this, Convert.ToInt32(comm.ExecuteScalar()), null);
 			}
 		}
 	}

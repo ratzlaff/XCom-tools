@@ -11,7 +11,7 @@ namespace DSShared.Lists
 	/// </summary>
 	/// <param name="columnChanged">Column that is changed</param>
 	/// <param name="changeAmount">How much it has changed</param>
-	public delegate void CustomListColumChangedDelegate(CustomListColumn columnChanged,int changeAmount);
+	public delegate void CustomListColumChangedDelegate(CustomListColumn columnChanged, int changeAmount);
 
 	/// <summary>
 	/// Delegate for use when a column is clicked on
@@ -35,12 +35,12 @@ namespace DSShared.Lists
 	{
 		private ObjProperty colProperty;
 		private string title;
-		private int width=50,left,index;
+		private int width=50, left, index;
 
 		/// <summary>
 		/// Minimum width of a column
 		/// </summary>
-		public static int MinWidth=20;
+		public static int MinWidth = 20;
 
 		/// <summary>
 		/// Fired when a column's width changes
@@ -69,8 +69,8 @@ namespace DSShared.Lists
 		/// <param name="property">ObjProperty that will reflect on the objects contained in the list</param>
 		public CustomListColumn(string title, ObjProperty property)
 		{
-			this.title=title;
-			this.colProperty=property;
+			this.title = title;
+			this.colProperty = property;
 		}
 
 		/// <summary>
@@ -80,7 +80,7 @@ namespace DSShared.Lists
 		/// <param name="property">PropertyInfo that will reflect on the objects contained in the list</param>
 		public CustomListColumn(string title, System.Reflection.PropertyInfo property)
 		{
-			this.title=title;
+			this.title = title;
 			this.colProperty = new ObjProperty(property);
 		}
 
@@ -88,12 +88,18 @@ namespace DSShared.Lists
 		/// Initializes a new instance of the <see cref="T:CustomListColumn"/> class.
 		/// </summary>
 		/// <param name="title">Column title</param>
-		public CustomListColumn(string title):this(title,(ObjProperty)null){}
+		public CustomListColumn(string title)
+			:
+			this(title,(ObjProperty)null)
+		{}
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="T:CustomListColumn"/> class.
 		/// </summary>
-		public CustomListColumn():this("",(ObjProperty)null){}
+		public CustomListColumn()
+			:
+			this("", (ObjProperty)null)
+		{}
 
 		/// <summary>
 		/// Equality test. Based on GetHashCode() between objects of this type
@@ -102,8 +108,9 @@ namespace DSShared.Lists
 		/// <returns></returns>
 		public override bool Equals(object other)
 		{
-			if(other is CustomListColumn)
-				return GetHashCode()==other.GetHashCode();
+			if (other is CustomListColumn)
+				return GetHashCode() == other.GetHashCode();
+
 			return false;
 		}
 
@@ -114,8 +121,8 @@ namespace DSShared.Lists
 		/// <param name="e">Args</param>
 		public void FireKeyPress(ObjRow row, KeyPressEventArgs e)
 		{
-			if(KeyPress!=null)
-				KeyPress(row,this,e);
+			if (KeyPress != null)
+				KeyPress(row, this, e);
 		}
 
 		/// <summary>
@@ -133,8 +140,8 @@ namespace DSShared.Lists
 		/// <param name="row">Row to raise event with</param>
 		public void FireClick(ObjRow row)
 		{
-			if(OnClick!=null)
-				OnClick(this,new RowClickEventArgs(row,this));
+			if (OnClick != null)
+				OnClick(this, new RowClickEventArgs(row, this));
 		}
 
 		/// <summary>
@@ -143,7 +150,9 @@ namespace DSShared.Lists
 		/// <param name="font"></param>
 		public void ResizeTitle(System.Drawing.Font font)
 		{
-			Width = Math.Max(MinWidth,2+(int)System.Drawing.Graphics.FromImage(new System.Drawing.Bitmap(1,1)).MeasureString(title,font).Width);
+			Width = Math.Max(
+						MinWidth,
+						2 + (int)System.Drawing.Graphics.FromImage(new System.Drawing.Bitmap(1, 1)).MeasureString(title, font).Width);
 		}
 
 
@@ -153,8 +162,8 @@ namespace DSShared.Lists
 		/// <value>The title.</value>
 		public string Title
 		{
-			get{return title;}
-			set{title=value;}
+			get { return title; }
+			set { title = value; }
 		}
 
 		/// <summary>
@@ -163,8 +172,8 @@ namespace DSShared.Lists
 		/// <value>The index.</value>
 		public int Index
 		{
-			get{return index;}
-			set{index=value;}
+			get { return index; }
+			set { index = value; }
 		}
 
 		/// <summary>
@@ -173,8 +182,8 @@ namespace DSShared.Lists
 		/// <value>The property.</value>
 		public ObjProperty Property
 		{
-			get{return colProperty;}
-			set{colProperty=value;}
+			get { return colProperty; }
+			set { colProperty = value; }
 		}
 
 		/// <summary>
@@ -183,13 +192,13 @@ namespace DSShared.Lists
 		/// <value>The left.</value>
 		public int Left
 		{
-			get{return left;}
+			get { return left; }
 			set
 			{
-				int diff = left-value;
-				left=value;
-				if(LeftChanged!=null)
-					LeftChanged(this,diff);
+				int diff = left - value;
+				left = value;
+				if (LeftChanged != null)
+					LeftChanged(this, diff);
 			}
 		}
 
@@ -199,16 +208,16 @@ namespace DSShared.Lists
 		/// <value>The width.</value>
 		public int Width
 		{
-			get{return width;}
+			get { return width; }
 			set
 			{
-				if(value<MinWidth)
-					return;
-
-				int diff = width-value;
-				width=value;
-				if(WidthChanged!=null)
-					WidthChanged(this,diff);
+				if (value >= MinWidth)
+				{
+					int diff = width - value;
+					width = value;
+					if (WidthChanged != null)
+						WidthChanged(this, diff);
+				}
 			}
 		}
 	}
@@ -228,8 +237,8 @@ namespace DSShared.Lists
 		/// <param name="col">The column that was clicked under</param>
 		public RowClickEventArgs(ObjRow row, CustomListColumn col)
 		{
-			this.row=row;
-			this.col=col;
+			this.row = row;
+			this.col = col;
 		}
 
 		/// <summary>
@@ -238,7 +247,7 @@ namespace DSShared.Lists
 		/// <value>The row.</value>
 		public ObjRow Row
 		{
-			get{return row;}
+			get { return row; }
 		}
 
 		/// <summary>
@@ -247,7 +256,7 @@ namespace DSShared.Lists
 		/// <value>The column.</value>
 		public CustomListColumn Column
 		{
-			get{return col;}
+			get { return col; }
 		}
 	}
 }

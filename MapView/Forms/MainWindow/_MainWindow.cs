@@ -213,7 +213,7 @@ namespace MapView
 		{
 			get { return instance; }
 		}
-		 
+
 		private void parseLine(XCom.KeyVal line, XCom.VarCollection vars)
 		{
 			switch (line.Keyword.ToLower())
@@ -237,7 +237,7 @@ namespace MapView
 					break;
 			}
 		}
-		 
+
 		private void ChangeSetting(object sender, string key, object val)
 		{
 			GetSettings()[key].Value = val;

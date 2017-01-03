@@ -18,7 +18,9 @@ namespace DSShared.FileSystems
 
 	/// <summary>
 	/// </summary>
-	public class FileBackupManager : IFileBackupManager
+	public class FileBackupManager
+		:
+		IFileBackupManager
 	{
 		/// <summary>
 		/// Backups a file
@@ -27,13 +29,16 @@ namespace DSShared.FileSystems
 		{
 			var dir = Path.GetDirectoryName(filePath);
 			dir = Path.Combine(dir, "Backups");
-			if (!Directory.Exists(dir)) Directory.CreateDirectory(dir);
+
+			if (!Directory.Exists(dir))
+				Directory.CreateDirectory(dir);
+
 			var name = Path.GetFileName(filePath);
 
-			var finalPath = Path.Combine(dir, name + Path.GetRandomFileName() );
+			var finalPath = Path.Combine(dir, name + Path.GetRandomFileName());
 			while (File.Exists(finalPath))
 			{
-				  finalPath = Path.Combine(dir, name + Path.GetRandomFileName());
+				finalPath = Path.Combine(dir, name + Path.GetRandomFileName());
 			}
 			File.Copy(filePath, finalPath);
 		}

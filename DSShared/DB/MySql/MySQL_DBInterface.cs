@@ -1,8 +1,5 @@
 //#define USING_MYSQL
 
-
-
-
 #if USING_MYSQL
 using System;
 using MySql.Data.MySqlClient;
@@ -16,8 +13,7 @@ namespace DSShared.DB_MySql
 //		private MySql.Data.MySqlClient.MySqlDataReader res;
 
 		private MySQL_DBInterface()
-		{
-		}
+		{}
 /*
 		public MySqlDataReader ExecuteReader(MySqlCommand comm)
 		{
@@ -28,38 +24,44 @@ namespace DSShared.DB_MySql
 		public void CloseReader()
 		{
 			res.Close();
-			res=null;
+			res = null;
 		}
 
 		public object GetColumn(string col)
 		{
-			if(res==null)
+			if (res == null)
 				throw new Exception("Call to DBInterface::GetColumn on a null reader");
 
 			int colNum = res.GetOrdinal(col);
-			Console.WriteLine("Type: "+res.GetDataTypeName(colNum));
+			Console.WriteLine("Type: " + res.GetDataTypeName(colNum));
 			return res[col];
 		}*/
 
 		public MySql.Data.MySqlClient.MySqlConnection Connection
 		{
-			get{return connection;}
+			get { return connection; }
 		}
 
-		public static void Initialize(string server, string username, string password,string database)
+		public static void Initialize(
+								string server,
+								string username,
+								string password,
+								string database)
 		{
-			string connStr = String.Format("server={0};user id={1}; password={2}; database={3}; pooling=false",
-				server, username, password, database );
+			string connStr = String.Format(
+										"server={0}; user id={1}; password={2}; database={3}; pooling=false",
+										server, username, password, database );
 
-			Instance.connection=new MySql.Data.MySqlClient.MySqlConnection(connStr);
+			Instance.connection = new MySql.Data.MySqlClient.MySqlConnection(connStr);
 		}
 
 		public static MySQL_DBInterface Instance
 		{
 			get
 			{
-				if(instanceObject==null)
-					instanceObject=new MySQL_DBInterface();
+				if (instanceObject == null)
+					instanceObject = new MySQL_DBInterface();
+
 				return instanceObject;
 			}
 		}

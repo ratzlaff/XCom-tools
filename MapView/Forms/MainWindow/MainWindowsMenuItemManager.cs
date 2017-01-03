@@ -43,10 +43,10 @@ namespace MapView.Forms.MainWindow
 			MainWindowsManager.TopRmpView.TopViewControl.LoadDefaultSettings();
 			MainWindowsManager.TopRmpView.RouteViewControl.LoadDefaultSettings();
 
-			RegisterForm(MainWindowsManager.TopView,	"Top View",		"TopView");
-			RegisterForm(MainWindowsManager.RmpView,	"Route View",	"RmpView");
+			RegisterForm(MainWindowsManager.TopView,	"Top View",			"TopView");
+			RegisterForm(MainWindowsManager.RmpView,	"Route View",		"RmpView");
 			RegisterForm(MainWindowsManager.TopRmpView,	"Top & Route View");
-			RegisterForm(MainWindowsManager.TileView,	"Tile View",	"TileView");
+			RegisterForm(MainWindowsManager.TileView,	"Tile View",		"TileView");
 
 			RegisterForm(_consoleSharedSpace.GetNewConsole(), "Console");
 

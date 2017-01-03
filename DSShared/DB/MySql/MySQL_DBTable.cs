@@ -8,10 +8,13 @@ using MySql.Data.MySqlClient;
 namespace DSShared.DB_MySql
 {
 	public delegate void FinishGetAllDelegate(string table,ArrayList rows);
-	public abstract class MySQL_DBTable:IComparable
+
+	public abstract class MySQL_DBTable
+		:
+		IComparable
 	{
 		protected DSShared.DB.DBTableType myType;
-		private static string paramPrefix="IFU";
+		private static string paramPrefix = "IFU";
 
 		public static event FinishGetAllDelegate FinishGetAll;
 

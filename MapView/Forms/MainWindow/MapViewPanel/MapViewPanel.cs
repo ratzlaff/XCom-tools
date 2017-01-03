@@ -141,13 +141,17 @@ namespace MapView
 
 		private void vert_Scroll(object sender, ScrollEventArgs e)
 		{
-			_mapView.Location = new Point(_mapView.Left, -(_vert.Value) + 1);
+			_mapView.Location = new Point(
+										_mapView.Left,
+										-(_vert.Value) + 1);
 			_mapView.Refresh();
 		}
 
 		private void horiz_Scroll(object sender, ScrollEventArgs e)
 		{
-			_mapView.Location = new Point(-(_horiz.Value), _mapView.Top);
+			_mapView.Location = new Point(
+										-(_horiz.Value),
+										_mapView.Top);
 			_mapView.Refresh();
 		}
 

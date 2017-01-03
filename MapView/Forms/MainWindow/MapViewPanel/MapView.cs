@@ -318,7 +318,7 @@ namespace MapView
 			if (map != null)
 			{
 				var size = GetMapSize(Globals.PckImageScale);
-				Width = size.Width;
+				Width  = size.Width;
 				Height = size.Height;
 			}
 		}
@@ -386,7 +386,7 @@ namespace MapView
 					if (h >= map.CurrentHeight)
 					{
 						DrawGrid(h, g);
-	
+
 						var startY = _origin.Y + (halfHeight * 3 * h);
 						var startX = _origin.X;
 						for (var row = 0; row < map.MapSize.Rows; row++)
@@ -397,10 +397,10 @@ namespace MapView
 							{
 								var isClickedLocation = IsDragEndOrStart(row, col);
 								var tileRect = new Rectangle(col, row, 1, 1);
-	
+
 								if (isClickedLocation)
 									DrawCursor(g, x, y, h);
-	
+
 								if (h == map.CurrentHeight || map[row, col, h].DrawAbove)
 								{
 									var tile = (XCMapTile) map[row, col, h];
@@ -421,14 +421,19 @@ namespace MapView
 										DrawTile(g, tile, x, y);
 									}
 								}
-	
+
 								if (isClickedLocation && cursor != null)
-									cursor.DrawLow(g, x, y, MapViewPanel.Current, false, map.CurrentHeight == h);
-	
+									cursor.DrawLow(
+												g,
+												x, y,
+												MapViewPanel.Current,
+												false,
+												map.CurrentHeight == h);
+
 								x += halfWidth;
 								y += halfHeight;
 							}
-	
+
 							startY += halfHeight;
 							startX -= halfWidth;
 						}
@@ -443,7 +448,11 @@ namespace MapView
 		private void DrawCursor(Graphics g, int x, int y, int h)
 		{
 			if (cursor != null)
-				cursor.DrawHigh(g, x, y, false, map.CurrentHeight == h);
+				cursor.DrawHigh(
+							g,
+							x, y,
+							false,
+							map.CurrentHeight == h);
 		}
 
 		private bool IsDragEndOrStart(int row, int col)

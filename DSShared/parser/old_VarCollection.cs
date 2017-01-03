@@ -30,9 +30,9 @@ namespace DSShared.old
 		/// </summary>
 		public VarCollection(StreamReader sr)
 		{
-			this.sr=sr;
+			this.sr = sr;
 			vars = new Hashtable();
-			other=null;
+			other = null;
 		}
 
 		/// <summary>
@@ -129,8 +129,8 @@ namespace DSShared.old
 				int idx = line.IndexOf(Separator);
 				if (idx > 0)
 					return new KeyVal(line.Substring(0, idx), line.Substring(idx + 1));
-				else
-					return new KeyVal(line, "");
+
+				return new KeyVal(line, "");
 			}
 			return null;
 		}
@@ -156,7 +156,8 @@ namespace DSShared.old
 						line = sr.ReadLine().Trim();
 					else
 						return null;
-				} while (line.Length == 0 || line[0] == '#');
+				}
+				while (line.Length == 0 || line[0] == '#');
 
 				if (line[0] == '$') // cache variable, get another line
 				{

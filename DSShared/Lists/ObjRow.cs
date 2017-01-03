@@ -7,7 +7,9 @@ namespace DSShared.Lists
 	/// <summary>
 	/// Class that represents a row in a CustomList
 	/// </summary>
-	public class ObjRow:IComparable
+	public class ObjRow
+		:
+		IComparable
 	{
 		#region protected variables
 		/// <summary>
@@ -23,27 +25,27 @@ namespace DSShared.Lists
 		/// <summary>
 		/// Row screen information
 		/// </summary>
-		protected int width,height,top;
+		protected int width, height, top;
 
 		/// <summary>
 		/// Selected column
 		/// </summary>
-		protected CustomListColumn selCol=null;
+		protected CustomListColumn selCol = null;
 
 		/// <summary>
 		/// Clicked-on column
 		/// </summary>
-		protected CustomListColumn clickCol=null;
+		protected CustomListColumn clickCol = null;
 
 		/// <summary>
 		/// Timer to make a blinking cursor when an editable cell is clicked on
 		/// </summary>
-		protected Timer cursorTimer=null;
+		protected Timer cursorTimer = null;
 
 		/// <summary>
 		/// String for the blinking cursor
 		/// </summary>
-		protected string addStr="";
+		protected string addStr = "";
 
 		/// <summary>
 		/// Timer information
@@ -53,55 +55,57 @@ namespace DSShared.Lists
 		/// <summary>
 		/// Row index
 		/// </summary>
-		protected int rowIdx=0;
+		protected int rowIdx = 0;
 
 		#endregion
 
 		/// <summary>
 		/// Flag to tell if we are currently in edit mode
 		/// </summary>
-		private bool editing=false;
+		private bool editing = false;
 
 		/// <summary>
 		/// Raised when the control needs to refresh itself
 		/// </summary>
 		public event RefreshDelegate RefreshEvent;
 
-		private static int numCreated=0;
+		private static int numCreated = 0;
 		private int createdNum;
 
-		private string editBuffer="";
+		private string editBuffer = "";
 
-		//scanning of object should have taken place before this object is created
+		// scanning of object should have taken place before this object is created
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="T:ObjRow"/> class.
 		/// </summary>
 		/// <param name="obj">The obj.</param>
 		/// <param name="columns">The columns.</param>
-		public ObjRow(object obj,CustomListColumnCollection columns)
+		public ObjRow(object obj, CustomListColumnCollection columns)
 		{
-			this.obj=obj;
-			this.columns=columns;
+			this.obj = obj;
+			this.columns = columns;
 
-			if(cursorTimer==null)
+			if (cursorTimer == null)
 			{
 				cursorTimer = new Timer();
-				cursorTimer.Interval=500;
-				cursorTimer.Tick+=new EventHandler(timerTick);
+				cursorTimer.Interval = 500;
+				cursorTimer.Tick += new EventHandler(timerTick);
 
-				timerStarted=false;
+				timerStarted = false;
 			}
 
-			createdNum=numCreated++;
+			createdNum = numCreated++;
 		}
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="T:ObjRow"/> class.
 		/// </summary>
 		/// <param name="obj">The obj.</param>
-		public ObjRow(object obj):this(obj,null){}
-
+		public ObjRow(object obj)
+			:
+			this(obj, null)
+		{}
 
 		/// <summary>
 		/// Compares one row to another. other must be an ObjRow and ObjRow.obj must implement IComparable
@@ -110,9 +114,9 @@ namespace DSShared.Lists
 		/// <returns></returns>
 		public int CompareTo(object other)
 		{
-			if(other is ObjRow)
+			if (other is ObjRow)
 			{
-				if(obj is IComparable)
+				if (obj is IComparable)
 					return ((IComparable)obj).CompareTo(((ObjRow)other).obj);
 			}
 			return -1;
@@ -124,8 +128,8 @@ namespace DSShared.Lists
 		/// <value>The object.</value>
 		public object Object
 		{
-			get{return obj;}
-			set{obj=value;}
+			get { return obj; }
+			set { obj = value; }
 		}
 
 		/// <summary>
@@ -134,8 +138,8 @@ namespace DSShared.Lists
 		/// <value>The index of the row.</value>
 		public int RowIndex
 		{
-			get{return rowIdx;}
-			set{rowIdx=value;}
+			get { return rowIdx; }
+			set { rowIdx = value; }
 		}
 
 		/// <summary>
@@ -145,10 +149,10 @@ namespace DSShared.Lists
 		/// <returns></returns>
 		public override bool Equals(object other)
 		{
-			if(obj==null)
-				return this==other;
+			if (obj == null)
+				return this == other;
 
-			if(other is ObjRow)
+			if (other is ObjRow)
 				return obj.Equals(((ObjRow)other).obj);
 
 			return false;
@@ -162,30 +166,30 @@ namespace DSShared.Lists
 		/// </returns>
 		public override int GetHashCode()
 		{
-			if(obj==null)
+			if (obj == null)
 				return createdNum;
 
-			return obj.GetHashCode()>>1;
+			return obj.GetHashCode() >> 1;
 		}
 
 		private void timerTick(object sender, EventArgs e)
 		{
-			addStr=flip?"":"|";
-			flip=!flip;
+			addStr = flip ? "" : "|";
+			flip =! flip;
 
-			if(RefreshEvent !=null)
+			if (RefreshEvent != null)
 				RefreshEvent();
 		}
 
 		private void startTimer()
 		{
-			if(!timerStarted)
+			if (!timerStarted)
 				cursorTimer.Start();
 		}
 
 		private void stopTimer()
 		{
-			if(timerStarted)
+			if (timerStarted)
 				cursorTimer.Stop();
 		}
 
@@ -196,8 +200,8 @@ namespace DSShared.Lists
 		/// <value>The width.</value>
 		public int Width
 		{
-			get{return width;}
-			set{width=value;}
+			get { return width; }
+			set { width = value; }
 		}
 
 		/// <summary>
@@ -207,8 +211,8 @@ namespace DSShared.Lists
 		/// <value>The height.</value>
 		public int Height
 		{
-			get{return height;}
-			set{height=value;}
+			get { return height; }
+			set { height = value; }
 		}
 
 		/// <summary>
@@ -217,8 +221,8 @@ namespace DSShared.Lists
 		/// <value>The top.</value>
 		public int Top
 		{
-			get{return top;}
-			set{top=value;}
+			get { return top; }
+			set { top = value; }
 		}
 
 		/// <summary>
@@ -227,7 +231,7 @@ namespace DSShared.Lists
 		/// <value>The columns.</value>
 		public CustomListColumnCollection Columns
 		{
-			set{columns=value;}
+			set { columns = value; }
 		}
 
 		/// <summary>
@@ -236,7 +240,7 @@ namespace DSShared.Lists
 		/// <param name="col"></param>
 		public void MouseOver(CustomListColumn col)
 		{
-			selCol=col;
+			selCol = col;
 		}
 
 		/// <summary>
@@ -244,7 +248,7 @@ namespace DSShared.Lists
 		/// </summary>
 		public void MouseLeave()
 		{	
-			selCol=null;
+			selCol = null;
 		}
 
 		/// <summary>
@@ -253,15 +257,15 @@ namespace DSShared.Lists
 		/// <param name="col">The column the mouse was over when the button was clicked</param>
 		public void Click(CustomListColumn col)
 		{
-			clickCol=col;
-			addStr="|";
+			clickCol = col;
+			addStr = "|";
 			cursorTimer.Start();
-			if(col.Property!=null)
+
+			if (col.Property != null)
 			{
 				editBuffer = clickCol.Property.Value(obj).ToString();
-				editing=true;
+				editing = true;
 			}
-
 			col.FireClick(this);
 		}
 
@@ -272,29 +276,33 @@ namespace DSShared.Lists
 		{			
 			cursorTimer.Stop();
 
-			if(clickCol!=null && clickCol.Property!=null)
+			if (clickCol != null && clickCol.Property != null)
 			{
 				try
 				{
-					switch(clickCol.Property.EditType)
+					switch (clickCol.Property.EditType)
 					{
 						case EditStrType.String:
-							clickCol.Property.SetValue(obj,editBuffer);
+							clickCol.Property.SetValue(obj, editBuffer);
 							break;
+
 						case EditStrType.Int:
-							clickCol.Property.SetValue(obj,int.Parse(editBuffer));
+							clickCol.Property.SetValue(obj, int.Parse(editBuffer));
 							break;
+
 						case EditStrType.Float:
-							clickCol.Property.SetValue(obj,double.Parse(editBuffer));
+							clickCol.Property.SetValue(obj, double.Parse(editBuffer));
 							break;
 					}
 				}
-				catch{}
-				editing=false;
+				catch
+				{}
+
+				editing = false;
 			}
 
-			clickCol=null;
-			addStr="";
+			clickCol = null;
+			addStr = "";
 
 			FireRefresh();
 		}
@@ -304,7 +312,7 @@ namespace DSShared.Lists
 		/// </summary>
 		public void FireRefresh()
 		{
-			if(RefreshEvent!=null)
+			if (RefreshEvent != null)
 				RefreshEvent();
 		}
 
@@ -314,27 +322,29 @@ namespace DSShared.Lists
 		/// <param name="e">The <see cref="T:System.Windows.Forms.KeyPressEventArgs"/> instance containing the event data.</param>
 		public void KeyPress(KeyPressEventArgs e)
 		{
-			clickCol.FireKeyPress(this,e);
+			clickCol.FireKeyPress(this, e);
 
-			if(clickCol!=null && clickCol.Property.EditType!=EditStrType.None)
+			if (clickCol != null && clickCol.Property.EditType != EditStrType.None)
 			{
-				switch(clickCol.Property.EditType)
+				switch (clickCol.Property.EditType)
 				{
 					case EditStrType.Custom:
-						if(clickCol.Property.KeyFunction==null)
+						if (clickCol.Property.KeyFunction == null)
 							throw new Exception("KeyFunction was not initialized");
-						clickCol.Property.KeyFunction(this,clickCol,e);
+
+						clickCol.Property.KeyFunction(this, clickCol, e);
 						break;
+
 					default:
-						if(e.KeyChar=='\b')
+						if (e.KeyChar == '\b')
 						{
-							if(editBuffer.Length>0)
-								editBuffer = editBuffer.Substring(0,editBuffer.Length-1);
+							if (editBuffer.Length > 0)
+								editBuffer = editBuffer.Substring(0, editBuffer.Length - 1);
 						}
-						else if(e.KeyChar>=32) //printable characters only
+						else if (e.KeyChar >= 32) // printable characters only
 							editBuffer += e.KeyChar;
 
-						if(RefreshEvent!=null)
+						if (RefreshEvent != null)
 							RefreshEvent();
 						break;
 				}
@@ -346,61 +356,96 @@ namespace DSShared.Lists
 		/// </summary>
 		/// <param name="e"></param>
 		public void KeyDown(KeyEventArgs e)
-		{
-
-		}
+		{}
 
 		/// <summary>
 		/// This function currently does nothing
 		/// </summary>
 		/// <param name="e"></param>
 		public void KeyUp(KeyEventArgs e)
-		{
-
-		}
+		{}
 
 		/// <summary>
 		/// Method that paints this row
 		/// </summary>
 		/// <param name="e"></param>
 		/// <param name="yOffset"></param>
-		public virtual void Render(PaintEventArgs e,int yOffset)
+		public virtual void Render(PaintEventArgs e, int yOffset)
 		{
-			//base.OnPaint(e);
+//			base.OnPaint(e);
 
-			if(obj!=null)
+			if (obj != null)
 			{
-				int startX=0;
-				System.Drawing.RectangleF rowRect = new System.Drawing.RectangleF(columns.OffX,top+yOffset+1,columns.TableWidth-1,columns.Font.Height+columns.RowSpace*2-1);
-				if(selCol!=null)
-					e.Graphics.FillRectangle(Brushes.LightGreen,rowRect);
+				int startX = 0;
+				System.Drawing.RectangleF rowRect = new System.Drawing.RectangleF(
+																			columns.OffX,
+																			top + yOffset + 1,
+																			columns.TableWidth - 1,
+																			columns.Font.Height + columns.RowSpace * 2 - 1);
+				if (selCol != null)
+					e.Graphics.FillRectangle(Brushes.LightGreen, rowRect);
 
-				if(clickCol!=null)
+				if (clickCol != null)
 				{
-					System.Drawing.Rectangle rect = new System.Drawing.Rectangle(clickCol.Left,top+yOffset+1,clickCol.Width,columns.Font.Height+columns.RowSpace+1);
-					e.Graphics.FillRectangle(Brushes.LightSeaGreen,rowRect);
-					e.Graphics.FillRectangle(Brushes.LightSteelBlue,rect);
+					System.Drawing.Rectangle rect = new System.Drawing.Rectangle(
+																			clickCol.Left,
+																			top + yOffset + 1,
+																			clickCol.Width,
+																			columns.Font.Height + columns.RowSpace + 1);
+					e.Graphics.FillRectangle(Brushes.LightSeaGreen, rowRect);
+					e.Graphics.FillRectangle(Brushes.LightSteelBlue, rect);
 				}
 
-				for(int i=0;i<columns.Count;i++)
+				for (int i = 0; i < columns.Count; i++)
 				{
 					CustomListColumn col = columns[i] as CustomListColumn;
 
-					System.Drawing.Rectangle rect = new System.Drawing.Rectangle(startX+columns.OffX,top+yOffset+columns.RowSpace,col.Width-4,columns.Font.Height);
-					
-					if(clickCol==col && col.Property!=null && clickCol.Property.EditType==EditStrType.Custom)
-						e.Graphics.DrawString(col.Property.Value(obj).ToString()+addStr,columns.Font,System.Drawing.Brushes.Black,rect);
-					else if(clickCol==col && col.Property!=null && clickCol.Property.EditType!=EditStrType.None)
-						e.Graphics.DrawString((editing?editBuffer:col.Property.Value(obj).ToString())+addStr,columns.Font,System.Drawing.Brushes.Black,rect);
-					else if(col.Property!=null)
-						e.Graphics.DrawString(col.Property.Value(obj).ToString()+(putDecimal?".":""),columns.Font,System.Drawing.Brushes.Black,rect);
+					System.Drawing.Rectangle rect = new System.Drawing.Rectangle(
+																			startX + columns.OffX,
+																			top + yOffset + columns.RowSpace,
+																			col.Width - 4,
+																			columns.Font.Height);
 
-					startX+=col.Width;
-					if(selCol==col)
-						e.Graphics.DrawRectangle(Pens.Red,rect);
+					if (clickCol == col
+						&& col.Property != null
+						&& clickCol.Property.EditType == EditStrType.Custom)
+					{
+						e.Graphics.DrawString(
+										col.Property.Value(obj).ToString() + addStr,
+										columns.Font,
+										System.Drawing.Brushes.Black,
+										rect);
+					}
+					else if (clickCol == col
+						&& col.Property != null
+						&& clickCol.Property.EditType != EditStrType.None)
+					{
+						e.Graphics.DrawString(
+										(editing ? editBuffer : col.Property.Value(obj).ToString()) + addStr,
+										columns.Font,
+										System.Drawing.Brushes.Black,
+										rect);
+					}
+					else if (col.Property != null)
+					{
+						e.Graphics.DrawString(
+										col.Property.Value(obj).ToString() + (putDecimal ? "." : ""),
+										columns.Font,
+										System.Drawing.Brushes.Black,
+										rect);
+					}
+
+					startX += col.Width;
+					if (selCol == col)
+						e.Graphics.DrawRectangle(Pens.Red, rect);
 				}
-				e.Graphics.DrawLine(Pens.Black,columns.OffX,top+columns.Font.Height+columns.RowSpace*2+yOffset,columns.TableWidth-1,top+columns.Font.Height+columns.RowSpace*2+yOffset);
 
+				e.Graphics.DrawLine(
+								Pens.Black,
+								columns.OffX,
+								top + columns.Font.Height + columns.RowSpace * 2 + yOffset,
+								columns.TableWidth - 1,
+								top + columns.Font.Height + columns.RowSpace * 2 + yOffset);
 			}
 		}
 /*

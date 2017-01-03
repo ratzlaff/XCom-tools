@@ -81,13 +81,9 @@ namespace DSShared.Windows
 		/// </summary>
 		protected override void Dispose(bool disposing)
 		{
-			if (disposing)
-			{
-				if (components != null)
-				{
-					components.Dispose();
-				}
-			}
+			if (disposing && components != null)
+				components.Dispose();
+
 			base.Dispose(disposing);
 		}
 
@@ -103,24 +99,26 @@ namespace DSShared.Windows
 			// progress
 			// 
 			this.progress.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.progress.Location = new System.Drawing.Point(0, 0);
 			this.progress.Name = "progress";
-			this.progress.Size = new System.Drawing.Size(320, 32);
+			this.progress.Size = new System.Drawing.Size(320, 30);
 			this.progress.TabIndex = 0;
 			// 
 			// ProgressWindow
 			// 
-			this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
-			this.ClientSize = new System.Drawing.Size(320, 32);
+			this.AutoScaleBaseSize = new System.Drawing.Size(5, 12);
+			this.ClientSize = new System.Drawing.Size(320, 30);
 			this.ControlBox = false;
-			this.Controls.AddRange(new System.Windows.Forms.Control[] { this.progress });
+			this.Controls.Add(this.progress);
+			this.Font = new System.Drawing.Font("Verdana", 7F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
 			this.Name = "ProgressWindow";
 			this.ShowInTaskbar = false;
 			this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
 			this.Text = "Progress";
 			this.ResumeLayout(false);
-
 		}
+
 		#endregion
 	}
 }

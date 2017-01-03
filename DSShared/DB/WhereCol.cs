@@ -22,10 +22,10 @@ namespace DSShared.DB
 		/// </summary>
 		/// <param name="column"></param>
 		/// <param name="data"></param>
-		public WhereCol(string column,object data)
+		public WhereCol(string column, object data)
 		{
-			this.Column=column;
-			this.Data=data;
+			this.Column = column;
+			this.Data = data;
 		}
 	}
 }

@@ -12,11 +12,11 @@ namespace DSShared.Interfaces
 		/// <summary>
 		/// Short description to use in the open/save file dialog
 		/// </summary>
-		string ExplorerDescription { get;}
+		string ExplorerDescription { get; }
 
 		/// <summary>
 		/// a string in the format of "Description|*.ext" that will be added to the open/save file dialogs
 		/// </summary>
-		string FileFilter { get;}
+		string FileFilter { get; }
 	}
 }

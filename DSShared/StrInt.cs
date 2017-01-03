@@ -5,7 +5,9 @@ namespace DSShared
 	/// <summary>
 	/// A Lazy Class for storing a string and an int. CompareTo operates on the string held
 	/// </summary>
-	public class StrInt:IComparable
+	public class StrInt
+		:
+		IComparable
 	{
 		/// <summary>
 		/// string parameter
@@ -24,8 +26,8 @@ namespace DSShared
 		/// <param name="i"></param>
 		public StrInt(string str, int i)
 		{
-			this.str=str;
-			this.i=i;
+			this.str = str;
+			this.i = i;
 		}
 
 		/// <summary>

@@ -42,8 +42,9 @@ namespace DSShared
 		/// <returns>System.IO.File.Exists(ToString())</returns>
 		public bool Exists()
 		{
-			if(System.IO.Directory.Exists(path))
+			if (System.IO.Directory.Exists(path))
 				return System.IO.File.Exists(ToString());
+
 			return false;
 		}
 
@@ -74,7 +75,7 @@ namespace DSShared
 		/// Initializes a new instance of the <see cref="T:PathInfo"/> class.
 		/// </summary>
 		/// <param name="fullPath">The full path.</param>
-		public PathInfo(string fullPath):this(fullPath,true){}
+		public PathInfo(string fullPath):this(fullPath, true){}
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="T:PathInfo"/> class.
@@ -117,8 +118,9 @@ namespace DSShared
 		/// </returns>
 		public override string ToString()
 		{
-			if(ext!="")
+			if (ext != "")
 				return path + "\\" + file + "." + ext;
+
 			return path + "\\" + file;
 		}
 	}

@@ -51,7 +51,7 @@ namespace DSShared.Lists
 		/// <param name="editType">Type of the edit.</param>
 		public EditStrAttribute(EditStrType editType)
 		{
-			this.editType=editType;
+			this.editType = editType;
 		}
 
 		/// <summary>
@@ -60,7 +60,7 @@ namespace DSShared.Lists
 		/// <value>The type of the edit.</value>
 		public EditStrType EditType
 		{
-			get{return editType;}
+			get { return editType; }
 		}
 	}
 }

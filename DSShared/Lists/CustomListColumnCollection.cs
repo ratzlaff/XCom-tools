@@ -16,7 +16,7 @@ namespace DSShared.Lists
 	/// </summary>
 	/// <param name="mouseY">y-coordinate of the mouse</param>
 	/// <param name="overCol">Column that the y-coordinate is under</param>
-	public delegate void RowMoveDelegate(int mouseY,CustomListColumn overCol);
+	public delegate void RowMoveDelegate(int mouseY, CustomListColumn overCol);
 
 	/// <summary>
 	/// Class that manages a collection of CustomListColumn objects in a CustomList control

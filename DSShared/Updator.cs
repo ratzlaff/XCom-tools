@@ -10,7 +10,9 @@ namespace DSShared
 	/// <summary>
 	/// Class that implements the IUpdater interface
 	/// </summary>
-	public class Updator : DSShared.Interfaces.IUpdater
+	public class Updator
+		:
+		DSShared.Interfaces.IUpdater
 	{
 		/// <summary>
 		/// See: IUpdater.UpdatePath

@@ -21,7 +21,7 @@ namespace DSShared.Windows
 		private Dictionary<string,PropertyInfo> properties;
 		private object obj;
 		private string name;
-		private bool saveOnClose=true;
+		private bool saveOnClose = true;
 
 		private static string regKey = "DSShared";
 
@@ -44,8 +44,8 @@ namespace DSShared.Windows
 		/// </summary>
 		public static string RegKey
 		{
-			get{return regKey;}
-			set{regKey=value;}
+			get { return regKey; }
+			set { regKey = value; }
 		}
 
 		/// <summary>
@@ -74,7 +74,9 @@ namespace DSShared.Windows
 		/// Constructor that uses the ToString() value of the object as the name of the constructor parameter
 		/// </summary>
 		/// <param name="obj"></param>
-		public RegistryInfo(object obj):this(obj,obj.GetType().ToString()){}
+		public RegistryInfo(object obj)
+			:
+			this(obj, obj.GetType().ToString()){}
 
 		/// <summary>
 		/// Deletes the key located at HKEY_CURRENT_USER\Software\RegKey\
@@ -86,7 +88,7 @@ namespace DSShared.Windows
 			RegistryKey swKey = Registry.CurrentUser.CreateSubKey("Software");
 			RegistryKey riKey = swKey.CreateSubKey(regKey);
 			riKey.DeleteSubKey(name);
-			this.saveOnClose=saveOnClose;
+			this.saveOnClose = saveOnClose;
 		}
 
 		/// <summary>
@@ -109,10 +111,13 @@ namespace DSShared.Windows
 			RegistryKey ppKey = riKey.CreateSubKey(name);
 
 			foreach (string s in properties.Keys)
-				properties[s].SetValue(obj, ppKey.GetValue(s, properties[s].GetValue(obj, null)), null);
+				properties[s].SetValue(
+									obj,
+									ppKey.GetValue(s, properties[s].GetValue(obj, null)),
+									null);
 
-			if(Loading!=null)
-				Loading(this,new RegistrySaveLoadEventArgs(ppKey));
+			if (Loading != null)
+				Loading(this, new RegistrySaveLoadEventArgs(ppKey));
 
 			ppKey.Close();
 			riKey.Close();
@@ -125,7 +130,7 @@ namespace DSShared.Windows
 		/// <returns></returns>
 		public RegistryKey OpenKey()
 		{
-			if(swKey==null)
+			if (swKey == null)
 			{
 				swKey = Registry.CurrentUser.CreateSubKey("Software");
 				riKey = swKey.CreateSubKey(regKey);
@@ -139,13 +144,15 @@ namespace DSShared.Windows
 		/// </summary>
 		public void CloseKey()
 		{
-			if(ppKey!=null)
+			if (ppKey != null)
 			{
 				ppKey.Close();
 				riKey.Close();
 				swKey.Close();
 			}
-			ppKey=riKey=swKey=null;
+			ppKey =
+			riKey =
+			swKey = null;
 		}
 
 		/// <summary>
@@ -155,7 +162,7 @@ namespace DSShared.Windows
 		public void AddProperty(params string[] names)
 		{
 			Type t = obj.GetType();
-			foreach(string s in names)
+			foreach (string s in names)
 				AddProperty(t.GetProperty(s));
 		}
 
@@ -176,19 +183,23 @@ namespace DSShared.Windows
 		public void Save(object sender, EventArgs e)
 		{
 			var form = obj as Form;
-			if (form != null) form.WindowState = FormWindowState.Normal;
+			if (form != null)
+				form.WindowState = FormWindowState.Normal;
 
-			if(saveOnClose)
+			if (saveOnClose)
 			{
 				RegistryKey swKey = Registry.CurrentUser.CreateSubKey("Software");
 				RegistryKey riKey = swKey.CreateSubKey(regKey);
 				RegistryKey ppKey = riKey.CreateSubKey(name);
 
-				foreach(string s in properties.Keys)
-					ppKey.SetValue(s, properties[s].GetValue(obj, null));
+				foreach (string s in properties.Keys)
+					ppKey.SetValue(
+								s,
+								properties[s].GetValue(obj,
+								                       null));
 
-				if(Saving!=null)
-					Saving(this,new RegistrySaveLoadEventArgs(ppKey));
+				if (Saving != null)
+					Saving(this, new RegistrySaveLoadEventArgs(ppKey));
 
 				ppKey.Close();
 				riKey.Close();
@@ -203,16 +214,19 @@ namespace DSShared.Windows
 		/// <param name="e"></param>
 		public void Closing(object sender, System.ComponentModel.CancelEventArgs e)
 		{
-			Save(sender,e);
+			Save(sender, e);
 		}
 	}
 
 	/// <summary>
 	/// EventArgs for saving and loading events
 	/// </summary>
-	public class RegistrySaveLoadEventArgs:EventArgs
+	public class RegistrySaveLoadEventArgs
+		:
+		EventArgs
 	{
 		private RegistryKey key;
+
 		/// <summary>
 		/// Constructor
 		/// </summary>

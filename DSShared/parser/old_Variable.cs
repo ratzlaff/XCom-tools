@@ -8,7 +8,7 @@ namespace DSShared.old
 	/// </summary>
 	public class Variable
 	{
-		private static int count=0;
+		private static int count = 0;
 
 		private string varName;
 		private string varValue;

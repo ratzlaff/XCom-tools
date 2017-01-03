@@ -8,7 +8,7 @@ namespace DSShared
 	/// </summary>
 	public class VarCollection
 	{
-		//private Hashtable vars;
+//		private Hashtable vars;
 		private Dictionary<string, Variable> vars;
 		private VarCollection other;
 		private string baseVar;
@@ -39,7 +39,8 @@ namespace DSShared
 		/// <summary>
 		/// </summary>
 		public VarCollection(string baseVar)
-			: this()
+			:
+			this()
 		{
 			this.baseVar = baseVar;
 		}
@@ -47,7 +48,8 @@ namespace DSShared
 		/// <summary>
 		/// </summary>
 		public VarCollection(VarCollection other)
-			: this()
+			:
+			this()
 		{
 			this.other = other;
 		}
@@ -104,6 +106,7 @@ namespace DSShared
 			{
 				if (other == null || vars[var] != null)
 					return (string)vars[var].Value;
+
 				return other[var];
 			}
 			set
@@ -127,13 +130,15 @@ namespace DSShared
 		public KeyVal ReadLine()
 		{
 			string line = ReadLine(sr, this);
-			if (line == null)
-				return null;
-			int idx = line.IndexOf(Separator);
-			if (idx > 0)
-				return new KeyVal(line.Substring(0, idx), line.Substring(idx + 1));
-			else
+			if (line != null)
+			{
+				int idx = line.IndexOf(Separator);
+				if (idx > 0)
+					return new KeyVal(line.Substring(0, idx), line.Substring(idx + 1));
+
 				return new KeyVal(line, "");
+			}
+			return null;
 		}
 
 		/// <summary>
@@ -151,26 +156,27 @@ namespace DSShared
 
 			while (true)
 			{
-				do //get a good line - not a comment or empty string
+				do // get a good line - not a comment or empty string
 				{
 					if (sr.Peek() != -1)
 						line = sr.ReadLine().Trim();
 					else
 						return null;
-				} while (line.Length == 0 || line[0] == '#');
+				}
+				while (line.Length == 0 || line[0] == '#');
 
-				if (line[0] == '$') //cache variable, get another line
+				if (line[0] == '$') // cache variable, get another line
 				{
 					int idx = line.IndexOf(Separator);
 					string var = line.Substring(0, idx);
 					string val = line.Substring(idx + 1);
 					vars[var] = val;
 				}
-				else //got a line
+				else // got a line
 					break;
 			}
 
-			if (line.IndexOf("$") > 0) //replace any variables the line might have
+			if (line.IndexOf("$") > 0) // replace any variables the line might have
 				line = vars.ParseVar(line);
 
 			return line;

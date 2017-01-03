@@ -91,8 +91,8 @@ namespace DSShared.Lists
 		/// <returns>The name of the control. The default is an empty string ("").</returns>
 		public new string Name
 		{
-			get{return name;}
-			set{name=value;}
+			get { return name; }
+			set { name = value; }
 		}
 
 		/// <summary>
@@ -103,8 +103,8 @@ namespace DSShared.Lists
 		[DefaultValue(typeof(ObjRow))]
 		public Type RowType
 		{
-			get{return rowType;}
-			set{rowType=value;}
+			get { return rowType; }
+			set { rowType = value; }
 		}
 
 		/// <summary>
@@ -113,7 +113,7 @@ namespace DSShared.Lists
 		/// <value>The items.</value>
 		public List<ObjRow> Items
 		{
-			get{return items;}
+			get { return items; }
 		}
 
 		/// <summary>
@@ -124,11 +124,11 @@ namespace DSShared.Lists
 		[DefaultValue(null)]
 		public DSShared.Windows.RegistryInfo RegistryInfo
 		{
-			get{return ri;}
+			get { return ri; }
 			set
 			{
-				ri=value;
-				ri.Loading+=new RegistrySaveLoadHandler(loading);
+				ri = value;
+				ri.Loading += new RegistrySaveLoadHandler(loading);
 				ri.Saving += new RegistrySaveLoadHandler(saving);
 			}
 		}
@@ -139,31 +139,37 @@ namespace DSShared.Lists
 			Graphics g = Graphics.FromHwnd(this.Handle);
 			foreach(CustomListColumn cc in columns)
 			{
-				try{cc.Width = (int)key.GetValue("strLen"+name+cc.Index,cc.Width);}
-				catch{cc.Width = (int)g.MeasureString(cc.Title,Font).Width+2;}
+				try
+				{
+					cc.Width = (int)key.GetValue("strLen" + name + cc.Index, cc.Width);
+				}
+				catch
+				{
+					cc.Width = (int)g.MeasureString(cc.Title,Font).Width + 2;
+				}
 			}
 		}
 
 		private void saving(object sender, RegistrySaveLoadEventArgs e)
 		{
 			RegistryKey key = e.OpenKey;
-			foreach(CustomListColumn cc in columns)
-				key.SetValue("strLen"+name+cc.Index,cc.Width);
+			foreach (CustomListColumn cc in columns)
+				key.SetValue("strLen" + name + cc.Index, cc.Width);
 		}
 
 		private void rowClicked(object sender, MouseEventArgs e)
 		{
-			//int overY=(e.Y-(columns.HeaderHeight+yOffset))/(Font.Height+columns.RowSpace*2);
-			if(clicked!=null)
+//			int overY = (e.Y - (columns.HeaderHeight + yOffset)) / (Font.Height + columns.RowSpace * 2);
+			if (clicked != null)
 				clicked.UnClick();
 
-			if(selected!=null && overCol!=null)
+			if (selected != null && overCol != null)
 				selected.Click(overCol);
 
-			clicked=selected;
+			clicked = selected;
 
-			if(RowClick!=null && clicked!=null)
-				RowClick(this,clicked);
+			if (RowClick != null && clicked != null)
+				RowClick(this, clicked);
 		}
 
 		/// <summary>
@@ -174,7 +180,7 @@ namespace DSShared.Lists
 		{
 			get
 			{
-				return columns.HeaderHeight+((items.Count+1)*RowHeight);
+				return columns.HeaderHeight + ((items.Count + 1) * RowHeight);
 			}
 		}
 
@@ -185,20 +191,20 @@ namespace DSShared.Lists
 		protected override void OnResize(EventArgs e)
 		{
 			base.OnResize(e);
-			columns.Width=Width;
-			columns.Height=Height;
+			columns.Width  = Width;
+			columns.Height = Height;
 
-			if(vert!=null)
+			if (vert != null)
 			{
-				vert.Value=vert.Minimum;
-				startY = columns.HeaderHeight+vert.Value;
-				if(PreferredHeight>Height)
+				vert.Value = vert.Minimum;
+				startY = columns.HeaderHeight + vert.Value;
+				if (PreferredHeight > Height)
 				{
-					vert.Maximum=(((items.Count+1)*(RowHeight+3)))-Height;
-					vert.Enabled=true;
+					vert.Maximum = (((items.Count + 1) * (RowHeight + 3))) - Height;
+					vert.Enabled = true;
 				}
 				else
-					vert.Enabled=false;
+					vert.Enabled = false;
 			}
 			Refresh();
 		}
@@ -210,7 +216,7 @@ namespace DSShared.Lists
 		[DefaultValue(null)]
 		public VScrollBar VertScroll
 		{
-			get{return vert;}
+			get { return vert; }
 			set
 			{
 				if (vert != null)
@@ -228,23 +234,23 @@ namespace DSShared.Lists
 			Refresh();
 		}
 
-		private void mouseOverRows(int mouseY,CustomListColumn overCol)
+		private void mouseOverRows(int mouseY, CustomListColumn overCol)
 		{
-			int overY=(mouseY-(columns.HeaderHeight+yOffset))/(Font.Height+columns.RowSpace*2);
+			int overY = (mouseY - (columns.HeaderHeight + yOffset)) / (Font.Height + columns.RowSpace * 2);
 			
-			if(selected!=null)
+			if (selected != null)
 				selected.MouseLeave();
 
-			selected=null;
+			selected = null;
 
-			if(overCol!=null && overY>=0 && overY<items.Count)
+			if (overCol != null && overY >= 0 && overY < items.Count)
 			{
-				selRow=overY;
-				selected=items[selRow];
+				selRow = overY;
+				selected = items[selRow];
 				selected.MouseOver(overCol);
 			}
-			this.overCol=overCol;
-			//else its the same, do nothing
+			this.overCol = overCol;
+			// else its the same, do nothing
 		}
 
 		/// <summary>
@@ -284,10 +290,10 @@ namespace DSShared.Lists
 		/// <param name="e">An <see cref="T:System.EventArgs"></see> that contains the event data.</param>
 		protected override void OnLostFocus(EventArgs e)
 		{
-			if(clicked!=null)
+			if (clicked != null)
 				clicked.UnClick();
 
-			clicked=null;
+			clicked = null;
 			Refresh();
 		}
 
@@ -298,19 +304,19 @@ namespace DSShared.Lists
 		protected override void OnPaint(PaintEventArgs e)
 		{
 			base.OnPaint(e);
-			int rowHeight=0;
-			for(int i=0;i<items.Count;i++)
+			int rowHeight = 0;
+			for (int i = 0; i < items.Count; i++)
 			{
 				ObjRow row = (ObjRow)items[i];
-				if(rowHeight+yOffset+row.Height>=0 && rowHeight+yOffset<Height)
-					row.Render(e,yOffset);
+				if (rowHeight + yOffset + row.Height >= 0 && rowHeight + yOffset < Height)
+					row.Render(e, yOffset);
 
-				rowHeight+=row.Height;
+				rowHeight += row.Height;
 			}
-			columns.Render(e,rowHeight,yOffset);
+			columns.Render(e, rowHeight, yOffset);
 		}
 
-		//if row.equals(any other row) then we start to have weird behavior
+		// if row.equals(any other row) then you start to have weird behavior
 
 		/// <summary>
 		/// Deletes the row.
@@ -319,28 +325,29 @@ namespace DSShared.Lists
 		public virtual void DeleteRow(ObjRow row)
 		{
 			Object obj=null;
-			for(int i=0;i<items.Count;i++)
+			for (int i = 0; i < items.Count; i++)
 			{
-				if(obj!=null) //move this row's object to the one above it, move obj to the end to delete
-					items[i-1].Object=items[i].Object;
-				else if(obj==null && items[i].Equals(row)) //found it, will start moving up on the next iteration
-					obj=items[i].Object;
+				if (obj != null) // move this row's object to the one above it, move obj to the end to delete
+					items[i - 1].Object = items[i].Object;
+				else if (obj == null && items[i].Equals(row)) // found it, will start moving up on the next iteration
+					obj = items[i].Object;
 			}
 
-			if(obj!=null)//actually deleted something
+			if (obj != null) // actually deleted something
 			{
-				items[items.Count-1].Object=obj;
-				items[items.Count-1].RefreshEvent-=new RefreshDelegate(Refresh);
+				items[items.Count - 1].Object = obj;
+				items[items.Count - 1].RefreshEvent -= new RefreshDelegate(Refresh);
 
-				items.Remove(items[items.Count-1]);
-				startY-=Font.Height+columns.RowSpace*2;
+				items.Remove(items[items.Count - 1]);
+				startY -= Font.Height + columns.RowSpace * 2;
 
-				if(refreshOnAdd)
+				if (refreshOnAdd)
 					Refresh();
 			}
 		}
 
-		private bool refreshOnAdd=true;
+		private bool refreshOnAdd = true;
+
 		/// <summary>
 		/// Gets or sets a value indicating whether to refresh the list when a row is added to the collection
 		/// </summary>
@@ -349,8 +356,8 @@ namespace DSShared.Lists
 		[DefaultValue(true)]
 		public bool RefreshOnAdd
 		{
-			get{return refreshOnAdd;}
-			set{refreshOnAdd=value;}
+			get { return refreshOnAdd; }
+			set { refreshOnAdd = value; }
 		}
 
 		/// <summary>
@@ -359,8 +366,8 @@ namespace DSShared.Lists
 		/// <param name="o">The item to add</param>
 		public virtual void AddItem(object o)
 		{
-			ConstructorInfo ci = rowType.GetConstructor(new Type[]{typeof(object)});
-			ObjRow row = (ObjRow)ci.Invoke(new object[]{o});
+			ConstructorInfo ci = rowType.GetConstructor(new Type[]{ typeof(object) });
+			ObjRow row = (ObjRow)ci.Invoke(new object[]{ o });
 			AddItem(row);
 		}
 
@@ -370,17 +377,17 @@ namespace DSShared.Lists
 		/// <param name="row">The row to add</param>
 		public virtual void AddItem(ObjRow row)
 		{
-			row.Top=startY;
-			row.Width=Width;
-			//row.Height=RowHeight;
-			row.Height+=Font.Height+columns.RowSpace*2;
-			row.Columns=columns;
-			row.RefreshEvent+=new RefreshDelegate(Refresh);
-			row.RowIndex=items.Count;
+			row.Top = startY;
+			row.Width = Width;
+//			row.Height = RowHeight;
+			row.Height += Font.Height + columns.RowSpace * 2;
+			row.Columns = columns;
+			row.RefreshEvent += new RefreshDelegate(Refresh);
+			row.RowIndex = items.Count;
 			items.Add(row);
-			startY+=Font.Height+columns.RowSpace*2;
+			startY += Font.Height + columns.RowSpace * 2;
 
-			if(refreshOnAdd)
+			if (refreshOnAdd)
 				Refresh();
 		}
 
@@ -390,11 +397,11 @@ namespace DSShared.Lists
 		/// <param name="e">A <see cref="T:System.Windows.Forms.KeyPressEventArgs"></see> that contains the event data.</param>
 		protected override void OnKeyPress(KeyPressEventArgs e)
 		{
-			if(clicked!=null)
+			if (clicked != null)
 			{
 				clicked.KeyPress(e);
-				if(RowTextChange!=null)
-					RowTextChange(this,clicked);
+				if (RowTextChange != null)
+					RowTextChange(this, clicked);
 			}
 		}
 
@@ -404,7 +411,7 @@ namespace DSShared.Lists
 		/// <param name="e">A <see cref="T:System.Windows.Forms.KeyEventArgs"></see> that contains the event data.</param>
 		protected override void OnKeyDown(KeyEventArgs e)
 		{
-			if(clicked!=null)
+			if (clicked != null)
 				clicked.KeyDown(e);
 		}
 
@@ -414,7 +421,7 @@ namespace DSShared.Lists
 		/// <param name="e">A <see cref="T:System.Windows.Forms.KeyEventArgs"></see> that contains the event data.</param>
 		protected override void OnKeyUp(KeyEventArgs e)
 		{
-			if(clicked!=null)
+			if (clicked != null)
 				clicked.KeyUp(e);
 		}
 
@@ -424,7 +431,7 @@ namespace DSShared.Lists
 		/// <value>The height of a row.</value>
 		public int RowHeight
 		{
-			get{return Font.Height+columns.RowSpace*2;}
+			get { return Font.Height + columns.RowSpace * 2; }
 		}
 
 		/// <summary>
@@ -433,7 +440,7 @@ namespace DSShared.Lists
 		public virtual void Clear()
 		{
 			items = new List<ObjRow>();
-			startY=columns.HeaderHeight;
+			startY = columns.HeaderHeight;
 			Refresh();
 		}
 
@@ -445,8 +452,12 @@ namespace DSShared.Lists
 		/// <PermissionSet><IPermission class="System.Security.Permissions.EnvironmentPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Unrestricted="true"/><IPermission class="System.Security.Permissions.FileIOPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Unrestricted="true"/><IPermission class="System.Security.Permissions.SecurityPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Flags="UnmanagedCode, ControlEvidence"/><IPermission class="System.Diagnostics.PerformanceCounterPermission, System, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Unrestricted="true"/></PermissionSet>
 		public new Font Font
 		{
-			get{return base.Font;}
-			set{base.Font=value;columns.Font=value;}
+			get { return base.Font;}
+			set
+			{
+				base.Font = value;
+				columns.Font = value;
+			}
 		}
 
 		/// <summary>
@@ -476,7 +487,7 @@ namespace DSShared.Lists
 		[Browsable(false)]
 		public CustomListColumnCollection Columns
 		{
-			get{return columns;}
+			get { return columns; }
 		}
 	}
 }

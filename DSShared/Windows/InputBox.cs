@@ -16,7 +16,9 @@ namespace DSShared.Windows
 	/// A generic inputbox providing an area for a user-supplied panel, and okay+cancel buttons
 	/// The default inputbox prompts the user to enter a string
 	/// </summary>
-	public partial class InputBox : System.Windows.Forms.Form
+	public partial class InputBox
+		:
+		System.Windows.Forms.Form
 	{
 		private Panel customContents = null;
 
@@ -29,20 +31,29 @@ namespace DSShared.Windows
 		/// <summary>
 		/// Default constructor, Calls this("Input value","Input Box","")
 		/// </summary>
-		public InputBox():this("Input value","Input Box",""){}
+		public InputBox()
+			:
+			this("Input value", "Input Box", "")
+		{}
 
 		/// <summary>
 		/// Constructor, calls this(caption,"Input","")
 		/// </summary>
 		/// <param name="caption"></param>
-		public InputBox(string caption):this(caption,"Input",""){}
+		public InputBox(string caption)
+			:
+			this(caption, "Input", "")
+		{}
 
 		/// <summary>
 		/// Constructor, calls this(caption, title,"")
 		/// </summary>
 		/// <param name="caption"></param>
 		/// <param name="title"></param>
-		public InputBox(string caption, string title):this(caption, title,""){}
+		public InputBox(string caption, string title)
+			:
+			this(caption, title, "")
+		{}
 
 		/// <summary>
 		/// Constructor specifying all arguements
@@ -50,15 +61,15 @@ namespace DSShared.Windows
 		/// <param name="caption">Text that will be shown above the text box</param>
 		/// <param name="title">Title of the form</param>
 		/// <param name="defaultValue">Initial value of the text box</param>
-		public InputBox(string caption, string title,string defaultValue)
+		public InputBox(string caption, string title, string defaultValue)
 		{
 			InitializeComponent();
 			
-			DialogResult=DialogResult.Cancel;
+			DialogResult = DialogResult.Cancel;
 
-			lblCaption.Text=caption;
-			this.Text=title;
-			txtInput.Text=defaultValue;
+			lblCaption.Text = caption;
+			this.Text = title;
+			txtInput.Text = defaultValue;
 			txtInput.Focus();
 		}
 
@@ -70,10 +81,10 @@ namespace DSShared.Windows
 		public InputBox(string title, Panel contents)
 		{
 			InitializeComponent();
-			DialogResult=DialogResult.Cancel;
+			DialogResult = DialogResult.Cancel;
 
-			Text=title;
-			CustomContents=contents;
+			Text = title;
+			CustomContents = contents;
 		}
 
 		/// <summary>
@@ -81,11 +92,13 @@ namespace DSShared.Windows
 		/// </summary>
 		public Panel CustomContents
 		{
-			get{return customContents;}
+			get { return customContents; }
 			set
 			{
 				customContents = value;
-				ClientSize = new Size(customContents.Width,customContents.Height+panel1.Height);
+				ClientSize = new Size(
+									customContents.Width,
+									customContents.Height + panel1.Height);
 				
 				panelMid.Controls.Clear();
 				panelMid.Controls.Add(customContents);
@@ -97,7 +110,7 @@ namespace DSShared.Windows
 		/// </summary>
 		public string InputValue
 		{
-			get{return txtInput.Text;}
+			get { return txtInput.Text; }
 			set { txtInput.Text = value; }
 		}
 
@@ -115,14 +128,16 @@ namespace DSShared.Windows
 		private void buttonClick(object sender, EventArgs e)
 		{
 			DialogResult = ((Button)sender).DialogResult;
-			if(OkClick!=null)
-				OkClick(this,new InputOkEventArgs(customContents));
+
+			if (OkClick != null)
+				OkClick(this, new InputOkEventArgs(customContents));
+
 			Close();
 		}
 
 		private void txtInput_KeyDown(object sender, System.Windows.Forms.KeyEventArgs e)
 		{
-			if(e.KeyCode==Keys.Enter)
+			if (e.KeyCode == Keys.Enter)
 				btnOk.PerformClick();
 		}
 
