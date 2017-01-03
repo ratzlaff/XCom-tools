@@ -266,16 +266,16 @@ namespace MapView
 			get { return _val; }
 			set
 			{
-				if (_val == null)
-				{
-					_val = value;
-				}
-				else
+				if (_val != null)
 				{
 					var type = _val.GetType();
 					if (converters.ContainsKey(type) && value is string)
+					{
 						_val = converters[type]((string)value);
+						return;
+					}
 				}
+				_val = value;
 			}
 		}
 
