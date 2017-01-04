@@ -41,8 +41,9 @@ namespace XCom
 
 		public void Write(string text)
 		{
-//			if ((debugOn || sw != null) && sw != null) // wft.
-			if (debugOn && sw != null) // kL
+//			if ((debugOn || sw != null) && sw != null)	// wft.
+//			if (debugOn && sw != null)					// kL
+			if (sw != null)								// your choice.
 			{
 				sw.Write(text);
 				sw.Flush();
@@ -51,8 +52,9 @@ namespace XCom
 
 		public void WriteLine(string text)
 		{
-//			if ((debugOn || sw != null) && sw != null) // wft.
-			if (debugOn && sw != null) // kL
+//			if ((debugOn || sw != null) && sw != null)	// wft.
+//			if (debugOn && sw != null)					// kL
+			if (sw != null)								// your choice.
 			{
 				sw.WriteLine(text);
 				sw.Flush();
@@ -61,8 +63,9 @@ namespace XCom
 
 		public void Close()
 		{
-//			if ((debugOn || sw != null) && sw != null) // wft.
-			if (debugOn && sw != null) // kL
+//			if ((debugOn || sw != null) && sw != null)	// wft.
+//			if (debugOn && sw != null)					// kL
+			if (sw != null)								// your choice.
 			{
 				sw.Close();
 			}
