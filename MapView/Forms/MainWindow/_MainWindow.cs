@@ -199,7 +199,7 @@ namespace MapView
 
 			LogFile.Instance.WriteLine("About to show window");
 			Show();
-			LogFile.Instance.Close();
+			LogFile.Instance.Close(); // TODO: Keep logfile open until the program closes.
 		}
 
 		private static void InitGameInfo(PathInfo pathsFile)

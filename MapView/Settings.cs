@@ -39,7 +39,10 @@ namespace MapView
 			}
 		}
 
-		public static void ReadSettings(VarCollection vc, KeyVal kv, Settings currSettings)
+		public static void ReadSettings(
+									VarCollection vc,
+									KeyVal kv,
+									Settings currSettings)
 		{
 			while ((kv = vc.ReadLine()) != null)
 			{
@@ -219,6 +222,7 @@ namespace MapView
 		private static object parseColorString(string s)
 		{
 			string[] vals = s.Split(',');
+
 			if (vals.Length == 1)
 				return Color.FromName(s);
 
@@ -244,9 +248,9 @@ namespace MapView
 			if (converters == null)
 			{
 				converters = new Dictionary<Type, parseString>();
-				converters[typeof(int)] = parseIntString;
+				converters[typeof(int)]   = parseIntString;
 				converters[typeof(Color)] = parseColorString;
-				converters[typeof(bool)] = parseBoolString;
+				converters[typeof(bool)]  = parseBoolString;
 			}
 		}
 

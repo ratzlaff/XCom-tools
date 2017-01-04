@@ -76,13 +76,27 @@ namespace MapView.Forms.MainWindow
 		{
 			foreach (MenuItem mi in _showMenu.MenuItems)
 			{
-				mi.PerformClick();
-
 				var settingName = GetWindowSettingName(mi);
-				if (!_settings[settingName].ValueBool)
+				if (_settings[settingName].ValueBool)
+				{
 					mi.PerformClick();
+				}
+				else
+				{
+					mi.PerformClick();
+					mi.PerformClick();
+				}
 			}
 			_showMenu.Enabled = true;
+/*			foreach (MenuItem mi in _showMenu.MenuItems)	// NOTE: Don't do this. Go figure.
+			{												// All the View-Panels will load ...
+				mi.PerformClick();							// regardless of their saved settings.
+
+				var settingName = GetWindowSettingName(mi);
+				if (!(_settings[settingName].ValueBool))
+					mi.PerformClick();
+			}
+			_showMenu.Enabled = true; */
 		}
 
 		public IMainWindowsShowAllManager CreateShowAll()
@@ -117,7 +131,7 @@ namespace MapView.Forms.MainWindow
 				{
 					form.VisibleChanged += (sender, a) =>
 					{
-						if (_isDisposed) // kL_note: Should these 'return's be 'continue's
+						if (_isDisposed)
 							return;
 
 						var senderForm = sender as Form;
@@ -172,8 +186,7 @@ namespace MapView.Forms.MainWindow
 
 		private static string GetWindowSettingName(MenuItem mi)
 		{
-			var settingName = "Window-" + mi.Text;
-			return settingName;
+			return ("Window-" + mi.Text);
 		}
 
 		public void Dispose()

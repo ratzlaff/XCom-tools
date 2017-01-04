@@ -21,6 +21,7 @@ namespace MapView.Forms.MainWindow
 		{
 			get { return _topRmpView ?? (_topRmpView = new TopRmpViewForm()); }
 		}
+
 		public static RmpViewForm RmpView
 		{
 			get { return _rmpView ?? (_rmpView = new RmpViewForm()); }
