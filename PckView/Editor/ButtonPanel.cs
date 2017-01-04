@@ -9,7 +9,9 @@ namespace PckView
 	/// <summary>
 	/// Summary description for ButtonPanel.
 	/// </summary>
-	public class ButtonPanel:Panel
+	public class ButtonPanel
+		:
+		Panel
 	{
 		private XCImage img;
 		private SinglePanel top;
@@ -18,33 +20,39 @@ namespace PckView
 		{
 			top = new SinglePanel();
 			Controls.Add(top);
-			top.Location=new Point(0,0);
+			top.Location = new Point(0, 0);
 		}
 
 		public XCImage Image
 		{
-			get{return img;}
-			set{img=value;top.Image = value;Width=top.Width;}
+			get { return img; }
+			set
+			{
+				img = value;
+				top.Image = value;
+				Width = top.Width;
+			}
 		}
 
 		public int PreferredWidth
 		{
-			get{return top.Width;}
+			get { return top.Width; }
 		}
 
 		public int PreferredHeight
 		{
 			get
 			{
-				if(Parent!=null)
+				if (Parent != null)
 					return Parent.Height;
+
 				return top.Height;
 			}
 		}
 
 		public Palette Palette
 		{
-			set{top.Palette=value;}
+			set { top.Palette = value; }
 		}
 	}
 }

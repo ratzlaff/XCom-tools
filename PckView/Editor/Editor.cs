@@ -8,7 +8,9 @@ using XCom.Interfaces;
 
 namespace PckView
 {
-	public class Editor : System.Windows.Forms.Form
+	public class Editor
+		:
+		System.Windows.Forms.Form
 	{
 		public event EventHandler PalViewClosing;
 
@@ -29,8 +31,8 @@ namespace PckView
 			buttons = new ButtonPanel();
 			size = new TrackBar();
 
-			size.Minimum=1;
-			size.Maximum=10;
+			size.Minimum = 1;
+			size.Maximum = 10;
 
 			InitializeComponent();
 
@@ -41,19 +43,20 @@ namespace PckView
 			buttons.Location = new Point(0,0);
 			buttons.Width = buttons.PreferredWidth;
 
-			size.Left=buttons.Right;
-			size.Top=buttons.Top;
-			edit.Top=size.Bottom;
-			edit.Left=buttons.Right;
+			size.Left =	buttons.Right;
+			size.Top =	buttons.Top;
+			edit.Top =	size.Bottom;
+			edit.Left =	buttons.Right;
 
-			ClientSize=new Size(buttons.PreferredWidth+edit.Editor.PreferredWidth,
-								edit.Editor.PreferredHeight+size.Height);
+			ClientSize = new Size(
+								buttons.PreferredWidth + edit.Editor.PreferredWidth,
+								edit.Editor.PreferredHeight + size.Height);
 
 			palView = new PalView();
-			palView.Closing+=new CancelEventHandler(palClose);
+			palView.Closing += new CancelEventHandler(palClose);
 
-			palView.PaletteIndexChanged+=new PaletteClickDelegate(edit.Editor.SelectColor);
-			size.Scroll+=new EventHandler(sizeScroll);
+			palView.PaletteIndexChanged += new PaletteClickDelegate(edit.Editor.SelectColor);
+			size.Scroll += new EventHandler(sizeScroll);
 		}
 
 		private void sizeScroll(object sender, EventArgs e)
@@ -63,13 +66,18 @@ namespace PckView
 
 		public Palette Palette
 		{
-			get{return edit.Editor.Palette;}
-			set{edit.Editor.Palette=value;palView.Palette = value;buttons.Palette=value;}
+			get { return edit.Editor.Palette; }
+			set
+			{
+				edit.Editor.Palette = value;
+				palView.Palette = value;
+				buttons.Palette = value;
+			}
 		}
 
 		public void ShowPalView()
 		{
-			if(palView.Visible)
+			if (palView.Visible)
 				palView.BringToFront();
 			else
 			{
@@ -77,50 +85,51 @@ namespace PckView
 				palView.Top = Top;
 				palView.Show();
 			}
-			showPalette.Checked=true;
+			showPalette.Checked = true;
 		}
 
 		private void palClose(object sender, CancelEventArgs e)
 		{
-			e.Cancel=true;
+			e.Cancel = true;
 			palView.Hide();
-			showPalette.Checked=false;
+			showPalette.Checked = false;
 
-			if(PalViewClosing!=null)
-				PalViewClosing(this,new EventArgs());
+			if (PalViewClosing != null)
+				PalViewClosing(this, new EventArgs());
 		}
 
 		protected override void OnResize(EventArgs e)
 		{
 			edit.Width = ClientSize.Width-buttons.PreferredWidth;
-			edit.Height=ClientSize.Height-size.Height;
+			edit.Height = ClientSize.Height - size.Height;
 			buttons.Height = ClientSize.Height;
-			size.Width=edit.Width;
+			size.Width = edit.Width;
 
-			edit.Left=buttons.Right;
-			size.Left=edit.Left;
+			edit.Left = buttons.Right;
+			size.Left = edit.Left;
 		}
 
 		public XCImage CurrImage
 		{
-			get{return edit.Editor.Image;}
-			set{edit.Editor.Image=value;buttons.Image = value;OnResize(null);}
+			get { return edit.Editor.Image; }
+			set
+			{
+				edit.Editor.Image = value;
+				buttons.Image = value;
+				OnResize(null);
+			}
 		}
 
 		#region Windows Form Designer generated code
 		/// <summary>
 		/// Clean up any resources being used.
 		/// </summary>
-		protected override void Dispose( bool disposing )
+		protected override void Dispose(bool disposing)
 		{
-			if( disposing )
-			{
-				if(components != null)
-				{
+			if (disposing && components != null)
 					components.Dispose();
-				}
-			}
-			base.Dispose( disposing );
+
+			base.Dispose(disposing);
 		}
 
 		/// <summary>
