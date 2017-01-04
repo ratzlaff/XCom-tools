@@ -11,7 +11,9 @@ using DSShared.Windows;
 
 namespace MapView
 {
-	public class PropertyForm:System.Windows.Forms.Form
+	public class PropertyForm
+		:
+		System.Windows.Forms.Form
 	{
 		private System.Windows.Forms.Label label1;
 		private CustomPropertyGrid propertyGrid;
@@ -31,6 +33,7 @@ namespace MapView
 		}
 
 		#region Windows Form Designer generated code
+
 		private void InitializeComponent()
 		{
 			this.label1 = new System.Windows.Forms.Label();
@@ -66,6 +69,7 @@ namespace MapView
 			this.Text = "Custom PropertyGrid";
 			this.ResumeLayout(false);
 		}
+
 		#endregion
 	}
 
@@ -161,7 +165,7 @@ namespace MapView
 								newType,
 								hashField);
 
-					foreach(string key in settings.Keys)
+					foreach (string key in settings.Keys)
 						emitProperty(
 									newType,
 									hashField,
@@ -172,7 +176,7 @@ namespace MapView
 				}
 
 				Hashtable h = new Hashtable();
-				foreach(string key in settings.Keys)
+				foreach (string key in settings.Keys)
 					h[key] = settings[key].Value;
 
 #if SaveDLL && DEBUG

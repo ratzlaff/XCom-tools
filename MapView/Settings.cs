@@ -168,8 +168,8 @@ namespace MapView
 		{
 			sw.WriteLine(name);
 			sw.WriteLine("{");
-			
-			foreach(string s in settings.Keys)
+
+			foreach (string s in settings.Keys)
 				sw.WriteLine("\t" + s + ":" + convert(this[s].Value));
 
 			sw.WriteLine("}");

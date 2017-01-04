@@ -117,10 +117,12 @@ namespace MapView.Forms.MainWindow
 				{
 					form.VisibleChanged += (sender, a) =>
 					{
-						if (_isDisposed) return;
+						if (_isDisposed) // kL_note: Should these 'return's be 'continue's
+							return;
 
 						var senderForm = sender as Form;
-						if (senderForm == null) return;
+						if (senderForm == null)
+							return;
 
 						_settings[settingName].Value = senderForm.Visible;
 					};

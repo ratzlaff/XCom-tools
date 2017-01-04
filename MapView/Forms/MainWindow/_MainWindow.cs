@@ -369,7 +369,7 @@ namespace MapView
 					riKey.SetValue("Left", Left);
 					riKey.SetValue("Top", Top);
 					riKey.SetValue("Width", Width);
-					riKey.SetValue("Height", Height - 19);
+					riKey.SetValue("Height", Height - 15);
 
 //					riKey.SetValue("Animation", onItem.Checked.ToString());
 //					riKey.SetValue("Doors", miDoors.Checked.ToString());
