@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 
 namespace DSShared.Windows
-{			
+{
 	partial class InputBox
 	{
 		/// <summary>
@@ -18,14 +18,13 @@ namespace DSShared.Windows
 		protected override void Dispose(bool disposing)
 		{
 			if (disposing && (components != null))
-			{
 				components.Dispose();
-			}
+
 			base.Dispose(disposing);
 		}
 
-
 		#region Windows Form Designer generated code
+
 		/// <summary>
 		/// Required method for Designer support - do not modify
 		/// the contents of this method with the code editor.
@@ -117,6 +116,7 @@ namespace DSShared.Windows
 			this.panelMid.PerformLayout();
 			this.ResumeLayout(false);
 		}
+
 		#endregion
 
 		private System.Windows.Forms.Button btnOk;

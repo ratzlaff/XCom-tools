@@ -23,7 +23,11 @@ namespace XCom.Interfaces.Base
 			subsets = new Dictionary<string, Dictionary<string, IMapDesc>>();
 		}
 
-		public ICollection MapList { get { return maps.Keys; } }
+		public ICollection MapList
+		{
+			get { return maps.Keys; }
+		}
+
 		public IMapDesc this[string mapName]
 		{
 			get { return maps[mapName]; }
@@ -31,11 +35,19 @@ namespace XCom.Interfaces.Base
 			{
 				if (!maps.ContainsKey(mapName))
 					maps.Add(mapName, value);
+
 				maps[mapName] = value;
 			}
 		}
-		public Dictionary<string, Dictionary<string, IMapDesc>> Subsets { get { return subsets; } }		
-		public string Name { get { return name; } }
+
+		public Dictionary<string, Dictionary<string, IMapDesc>> Subsets
+		{
+			get { return subsets; }
+		}
+
+		public string Name
+		{
+			get { return name; }
+		}
 	}
 }
-

@@ -10,11 +10,14 @@ namespace PckView
 	/// <summary>
 	/// Summary description for ByteView.
 	/// </summary>
-	public class ByteView : System.Windows.Forms.Form
+	public class ByteView
+		:
+		System.Windows.Forms.Form
 	{
 		private PckImage image;
 
 		private System.Windows.Forms.RichTextBox output;
+
 		/// <summary>
 		/// Required designer variable.
 		/// </summary>
@@ -29,35 +32,43 @@ namespace PckView
 
 		public PckImage Image
 		{
-			set{if(value!=image){image = value;printData();}}
+			set
+			{
+				if (value != image)
+				{
+					image = value;
+					printData();
+				}
+			}
 		}
 
 		private void printData()
 		{
-//			if(image != null)
+//			if (image != null)
 //			{
-//				output.Text="";
-//				foreach(int i in image.Bytes)
+//				output.Text = "";
+//				foreach (int i in image.Bytes)
 //				{
-//					if(i==254)
+//					if (i == 254)
 //					{
 //						output.SelectionColor = Color.Gray;
 //						output.AppendText("254\n");
 //						output.SelectionColor = Color.Black;
 //					}
-//					else if(i==255)
+//					else if (i == 255)
 //					{
 //						output.SelectionColor = Color.Red;
 //						output.AppendText("\n255\n");
 //						output.SelectionColor = Color.Black;
 //					}
 //					else
-//						output.AppendText(i+" ");
+//						output.AppendText(i + " ");
 //				}
 //			}
 		}
 
 		#region Windows Form Designer generated code
+
 		/// <summary>
 		/// Required method for Designer support - do not modify
 		/// the contents of this method with the code editor.
@@ -81,27 +92,23 @@ namespace PckView
 			this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
 			this.ClientSize = new System.Drawing.Size(292, 273);
 			this.Controls.AddRange(new System.Windows.Forms.Control[] {
-																		  this.output});
+																	this.output});
 			this.Name = "ByteView";
 			this.Text = "ByteView";
 			this.ResumeLayout(false);
-
 		}
 
 		/// <summary>
 		/// Clean up any resources being used.
 		/// </summary>
-		protected override void Dispose( bool disposing )
+		protected override void Dispose(bool disposing)
 		{
-			if( disposing )
-			{
-				if(components != null)
-				{
-					components.Dispose();
-				}
-			}
-			base.Dispose( disposing );
+			if (disposing && components != null)
+				components.Dispose();
+
+			base.Dispose(disposing);
 		}
+
 		#endregion
 	}
 }

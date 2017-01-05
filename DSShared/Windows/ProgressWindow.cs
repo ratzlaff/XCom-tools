@@ -76,6 +76,7 @@ namespace DSShared.Windows
 		}
 
 		#region Windows Form Designer generated code
+
 		/// <summary>
 		/// Clean up any resources being used.
 		/// </summary>

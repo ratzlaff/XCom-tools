@@ -11,11 +11,13 @@ namespace XCom.Interfaces.Base
 		/// A list of ITiles in the correct draw order. You should iterate over this array when drawing to the screen
 		/// This list does not include IUnits
 		/// </summary>
-		public abstract TileBase[] UsedTiles { get; }
+		public abstract TileBase[] UsedTiles
+		{ get; }
 
 		/// <summary>
 		/// Flag to help optimize screen drawing, if set
 		/// </summary>
-		public bool DrawAbove { get; set; }
+		public bool DrawAbove
+		{ get; set; }
 	}
 }

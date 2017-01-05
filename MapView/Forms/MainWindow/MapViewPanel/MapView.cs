@@ -366,8 +366,12 @@ namespace MapView
 			{
 				var g = e.Graphics;
 
-				var dragMin = new Point(Math.Min(DragStart.X, DragEnd.X), Math.Min(DragStart.Y, DragEnd.Y));
-				var dragMax = new Point(Math.Max(DragStart.X, DragEnd.X), Math.Max(DragStart.Y, DragEnd.Y));
+				var dragMin = new Point(
+									Math.Min(DragStart.X, DragEnd.X),
+									Math.Min(DragStart.Y, DragEnd.Y));
+				var dragMax = new Point(
+									Math.Max(DragStart.X, DragEnd.X),
+									Math.Max(DragStart.Y, DragEnd.Y));
 
 				var dragRect = new Rectangle(dragMin, new Size(Point.Subtract(dragMax, new Size(dragMin))));
 				dragRect.Width  += 1;
@@ -559,11 +563,10 @@ namespace MapView
 			g.DrawImage(
 					image,
 					x,
-					y - tile.Info.TileOffset,
+					(int)(y - (tile.Info.TileOffset * Globals.PckImageScale)),
 					(int)(image.Width  * Globals.PckImageScale),
 					(int)(image.Height * Globals.PckImageScale));
 		}
-
 
 		private void DrawSelection(Graphics g, int h, Rectangle dragRect)
 		{

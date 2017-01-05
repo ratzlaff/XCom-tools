@@ -221,7 +221,7 @@ namespace XCom.Interfaces.Base
 							var tiles = this[row, col, h].UsedTiles;
 							foreach (var tileBase in tiles)
 							{
-								var t = (XCTile) tileBase;
+								var t = (XCTile)tileBase;
 								Bmp.Draw(t[0].Image, b, x, y - t.Info.TileOffset);
 							}
 

@@ -37,9 +37,7 @@ namespace MapView
 
 		public MainWindow()
 		{
-			/***********************/
 			InitializeComponent();
-			/***********************/
 
 			_mapView = MapViewPanel.Instance;
 

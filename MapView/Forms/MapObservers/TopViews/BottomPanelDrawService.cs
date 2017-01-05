@@ -7,10 +7,17 @@ namespace MapView.Forms.MapObservers.TopViews
 {
 	internal class BottomPanelDrawService
 	{
-		public SolidBrush Brush { get; set; }
-		public Dictionary<string, SolidBrush> Brushes { get; set; }
-		public Dictionary<string, Pen> Pens { get; set; }
-		public Font Font { get; set; }
+		public SolidBrush Brush
+		{ get; set; }
+
+		public Dictionary<string, SolidBrush> Brushes
+		{ get; set; }
+
+		public Dictionary<string, Pen> Pens
+		{ get; set; }
+
+		public Font Font
+		{ get; set; }
 
 		public const int TOTAL_QUADRAN_SPACE = tileWidth + 2 * space;
 		public const int tileWidth = 32;

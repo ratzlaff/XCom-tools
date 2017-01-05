@@ -119,13 +119,13 @@ namespace MapView
 					}
 
 			var pct = Math.Round(100 * ((mcdHash.Keys.Count * 1.0) / totalMcd), 2);
-			lblMcd.Text = mcdHash.Keys.Count + "/" + totalMcd + "   " + pct + "%";
+			lblMcd.Text = mcdHash.Keys.Count + "/" + totalMcd + " - " + pct + "%";
 
 			pct = Math.Round(100 * ((imgHash.Keys.Count * 1.0) / totalImages), 2);
-			lblPckImages.Text = imgHash.Keys.Count + "/" + totalImages + "   " + pct + "%";
+			lblPckImages.Text = imgHash.Keys.Count + "/" + totalImages + " - " + pct + "%";
 
 			pct = Math.Round(100 * ((slotsUsed * 1.0) / (pBar.Maximum * 4)), 2);
-			lblFilled.Text = slotsUsed + "/" + (pBar.Maximum * 4) + "   " + pct + "%";
+			lblFilled.Text = slotsUsed + "/" + (pBar.Maximum * 4) + " - " + pct + "%";
 
 			groupAnalyze.Visible = false;
 		}
@@ -142,19 +142,16 @@ namespace MapView
 		}
 
 		#region Windows Form Designer generated code
+
 		/// <summary>
 		/// Clean up any resources being used.
 		/// </summary>
-		protected override void Dispose( bool disposing )
+		protected override void Dispose(bool disposing)
 		{
-			if( disposing )
-			{
-				if(components != null)
-				{
-					components.Dispose();
-				}
-			}
-			base.Dispose( disposing );
+			if (disposing && components != null)
+				components.Dispose();
+
+			base.Dispose(disposing);
 		}
 
 		/// <summary>
@@ -194,7 +191,7 @@ namespace MapView
 									| System.Windows.Forms.AnchorStyles.Right)));
 			this.lblDimensions.Location = new System.Drawing.Point(125, 20);
 			this.lblDimensions.Name = "lblDimensions";
-			this.lblDimensions.Size = new System.Drawing.Size(259, 15);
+			this.lblDimensions.Size = new System.Drawing.Size(359, 15);
 			this.lblDimensions.TabIndex = 1;
 			// 
 			// lblPckFiles
@@ -203,7 +200,7 @@ namespace MapView
 									| System.Windows.Forms.AnchorStyles.Right)));
 			this.lblPckFiles.Location = new System.Drawing.Point(125, 35);
 			this.lblPckFiles.Name = "lblPckFiles";
-			this.lblPckFiles.Size = new System.Drawing.Size(259, 15);
+			this.lblPckFiles.Size = new System.Drawing.Size(359, 15);
 			this.lblPckFiles.TabIndex = 3;
 			// 
 			// label3
@@ -220,7 +217,7 @@ namespace MapView
 									| System.Windows.Forms.AnchorStyles.Right)));
 			this.lblPckImages.Location = new System.Drawing.Point(125, 50);
 			this.lblPckImages.Name = "lblPckImages";
-			this.lblPckImages.Size = new System.Drawing.Size(259, 15);
+			this.lblPckImages.Size = new System.Drawing.Size(359, 15);
 			this.lblPckImages.TabIndex = 5;
 			// 
 			// label4
@@ -237,7 +234,7 @@ namespace MapView
 									| System.Windows.Forms.AnchorStyles.Right)));
 			this.lblMcd.Location = new System.Drawing.Point(125, 65);
 			this.lblMcd.Name = "lblMcd";
-			this.lblMcd.Size = new System.Drawing.Size(259, 15);
+			this.lblMcd.Size = new System.Drawing.Size(359, 15);
 			this.lblMcd.TabIndex = 7;
 			// 
 			// label6
@@ -254,7 +251,7 @@ namespace MapView
 									| System.Windows.Forms.AnchorStyles.Right)));
 			this.lblFilled.Location = new System.Drawing.Point(125, 80);
 			this.lblFilled.Name = "lblFilled";
-			this.lblFilled.Size = new System.Drawing.Size(259, 15);
+			this.lblFilled.Size = new System.Drawing.Size(359, 15);
 			this.lblFilled.TabIndex = 9;
 			// 
 			// label8
@@ -270,7 +267,7 @@ namespace MapView
 			this.pBar.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.pBar.Location = new System.Drawing.Point(3, 15);
 			this.pBar.Name = "pBar";
-			this.pBar.Size = new System.Drawing.Size(386, 26);
+			this.pBar.Size = new System.Drawing.Size(486, 26);
 			this.pBar.TabIndex = 1;
 			// 
 			// groupAnalyze
@@ -279,7 +276,7 @@ namespace MapView
 			this.groupAnalyze.Dock = System.Windows.Forms.DockStyle.Bottom;
 			this.groupAnalyze.Location = new System.Drawing.Point(0, 102);
 			this.groupAnalyze.Name = "groupAnalyze";
-			this.groupAnalyze.Size = new System.Drawing.Size(392, 44);
+			this.groupAnalyze.Size = new System.Drawing.Size(492, 44);
 			this.groupAnalyze.TabIndex = 11;
 			this.groupAnalyze.TabStop = false;
 			this.groupAnalyze.Text = "Analyzing";
@@ -299,21 +296,21 @@ namespace MapView
 			this.groupInfo.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.groupInfo.Location = new System.Drawing.Point(0, 0);
 			this.groupInfo.Name = "groupInfo";
-			this.groupInfo.Size = new System.Drawing.Size(392, 102);
+			this.groupInfo.Size = new System.Drawing.Size(492, 102);
 			this.groupInfo.TabIndex = 12;
 			this.groupInfo.TabStop = false;
-			this.groupInfo.Text = "Map: ";
+			this.groupInfo.Text = "Map";
 			// 
 			// MapInfoForm
 			// 
 			this.AutoScaleBaseSize = new System.Drawing.Size(5, 12);
-			this.ClientSize = new System.Drawing.Size(392, 146);
+			this.ClientSize = new System.Drawing.Size(492, 146);
 			this.Controls.Add(this.groupInfo);
 			this.Controls.Add(this.groupAnalyze);
 			this.Font = new System.Drawing.Font("Verdana", 7F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
 			this.Name = "MapInfoForm";
-			this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
+			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
 			this.Text = "Map Info";
 			this.groupAnalyze.ResumeLayout(false);
 			this.groupInfo.ResumeLayout(false);

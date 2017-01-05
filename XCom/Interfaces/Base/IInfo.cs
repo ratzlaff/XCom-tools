@@ -6,7 +6,6 @@ namespace XCom.Interfaces.Base
 	{
 		int ID { get; }
 		sbyte TileOffset { get; }
-		sbyte StandOffset { get; }
 		TileType TileType { get; }
 		SpecialType TargetType { get; }
 		bool HumanDoor { get; }
