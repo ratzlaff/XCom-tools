@@ -3,6 +3,7 @@ using System.Drawing;
 using System.Collections;
 using System.ComponentModel;
 using System.Windows.Forms;
+
 using XCom;
 using XCom.Interfaces;
 using XCom.Interfaces.Base;
@@ -27,7 +28,7 @@ namespace MapView
 		private System.Windows.Forms.TextBox oldC;
 		private System.Windows.Forms.TextBox oldR;
 		private System.Windows.Forms.TextBox oldH;
-		private CheckBox AddHeightToCellingCheckBox;
+		private CheckBox CeilingCheckBox;
 
 		private IMap_Base map;
 
@@ -73,22 +74,18 @@ namespace MapView
 
 		public bool AddHeightToCelling
 		{
-			get { return AddHeightToCellingCheckBox.Checked; }
+			get { return CeilingCheckBox.Checked; }
 		}
 
 		#region Windows Form Designer generated code
 		/// <summary>
 		/// Clean up any resources being used.
 		/// </summary>
-		protected override void Dispose( bool disposing )
+		protected override void Dispose(bool disposing)
 		{
-			if (disposing)
-			{
-				if (components != null)
-				{
-					components.Dispose();
-				}
-			}
+			if (disposing && components != null)
+				components.Dispose();
+
 			base.Dispose(disposing);
 		}
 
@@ -111,7 +108,7 @@ namespace MapView
 			this.txtH = new System.Windows.Forms.TextBox();
 			this.btnOk = new System.Windows.Forms.Button();
 			this.btnCancel = new System.Windows.Forms.Button();
-			this.AddHeightToCellingCheckBox = new System.Windows.Forms.CheckBox();
+			this.CeilingCheckBox = new System.Windows.Forms.CheckBox();
 			this.SuspendLayout();
 			// 
 			// oldC
@@ -223,24 +220,26 @@ namespace MapView
 			this.btnCancel.Text = "Cancel";
 			this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
 			// 
-			// AddHeightToCellingCheckBox
+			// CeilingCheckBox
 			// 
-			this.AddHeightToCellingCheckBox.AutoSize = true;
-			this.AddHeightToCellingCheckBox.Font = new System.Drawing.Font("Verdana", 7F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.AddHeightToCellingCheckBox.Location = new System.Drawing.Point(160, 90);
-			this.AddHeightToCellingCheckBox.Name = "AddHeightToCellingCheckBox";
-			this.AddHeightToCellingCheckBox.Size = new System.Drawing.Size(99, 16);
-			this.AddHeightToCellingCheckBox.TabIndex = 9;
-			this.AddHeightToCellingCheckBox.Text = "Add to ceiling";
-			this.AddHeightToCellingCheckBox.UseVisualStyleBackColor = true;
-			this.AddHeightToCellingCheckBox.Visible = false;
+			this.CeilingCheckBox.AutoSize = true;
+			this.CeilingCheckBox.Checked = true;
+			this.CeilingCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
+			this.CeilingCheckBox.Font = new System.Drawing.Font("Verdana", 7F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.CeilingCheckBox.Location = new System.Drawing.Point(160, 90);
+			this.CeilingCheckBox.Name = "CeilingCheckBox";
+			this.CeilingCheckBox.Size = new System.Drawing.Size(81, 16);
+			this.CeilingCheckBox.TabIndex = 9;
+			this.CeilingCheckBox.Text = "wrt Ceiling";
+			this.CeilingCheckBox.UseVisualStyleBackColor = true;
+			this.CeilingCheckBox.Visible = false;
 			// 
 			// ChangeMapSizeForm
 			// 
 			this.AutoScaleBaseSize = new System.Drawing.Size(5, 12);
 			this.ClientSize = new System.Drawing.Size(278, 172);
 			this.ControlBox = false;
-			this.Controls.Add(this.AddHeightToCellingCheckBox);
+			this.Controls.Add(this.CeilingCheckBox);
 			this.Controls.Add(this.btnCancel);
 			this.Controls.Add(this.btnOk);
 			this.Controls.Add(this.txtH);
@@ -272,7 +271,7 @@ namespace MapView
 				int.Parse(txtC.Text);
 				int.Parse(txtH.Text);
 
-				DialogResult=DialogResult.OK;
+				DialogResult = DialogResult.OK;
 				Close();
 			}
 			catch
@@ -295,22 +294,7 @@ namespace MapView
 		{
 			int current;
 			int.TryParse(txtH.Text, out current);
-			if (current == map.MapSize.Height)
-			{
-				AddHeightToCellingCheckBox.Visible = false;
-			}
-			else
-			{
-				AddHeightToCellingCheckBox.Visible = true;
-				if (current > map.MapSize.Height)
-				{
-					AddHeightToCellingCheckBox.Text = "Add to ceiling";
-				}
-				else
-				{
-					AddHeightToCellingCheckBox.Text = "Remove from ceiling";
-				}
-			}
+			CeilingCheckBox.Visible = (current != map.MapSize.Height);
 		}
 	}
 }
