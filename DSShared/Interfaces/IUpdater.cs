@@ -11,11 +11,13 @@ namespace DSShared.Interfaces
 		/// <summary>
 		/// network path to update file
 		/// </summary>
-		string UpdatePath { get; }
+		string UpdatePath
+		{ get; }
 
 		/// <summary>
 		/// Description to display for this assembly
 		/// </summary>
-		string DisplayDescription { get; }
+		string DisplayDescription
+		{ get; }
 	}
 }
