@@ -418,6 +418,7 @@ namespace MapView.Forms.MapObservers.RmpViews
 			// 
 			this._contentPane.AutoScroll = true;
 			this._contentPane.Dock = System.Windows.Forms.DockStyle.Fill;
+			this._contentPane.Font = new System.Drawing.Font("Verdana", 7F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this._contentPane.Location = new System.Drawing.Point(0, 24);
 			this._contentPane.Name = "_contentPane";
 			this._contentPane.Size = new System.Drawing.Size(660, 177);
@@ -591,6 +592,7 @@ namespace MapView.Forms.MapObservers.RmpViews
 			this.groupBox2.Controls.Add(this.idxLabel);
 			this.groupBox2.Controls.Add(this.idxLabel2);
 			this.groupBox2.Dock = System.Windows.Forms.DockStyle.Top;
+			this.groupBox2.Font = new System.Drawing.Font("Verdana", 7F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.groupBox2.Location = new System.Drawing.Point(0, 0);
 			this.groupBox2.Name = "groupBox2";
 			this.groupBox2.Size = new System.Drawing.Size(289, 50);

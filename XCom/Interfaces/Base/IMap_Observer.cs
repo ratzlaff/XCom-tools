@@ -9,7 +9,7 @@ namespace XCom.Interfaces.Base
 //		void SetMap(object sender, SetMapEventArgs e);
 
 		IMap_Base Map
-		{ set;get;}
+		{ set; get;}
 
 		void HeightChanged(IMap_Base sender, HeightChangedEventArgs e);
 		void SelectedTileChanged(IMap_Base sender, SelectedTileChangedEventArgs e);
