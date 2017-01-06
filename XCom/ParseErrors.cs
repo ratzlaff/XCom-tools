@@ -8,9 +8,9 @@ namespace XCom
 {
 	public class ParseErrors : System.Windows.Forms.Form
 	{
-		private bool error=false;
-		private System.Windows.Forms.RichTextBox txt;
+		private bool error = false;
 
+		private System.Windows.Forms.RichTextBox txt;
 		private System.ComponentModel.Container components = null;
 
 		public ParseErrors()
@@ -20,14 +20,14 @@ namespace XCom
 
 		public void AddError(string error)
 		{
-			txt.AppendText(error+"\n");
-			this.error=true;
+			txt.AppendText(error + "\n");
+			this.error = true;
 		}
 
 		public bool Error
 		{
-			get{return error;}
-			set{error=value;}
+			get { return error; }
+			set { error = value; }
 		}
 
 		#region Windows Form Designer generated code
@@ -35,15 +35,11 @@ namespace XCom
 		/// <summary>
 		/// Clean up any resources being used.
 		/// </summary>
-		protected override void Dispose( bool disposing )
+		protected override void Dispose(bool disposing)
 		{
-			if( disposing )
-			{
-				if(components != null)
-				{
-					components.Dispose();
-				}
-			}
+			if (disposing && components != null)
+				components.Dispose();
+
 			base.Dispose( disposing );
 		}
 		
@@ -59,6 +55,7 @@ namespace XCom
 			// txt
 			// 
 			this.txt.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.txt.Location = new System.Drawing.Point(0, 0);
 			this.txt.Name = "txt";
 			this.txt.Size = new System.Drawing.Size(504, 213);
 			this.txt.TabIndex = 0;
@@ -66,15 +63,15 @@ namespace XCom
 			// 
 			// ParseErrors
 			// 
-			this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
+			this.AutoScaleBaseSize = new System.Drawing.Size(5, 12);
 			this.ClientSize = new System.Drawing.Size(504, 213);
-			this.Controls.AddRange(new System.Windows.Forms.Control[] {
-																		  this.txt});
+			this.Controls.Add(this.txt);
+			this.Font = new System.Drawing.Font("Verdana", 7F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.Name = "ParseErrors";
 			this.Text = "There were errors";
 			this.ResumeLayout(false);
-
 		}
+
 		#endregion
 	}
 }

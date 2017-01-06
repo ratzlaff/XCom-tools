@@ -264,6 +264,9 @@
     <Compile Include="xConsole.cs">
       <SubType>Code</SubType>
     </Compile>
+    <EmbeddedResource Include="ParseErrors.resx">
+      <DependentUpon>ParseErrors.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <SubType>Designer</SubType>
       <Generator>ResXFileCodeGenerator</Generator>

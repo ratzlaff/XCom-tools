@@ -283,10 +283,10 @@ namespace XCom
 		/// <returns>true if the palette names are the same</returns>
 		public override bool Equals(Object other)
 		{
-			if (!(other is Palette))
-				return false;
+			if ((other is Palette))
+				return this.cp.Equals(((Palette)other).cp);
 
-			return this.cp.Equals(((Palette)other).cp);
+			return false;
 		}
 
 		public override int GetHashCode()

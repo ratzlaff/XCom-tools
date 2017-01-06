@@ -132,10 +132,7 @@ namespace XCom.Interfaces.Base
 				return null;
 			}
 
-			set
-			{
-				MapData[row, col, height] = value;
-			}
+			set { MapData[row, col, height] = value; }
 		}
 
 		/// <summary>

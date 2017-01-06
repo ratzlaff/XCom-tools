@@ -293,7 +293,8 @@ namespace XCom
 			get { return _entries.Count; }
 		}
 
-		public byte ExtraHeight { get; set; }
+		public byte ExtraHeight
+		{ get; set; }
 
 		public void RemoveEntry(RmpEntry r)
 		{
@@ -324,7 +325,7 @@ namespace XCom
 
 		public RmpEntry AddEntry(byte row, byte col, byte height)
 		{
-			var re = new RmpEntry((byte) _entries.Count, row, col, height);
+			var re = new RmpEntry((byte)_entries.Count, row, col, height);
 			_entries.Add(re);
 			return re;
 		}
@@ -346,13 +347,13 @@ namespace XCom
 			return (entry.Height < 0 || entry.Height >= height);
 		}
 
-		public RmpEntry GetEntryAtHeight(byte currentHeight)
-		{
-			foreach (var route in _entries)
-				if (route.Height == currentHeight)
-					return route;
-
-			return null;
-		}
+//		public RmpEntry GetEntryAtHeight(byte currentHeight)
+//		{
+//			foreach (var route in _entries)
+//				if (route.Height == currentHeight)
+//					return route;
+//
+//			return null;
+//		}
 	}
 }

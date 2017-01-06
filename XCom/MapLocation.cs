@@ -11,9 +11,9 @@ namespace XCom
 
 		public MapLocation(int row, int col, int height)
 		{
-			this.Row=row;
-			this.Col=col;
-			this.Height=height;
+			this.Row = row;
+			this.Col = col;
+			this.Height = height;
 		}
 	}
 }

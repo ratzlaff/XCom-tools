@@ -26,7 +26,9 @@ namespace DSShared.Lists
 	/// <summary>
 	/// A custom list view control allowing you to specify a list of columns that retrieve their row information via reflection
 	/// </summary>
-	public class CustomList:Control
+	public class CustomList
+		:
+		Control
 	{
 		private CustomListColumnCollection columns;
 		private List<ObjRow> items;
@@ -41,14 +43,14 @@ namespace DSShared.Lists
 		/// </summary>
 		protected ObjRow clicked;
 
-		private int startY=0;
-		private int yOffset=0;
-		private int selRow=-1;
+		private int startY = 0;
+		private int yOffset = 0;
+		private int selRow = -1;
 		private VScrollBar vert;
-		private CustomListColumn overCol=null;
+		private CustomListColumn overCol = null;
 		private DSShared.Windows.RegistryInfo ri;
 		private Type rowType;
-		private string name="";
+		private string name = "";
 
 		/// <summary>
 		/// Occurs when a row is clicked
@@ -66,20 +68,20 @@ namespace DSShared.Lists
 		public CustomList()
 		{
 			columns = new CustomListColumnCollection();
-			columns.OffX=1;
-			columns.OffY=1;
+			columns.OffX = 1;
+			columns.OffY = 1;
 			columns.Font=Font;
 
-			columns.RefreshEvent+=new RefreshDelegate(Refresh);
-			columns.RowMoveOver+=new RowMoveDelegate(mouseOverRows);
-			columns.RowClicked+=new MouseEventHandler(rowClicked);
-			columns.Parent=this;
+			columns.RefreshEvent += new RefreshDelegate(Refresh);
+			columns.RowMoveOver += new RowMoveDelegate(mouseOverRows);
+			columns.RowClicked += new MouseEventHandler(rowClicked);
+			columns.Parent = this;
 
 			items = new List<ObjRow>();			
 
-			SetStyle(ControlStyles.DoubleBuffer|ControlStyles.AllPaintingInWmPaint|ControlStyles.UserPaint,true);		
+			SetStyle(ControlStyles.DoubleBuffer|ControlStyles.AllPaintingInWmPaint|ControlStyles.UserPaint,true);
 
-			startY=columns.HeaderHeight;
+			startY = columns.HeaderHeight;
 
 			rowType = typeof(ObjRow);
 		}
@@ -137,7 +139,7 @@ namespace DSShared.Lists
 		{
 			RegistryKey key = e.OpenKey;
 			Graphics g = Graphics.FromHwnd(this.Handle);
-			foreach(CustomListColumn cc in columns)
+			foreach (CustomListColumn cc in columns)
 			{
 				try
 				{
@@ -178,10 +180,7 @@ namespace DSShared.Lists
 		[Browsable(false)]
 		public int PreferredHeight
 		{
-			get
-			{
-				return columns.HeaderHeight + ((items.Count + 1) * RowHeight);
-			}
+			get { return columns.HeaderHeight + ((items.Count + 1) * RowHeight); }
 		}
 
 		/// <summary>

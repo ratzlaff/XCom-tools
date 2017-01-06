@@ -9,10 +9,13 @@ namespace MapView.Forms.MapObservers.RmpViews
 		:
 		EventArgs
 	{
-		public MapLocation ClickLocation { get; set; }
+		public MapLocation ClickLocation
+		{ get; set; }
 
-		public MapTileBase ClickTile { get; set; }
+		public MapTileBase ClickTile
+		{ get; set; }
 
-		public MouseEventArgs MouseEventArgs { get; set; }
+		public MouseEventArgs MouseEventArgs
+		{ get; set; }
 	}
 }

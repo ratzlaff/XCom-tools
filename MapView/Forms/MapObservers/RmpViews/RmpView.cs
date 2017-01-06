@@ -32,7 +32,6 @@ namespace MapView.Forms.MapObservers.RmpViews
 
 		private readonly List<object> _byteList = new List<object>();
 
-
 		public RmpView()
 		{
 			InitializeComponent();
@@ -371,11 +370,11 @@ namespace MapView.Forms.MapObservers.RmpViews
 				cbUse4.SelectedItem = _currEntry[3].UType;
 				cbUse5.SelectedItem = _currEntry[4].UType;
 
-				txtDist1.Text = _currEntry[0].Distance + "";
-				txtDist2.Text = _currEntry[1].Distance + "";
-				txtDist3.Text = _currEntry[2].Distance + "";
-				txtDist4.Text = _currEntry[3].Distance + "";
-				txtDist5.Text = _currEntry[4].Distance + "";
+				txtDist1.Text = Convert.ToString(_currEntry[0].Distance);
+				txtDist2.Text = Convert.ToString(_currEntry[1].Distance);
+				txtDist3.Text = Convert.ToString(_currEntry[2].Distance);
+				txtDist4.Text = Convert.ToString(_currEntry[3].Distance);
+				txtDist5.Text = Convert.ToString(_currEntry[4].Distance);
 
 				gbNodeInfo.ResumeLayout();
 				gbNodeInfo.ResumeLayout();
@@ -401,17 +400,17 @@ namespace MapView.Forms.MapObservers.RmpViews
 				try
 				{
 					HeightDifTextbox.Text = _map.Rmp.ExtraHeight.ToString();
-					 
+
 					ClearSelected();
-					
-					var route = _map.Rmp.GetEntryAtHeight(_map.CurrentHeight);
-					if (route != null)
-					{
-						_currEntry = route;
-						_rmpPanel.ClickPoint = new Point(
-													_currEntry.Col,
-													_currEntry.Row);
-					}
+
+//					var route = _map.Rmp.GetEntryAtHeight(_map.CurrentHeight); // this forces a selected node when RouteView opens.
+//					if (route != null)
+//					{
+//						_currEntry = route;
+//						_rmpPanel.ClickPoint = new Point(
+//													_currEntry.Col,
+//													_currEntry.Row);
+//					}
 
 					if ((_rmpPanel.Map = _map) != null)
 					{
@@ -421,7 +420,7 @@ namespace MapView.Forms.MapObservers.RmpViews
 							cbRank1.Items.AddRange(RmpFile.UnitRankUFO);
 						else
 							cbRank1.Items.AddRange(RmpFile.UnitRankTFTD);
-					 
+
 						FillGui();
 					}
 				}
@@ -907,7 +906,7 @@ namespace MapView.Forms.MapObservers.RmpViews
 							"Other",
 							bc, false, null);
 
-			connectNodesYoolStripMenuItem.SelectedIndex = 0;
+			connectNodesToolStripMenuItem.SelectedIndex = 0;
 		}
 
 		private void copyNode_Click(object sender, EventArgs e)
@@ -937,10 +936,10 @@ namespace MapView.Forms.MapObservers.RmpViews
 
 		private ConnectNodeTypes GetConnectNodeType()
 		{
-			if (connectNodesYoolStripMenuItem.Text == "Connect One way")
+			if (connectNodesToolStripMenuItem.Text == "Connect One way")
 				return ConnectNodeTypes.ConnectOneWay;
 
-			if (connectNodesYoolStripMenuItem.Text == "Connect Two ways")
+			if (connectNodesToolStripMenuItem.Text == "Connect Two ways")
 				return ConnectNodeTypes.ConnectTwoWays;
 
 			return ConnectNodeTypes.DontConnect;
@@ -1031,9 +1030,9 @@ namespace MapView.Forms.MapObservers.RmpViews
 		void _contentPanePaint(object sender, PaintEventArgs e)
 		{}
 
-		void ConnectNodesYoolStripMenuItemClick(object sender, EventArgs e)
+		void ConnectNodesToolStripMenuItemClick(object sender, EventArgs e)
 		{
-			// TODO: Implement ConnectNodesYoolStripMenuItemClick
+			// TODO: Implement ConnectNodesToolStripMenuItemClick
 		}
 	}
 }

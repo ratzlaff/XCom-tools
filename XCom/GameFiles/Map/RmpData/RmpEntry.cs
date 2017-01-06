@@ -33,7 +33,7 @@ namespace XCom
 
 		public RmpEntry(byte idx, byte[] data)
 		{
-			//this.data = data;
+//			this.data = data;
 			Index = idx;
 			_row = data[0];
 			_col = data[1];
@@ -44,15 +44,18 @@ namespace XCom
 			int x = 4;
 			for (int i = 0; i < 5; i++)
 			{
-				_links[i] = new Link(data[x], data[x + 1], data[x + 2]);
+				_links[i] = new Link(
+									data[x],
+									data[x + 1],
+									data[x + 2]);
 				x += 3;
 			}
 
-			UType = (UnitType) data[19];
+			UType = (UnitType)data[19];
 			URank1 = data[20];
 			NodeImportance = (NodeImportance) data[21];
 			BaseModuleAttack = (BaseModuleAttack)data[22];
-			Spawn = (SpawnUsage) data[23];
+			Spawn = (SpawnUsage)data[23];
 		}
 
 		public RmpEntry(byte idx, byte row, byte col, byte height)
@@ -129,18 +132,23 @@ namespace XCom
 		public int Height
 		{
 			get { return _height; }
-			set {  _height = value ; }
+			set { _height = value ; }
 		}
 
-		public UnitType UType { get; set; }
+		public UnitType UType
+		{ get; set; }
 
-		public byte URank1 { get; set; }
+		public byte URank1
+		{ get; set; }
 
-		public NodeImportance NodeImportance { get; set; }
+		public NodeImportance NodeImportance
+		{ get; set; }
 
-		public BaseModuleAttack BaseModuleAttack { get; set; }
+		public BaseModuleAttack BaseModuleAttack
+		{ get; set; }
 
-		public SpawnUsage Spawn { get; set; }
+		public SpawnUsage Spawn
+		{ get; set; }
 
 		public int NumLinks
 		{

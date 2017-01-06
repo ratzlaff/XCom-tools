@@ -30,14 +30,14 @@ namespace MapView.Forms.MapObservers.TopViews
 
 			_drawService = new BottomPanelDrawService();
 			_drawService.Brush = new SolidBrush(Color.FromArgb(204, 204, 255));
-			_drawService.Font = new Font("Arial", 8);
+			_drawService.Font = new Font("Verdana", 7);
 		}
 
 		[Browsable(false)]
 		public Dictionary<string, SolidBrush> Brushes
 		{
 			get { return _drawService.Brushes; }
-			set { _drawService.Brushes= value; }
+			set { _drawService.Brushes = value; }
 		}
 
 		[Browsable(false)]

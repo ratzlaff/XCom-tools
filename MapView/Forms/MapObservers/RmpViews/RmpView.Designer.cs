@@ -70,7 +70,7 @@ namespace MapView.Forms.MapObservers.RmpViews
 			this.miEdit = new System.Windows.Forms.ToolStripMenuItem();
 			this.miOptions = new System.Windows.Forms.ToolStripMenuItem();
 			this.makeAllNodeRank0ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.connectNodesYoolStripMenuItem = new System.Windows.Forms.ToolStripComboBox();
+			this.connectNodesToolStripMenuItem = new System.Windows.Forms.ToolStripComboBox();
 			this.extraHeightToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.HeightDifTextbox = new System.Windows.Forms.ToolStripTextBox();
 			this.LinkGroupBox = new System.Windows.Forms.GroupBox();
@@ -186,7 +186,7 @@ namespace MapView.Forms.MapObservers.RmpViews
 			// 
 			// cbRank1
 			// 
-			this.cbRank1.Location = new System.Drawing.Point(85, 40);
+			this.cbRank1.Location = new System.Drawing.Point(85, 15);
 			this.cbRank1.Name = "cbRank1";
 			this.cbRank1.Size = new System.Drawing.Size(130, 20);
 			this.cbRank1.TabIndex = 7;
@@ -203,11 +203,11 @@ namespace MapView.Forms.MapObservers.RmpViews
 			// 
 			// lblUsage
 			// 
-			this.lblUsage.Location = new System.Drawing.Point(10, 15);
+			this.lblUsage.Location = new System.Drawing.Point(10, 40);
 			this.lblUsage.Name = "lblUsage";
 			this.lblUsage.Size = new System.Drawing.Size(75, 25);
 			this.lblUsage.TabIndex = 5;
-			this.lblUsage.Text = "Spawn";
+			this.lblUsage.Text = "Weight";
 			this.lblUsage.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
 			// 
 			// lblRank2
@@ -221,7 +221,7 @@ namespace MapView.Forms.MapObservers.RmpViews
 			// 
 			// lblRank1
 			// 
-			this.lblRank1.Location = new System.Drawing.Point(10, 40);
+			this.lblRank1.Location = new System.Drawing.Point(10, 15);
 			this.lblRank1.Name = "lblRank1";
 			this.lblRank1.Size = new System.Drawing.Size(75, 25);
 			this.lblRank1.TabIndex = 2;
@@ -262,7 +262,7 @@ namespace MapView.Forms.MapObservers.RmpViews
 			// 
 			// cbUsage
 			// 
-			this.cbUsage.Location = new System.Drawing.Point(85, 15);
+			this.cbUsage.Location = new System.Drawing.Point(85, 40);
 			this.cbUsage.Name = "cbUsage";
 			this.cbUsage.Size = new System.Drawing.Size(130, 20);
 			this.cbUsage.TabIndex = 10;
@@ -429,7 +429,7 @@ namespace MapView.Forms.MapObservers.RmpViews
 			this.menuStrip1.Font = new System.Drawing.Font("Verdana", 7F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
 									this.miEdit,
-									this.connectNodesYoolStripMenuItem,
+									this.connectNodesToolStripMenuItem,
 									this.extraHeightToolStripMenuItem,
 									this.HeightDifTextbox});
 			this.menuStrip1.Location = new System.Drawing.Point(0, 0);
@@ -462,17 +462,17 @@ namespace MapView.Forms.MapObservers.RmpViews
 			this.makeAllNodeRank0ToolStripMenuItem.Text = "Make all nodes Rank 0";
 			this.makeAllNodeRank0ToolStripMenuItem.Click += new System.EventHandler(this.makeAllNodeRank0ToolStripMenuItem_Click);
 			// 
-			// connectNodesYoolStripMenuItem
+			// connectNodesToolStripMenuItem
 			// 
-			this.connectNodesYoolStripMenuItem.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-			this.connectNodesYoolStripMenuItem.Font = new System.Drawing.Font("Verdana", 7F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.connectNodesYoolStripMenuItem.Items.AddRange(new object[] {
+			this.connectNodesToolStripMenuItem.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.connectNodesToolStripMenuItem.Font = new System.Drawing.Font("Verdana", 7F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.connectNodesToolStripMenuItem.Items.AddRange(new object[] {
 									"Dont connect",
 									"Connect One way",
 									"Connect Two ways"});
-			this.connectNodesYoolStripMenuItem.Name = "connectNodesYoolStripMenuItem";
-			this.connectNodesYoolStripMenuItem.Size = new System.Drawing.Size(154, 20);
-			this.connectNodesYoolStripMenuItem.Click += new System.EventHandler(this.ConnectNodesYoolStripMenuItemClick);
+			this.connectNodesToolStripMenuItem.Name = "connectNodesToolStripMenuItem";
+			this.connectNodesToolStripMenuItem.Size = new System.Drawing.Size(154, 20);
+			this.connectNodesToolStripMenuItem.Click += new System.EventHandler(this.ConnectNodesToolStripMenuItemClick);
 			// 
 			// extraHeightToolStripMenuItem
 			// 
@@ -660,7 +660,7 @@ namespace MapView.Forms.MapObservers.RmpViews
 		private System.Windows.Forms.ToolStripMenuItem miOptions;
 		private System.Windows.Forms.Button pasteNode;
 		private System.Windows.Forms.Button copyNode;
-		private System.Windows.Forms.ToolStripComboBox connectNodesYoolStripMenuItem;
+		private System.Windows.Forms.ToolStripComboBox connectNodesToolStripMenuItem;
 		private System.Windows.Forms.GroupBox LinkGroupBox;
 		private System.Windows.Forms.Panel panel1;
 		private System.Windows.Forms.ToolStripMenuItem extraHeightToolStripMenuItem;

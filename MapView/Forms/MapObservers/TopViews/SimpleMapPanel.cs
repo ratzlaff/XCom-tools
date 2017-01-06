@@ -26,7 +26,7 @@ namespace MapView.Forms.MapObservers.TopViews
 		private int _mR;
 		private int _mC;
 
-		protected DrawContentService DrawContentService = new DrawContentService() ;
+		protected DrawContentService DrawContentService = new DrawContentService();
 
 		public SimpleMapPanel()
 		{
@@ -64,11 +64,11 @@ namespace MapView.Forms.MapObservers.TopViews
 
 				if (hHeight < MinimunHeight)
 				{
-					hWidth = MinimunHeight * 2;
+					hWidth  = MinimunHeight * 2;
 					hHeight = MinimunHeight;
 				}
 
-				DrawContentService.HWidth = hWidth;
+				DrawContentService.HWidth  = hWidth;
 				DrawContentService.HHeight = hHeight;
 
 				_offX = 4 + map.MapSize.Rows * hWidth;
