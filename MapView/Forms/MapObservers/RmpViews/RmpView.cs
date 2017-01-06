@@ -457,6 +457,7 @@ namespace MapView.Forms.MapObservers.RmpViews
 		private void cbRank2_SelectedIndexChanged(object sender, EventArgs e)
 		{
 			_currEntry.NodeImportance = (NodeImportance)cbRank2.SelectedItem;
+			Refresh();
 		}
 
 		private void AttackBaseCombo_SelectedIndexChanged(object sender, EventArgs e)
