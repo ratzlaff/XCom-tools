@@ -53,7 +53,7 @@ namespace XCom
 
 			UType = (UnitType)data[19];
 			URank1 = data[20];
-			NodeImportance = (NodeImportance) data[21];
+			NodeImportance = (NodeImportance)data[21];
 			BaseModuleAttack = (BaseModuleAttack)data[22];
 			Spawn = (SpawnUsage)data[23];
 		}
@@ -80,9 +80,8 @@ namespace XCom
 		{
 			var entry = o as RmpEntry;
 			if (entry != null)
-			{
-				return Index == entry.Index;
-			}
+				return (Index == entry.Index);
+
 			return false;
 		}
 
@@ -103,20 +102,18 @@ namespace XCom
 			{
 				fs.WriteByte(_links[i].Index);
 				fs.WriteByte(_links[i].Distance);
-				fs.WriteByte((byte) _links[i].UType);
+				fs.WriteByte((byte)_links[i].UType);
 			}
-			fs.WriteByte((byte) UType);
-			fs.WriteByte((byte) URank1);
-			fs.WriteByte((byte) NodeImportance);
+			fs.WriteByte((byte)UType);
+			fs.WriteByte((byte)URank1);
+			fs.WriteByte((byte)NodeImportance);
 			fs.WriteByte((byte)BaseModuleAttack);
-			fs.WriteByte((byte) Spawn);
+			fs.WriteByte((byte)Spawn);
 		}
 
 		public override string ToString()
 		{
-			string res = "";
-			res += "r:" + _row + " c:" + _col + " h:" + _height;
-			return res;
+			return ("r:" + _row + " c:" + _col + " h:" + _height);
 		}
 
 		public byte Row

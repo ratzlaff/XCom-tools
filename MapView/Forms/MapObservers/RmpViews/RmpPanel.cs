@@ -171,6 +171,8 @@ namespace MapView.Forms.MapObservers.RmpViews
 						(Origin.Y + i * DrawAreaHeight) + map.MapSize.Rows * DrawAreaHeight);
 		}
 
+		private const int NODE_VAL_MAX = 12;
+
 		private void DrawNodes(GraphicsPath upper, Graphics g)
 		{
 			var map = Map;
@@ -256,28 +258,28 @@ namespace MapView.Forms.MapObservers.RmpViews
 							}
 						}
 
-						if (DrawAreaHeight >= 10)
+						if (DrawAreaHeight >= NODE_VAL_MAX)
 						{
 							var boxX = x - (DrawAreaWidth  / 2);
 							var boxY = y + (DrawAreaHeight / 3 * 2);
 
-							var nodeImportance = (int)rmpEntry.NodeImportance;
-							const int MAX_NODE_IMPORTANCE = 8;
+							var nodePatrolPriority = (int)rmpEntry.NodeImportance;
 							DrawBox(
 									g,
-									boxX, boxY,
-									nodeImportance, MAX_NODE_IMPORTANCE,
-									Brushes.Red);
+									boxX,
+									boxY,
+									nodePatrolPriority,
+									NODE_VAL_MAX,
+									Brushes.CornflowerBlue);
 
-							var spawn = (int)rmpEntry.Spawn;
-							if (spawn > 0)
-								spawn += 5;
-
+							var nodeSpawnWeight = (int)rmpEntry.Spawn;
 							DrawBox(
 									g,
-									boxX + 3, boxY,
-									spawn, 15,
-									Brushes.DeepSkyBlue);
+									boxX + 3,
+									boxY,
+									nodeSpawnWeight,
+									NODE_VAL_MAX,
+									Brushes.Firebrick);
 						}
 					}
 				}
@@ -295,25 +297,30 @@ namespace MapView.Forms.MapObservers.RmpViews
 			g.FillRectangle(
 						Brushes.Gray,
 						boxX, boxY,
-						3, 10);
+						3, NODE_VAL_MAX);
 			g.DrawRectangle(
 						Pens.Black,
 						boxX, boxY,
-						3, 10);
-
-			if (max > 8)
-			{
-				value = (int)((double)value / max * 8);
-				max = 8;
-			}
-
-			if (value > max) value = max;
+						3, NODE_VAL_MAX);
 
 			if (value > 0)
+			{
+				if (value > max)
+				{
+					value = NODE_VAL_MAX;
+				}
+				else
+				{
+					value = (int)(Math.Ceiling((double)value / max * NODE_VAL_MAX));
+				}
+
 				g.FillRectangle(
 							color,
-							boxX + 1, boxY + 1 + (max - value),
-							2, 1 + value);
+							boxX + 1,
+							boxY + (NODE_VAL_MAX - value) - 1,
+							2,
+							value + 1);
+			}
 		}
 
 		private void DrawWallsAndContent(Graphics g)
