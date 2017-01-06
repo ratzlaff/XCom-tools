@@ -90,8 +90,7 @@ namespace MapView.Forms.MapObservers.RmpViews
 			cbUsage.Items.AddRange(RmpFile.SpawnUsage);
 
 			ClearSelected();
-
-			base.Text = "Route View";
+//			base.Text = "";
 		}
 
 		private void options_click(object sender, EventArgs e)

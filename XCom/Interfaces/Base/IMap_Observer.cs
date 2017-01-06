@@ -7,19 +7,26 @@ namespace XCom.Interfaces.Base
 	public interface IMap_Observer
 	{
 //		void SetMap(object sender, SetMapEventArgs e);
-		IMap_Base Map { set;get;}
+
+		IMap_Base Map
+		{ set;get;}
 
 		void HeightChanged(IMap_Base sender, HeightChangedEventArgs e);
 		void SelectedTileChanged(IMap_Base sender, SelectedTileChangedEventArgs e);
 
-		DSShared.Windows.RegistryInfo RegistryInfo { get; set; }
-		Dictionary<string, IMap_Observer> MoreObservers { get; }
+		DSShared.Windows.RegistryInfo RegistryInfo
+		{ get; set; }
+
+		Dictionary<string, IMap_Observer> MoreObservers
+		{ get; }
 	}
 
 	/// <summary>
 	/// EventArgs class that holds a IMap_Base for when a SetMap event fires
 	/// </summary>
-	public class SetMapEventArgs : EventArgs
+	public class SetMapEventArgs
+		:
+		EventArgs
 	{
 		private IMap_Base map;
 
@@ -38,7 +45,9 @@ namespace XCom.Interfaces.Base
 	/// <summary>
 	/// EventArgs class that holds a MapLocation and MapTile for when a SelectedTileChanged event fires
 	/// </summary>
-	public class SelectedTileChangedEventArgs : EventArgs
+	public class SelectedTileChangedEventArgs
+		:
+		EventArgs
 	{
 		private MapLocation newSelected;
 		private MapTileBase selectedTile;

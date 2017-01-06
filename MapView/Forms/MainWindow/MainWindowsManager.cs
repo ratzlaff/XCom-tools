@@ -66,9 +66,9 @@ namespace MapView.Forms.MainWindow
 				TopView.TopViewControl
 			};
 
-			foreach (var frm in maps)
-				if (frm != null)
-					SetMap(map, frm);
+			foreach (var f in maps)
+				if (f != null)
+					SetMap(map, f);
 
 			MapViewPanel.Instance.MapView.Refresh();
 		}
