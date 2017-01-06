@@ -13,7 +13,7 @@ namespace MapView.Forms.MapObservers.RmpViews
 	{
 		public Point Position = new Point(-1, -1);
 
-		private readonly Font _font = new Font("Verdana", 11, FontStyle.Bold);
+		private readonly Font _font = new Font("Verdana", 15, FontStyle.Bold);
 
 		private readonly DrawContentService _drawContentService = new DrawContentService();
 

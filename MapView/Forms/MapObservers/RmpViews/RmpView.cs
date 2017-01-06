@@ -461,7 +461,7 @@ namespace MapView.Forms.MapObservers.RmpViews
 
 		private void AttackBaseCombo_SelectedIndexChanged(object sender, EventArgs e)
 		{
-			_currEntry.BaseModuleAttack = (BaseModuleAttack)cbRank2.SelectedItem;
+			_currEntry.BaseModuleAttack = (BaseModuleAttack)AttackBaseCombo.SelectedItem;
 		}
 
 		private byte calcLinkDistance(RmpEntry from, RmpEntry to, TextBox result)
@@ -927,7 +927,7 @@ namespace MapView.Forms.MapObservers.RmpViews
 			{
 				cbType.SelectedIndex			= Int32.Parse(nodeData[1]);
 				cbRank1.SelectedIndex			= Int32.Parse(nodeData[2]);
-				cbRank2.SelectedIndex			= Int32.Parse(nodeData[4]);
+				cbRank2.SelectedIndex			= Int32.Parse(nodeData[3]);
 				AttackBaseCombo.SelectedIndex	= Int32.Parse(nodeData[4]);
 				cbUsage.SelectedIndex			= Int32.Parse(nodeData[5]);
 			}
@@ -1027,7 +1027,9 @@ namespace MapView.Forms.MapObservers.RmpViews
 		}
 
 		void _contentPanePaint(object sender, PaintEventArgs e)
-		{}
+		{
+			// TODO: Implement _contentPanePaint
+		}
 
 		void ConnectNodesToolStripMenuItemClick(object sender, EventArgs e)
 		{
