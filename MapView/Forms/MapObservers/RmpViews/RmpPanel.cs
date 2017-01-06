@@ -13,7 +13,7 @@ namespace MapView.Forms.MapObservers.RmpViews
 	{
 		public Point Position = new Point(-1, -1);
 
-		private readonly Font _font = new Font("Arial", 12, FontStyle.Bold);
+		private readonly Font _font = new Font("Verdana", 12, FontStyle.Bold);
 
 		private readonly DrawContentService _drawContentService = new DrawContentService();
 
@@ -87,8 +87,9 @@ namespace MapView.Forms.MapObservers.RmpViews
 				var textLeft = overlayPos.X + 5;
 				var textTop  = overlayPos.Y + 5;
 
+				var pt = GetTileCoordinates(Position.X, Position.Y);
 				g.DrawString(
-							"Tile " + GetTileCoordinates(Position.X, Position.Y),
+							"Tile (" + pt.X + "," + pt.Y + ")",
 							Font,
 							Brushes.Black,
 							textLeft,
@@ -103,19 +104,19 @@ namespace MapView.Forms.MapObservers.RmpViews
 								textLeft,
 								textTop + textHeight);
 					g.DrawString(
-								"Spawns: " + RmpFile.UnitRankUFO[posT.Rmp.URank1],
+								"Priority: " + posT.Rmp.NodeImportance,
 								Font,
 								Brushes.Black,
 								textLeft,
 								textTop + textHeight * 2);
 					g.DrawString(
-								"Importance: " + posT.Rmp.NodeImportance,
+								"Spawns: " + RmpFile.UnitRankUFO[posT.Rmp.URank1],
 								Font,
 								Brushes.Black,
 								textLeft,
 								textTop + textHeight * 3);
 					g.DrawString(
-								"Spawn: " + posT.Rmp.Spawn,
+								"Weight: " + posT.Rmp.Spawn,
 								Font,
 								Brushes.Black,
 								textLeft,
@@ -257,7 +258,7 @@ namespace MapView.Forms.MapObservers.RmpViews
 
 						if (DrawAreaHeight >= 10)
 						{
-							var boxX = x - (DrawAreaWidth / 2);
+							var boxX = x - (DrawAreaWidth  / 2);
 							var boxY = y + (DrawAreaHeight / 3 * 2);
 
 							var nodeImportance = (int)rmpEntry.NodeImportance;

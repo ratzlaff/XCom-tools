@@ -1003,19 +1003,17 @@ namespace MapView.Forms.MapObservers.RmpViews
 		{
 			var changeCount = 0;
 			foreach (RmpEntry rmp in _map.Rmp)
-			{
 				if (rmp.URank1 != 0)
 				{
 					changeCount++;
 					rmp.URank1 = 0;
 				}
-			}
 
 			if (changeCount > 0)
 			{
 				_map.MapChanged = true;
 				MessageBox.Show(
-							changeCount + " links without 0 rank were found and changed",
+							changeCount + " links without 0 rank were changed.",
 							"Link Fix",
 							MessageBoxButtons.OK,
 							MessageBoxIcon.Information);
@@ -1023,7 +1021,7 @@ namespace MapView.Forms.MapObservers.RmpViews
 			else
 			{
 				MessageBox.Show(
-							"No links without 0 rank were found",
+							"All links are already 0 rank.",
 							"Link Fix",
 							MessageBoxButtons.OK,
 							MessageBoxIcon.Warning);
