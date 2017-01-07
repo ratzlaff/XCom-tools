@@ -140,7 +140,7 @@ namespace MapView.Forms.MapObservers.RmpViews
 						"N",
 						_font,
 						Brushes.Black,
-						Width - 30 - PAD_HORI,
+						Width - (int)g.MeasureString("N", _font).Width - PAD_HORI,
 						PAD_VERT);
 			g.DrawString(
 						"S",
@@ -152,11 +152,8 @@ namespace MapView.Forms.MapObservers.RmpViews
 						"E",
 						_font,
 						Brushes.Black,
-						Width - 30 - PAD_HORI,
+						Width - (int)g.MeasureString("E", _font).Width - PAD_HORI,
 						Height - _font.Height - PAD_VERT);
-//						brush: Brushes.Black,
-//						x: Width - 30 - PAD_HORI,
-//						y: Height - _font.Height - PAD_VERT);
 		}
 
 		private void DrawGridLines(Graphics g)
