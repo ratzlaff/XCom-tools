@@ -13,7 +13,7 @@ namespace MapView.Forms.MapObservers.RmpViews
 	{
 		public Point Position = new Point(-1, -1);
 
-		private readonly Font _font = new Font("Verdana", 15, FontStyle.Bold);
+		private readonly Font _font = new Font("Courier New", 22, FontStyle.Bold);
 
 		private readonly DrawContentService _drawContentService = new DrawContentService();
 
@@ -127,27 +127,36 @@ namespace MapView.Forms.MapObservers.RmpViews
 
 		private void DrawPoles(Graphics g)
 		{
+			const int PAD_HORI = 25;
+			const int PAD_VERT = 5;
+			
 			g.DrawString(
 						"W",
 						_font,
 						Brushes.Black,
-						0, 0);
+						PAD_HORI,
+						PAD_VERT);
 			g.DrawString(
 						"N",
 						_font,
 						Brushes.Black,
-						Width - 30, 0);
+						Width - 30 - PAD_HORI,
+						PAD_VERT);
 			g.DrawString(
 						"S",
 						_font,
 						Brushes.Black,
-						0, Height - _font.Height);
+						PAD_HORI,
+						Height - _font.Height - PAD_VERT);
 			g.DrawString(
 						"E",
 						_font,
-						brush: Brushes.Black,
-						x: Width - 30,
-						y: Height - _font.Height);
+						Brushes.Black,
+						Width - 30 - PAD_HORI,
+						Height - _font.Height - PAD_VERT);
+//						brush: Brushes.Black,
+//						x: Width - 30 - PAD_HORI,
+//						y: Height - _font.Height - PAD_VERT);
 		}
 
 		private void DrawGridLines(Graphics g)
@@ -260,8 +269,8 @@ namespace MapView.Forms.MapObservers.RmpViews
 
 						if (DrawAreaHeight >= NODE_VAL_MAX)
 						{
-							var boxX = x - (DrawAreaWidth  / 2);
-							var boxY = y + (DrawAreaHeight / 3 * 2);
+							var boxX = x - DrawAreaWidth / 2;
+							var boxY = y + DrawAreaHeight - NODE_VAL_MAX / 2;
 
 							var nodePatrolPriority = (int)rmpEntry.NodeImportance;
 							DrawBox(
