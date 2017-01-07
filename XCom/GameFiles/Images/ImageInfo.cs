@@ -5,12 +5,15 @@ using System.Collections.Generic;
 
 namespace XCom
 {
-	public class ImageInfo:FileDesc
+	public class ImageInfo
+		:
+		FileDesc
 	{
-		private readonly Dictionary<string,ImageDescriptor> _images;
+		private readonly Dictionary<string, ImageDescriptor> _images;
 
 		public ImageInfo(string inFile, VarCollection v)
-			: base(inFile)
+			:
+			base(inFile)
 		{
 			_images = new Dictionary<string, ImageDescriptor>();
 			Load(inFile, v);
@@ -21,10 +24,13 @@ namespace XCom
 			get
 			{
 				var key = name.ToUpper();
-				if (!_images.ContainsKey(key)) return null;
-				return _images[key];
+				if (_images.ContainsKey(key))
+					return _images[key];
+
+				return null;
 			}
-			set{_images[name.ToUpper()]=value;}
+
+			set { _images[name.ToUpper()] = value; }
 		}
 
 		public void Load(string inFile, VarCollection v)
@@ -51,17 +57,19 @@ namespace XCom
 				a.Sort();
 				var vars = new Dictionary<string, Variable>();
 
-				foreach(string str in a)
+				foreach (string str in a)
 				{
-					if (_images[str] == null) continue;
-					var id = _images[str];
-					if(!vars.ContainsKey(id.BasePath))
-						vars[id.BasePath]=new Variable(id.BaseName+":",id.BasePath);
-					else
-						vars[id.BasePath].Inc(id.BaseName+":");
+					if (_images[str] != null)
+					{
+						var id = _images[str];
+						if (!vars.ContainsKey(id.BasePath))
+							vars[id.BasePath] = new Variable(id.BaseName + ":", id.BasePath);
+						else
+							vars[id.BasePath].Inc(id.BaseName + ":");
+					}
 				}
 
-				foreach(string basePath in vars.Keys)
+				foreach (string basePath in vars.Keys)
 					vars[basePath].Write(sw);
 
 				sw.Flush();
@@ -71,7 +79,7 @@ namespace XCom
 
 		public ImagesAccessor Images
 		{
-			get{return new ImagesAccessor(_images);}
+			get { return new ImagesAccessor(_images); }
 		}
 
 		/// <summary>

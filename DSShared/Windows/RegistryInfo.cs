@@ -195,8 +195,7 @@ namespace DSShared.Windows
 				foreach (string s in properties.Keys)
 					ppKey.SetValue(
 								s,
-								properties[s].GetValue(obj,
-								                       null));
+								properties[s].GetValue(obj, null));
 
 				if (Saving != null)
 					Saving(this, new RegistrySaveLoadEventArgs(ppKey));

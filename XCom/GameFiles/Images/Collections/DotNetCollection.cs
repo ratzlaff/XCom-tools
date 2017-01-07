@@ -8,18 +8,20 @@ using System.Drawing.Imaging;
 
 namespace XCom
 {
-	public class DotNetCollection : XCImageCollection
+	public class DotNetCollection
+		:
+		XCImageCollection
 	{
 		public DotNetCollection(Bitmap src, int width, int height, int space)
 		{
 			Form pvf = (Form)SharedSpace.Instance["PckView"];
 
-			//xConsole.AddLine("File: " + file);
-			//Image img = Image.FromFile(file);
-			//Bitmap src = new Bitmap(img);
+//			xConsole.AddLine("File: " + file);
+//			Image img = Image.FromFile(file);
+//			Bitmap src = new Bitmap(img);
 
-			int across = (src.Width + space) / (width + space);
-			int down = (src.Height + space) / (height + space);
+			int across = (src.Width  + space) / (width  + space);
+			int down   = (src.Height + space) / (height + space);
 
 			DSShared.Windows.ProgressWindow pw = new DSShared.Windows.ProgressWindow(pvf);
 			pw.Minimum = 0;
@@ -29,21 +31,26 @@ namespace XCom
 
 			pw.Show();
 
-			BitmapData srcData = src.LockBits(new Rectangle(0, 0, src.Width, src.Height), ImageLockMode.ReadOnly, src.PixelFormat);
+			BitmapData srcData = src.LockBits(
+										new Rectangle(0, 0, src.Width, src.Height),
+										ImageLockMode.ReadOnly,
+										src.PixelFormat);
 
 			int bpp = 4;
 			PixelFormat pf = src.PixelFormat;
 			xConsole.AddLine("Pixelformat is: " + pf.ToString());
 			switch (src.PixelFormat)
 			{
-				case (PixelFormat.Format24bppRgb):
+				case PixelFormat.Format24bppRgb:
 					bpp = 3;
 					break;
-				case (PixelFormat.Format32bppArgb):
-				case (PixelFormat.Format32bppPArgb):
-				case (PixelFormat.Format32bppRgb):
+
+				case PixelFormat.Format32bppArgb:
+				case PixelFormat.Format32bppPArgb:
+				case PixelFormat.Format32bppRgb:
 					bpp = 4;
 					break;
+
 				default:
 					throw new Exception("Image is not 24 or 32 bit, a different collection is needed");
 			}
@@ -53,9 +60,21 @@ namespace XCom
 				for (int j = 0; j < src.Width; j += (width + space), idx++)
 				{
 					Bitmap dest = new Bitmap(width, height, pf);
-					BitmapData destData = dest.LockBits(new Rectangle(0, 0, dest.Width, dest.Height), ImageLockMode.WriteOnly, dest.PixelFormat);
+					BitmapData destData = dest.LockBits(
+													new Rectangle(0, 0, dest.Width, dest.Height),
+													ImageLockMode.WriteOnly,
+													dest.PixelFormat);
 
-					copyData(srcData, j, i, destData, 0, 0, destData.Width, destData.Height, bpp);
+					copyData(
+							srcData,
+							j,
+							i,
+							destData,
+							0,
+							0,
+							destData.Width,
+							destData.Height,
+							bpp);
 
 					dest.UnlockBits(destData);
 
@@ -64,21 +83,32 @@ namespace XCom
 					{
 						pw.Value = idx;
 					}
-					catch { }
+					catch
+					{}
 				}
-				//srcPtr += srcData.Stride - srcData.Width * bpp;
+//				srcPtr += srcData.Stride - srcData.Width * bpp;
 			}
 			src.UnlockBits(srcData);
 
 			pw.Hide();
 		}
 
-		private unsafe void copyData(BitmapData srcData, int srcX, int srcY, BitmapData destData, int destX, int destY, int width, int height,int bpp)
+		private unsafe void copyData(
+								BitmapData srcData,
+								int srcX,
+								int srcY,
+								BitmapData destData,
+								int destX,
+								int destY,
+								int width,
+								int height,
+								int bpp)
 		{
 			for (int y = 0; y < height && y + srcY < srcData.Height; y++)
 			{
 				int srcRow = (srcY + y) * srcData.Stride;
 				int destRow = y * destData.Stride;
+
 				for (int x = 0; x < width && srcX + x < srcData.Width; x++)
 				{
 					byte* srcPixel = ((byte*)(srcData.Scan0)) + srcRow + ((srcX + x) * bpp);
@@ -92,23 +122,15 @@ namespace XCom
 
 
 		public static void Save(string outFile, XCImageCollection images)
-		{
-
-		}
+		{}
 
 		/// <summary>
 		/// 32-bit images dont have palettes
 		/// </summary>
 		public override Palette Pal
 		{
-			get
-			{
-				return null;
-			}
-			set
-			{
-
-			}
+			get { return null; }
+			set {}
 		}
 	}
 }

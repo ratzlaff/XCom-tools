@@ -5,7 +5,9 @@ using XCom.Interfaces;
 
 namespace XCom
 {
-	public class XCImageCollection:List<XCImage>
+	public class XCImageCollection
+		:
+		List<XCImage>
 	{
 		protected string name,path;
 		private Palette pal;

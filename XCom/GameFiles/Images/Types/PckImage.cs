@@ -39,7 +39,8 @@ namespace XCom
 				pal,
 				pFile,
 				40,
-				32){}
+				32)
+		{}
 
 		internal PckImage(
 				int imageNum,
@@ -93,7 +94,7 @@ namespace XCom
 						break;
 				}
 			}
-			this.idx=expanded;
+			this.idx = expanded;
 		
 			image = Bmp.MakeBitmap8(
 								Width,
@@ -113,8 +114,8 @@ namespace XCom
 			bool flag = true;
 			byte[] input = tile.Bytes;
 			List<byte> bytes = new List<byte>();
-			//Color trans = pal.Transparent;
-			//pal.SetTransparent(false);
+//			Color trans = pal.Transparent;
+//			pal.SetTransparent(false);
 
 			int totalCount = 0;
 			for (int i = 0; i < input.Length; i++)
@@ -130,8 +131,8 @@ namespace XCom
 					{
 						if (flag)
 						{
-							bytes.Add((byte)(count / tile.Image.Width)); //# of initial rows to skip
-							count = (byte)(count % tile.Image.Width);//where we currently are in the transparent row
+							bytes.Add((byte)(count / tile.Image.Width));	// # of initial rows to skip
+							count = (byte)(count % tile.Image.Width);		// where we currently are in the transparent row
 							flag = false;
 							//Console.WriteLine("count, lines: {0}, cells {1}",count/PckImage.IMAGE_WIDTH,count%PckImage.IMAGE_WIDTH);
 						}
@@ -176,13 +177,13 @@ namespace XCom
 
 //		public override void Hq2x()
 //		{
-//			if(Width==32)//hasnt been done yet
+//			if (Width == 32) // hasn't been done yet
 //				base.Hq2x();
 //		}
 
 		public int StaticID
 		{
-			get{return staticID;}
+			get { return staticID; }
 		}
 
 		public static Type GetCollectionType()
@@ -217,7 +218,7 @@ namespace XCom
 
 			for (int i = startIdx; i < idx.Length; i++)
 			{
-				switch(idx[i])
+				switch (idx[i])
 				{
 					case 254: // skip required pixels
 						ex += idx[i + 1];
@@ -248,7 +249,7 @@ namespace XCom
 		public int MapID
 		{
 			get { return mapID; }
-			set { mapID=value; }
+			set { mapID = value; }
 		}
 
 		public override bool Equals(object other)
@@ -268,7 +269,7 @@ namespace XCom
 		{
 			string ret = "";
 
-			if (pckFile!=null)
+			if (pckFile != null)
 				ret += pckFile.ToString();
 
 			ret += fileNum + "\n";

@@ -8,7 +8,8 @@ namespace XCom
 	{
 		private string path;
 
-		public FileDesc(string path) { this.path = path; }
+		public FileDesc(string path)
+		{ this.path = path; }
 
 		public abstract void Save(string outFile);
 

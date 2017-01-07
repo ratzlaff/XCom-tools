@@ -24,7 +24,7 @@ namespace XCom
 		public static readonly byte DefaultTransparentIndex = 0xFE;
 
 		// amount of space between saved bmp image blocks
-		// private static readonly int space=1;
+//		private static readonly int space = 1;
 
 		public static void Save(string path, Bitmap image)
 		{
@@ -127,17 +127,17 @@ namespace XCom
 
 			int len = (image.Width * 3 + more) * image.Height;
 
-			bw.Write('B'); // must always be set to 'BM' to declare that this is a .bmp-file.
+			bw.Write('B');					// must always be set to 'BM' to declare that this is a .bmp-file.
 			bw.Write('M');
-			bw.Write(14 + 40 + len); // specifies the size of the file in bytes.
-			bw.Write((int)0); // zero
-			bw.Write((int)14 + 40); // specifies the offset from the beginning of the file to the bitmap data.
+			bw.Write(14 + 40 + len);		// specifies the size of the file in bytes.
+			bw.Write((int)0);				// zero
+			bw.Write((int)14 + 40);			// specifies the offset from the beginning of the file to the bitmap data.
 
-			bw.Write((int)40); // specifies the size of the BITMAPINFOHEADER structure, in bytes
+			bw.Write((int)40);				// specifies the size of the BITMAPINFOHEADER structure, in bytes
 			bw.Write((int)image.Width);
 			bw.Write((int)image.Height);
-			bw.Write((short)1); // specifies the number of planes of the target device
-			bw.Write((short)24); // specifies the number of bits per pixel
+			bw.Write((short)1);				// specifies the number of planes of the target device
+			bw.Write((short)24);			// specifies the number of bits per pixel
 			bw.Write((int)0);
 			bw.Write((int)0);
 			bw.Write((int)0);
@@ -382,8 +382,8 @@ namespace XCom
 							goto outLoop1;
 					}
 				}
-			outLoop1:
 
+			outLoop1:
 				for (minC = 0; minC < src.Width; minC++)
 				{
 					for (int r = minR; r < src.Height; r++)
@@ -393,8 +393,8 @@ namespace XCom
 							goto outLoop2;
 					}
 				}
-			outLoop2:
 
+			outLoop2:
 				for (maxR = src.Height - 1; maxR > minR; maxR--)
 				{
 					for (int col = minC; col < src.Width; col++)
@@ -404,8 +404,8 @@ namespace XCom
 							goto outLoop3;
 					}
 				}
-			outLoop3:
 
+			outLoop3:
 				for (maxC = src.Width - 1; maxC > minC; maxC--)
 				{
 					for (int r = minR; r < maxR; r++)
@@ -415,8 +415,8 @@ namespace XCom
 							goto outLoop4;
 					}
 				}
-			outLoop4:
 
+			outLoop4:
 				Console.Write("");
 			}
 			src.UnlockBits(srcData);
@@ -515,7 +515,12 @@ namespace XCom
 			out32.Init(in24.m_Xres * 2, in24.m_Yres * 2, 32);
 
 			CImage.InitLUTs();
-			CImage.hq2x_32(in24.m_pBitmap, out32.m_pBitmap, in24.m_Xres, in24.m_Yres, out32.m_Xres * 4);
+			CImage.hq2x_32(
+						in24.m_pBitmap,
+						out32.m_pBitmap,
+						in24.m_Xres,
+						in24.m_Yres,
+						out32.m_Xres * 4);
 
 			out32.ConvertTo24();
 

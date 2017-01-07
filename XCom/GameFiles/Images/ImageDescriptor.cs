@@ -8,10 +8,12 @@ namespace XCom
 	/// <summary>
 	/// Describes information about imagesets: the path to the pck, tab and mcd files
 	/// </summary>
-	public class ImageDescriptor:IComparable
+	public class ImageDescriptor
+		:
+		IComparable
 	{
-		//private PckFile myPck;
-		//private McdFile myMcd;
+//		private PckFile myPck;
+//		private McdFile myMcd;
 		private readonly Hashtable _mcdTab;
 		 
 		public ImageDescriptor(string baseName, string path)
@@ -24,8 +26,8 @@ namespace XCom
 		public PckFile GetPckFile(Palette p)
 		{
 			return GameInfo.CachePck(BasePath, BaseName, 2, p);
-			//new PckFile(File.OpenRead(basePath+basename+".PCK"),File.OpenRead(basePath+basename+".TAB"),2,p,screen);
-			//GameInfo.GetPckFile(basename,basePath,p,2,screen);
+//			new PckFile(File.OpenRead(basePath + basename + ".PCK"), File.OpenRead(basePath + basename + ".TAB"), 2, p, screen);
+//			GameInfo.GetPckFile(basename, basePath, p, 2, screen);
 		}
 
 		public PckFile GetPckFile()
@@ -45,7 +47,7 @@ namespace XCom
 
 		public McdFile GetMcdFile()
 		{
-			return GetMcdFile(GameInfo.DefaultPalette, new XcTileFactory() );
+			return GetMcdFile(GameInfo.DefaultPalette, new XcTileFactory());
 		}
 
 		public override string ToString()
@@ -60,7 +62,7 @@ namespace XCom
 
 		public string BaseName { get; private set; }
 
-		public string BasePath{get; set; }
+		public string BasePath { get; set; }
 
 		public void ClearMcd()
 		{

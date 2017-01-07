@@ -3,29 +3,45 @@ using System.Drawing;
 
 namespace XCom.Interfaces
 {
-	public class XCImage:ICloneable
+	public class XCImage
+		:
+		ICloneable
 	{
 		protected byte[] idx;
 		protected int fileNum;
 		protected Bitmap image;
 		protected Bitmap gray;
 		private Palette palette;
-		private byte transparent=0xFE;
+		private byte transparent = 0xFE;
 
 		// entries must not be compressed
-		public XCImage(byte[] entries, int width, int height, Palette pal, int idx)
+		public XCImage(
+					byte[] entries,
+					int width,
+					int height,
+					Palette pal,
+					int idx)
 		{
 			fileNum = idx;
 			this.idx = entries;
 			palette = pal;
 
 			if (pal != null)
-				image = Bmp.MakeBitmap8(width, height, entries, pal.Colors);
+				image = Bmp.MakeBitmap8(
+									width,
+									height,
+									entries,
+									pal.Colors);
 		}
 
 		public XCImage()
 			:
-			this(new byte[]{}, 0, 0, null, -1)
+			this(
+				new byte[]{},
+				0,
+				0,
+				null,
+				-1)
 		{}
 
 		public XCImage(Bitmap b,int idx)

@@ -8,90 +8,118 @@ namespace XCom
 {
 	public delegate void LoadingDelegate(int curr, int total);
 
-	public class PckFile:XCImageCollection
+	public class PckFile
+		:
+		XCImageCollection
 	{
 		private int bpp;
 		public static readonly string TAB_EXT = ".tab";
 
-		public PckFile(Stream pckFile, Stream tabFile,int bpp,Palette pal,
-			int imgHeight,int imgWidth)
+		public PckFile(
+					Stream pckFile,
+					Stream tabFile,
+					int bpp,Palette pal,
+					int imgHeight,
+					int imgWidth)
 		{
-			if(tabFile!=null)
-				tabFile.Position=0;
+			if (tabFile != null)
+				tabFile.Position = 0;
 
-			pckFile.Position=0;
+			pckFile.Position = 0;
 
 			byte[] info = new byte[pckFile.Length];
-			pckFile.Read(info,0,info.Length);
+			pckFile.Read(info, 0, info.Length);
 
-			this.bpp=bpp;
+			this.bpp = bpp;
 
-			Pal=pal;
+			Pal = pal;
 
 			uint[] offsets;
 			
-			if(tabFile!=null)
+			if (tabFile != null)
 			{
-				offsets= new uint[(tabFile.Length/bpp)+1];
+				offsets= new uint[(tabFile.Length/bpp) + 1];
 				BinaryReader br = new BinaryReader(tabFile);
 
-				if(bpp==2)
-					for(int i=0;i<tabFile.Length/bpp;i++)
+				if (bpp == 2)
+					for (int i = 0; i < tabFile.Length / bpp; i++)
 						offsets[i] = br.ReadUInt16();
 				else
-					for(int i=0;i<tabFile.Length/bpp;i++)
+					for (int i = 0; i < tabFile.Length / bpp; i++)
 						offsets[i] = br.ReadUInt32();
 				br.Close();
 			}
 			else
 			{
 				offsets = new uint[2];
-				offsets[0]=0;
+				offsets[0] = 0;
 			}
 
-			offsets[offsets.Length-1] = (uint)info.Length;
+			offsets[offsets.Length - 1] = (uint)info.Length;
 
-			for(int i=0;i<offsets.Length-1;i++)
+			for (int i = 0; i < offsets.Length - 1; i++)
 			{
-				byte[] imgDat = new byte[offsets[i+1]-offsets[i]];
-				for(int j=0;j<imgDat.Length;j++)
-					imgDat[j] = info[offsets[i]+j];
+				byte[] imgDat = new byte[offsets[i + 1] - offsets[i]];
+				for (int j = 0; j < imgDat.Length; j++)
+					imgDat[j] = info[offsets[i] + j];
 
-				Add(new PckImage(i,imgDat,pal,this,imgHeight,imgWidth));
+				Add(new PckImage(
+							i,
+							imgDat,
+							pal,
+							this,
+							imgHeight,
+							imgWidth));
 			}
 		}
 
-		public PckFile(Stream pckFile, Stream tabFile,int bpp,Palette pal):this(pckFile,tabFile,bpp,pal,40,32)
+		public PckFile(
+					Stream pckFile,
+					Stream tabFile,
+					int bpp,
+					Palette pal)
+			:
+			this(
+				pckFile,
+				tabFile,
+				bpp,
+				pal,
+				40,
+				32)
 		{}
 
 		public int Bpp
 		{
-			get{return bpp;}
+			get { return bpp; }
 		}
 
-		public static void Save(string directory, string file, XCImageCollection images, int bpp)
+		public static void Save(
+							string directory,
+							string file,
+							XCImageCollection images,
+							int bpp)
 		{
-			System.IO.BinaryWriter pck = new System.IO.BinaryWriter(System.IO.File.Create(directory+"\\"+file+".pck"));
-			System.IO.BinaryWriter tab = new System.IO.BinaryWriter(System.IO.File.Create(directory+"\\"+file+TAB_EXT));
+			System.IO.BinaryWriter pck = new System.IO.BinaryWriter(System.IO.File.Create(directory + "\\" + file + ".pck"));
+			System.IO.BinaryWriter tab = new System.IO.BinaryWriter(System.IO.File.Create(directory + "\\" + file + TAB_EXT));
 
-			if(bpp==2)
+			if (bpp == 2)
 			{
-				ushort count=0;
-				foreach(XCImage img in images)
+				ushort count = 0;
+				foreach (XCImage img in images)
 				{
 					tab.Write((ushort)count);
-					ushort encLen = (ushort)PckImage.EncodePck(pck,img);
-					count+=encLen;
+					ushort encLen = (ushort)PckImage.EncodePck(pck, img);
+					count += encLen;
 				}
 			}
 			else
 			{
-				uint count=0;
+				uint count = 0;
 				foreach(XCImage img in images)
 				{
 					tab.Write((uint)count);
-					uint encLen = (uint)PckImage.EncodePck(pck,img);
-					count+=encLen;
+					uint encLen = (uint)PckImage.EncodePck(pck, img);
+					count += encLen;
 				}
 			}
 

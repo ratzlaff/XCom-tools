@@ -61,7 +61,8 @@ namespace XCom
 					}
 				}
 			}
-			catch {}
+			catch
+			{}
 
 			image = Bmp.MakeBitmap8(
 								width,
@@ -89,8 +90,8 @@ namespace XCom
 					{
 						if (toWrite.Count % 2 == 1) // odd number of items in the list
 						{
-							toWrite.Add(img[i]); // add transparent index to make it even
-							count--; // don't want this index to count
+							toWrite.Add(img[i]);	// add transparent index to make it even
+							count--;				// don't want this index to count
 						}
 
 						data.Write((ushort)0xFFFE);
