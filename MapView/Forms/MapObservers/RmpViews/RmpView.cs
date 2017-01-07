@@ -433,8 +433,8 @@ namespace MapView.Forms.MapObservers.RmpViews
 		public override void SelectedTileChanged(IMap_Base sender, SelectedTileChangedEventArgs e)
 		{
 			Text = string.Format(
-							"Position\nr:{0} c:{1}",
-							e.MapPosition.Row, e.MapPosition.Col);
+							"Position\nc:{0} r:{1}",
+							e.MapPosition.Col, e.MapPosition.Row);
 		}
 
 		public override void HeightChanged(IMap_Base sender, HeightChangedEventArgs e)
