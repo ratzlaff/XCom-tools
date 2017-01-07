@@ -36,7 +36,7 @@ namespace MapView.Forms.MapObservers.TopViews
 					return ContentTypes.NorthFence;
 				}
 
-				if (AllLoftWith(loftList, new[]{8, 10, 12, 14}))
+				if (AllLoftWith(loftList, new[]{8, 10, 12, 14, 16, 18, 20, 21}))
 					return ContentTypes.NorthWall;
 
 				if (AllLoftWith(loftList, new[]{7, 9, 11, 13, 37})
@@ -51,7 +51,7 @@ namespace MapView.Forms.MapObservers.TopViews
 					return ContentTypes.WestFence;
 				}
 
-				if (AllLoftWith(loftList, new[]{7, 9, 11, 13}))
+				if (AllLoftWith(loftList, new[]{7, 9, 11, 13, 15, 17, 19, 22}))
 					return ContentTypes.WestWall;
 
 				if (AllLoftWith(loftList, new[]{35}))

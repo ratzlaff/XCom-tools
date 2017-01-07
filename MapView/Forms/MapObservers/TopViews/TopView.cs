@@ -196,7 +196,7 @@ namespace MapView.Forms.MapObservers.TopViews
 				var tileView = MainWindowsManager.TileView.TileViewControl;
 				for (int c = s.X; c <= e.X; c++)
 					for (int r = s.Y; r <= e.Y; r++)
-						((XCMapTile) map[r, c])[bottom.SelectedQuadrant] = tileView.SelectedTile;
+						((XCMapTile)map[r, c])[bottom.SelectedQuadrant] = tileView.SelectedTile;
 
 				map.MapChanged = true;
 				MapViewPanel.Instance.Refresh();

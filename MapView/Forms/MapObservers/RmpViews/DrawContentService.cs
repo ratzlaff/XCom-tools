@@ -211,9 +211,18 @@ namespace MapView.Forms.MapObservers.RmpViews
 			var size = new Size(dist.X / 3, dist.Y / 3);
 			var point2 = Point.Add(start, Size.Add(size, size));
 
-			g.DrawLine(color.Pen, start, Point.Add(start, size));
-			g.DrawLine(color.LightPen, Point.Add(start, size), point2);
-			g.DrawLine(color.Pen, point2, end);
+			g.DrawLine(
+					color.Pen,
+					start,
+					Point.Add(start, size));
+			g.DrawLine(
+					color.LightPen,
+					Point.Add(start, size),
+					point2);
+			g.DrawLine(
+					color.Pen,
+					point2,
+					end);
 		}
 
 		private GraphicsPath GetFloorPath(int x, int y)

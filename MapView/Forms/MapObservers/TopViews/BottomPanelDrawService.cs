@@ -25,7 +25,10 @@ namespace MapView.Forms.MapObservers.TopViews
 		public const int space = 2;
 		public const int startX = 5, startY = 0;
 
-		public void Draw(Graphics g, XCMapTile mapTile, XCMapTile.MapQuadrant selectedQuadrant)
+		public void Draw(
+					Graphics g,
+					XCMapTile mapTile,
+					XCMapTile.MapQuadrant selectedQuadrant)
 		{
 			// Draw selection
 			if (selectedQuadrant == XCMapTile.MapQuadrant.Ground)
@@ -33,28 +36,28 @@ namespace MapView.Forms.MapObservers.TopViews
 							Brush,
 							startX,
 							startY,
-							tileWidth + 1,
+							tileWidth  + 1,
 							tileHeight + 2);
 			else if (selectedQuadrant == XCMapTile.MapQuadrant.West)
 				g.FillRectangle(
 							Brush,
 							startX + (TOTAL_QUADRAN_SPACE),
 							startY,
-							tileWidth + 1,
+							tileWidth  + 1,
 							tileHeight + 2);
 			else if (selectedQuadrant == XCMapTile.MapQuadrant.North)
 				g.FillRectangle(
 							Brush,
 							startX + (2 * TOTAL_QUADRAN_SPACE),
 							startY,
-							tileWidth + 1,
+							tileWidth  + 1,
 							tileHeight + 2);
 			else if (selectedQuadrant == XCMapTile.MapQuadrant.Content)
 				g.FillRectangle(
 							Brush,
 							startX + (3 * TOTAL_QUADRAN_SPACE),
 							startY,
-							tileWidth + 1,
+							tileWidth  + 1,
 							tileHeight + 2);
 
 			var topView = MainWindowsManager.TopView.TopViewControl;
@@ -65,7 +68,7 @@ namespace MapView.Forms.MapObservers.TopViews
 							System.Drawing.Brushes.DarkGray,
 							startX,
 							startY,
-							tileWidth + 1,
+							tileWidth  + 1,
 							tileHeight + 2);
 
 			if (mapTile != null && mapTile.Ground != null)
@@ -94,7 +97,7 @@ namespace MapView.Forms.MapObservers.TopViews
 							System.Drawing.Brushes.DarkGray,
 							startX + (TOTAL_QUADRAN_SPACE),
 							startY,
-							tileWidth + 1,
+							tileWidth  + 1,
 							tileHeight + 2);
 
 			if (mapTile != null && mapTile.West != null)
@@ -123,7 +126,7 @@ namespace MapView.Forms.MapObservers.TopViews
 							System.Drawing.Brushes.DarkGray,
 							startX + (2 * TOTAL_QUADRAN_SPACE),
 							startY,
-							tileWidth + 1,
+							tileWidth  + 1,
 							tileHeight + 2);
 
 			if (mapTile != null && mapTile.North != null)
@@ -152,7 +155,7 @@ namespace MapView.Forms.MapObservers.TopViews
 							System.Drawing.Brushes.DarkGray,
 							startX + (3 * TOTAL_QUADRAN_SPACE),
 							startY,
-							tileWidth + 1,
+							tileWidth  + 1,
 							tileHeight + 2);
 
 			if (mapTile != null && mapTile.Content != null)
@@ -223,7 +226,7 @@ namespace MapView.Forms.MapObservers.TopViews
 							System.Drawing.Pens.Black,
 							startX - 1 + (i * TOTAL_QUADRAN_SPACE),
 							startY,
-							tileWidth + 2,
+							tileWidth  + 2,
 							tileHeight + 2);
 		}
 
