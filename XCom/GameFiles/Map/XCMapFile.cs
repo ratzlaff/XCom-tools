@@ -155,15 +155,13 @@ namespace XCom
 			{
 				// add extraHeight to release mode
 				if (Rmp.ExtraHeight != 0)
-				{
 					foreach (RmpEntry route in Rmp)
 						route.Height += Rmp.ExtraHeight;
-				}
 
 				Rmp.Save();
-				s.WriteByte((byte) MapSize.Rows);
-				s.WriteByte((byte) MapSize.Cols);
-				s.WriteByte((byte) MapSize.Height);
+				s.WriteByte((byte)MapSize.Rows);
+				s.WriteByte((byte)MapSize.Cols);
+				s.WriteByte((byte)MapSize.Height);
 
 				for (int h = 0; h < MapSize.Height; h++)
 					for (int r = 0; r < MapSize.Rows; r++)
@@ -174,22 +172,22 @@ namespace XCom
 							if (xcmt.Ground == null)
 								s.WriteByte(0);
 							else
-								s.WriteByte((byte) (xcmt.Ground.MapId + 2));
+								s.WriteByte((byte)(xcmt.Ground.MapId + 2));
 
 							if (xcmt.West == null)
 								s.WriteByte(0);
 							else
-								s.WriteByte((byte) (xcmt.West.MapId + 2));
+								s.WriteByte((byte)(xcmt.West.MapId + 2));
 
 							if (xcmt.North == null)
 								s.WriteByte(0);
 							else
-								s.WriteByte((byte) (xcmt.North.MapId + 2));
+								s.WriteByte((byte)(xcmt.North.MapId + 2));
 
 							if (xcmt.Content == null)
 								s.WriteByte(0);
 							else
-								s.WriteByte((byte) (xcmt.Content.MapId + 2));
+								s.WriteByte((byte)(xcmt.Content.MapId + 2));
 						}
 
 				s.WriteByte(Rmp.ExtraHeight);
@@ -234,7 +232,7 @@ namespace XCom
 									int newR,
 									int newC,
 									int newH,
-									bool addHeightToCelling)
+									bool wrtCeiling)
 		{
 			var mapResizeService = new MapResizeService();
 
@@ -244,26 +242,29 @@ namespace XCom
 												newH,
 												MapSize,
 												MapData,
-												addHeightToCelling);
+												wrtCeiling);
 			if (newMap != null)
 			{
 				// update Routes
-				if (addHeightToCelling && newH != MapSize.Height)
+				if (wrtCeiling && newH != MapSize.Height)
 				{
-					var heighDif = newH - MapSize.Height;
-
+					var d = newH - MapSize.Height;
 					foreach (RmpEntry rmp in Rmp)
 					{
 						if (newH < MapSize.Height)
-							rmp.Height = (byte)(rmp.Height + heighDif);
+							rmp.Height = (byte)(rmp.Height + d);
 						else
-							rmp.Height += (byte)heighDif;
+							rmp.Height += (byte)d;
 					}
 				}
 
-				// Remove routes outside the range
-				if (newH < MapSize.Height)
-					Rmp.TrimHeightTo(newH);
+				// delete route-nodes outside the new bounds
+				if (   newC < MapSize.Cols
+					|| newR < MapSize.Rows
+					|| newH < MapSize.Height)
+				{
+					Rmp.CheckRouteEntries(newC, newR, newH);
+				}
 
 				MapData = newMap;
 				MapSize = new MapSize(newR, newC, newH);
@@ -309,8 +310,11 @@ namespace XCom
 
 			foreach (var tile in Tiles)
 			{
-				if (tile.Id == 0) dependencyId++;
-				if (tile == selectedTile) break;
+				if (tile.Id == 0)
+					dependencyId++;
+
+				if (tile == selectedTile)
+					break;
 			}
 
 			if (dependencyId != -1 && dependencyId < _dependencies.Length)

@@ -330,21 +330,27 @@ namespace XCom
 			return re;
 		}
 
-		public void TrimHeightTo(int newH)
+		public void CheckRouteEntries(int newC, int newR, int newH)
 		{
 			var toDelete = new List<RmpEntry>();
 
 			foreach (var entry in _entries)
-				if (IsOutsideHeight(entry, newH))
+				if (IsOutsideMap(entry, newC, newR, newH))
 					toDelete.Add(entry);
 
 			foreach (var entry in toDelete)
 				RemoveEntry(entry);
 		}
 
-		public static bool IsOutsideHeight(RmpEntry entry, int height)
+		public static bool IsOutsideMap(
+									RmpEntry entry,
+									int cols,
+									int rows,
+									int height)
 		{
-			return (entry.Height < 0 || entry.Height >= height);
+			return entry.Col < 0    || entry.Col >= cols
+				|| entry.Row < 0    || entry.Row >= rows
+				|| entry.Height < 0 || entry.Height >= height;
 		}
 
 //		public RmpEntry GetEntryAtHeight(byte currentHeight)

@@ -580,8 +580,13 @@ namespace MapView
 		{
 			if (_mapView.Map != null && _mapView.Map.MapChanged)
 			{
-				switch (MessageBox.Show(this, "Map changed, do you wish to save?", "Save map?",
-						MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1))
+				switch (MessageBox.Show(
+									this,
+									"Map changed, do you wish to save?",
+									"Save map?",
+									MessageBoxButtons.YesNoCancel,
+									MessageBoxIcon.Question,
+									MessageBoxDefaultButton.Button1))
 				{
 					case DialogResult.No:		// don't save
 						break;

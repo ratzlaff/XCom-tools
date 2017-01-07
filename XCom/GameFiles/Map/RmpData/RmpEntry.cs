@@ -65,10 +65,12 @@ namespace XCom
 			_col = col;
 			_height = height;
 			_links = new Link[5];
+
 			for (int i = 0; i < 5; i++)
 			{
 				_links[i] = new Link(Link.NOT_USED, 0, 0);
 			}
+
 			UType = 0;
 			URank1 = 0;
 			NodeImportance = 0;
@@ -92,18 +94,20 @@ namespace XCom
 
 		public void Save(FileStream fs)
 		{
-			//fs.Write(data,0,data.Length);
+//			fs.Write(data, 0, data.Length);
 
 			fs.WriteByte(_row);
 			fs.WriteByte(_col);
 			fs.WriteByte((byte)_height);
 			fs.WriteByte(0);
+
 			for (int i = 0; i < 5; i++)
 			{
 				fs.WriteByte(_links[i].Index);
 				fs.WriteByte(_links[i].Distance);
 				fs.WriteByte((byte)_links[i].UType);
 			}
+
 			fs.WriteByte((byte)UType);
 			fs.WriteByte((byte)URank1);
 			fs.WriteByte((byte)NodeImportance);

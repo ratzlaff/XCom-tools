@@ -5,37 +5,45 @@ namespace XCom.Services
 	public class MapResizeService
 	{
 		public MapTileList ResizeMap(
-				int newR,
-				int newC,
-				int newH,
-				MapSize mapSize,
-				MapTileList oldMapTileList,
-				bool addHeightToCelling)
+								int newR,
+								int newC,
+								int newH,
+								MapSize mapSize,
+								MapTileList oldMapTileList,
+								bool wrtCeiling)
 		{
-			if (newR == 0 ||
-				newC == 0 ||
-				newH == 0) return null;
-			var newMap = new MapTileList(newR , newC , newH);
-			 
-			FillNewMap(newR, newC, newH, newMap);
+			if (   newR != 0
+				&& newC != 0
+				&& newH != 0)
+			{
+				var newMap = new MapTileList(newR, newC, newH);
 
-			for (int h = 0; h < newH && h < mapSize.Height; h++)
-				for (int r = 0; r < newR && r < mapSize.Rows; r++)
-					for (int c = 0; c < newC && c < mapSize.Cols; c++)
-					{
-						var copyH =  h ;
-						var currentH =h;
-						if (addHeightToCelling)
+				FillNewMap(newR, newC, newH, newMap);
+
+				for (int h = 0; h < newH && h < mapSize.Height; h++)
+					for (int r = 0; r < newR && r < mapSize.Rows; r++)
+						for (int c = 0; c < newC && c < mapSize.Cols; c++)
 						{
-							copyH = mapSize.Height - h - 1;
-							currentH = newH - h - 1;
+							var copyH = h;
+							var currentH = h;
+							if (wrtCeiling)
+							{
+								copyH = mapSize.Height - h - 1;
+								currentH = newH - h - 1;
+							}
+							newMap[r, c, currentH] = oldMapTileList[r, c, copyH];
 						}
-						newMap[r, c, currentH] = oldMapTileList[r, c, copyH];
-					}
-			return newMap;
+				return newMap;
+			}
+
+			return null;
 		}
 
-		private static void FillNewMap(int newR, int newC, int newH, MapTileList newMap)
+		private static void FillNewMap(
+									int newR,
+									int newC,
+									int newH,
+									MapTileList newMap)
 		{
 			for (int h = 0; h < newH; h++)
 				for (int r = 0; r < newR; r++)

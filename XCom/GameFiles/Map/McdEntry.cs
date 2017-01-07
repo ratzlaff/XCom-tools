@@ -65,7 +65,9 @@ namespace XCom
 		All			= -1
 	};
 
-	public class McdEntry:XCom.Interfaces.Base.IInfo
+	public class McdEntry
+		:
+		XCom.Interfaces.Base.IInfo
 	{
 		private static int _globalStaticId = 0;
 

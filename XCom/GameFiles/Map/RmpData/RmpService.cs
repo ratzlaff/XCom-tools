@@ -14,17 +14,20 @@ namespace XCom.GameFiles.Map.RmpData
 			if (xMap != null)
 			{
 				var entryOutside = new List<RmpEntry>();
-
-				// TODO: Check x/y bounds also.
-
 				foreach (RmpEntry entry in xMap.Rmp)
-					if (RmpFile.IsOutsideHeight(entry, map.MapSize.Height))
+					if (RmpFile.IsOutsideMap(
+										entry,
+										map.MapSize.Cols,
+										map.MapSize.Rows,
+										map.MapSize.Height))
+					{
 						entryOutside.Add(entry);
+					}
 
 				if (entryOutside.Count > 0)
 				{
 					var result = MessageBox.Show(
-											"There are route entries outside the vertical limits of this map. Do you want to remove them?",
+											"There are route entries outside the bounds of this Map. Do you want to remove them?",
 											"Incorrect Routes",
 											MessageBoxButtons.YesNo);
 

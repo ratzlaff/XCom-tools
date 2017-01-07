@@ -160,7 +160,7 @@ namespace XCom.Interfaces.Base
 								int newR,
 								int newC,
 								int newH,
-								bool addHeightToCelling)
+								bool wrtCeiling)
 		{
 			var mapResizeService = new MapResizeService();
 			var newMap = mapResizeService.ResizeMap(
@@ -169,7 +169,7 @@ namespace XCom.Interfaces.Base
 												newH,
 												MapSize,
 												MapData,
-												addHeightToCelling);
+												wrtCeiling);
 			if (newMap != null)
 			{
 				MapData = newMap;
