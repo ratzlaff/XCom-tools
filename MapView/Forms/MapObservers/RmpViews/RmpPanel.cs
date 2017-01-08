@@ -264,29 +264,29 @@ namespace MapView.Forms.MapObservers.RmpViews
 							}
 						}
 
-						if (DrawAreaHeight >= NODE_VAL_MAX)
-						{
-							var boxX = x - DrawAreaWidth / 2;
-							var boxY = y + DrawAreaHeight - NODE_VAL_MAX / 2;
+//						if (DrawAreaHeight >= NODE_VAL_MAX)
+//						{
+						var boxX = x - DrawAreaWidth / 2;
+						var boxY = y + DrawAreaHeight - NODE_VAL_MAX / 2;
 
-							var nodePatrolPriority = (int)rmpEntry.NodeImportance;
-							DrawBox(
-									g,
-									boxX,
-									boxY,
-									nodePatrolPriority,
-									NODE_VAL_MAX,
-									Brushes.CornflowerBlue);
+						var nodePatrolPriority = (int)rmpEntry.NodeImportance;
+						DrawBox(
+								g,
+								boxX,
+								boxY,
+								nodePatrolPriority,
+								NODE_VAL_MAX,
+								Brushes.CornflowerBlue);
 
-							var nodeSpawnWeight = (int)rmpEntry.Spawn;
-							DrawBox(
-									g,
-									boxX + 3,
-									boxY,
-									nodeSpawnWeight,
-									NODE_VAL_MAX,
-									Brushes.Firebrick);
-						}
+						var nodeSpawnWeight = (int)rmpEntry.Spawn;
+						DrawBox(
+								g,
+								boxX + 3,
+								boxY,
+								nodeSpawnWeight,
+								NODE_VAL_MAX,
+								Brushes.Firebrick);
+//						}
 					}
 				}
 				startX -= DrawAreaWidth;

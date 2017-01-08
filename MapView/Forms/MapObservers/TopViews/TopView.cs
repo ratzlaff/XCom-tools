@@ -191,8 +191,6 @@ namespace MapView.Forms.MapObservers.TopViews
 				e.X = Math.Max(MapViewPanel.Instance.MapView.DragStart.X, MapViewPanel.Instance.MapView.DragEnd.X);
 				e.Y = Math.Max(MapViewPanel.Instance.MapView.DragStart.Y, MapViewPanel.Instance.MapView.DragEnd.Y);
 
-				// row col
-				// y   x
 				var tileView = MainWindowsManager.TileView.TileViewControl;
 				for (int c = s.X; c <= e.X; c++)
 					for (int r = s.Y; r <= e.Y; r++)

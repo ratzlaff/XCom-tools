@@ -69,8 +69,6 @@ namespace MapView
 		{
 			if (map != null && copied != null)
 			{
-				// row col
-				// y   x
 				var dragStart = DragStart;
 				for (int r = dragStart.Y; r < map.MapSize.Rows && (r - dragStart.Y) < copied.GetLength(0); r++)
 					for (int c = dragStart.X; c < map.MapSize.Cols && (c - dragStart.X) < copied.GetLength(1); c++)
@@ -127,10 +125,8 @@ namespace MapView
 				var start = GetDragStart();
 				var end = GetDragEnd();
 
-				// row col
-				// y   x
 				copied = new MapTileBase[end.Y - start.Y + 1, end.X - start.X + 1];
-	
+
 				for (int c = start.X; c <= end.X; c++)
 					for (int r = start.Y; r <= end.Y; r++)
 						copied[r - start.Y, c - start.X] = map[r, c];
@@ -226,14 +222,14 @@ namespace MapView
 		{
 			if (map != null)
 			{
-				Point temp = ConvertCoordsDiamond(
+				Point pt = ConvertCoordsDiamond(
 											e.X, e.Y,
 											map.CurrentHeight);
 
-				if (temp.X != DragEnd.X || temp.Y != DragEnd.Y)
+				if (pt.X != DragEnd.X || pt.Y != DragEnd.Y)
 				{
 					if (e.Button != MouseButtons.None)
-						SetDrag(DragStart, temp);
+						SetDrag(DragStart, pt);
 
 					Refresh();
 				}
@@ -598,42 +594,56 @@ namespace MapView
 		/// <param name="yp"></param>
 		/// <param name="level"></param>
 		/// <returns></returns>
-		private Point ConvertCoordsDiamond(int xp, int yp, int level)
+		private Point ConvertCoordsDiamond(int ptX, int ptY, int level)
 		{
 			// 16 is half the width of the diamond
 			// 24 is the distance from the top of the diamond to the very top of the image
 			var halfWidth  = H_WIDTH  * Globals.PckImageScale;
 			var halfHeight = H_HEIGHT * Globals.PckImageScale;
-			var x = (int)(xp - (_origin.X) - halfWidth);
-			var y = (int)(yp - (_origin.Y) - (halfHeight * 3) * (level + 1));
 
-			var x1 = (x * 1.0 / (2 * halfWidth)) +
-					 (y * 1.0 / (2 * halfHeight));
-			var x2 = -(x * 1.0 - 2 * y * 1.0) / (2 * halfWidth);
+			var x = (int)(ptX - _origin.X - halfWidth);
+			var y = (int)(ptY - _origin.Y - halfHeight * 3 * (level + 1));
 
+			var x1 = (x / (halfWidth  * 2)) +
+					 (y / (halfHeight * 2));
+			var x2 = -(x - y * 2) / (halfWidth * 2);
+
+//			LogFile.Instance.WriteLine(
+//									"\n" +
+//									"ptX= " + ptX + "\n" +
+//									"ptY= " + ptY + "\n" +
+//									"halfWidth= " + halfWidth + "\n" +
+//									"halfHeight= " + halfHeight + "\n" +
+//									"x= " + x + "\n" +
+//									"y= " + y + "\n" +
+//									"x1= " + x1 + "\n" +
+//									"x2= " + x2);
+
+			// try this for a while ... ->
+			if (x < 0) // left side of Map diamond
+			{
+//				LogFile.Instance.WriteLine("left side");
+				return new Point(
+							(int)Math.Floor(x1),
+							(int)Math.Round(x2));
+			}
+
+//			LogFile.Instance.WriteLine("right side");
 			return new Point(
-						(int)Math.Floor(x1),
+						(int)Math.Round(x1),
 						(int)Math.Floor(x2));
 		}
 
-		private Point ConvertCoordsRect(Point p, int h)
+		private Point ConvertCoordsRect(Point pt, int h)
 		{
 			var hWidth  = (int)(H_WIDTH  * Globals.PckImageScale);
 			var hHeight = (int)(H_HEIGHT * Globals.PckImageScale);
-			int x = p.X;
-			int y = p.Y;
+			int x = pt.X;
+			int y = pt.Y;
 			var heightAdjust = (hHeight * 3 * h);
 			return new Point(
 						 _origin.X + (hWidth  * (x - y)),
 						(_origin.Y + (hHeight * (x + y))) + heightAdjust);
-		}
-
-		private Point GetDragEnd()
-		{
-			var end = new Point();
-			end.X = Math.Max(DragStart.X, DragEnd.X);
-			end.Y = Math.Max(DragStart.Y, DragEnd.Y);
-			return end;
 		}
 
 		private Point GetDragStart()
@@ -642,6 +652,14 @@ namespace MapView
 			start.X = Math.Max(Math.Min(DragStart.X, DragEnd.X), 0);
 			start.Y = Math.Max(Math.Min(DragStart.Y, DragEnd.Y), 0);
 			return start;
+		}
+
+		private Point GetDragEnd()
+		{
+			var end = new Point();
+			end.X = Math.Max(DragStart.X, DragEnd.X);
+			end.Y = Math.Max(DragStart.Y, DragEnd.Y);
+			return end;
 		}
 	}
 }
