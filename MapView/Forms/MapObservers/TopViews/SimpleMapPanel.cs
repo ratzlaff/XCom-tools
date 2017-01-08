@@ -30,9 +30,9 @@ namespace MapView.Forms.MapObservers.TopViews
 
 		public SimpleMapPanel()
 		{
-			_cell = new GraphicsPath();
-			_selected = new GraphicsPath();
-			_copyArea = new GraphicsPath();
+			_cell		= new GraphicsPath();
+			_selected	= new GraphicsPath();
+			_copyArea	= new GraphicsPath();
 		}
 
 		public void ParentSize(int width, int height)
@@ -137,18 +137,6 @@ namespace MapView.Forms.MapObservers.TopViews
 			Refresh();
 		}
 
-		private static Point GetDragEnd()
-		{
-			var e = new Point(0, 0);
-			e.X = Math.Max(
-						MapViewPanel.Instance.MapView.DragStart.X,
-						MapViewPanel.Instance.MapView.DragEnd.X);
-			e.Y = Math.Max(
-						MapViewPanel.Instance.MapView.DragStart.Y,
-						MapViewPanel.Instance.MapView.DragEnd.Y);
-			return e;
-		}
-
 		private static Point GetDragStart()
 		{
 			var s = new Point(0, 0);
@@ -161,19 +149,33 @@ namespace MapView.Forms.MapObservers.TopViews
 			return s;
 		}
 
-		[Browsable(false), DefaultValue(null)]
-		public Dictionary<string, SolidBrush> Brushes { get; set; }
+		private static Point GetDragEnd()
+		{
+			var e = new Point(0, 0);
+			e.X = Math.Max(
+						MapViewPanel.Instance.MapView.DragStart.X,
+						MapViewPanel.Instance.MapView.DragEnd.X);
+			e.Y = Math.Max(
+						MapViewPanel.Instance.MapView.DragStart.Y,
+						MapViewPanel.Instance.MapView.DragEnd.Y);
+			return e;
+		}
 
 		[Browsable(false), DefaultValue(null)]
-		public Dictionary<string, Pen> Pens { get; set; }
+		public Dictionary<string, SolidBrush> Brushes
+		{ get; set; }
+
+		[Browsable(false), DefaultValue(null)]
+		public Dictionary<string, Pen> Pens
+		{ get; set; }
 
 		public override void SelectedTileChanged(IMap_Base sender, SelectedTileChangedEventArgs e)
 		{
 			MapLocation pt = e.MapPosition;
 
-			Text = "r: " + pt.Row + " c: " + pt.Col;
+			Text = "c: " + pt.Col + " r: " + pt.Row;
 
-			var hWidth = DrawContentService.HWidth;
+			var hWidth  = DrawContentService.HWidth;
 			var hHeight = DrawContentService.HHeight;
 
 			int xc = (pt.Col - pt.Row) * hWidth;
@@ -206,14 +208,14 @@ namespace MapView.Forms.MapObservers.TopViews
 
 		private Point ConvertCoordsDiamond(int x, int y)
 		{
-//			int x = xp - offX; // 16 is half the width of the diamond
-//			int y = yp - offY; // 24 is the distance from the top of the diamond to the very top of the image
+			// 16 is half the width of the diamond
+			// 24 is the distance from the top of the diamond to the very top of the image
 
-			var hWidth = DrawContentService.HWidth;
-			var hHeight = DrawContentService.HHeight;
+			var hWidth  = (double)DrawContentService.HWidth;
+			var hHeight = (double)DrawContentService.HHeight;
 
-			double x1 = (x * 1.0 / (2 * hWidth)) + (y * 1.0 / (2 * hHeight));
-			double x2 = -(x * 1.0 - 2 * y * 1.0) / (2 * hWidth);
+			double x1 =  (x          / (hWidth * 2)) + (y / (hHeight * 2));
+			double x2 = -(x - y * 2) / (hWidth * 2);
 
 			return new Point(
 						(int)Math.Floor(x1),
@@ -249,7 +251,7 @@ namespace MapView.Forms.MapObservers.TopViews
 		{
 			g.FillRectangle(SystemBrushes.Control, ClientRectangle);
 
-			var hWidth = DrawContentService.HWidth;
+			var hWidth  = DrawContentService.HWidth;
 			var hHeight = DrawContentService.HHeight;
 
 			if (map != null)
@@ -274,16 +276,16 @@ namespace MapView.Forms.MapObservers.TopViews
 							Pens["GridColor"],
 							_offX - i * hWidth,
 							_offY + i * hHeight,
-							((map.MapSize.Cols - i) * hWidth)  + _offX,
-							((map.MapSize.Cols + i) * hHeight) + _offY);
+							(map.MapSize.Cols - i) * hWidth  + _offX,
+							(map.MapSize.Cols + i) * hHeight + _offY);
 
 				for (int i = 0; i <= map.MapSize.Cols; i++)
 					g.DrawLine(
 							Pens["GridColor"],
 							_offX + i * hWidth,
 							_offY + i * hHeight,
-							(i * hWidth)  - map.MapSize.Rows * hWidth  + _offX,
-							(i * hHeight) + map.MapSize.Rows * hHeight + _offY);
+							i * hWidth  - map.MapSize.Rows * hWidth  + _offX,
+							i * hHeight + map.MapSize.Rows * hHeight + _offY);
 
 				if (_copyArea != null)
 					g.DrawPath(Pens["SelectColor"], _copyArea);
@@ -309,7 +311,9 @@ namespace MapView.Forms.MapObservers.TopViews
 		{
 			if (map != null)
 			{
-				var p = ConvertCoordsDiamond(e.X - _offX, e.Y - _offY );
+				var p = ConvertCoordsDiamond(
+										e.X - _offX,
+										e.Y - _offY );
 				map.SelectedTile = new MapLocation(p.Y, p.X, map.CurrentHeight);
 				_mDown = true;
 
@@ -328,7 +332,9 @@ namespace MapView.Forms.MapObservers.TopViews
 
 		protected override void OnMouseMove(MouseEventArgs e)
 		{
-			var p = ConvertCoordsDiamond(e.X - _offX, e.Y - _offY );
+			var p = ConvertCoordsDiamond(
+									e.X - _offX,
+									e.Y - _offY );
 			if (p.Y != _mR || p.X != _mC)
 			{
 				_mR = p.Y;

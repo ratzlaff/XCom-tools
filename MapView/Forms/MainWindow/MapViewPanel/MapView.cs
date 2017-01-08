@@ -598,11 +598,12 @@ namespace MapView
 		{
 			// 16 is half the width of the diamond
 			// 24 is the distance from the top of the diamond to the very top of the image
+
 			var halfWidth  = H_WIDTH  * Globals.PckImageScale;
 			var halfHeight = H_HEIGHT * Globals.PckImageScale;
 
-			var x = (int)(ptX - _origin.X - halfWidth);
-			var y = (int)(ptY - _origin.Y - halfHeight * 3 * (level + 1));
+			var x = (ptX - _origin.X - halfWidth);
+			var y = (ptY - _origin.Y - halfHeight * 3 * (level + 1));
 
 			var x1 = (x / (halfWidth  * 2)) +
 					 (y / (halfHeight * 2));

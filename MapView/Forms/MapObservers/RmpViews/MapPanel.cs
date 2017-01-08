@@ -142,14 +142,14 @@ namespace MapView.Forms.MapObservers.RmpViews
 			}
 		}
 
-		private Point ConvertCoordsDiamond(int xp, int yp)
+		private Point ConvertCoordsDiamond(int ptX, int ptY)
 		{
-			int x = xp - Origin.X;
-			int y = yp - Origin.Y;
+			int x = ptX - Origin.X;
+			int y = ptY - Origin.Y;
 
-			double x1 = (x * 1.0 / (DrawAreaWidth  * 2))
-					  + (y * 1.0 / (DrawAreaHeight * 2));
-			double x2 = -(x * 1.0 - 2 * y * 1.0) / (DrawAreaWidth * 2);
+			double x1 = ((double)x / (DrawAreaWidth  * 2))
+					  + ((double)y / (DrawAreaHeight * 2));
+			double x2 = -((double)x - (double)y * 2) / (DrawAreaWidth * 2);
 
 			return new Point(
 						(int)Math.Floor(x1),

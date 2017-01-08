@@ -55,7 +55,11 @@ namespace MapView
 		public virtual IMap_Base Map
 		{
 			get { return _map; }
-			set { _map = value; Refresh(); }
+			set
+			{
+				_map = value;
+				Refresh();
+			}
 		}
 
 		protected override void OnMouseWheel(MouseEventArgs e)
