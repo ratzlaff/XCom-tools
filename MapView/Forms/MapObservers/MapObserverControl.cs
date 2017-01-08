@@ -1,7 +1,9 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows.Forms;
+
 using DSShared.Windows;
+
 using XCom.Interfaces.Base;
 
 namespace MapView
@@ -40,8 +42,8 @@ namespace MapView
 			set
 			{
 				_registryInfo = value;
-				value.Loading+= (sender, e) => OnRISettingsLoad(e);
-				value.Saving += (sender, e) => OnRISettingsSave(e);
+				value.Loading += (sender, e) => OnRISettingsLoad(e);
+				value.Saving  += (sender, e) => OnRISettingsSave(e);
 			}
 		}
 

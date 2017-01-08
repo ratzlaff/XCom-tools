@@ -37,10 +37,10 @@ namespace MapView.Forms.MapObservers.TopViews
 
 		public int MinHeight
 		{
-			get { return MinimunHeight; }
+			get { return MinimumHeight; }
 			set
 			{
-				MinimunHeight = value;
+				MinimumHeight = value;
 				ParentSize(Width, Height);
 			}
 		}

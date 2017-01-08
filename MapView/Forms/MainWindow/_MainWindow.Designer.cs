@@ -54,6 +54,7 @@ namespace MapView
 			this.statusStrip1 = new System.Windows.Forms.StatusStrip();
 			this.statusMapName = new System.Windows.Forms.ToolStripStatusLabel();
 			this.tsMapSize = new System.Windows.Forms.ToolStripStatusLabel();
+			this.statusPosition = new System.Windows.Forms.ToolStripStatusLabel();
 			this.toolStripContainer1 = new System.Windows.Forms.ToolStripContainer();
 			this.toolStrip = new System.Windows.Forms.ToolStrip();
 			this.drawSelectionBoxButton = new System.Windows.Forms.ToolStripButton();
@@ -213,7 +214,7 @@ namespace MapView
 			this.mapList.Dock = System.Windows.Forms.DockStyle.Left;
 			this.mapList.Location = new System.Drawing.Point(0, 0);
 			this.mapList.Name = "mapList";
-			this.mapList.Size = new System.Drawing.Size(249, 350);
+			this.mapList.Size = new System.Drawing.Size(249, 470);
 			this.mapList.TabIndex = 0;
 			this.mapList.BeforeSelect += new System.Windows.Forms.TreeViewCancelEventHandler(this.mapList_BeforeSelect);
 			this.mapList.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.mapList_AfterSelect);
@@ -229,8 +230,9 @@ namespace MapView
 			this.statusStrip1.Font = new System.Drawing.Font("Verdana", 7F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
 									this.statusMapName,
-									this.tsMapSize});
-			this.statusStrip1.Location = new System.Drawing.Point(257, 328);
+									this.tsMapSize,
+									this.statusPosition});
+			this.statusStrip1.Location = new System.Drawing.Point(257, 448);
 			this.statusStrip1.Name = "statusStrip1";
 			this.statusStrip1.Size = new System.Drawing.Size(335, 22);
 			this.statusStrip1.TabIndex = 2;
@@ -253,7 +255,16 @@ namespace MapView
 									| System.Windows.Forms.ToolStripStatusLabelBorderSides.Right) 
 									| System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
 			this.tsMapSize.Name = "tsMapSize";
-			this.tsMapSize.Size = new System.Drawing.Size(100, 17);
+			this.tsMapSize.Size = new System.Drawing.Size(80, 17);
+			// 
+			// statusPosition
+			// 
+			this.statusPosition.AutoSize = false;
+			this.statusPosition.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)((((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Top) 
+									| System.Windows.Forms.ToolStripStatusLabelBorderSides.Right) 
+									| System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
+			this.statusPosition.Name = "statusPosition";
+			this.statusPosition.Size = new System.Drawing.Size(80, 17);
 			// 
 			// toolStripContainer1
 			// 
@@ -264,7 +275,7 @@ namespace MapView
 			// 
 			// toolStripContainer1.ContentPanel
 			// 
-			this.toolStripContainer1.ContentPanel.Size = new System.Drawing.Size(335, 303);
+			this.toolStripContainer1.ContentPanel.Size = new System.Drawing.Size(335, 423);
 			this.toolStripContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
 			// 
 			// toolStripContainer1.LeftToolStripPanel
@@ -276,7 +287,7 @@ namespace MapView
 			// toolStripContainer1.RightToolStripPanel
 			// 
 			this.toolStripContainer1.RightToolStripPanel.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
-			this.toolStripContainer1.Size = new System.Drawing.Size(335, 328);
+			this.toolStripContainer1.Size = new System.Drawing.Size(335, 448);
 			this.toolStripContainer1.TabIndex = 3;
 			this.toolStripContainer1.Text = "toolStripContainer1";
 			// 
@@ -296,7 +307,7 @@ namespace MapView
 									this.AutoZoomButton});
 			this.toolStrip.Location = new System.Drawing.Point(3, 0);
 			this.toolStrip.Name = "toolStrip";
-			this.toolStrip.Size = new System.Drawing.Size(194, 25);
+			this.toolStrip.Size = new System.Drawing.Size(163, 25);
 			this.toolStrip.TabIndex = 0;
 			// 
 			// drawSelectionBoxButton
@@ -351,7 +362,7 @@ namespace MapView
 			this.cSplitList.Location = new System.Drawing.Point(249, 0);
 			this.cSplitList.MinimumSize = new System.Drawing.Size(5, 5);
 			this.cSplitList.Name = "cSplitList";
-			this.cSplitList.Size = new System.Drawing.Size(8, 350);
+			this.cSplitList.Size = new System.Drawing.Size(8, 470);
 			this.cSplitList.TabIndex = 1;
 			this.cSplitList.TabStop = false;
 			// 
@@ -359,7 +370,7 @@ namespace MapView
 			// 
 			this.AutoScaleBaseSize = new System.Drawing.Size(5, 12);
 			this.BackColor = System.Drawing.SystemColors.Control;
-			this.ClientSize = new System.Drawing.Size(592, 350);
+			this.ClientSize = new System.Drawing.Size(592, 470);
 			this.Controls.Add(this.toolStripContainer1);
 			this.Controls.Add(this.statusStrip1);
 			this.Controls.Add(this.cSplitList);
@@ -382,7 +393,6 @@ namespace MapView
 			this.ResumeLayout(false);
 			this.PerformLayout();
 		}
-		#endregion
 
 		private System.Windows.Forms.MenuItem fileMenu;
 		private System.Windows.Forms.MenuItem quititem;
@@ -409,6 +419,7 @@ namespace MapView
 		private System.Windows.Forms.StatusStrip statusStrip1;
 		private System.Windows.Forms.ToolStripStatusLabel statusMapName;
 		private System.Windows.Forms.ToolStripStatusLabel tsMapSize;
+		private System.Windows.Forms.ToolStripStatusLabel statusPosition;
 		private System.Windows.Forms.ToolStripContainer toolStripContainer1;
 		private System.Windows.Forms.ToolStrip toolStrip;
 		private System.Windows.Forms.MenuItem miOpen;
@@ -416,5 +427,7 @@ namespace MapView
 		private System.Windows.Forms.ToolStripButton ZoomInButton;
 		private System.Windows.Forms.ToolStripButton ZoomOutButton;
 		private System.Windows.Forms.ToolStripButton AutoZoomButton;
+
+		#endregion
 	}
 }

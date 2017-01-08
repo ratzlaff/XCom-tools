@@ -20,7 +20,9 @@ namespace XCom
 		{
 			get
 			{
-				if (_instance == null) _instance = new SharedSpace();
+				if (_instance == null)
+					_instance = new SharedSpace();
+
 				return _instance;
 			}
 		}
@@ -48,22 +50,22 @@ namespace XCom
 
 		public int GetInt(string key)
 		{
-			return (int) mySpace[key];
+			return (int)mySpace[key];
 		}
 
 		public string GetString(string key)
 		{
-			return (string) mySpace[key];
+			return (string)mySpace[key];
 		}
 
 		public double GetDouble(string key)
 		{
-			return (double) mySpace[key];
+			return (double)mySpace[key];
 		}
 
 		public List<IXCImageFile> GetImageModList()
 		{
-			return (List<IXCImageFile>) mySpace["ImageMods"];
+			return (List<IXCImageFile>)mySpace["ImageMods"];
 		}
 
 		public Dictionary<string, Palette> GetPaletteTable()

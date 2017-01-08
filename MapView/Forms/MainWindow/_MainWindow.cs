@@ -1,21 +1,26 @@
 using System;
 using System.Drawing;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows.Forms;
+
 using MapView.Forms.Error.WarningConsole;
 using MapView.Forms.MainWindow;
 using MapView.Forms.MapObservers.RmpViews;
 using MapView.Forms.MapObservers.TopViews;
 using MapView.SettingServices;
+
 using XCom;
 using XCom.GameFiles.Map;
 using XCom.GameFiles.Map.RmpData;
 using XCom.Interfaces;
-using System.IO;
-using Microsoft.Win32;
-using DSShared;
 using XCom.Interfaces.Base;
-using System.Collections.Generic;
+
+using System.IO;
+
+using Microsoft.Win32;
+
+using DSShared;
 
 namespace MapView
 {
@@ -70,10 +75,10 @@ namespace MapView
 			MainWindowsManager.MainWindowsShowAllManager = _windowMenuManager.CreateShowAll();
 			MainWindowsManager.Initialize();
 
-			sharedSpace.GetObj("MapView", this);
-			sharedSpace.GetObj("AppDir", Environment.CurrentDirectory);
-			sharedSpace.GetObj("CustomDir", Environment.CurrentDirectory + "\\custom");
-			sharedSpace.GetObj("SettingsDir", Environment.CurrentDirectory + "\\settings");
+			sharedSpace.GetObj("MapView",		this);
+			sharedSpace.GetObj("AppDir",		Environment.CurrentDirectory);
+			sharedSpace.GetObj("CustomDir",		Environment.CurrentDirectory + "\\custom");
+			sharedSpace.GetObj("SettingsDir",	Environment.CurrentDirectory + "\\settings");
 
 			var pathsFile		= new PathInfo(SharedSpace.Instance.GetString("SettingsDir"), "Paths",		"pth");
 			var settingsFile	= new PathInfo(SharedSpace.Instance.GetString("SettingsDir"), "MVSettings",	"dat");
@@ -127,8 +132,8 @@ namespace MapView
 				_mapView.MapView.CursorSprite = new CursorSprite(GameInfo.CachePck(
 																				SharedSpace.Instance.GetString("cursorFile"),
 																				"",
-																				4,
-																				Palette.TFTDBattle));
+																				2,
+																				Palette.UFOBattle));
 			}
 			catch
 			{
@@ -137,8 +142,8 @@ namespace MapView
 					_mapView.MapView.CursorSprite = new CursorSprite(GameInfo.CachePck(
 																				SharedSpace.Instance.GetString("cursorFile"),
 																				"",
-																				2,
-																				Palette.UFOBattle));
+																				4,
+																				Palette.TFTDBattle));
 				}
 				catch
 				{
@@ -300,7 +305,8 @@ namespace MapView
 		{
 			public SortableTreeNode(string text)
 				:
-				base(text){}
+				base(text)
+			{}
 
 			public int CompareTo(object other)
 			{
@@ -321,7 +327,7 @@ namespace MapView
 			}
 		}
 
-		public void AddTileset(ITileset tSet)
+		private void AddTileset(ITileset tSet)
 		{
 			SortableTreeNode tSetNode = new SortableTreeNode(tSet.Name);
 			tSetNode.Tag = tSet;
@@ -364,10 +370,10 @@ namespace MapView
 					_mainWindowWindowsManager.CloseAll();
 
 					WindowState = FormWindowState.Normal;
-					riKey.SetValue("Left", Left);
-					riKey.SetValue("Top", Top);
-					riKey.SetValue("Width", Width);
-					riKey.SetValue("Height", Height - 15);
+					riKey.SetValue("Left",		Left);
+					riKey.SetValue("Top",		Top);
+					riKey.SetValue("Width",		Width);
+					riKey.SetValue("Height",	Height - 15);
 
 //					riKey.SetValue("Animation", onItem.Checked.ToString());
 //					riKey.SetValue("Doors", miDoors.Checked.ToString());
@@ -576,7 +582,7 @@ namespace MapView
 				miExport.Enabled = false;
 		}
 
-		public DialogResult NotifySave()
+		private DialogResult NotifySave()
 		{
 			if (_mapView.Map != null && _mapView.Map.MapChanged)
 			{
@@ -787,6 +793,11 @@ namespace MapView
 			Refresh();
 
 			_mapView.OnResize();
+		}
+
+		public void StatusBarPrintPosition(int col, int row)
+		{
+			statusPosition.Text = "c:" + col + " r:" + row;
 		}
 	}
 }

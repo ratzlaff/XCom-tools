@@ -4,9 +4,10 @@ namespace MapView
 {
 	public class Globals
 	{
-		public static double MinPckImageScale = .3;
-		public static double MaxPckImageScale = 2;
-		public static double PckImageScale = 1;
+		public static double MinPckImageScale	= 0.3;
+		public static double MaxPckImageScale	= 2.0;
+		public static double PckImageScale		= 1.0;
+
 		public static bool AutoPckImageScale = true;
 
 		public static readonly string RegistryKey = "MapView";

@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
+
 using MapView.Forms.MainWindow;
+
 using XCom;
 using XCom.Interfaces.Base;
 

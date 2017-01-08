@@ -31,12 +31,12 @@ namespace MapView
 		public CursorState State
 		{
 			get { return state; }
-			set { state=value; }
+			set { state = value; }
 		}
 
 		public PckFile PckFile
 		{
-			get {return cursorFile; }
+			get { return cursorFile; }
 		}
 
 		public void DrawHigh(

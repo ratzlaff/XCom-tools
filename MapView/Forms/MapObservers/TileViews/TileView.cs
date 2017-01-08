@@ -58,7 +58,14 @@ namespace MapView.Forms.MapObservers.TileViews
 			var nWalls	= new TilePanel(TileType.NorthWall);
 			var objects	= new TilePanel(TileType.Object);
 
-			panels = new[]{all, ground, wWalls, nWalls, objects};
+			panels = new[]
+			{
+				all,
+				ground,
+				wWalls,
+				nWalls,
+				objects
+			};
 
 			AddPanel(all,		allTab);
 			AddPanel(ground,	groundTab);
@@ -114,7 +121,7 @@ namespace MapView.Forms.MapObservers.TileViews
 
 			ValueChangedDelegate bc = BrushChanged;
 			var settings = Settings;
-			foreach(string s in Enum.GetNames(typeof(SpecialType)))
+			foreach (string s in Enum.GetNames(typeof(SpecialType)))
 			{
 				brushes[s] = new SolidBrush(TilePanel.tileTypes[(int)Enum.Parse(typeof(SpecialType), s)]);
 				settings.AddSetting(
@@ -128,7 +135,7 @@ namespace MapView.Forms.MapObservers.TileViews
 			}
 			VolutarSettingService.LoadDefaultSettings(settings);
 
-			TilePanel.Colors=brushes;
+			TilePanel.Colors = brushes;
 		}
 
 		private void AddPanel(TilePanel panel, TabPage page)
@@ -142,7 +149,7 @@ namespace MapView.Forms.MapObservers.TileViews
 		{
 			if (tile != null && tile.Info is McdEntry)
 			{
-				var info = (McdEntry) tile.Info;
+				var info = (McdEntry)tile.Info;
 				Text = "TileView: mapID:" + tile.MapId + " mcdID: " + tile.Id + " Name: " + GetSelectedDependencyName();
 				UpdateMcdText(info);
 			}
@@ -189,10 +196,7 @@ namespace MapView.Forms.MapObservers.TileViews
 		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public TileBase SelectedTile
 		{
-			get
-			{
-				return panels[tabs.SelectedIndex].SelectedTile;
-			}
+			get { return panels[tabs.SelectedIndex].SelectedTile; }
 			set
 			{
 				tabs.SelectedIndex = 0;

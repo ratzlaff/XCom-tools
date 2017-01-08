@@ -11,10 +11,11 @@ namespace PckView
 {
 	public class ImgProfile
 	{
-		public ImgProfile() { }
+		public ImgProfile()
+		{}
 
 		private int imgWid = 0, imgHei = 0;
-		private IXCImageFile imgType = null;		
+		private IXCImageFile imgType = null;
 		private string desc = "";
 		private string defPal = "";
 		private string single = "";
@@ -39,7 +40,7 @@ namespace PckView
 				profile.defPal = info["palette"].Rest;
 				profile.ext = info["open"].Rest;
 				
-				if(info.ContainsKey("openSingle") && info["openSingle"]!=null)
+				if (info.ContainsKey("openSingle") && info["openSingle"] != null)
 					profile.single = info["openSingle"].Rest+info["open"].Rest;
 
 				foreach (IXCImageFile ixc in SharedSpace.Instance.GetImageModList())
@@ -105,8 +106,13 @@ namespace PckView
 		public void SaveProfile(string outFile)
 		{
 			bool append = false;
+
 			if (File.Exists(outFile))
-				append = MessageBox.Show("File exists, append new profile? Clicking 'No' will overwrite the file", "File exists", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes;
+				append = MessageBox.Show(
+									"File exists, append new profile? Clicking 'No' will overwrite the file",
+									"File exists",
+									MessageBoxButtons.YesNo,
+									MessageBoxIcon.Warning) == DialogResult.Yes;
 				
 			StreamWriter sw = new StreamWriter(outFile, append);
 			sw.WriteLine(Description);
@@ -120,7 +126,7 @@ namespace PckView
 			if (single != "")
 				sw.WriteLine("\topenSingle:" + single);
 
-			//here would be the place to put decoder-specific settings
+			// here would be the place to put decoder-specific settings
 
 			sw.WriteLine("}\n");
 			sw.Close();

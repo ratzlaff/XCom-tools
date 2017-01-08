@@ -5,13 +5,15 @@ using XCom.Interfaces.Base;
 
 namespace XCom
 {
-	public class XCMapDesc : IMapDesc
+	public class XCMapDesc
+		:
+		IMapDesc
 	{
 		public XCMapDesc(
 				string basename,
 				string basePath,
 				string blankPath,
-				//string tileset,
+//				string tileset,
 				string rmpPath,
 				string[] dependencies,
 				Palette palette)
@@ -28,14 +30,26 @@ namespace XCom
 			IsStatic = false;
 		}
 
-		public string[] Dependencies { get; set; }
-		public Palette Palette { get; protected set; }
-		public string Basename { get; protected set; }
-		public string BasePath { get; protected set; }
-		public string RmpPath { get; protected set; }
-		public string BlankPath { get; protected set; }
+		public string[] Dependencies
+		{ get; set; }
 
-		public bool IsStatic { get; set; }
+		public Palette Palette
+		{ get; protected set; }
+
+		public string Basename
+		{ get; protected set; }
+
+		public string BasePath
+		{ get; protected set; }
+
+		public string RmpPath
+		{ get; protected set; }
+
+		public string BlankPath
+		{ get; protected set; }
+
+		public bool IsStatic
+		{ get; set; }
 
 		public string FilePath
 		{
@@ -45,9 +59,8 @@ namespace XCom
 		public int CompareTo(object other)
 		{
 			if (other is XCMapDesc)
-			{
-				return Basename.CompareTo(((XCMapDesc) other).Basename);
-			}
+				return Basename.CompareTo(((XCMapDesc)other).Basename);
+
 			return 1;
 		}
 	}

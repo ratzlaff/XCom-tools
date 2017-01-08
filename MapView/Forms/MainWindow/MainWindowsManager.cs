@@ -1,6 +1,7 @@
 using MapView.Forms.MapObservers.RmpViews;
 using MapView.Forms.MapObservers.TileViews;
 using MapView.Forms.MapObservers.TopViews;
+
 using XCom.Interfaces.Base;
 
 namespace MapView.Forms.MainWindow
@@ -10,12 +11,12 @@ namespace MapView.Forms.MainWindow
 		public static IMainWindowsShowAllManager MainWindowsShowAllManager;
 		public static MainToolStripButtonsFactory MainToolStripButtonsFactory;
 
-		private static TopViewForm _topView;
-		private static TileViewForm _tileView;
-		private static RmpViewForm _rmpView;
-		private static TopRmpViewForm _topRmpView;
-		private static HelpScreen _helpScreen;
-		private static AboutWindow _aboutWindow;
+		private static TopViewForm		_topView;
+		private static TileViewForm		_tileView;
+		private static RmpViewForm		_rmpView;
+		private static TopRmpViewForm	_topRmpView;
+		private static HelpScreen		_helpScreen;
+		private static AboutWindow		_aboutWindow;
 
 		public static TopRmpViewForm TopRmpView
 		{

@@ -19,7 +19,8 @@ namespace XCom.Interfaces.Base
 		protected MapLocation Selected;
 		protected MapTileList MapData;
 
-		public bool MapChanged { get; set; }
+		public bool MapChanged
+		{ get; set; }
 
 		protected IMap_Base(string name, List<TileBase> tiles)
 		{
@@ -27,9 +28,11 @@ namespace XCom.Interfaces.Base
 			Tiles = tiles;
 		}
 
-		public string Name { get; protected set; }
+		public string Name
+		{ get; protected set; }
 
-		public List<TileBase> Tiles { get; protected set; }
+		public List<TileBase> Tiles
+		{ get; protected set; }
 
 		public virtual void Save()
 		{
@@ -92,7 +95,8 @@ namespace XCom.Interfaces.Base
 		/// <summary>
 		/// Gets the current size of the map
 		/// </summary>
-		public MapSize MapSize { get; protected set; }
+		public MapSize MapSize
+		{ get; protected set; }
 
 		/// <summary>
 		/// gets or sets the current selected location. Setting the location will fire a SelectedTileChanged event

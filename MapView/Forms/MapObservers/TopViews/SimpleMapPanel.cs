@@ -4,7 +4,9 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Windows.Forms;
+
 using MapView.Forms.MapObservers.RmpViews;
+
 using XCom;
 using XCom.Interfaces.Base;
 
@@ -17,7 +19,7 @@ namespace MapView.Forms.MapObservers.TopViews
 		private int _offX = 0;
 		private int _offY = 0;
 
-		protected int MinimunHeight = 4;
+		protected int MinimumHeight = 4;
 
 		private readonly GraphicsPath _cell;
 		private readonly GraphicsPath _copyArea;
@@ -62,10 +64,10 @@ namespace MapView.Forms.MapObservers.TopViews
 					}
 				}
 
-				if (hHeight < MinimunHeight)
+				if (hHeight < MinimumHeight)
 				{
-					hWidth  = MinimunHeight * 2;
-					hHeight = MinimunHeight;
+					hWidth  = MinimumHeight * 2;
+					hHeight = MinimumHeight;
 				}
 
 				DrawContentService.HWidth  = hWidth;
@@ -172,8 +174,7 @@ namespace MapView.Forms.MapObservers.TopViews
 		public override void SelectedTileChanged(IMap_Base sender, SelectedTileChangedEventArgs e)
 		{
 			MapLocation pt = e.MapPosition;
-
-			Text = "c: " + pt.Col + " r: " + pt.Row;
+			Text = "c: " + pt.Col + " r: " + pt.Row; // I don't think this actually prints anywhere.
 
 			var hWidth  = DrawContentService.HWidth;
 			var hHeight = DrawContentService.HHeight;

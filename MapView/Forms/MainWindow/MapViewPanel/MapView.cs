@@ -2,10 +2,12 @@ using System;
 using System.Windows.Forms;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Collections;
+
 using MapView.Forms.MainWindow;
+
 using XCom;
 using XCom.Interfaces;
-using System.Collections;
 using XCom.Interfaces.Base;
 
 namespace MapView
@@ -345,8 +347,12 @@ namespace MapView
 		private void TileChange(IMap_Base mapFile, SelectedTileChangedEventArgs e) // MapLocation newCoords)
 		{
 			MapLocation newCoords = e.MapPosition;
-			var dragStart = new Point(newCoords.Col, newCoords.Row);
+			var dragStart = new Point(
+									newCoords.Col,
+									newCoords.Row);
 			SetDrag(dragStart, DragEnd);
+
+			MainWindow.Instance.StatusBarPrintPosition(newCoords.Col, newCoords.Row);
 		}
 
 		private void MapHeight(IMap_Base mapFile, HeightChangedEventArgs e)
@@ -609,6 +615,10 @@ namespace MapView
 					 (y / (halfHeight * 2));
 			var x2 = -(x - y * 2) / (halfWidth * 2);
 
+			return new Point(
+						(int)Math.Floor(x1),
+						(int)Math.Floor(x2));
+
 //			LogFile.Instance.WriteLine(
 //									"\n" +
 //									"ptX= " + ptX + "\n" +
@@ -620,7 +630,7 @@ namespace MapView
 //									"x1= " + x1 + "\n" +
 //									"x2= " + x2);
 
-			// try this for a while ... ->
+/*			// try this for a while ... ->
 			if (x < 0) // left side of Map diamond
 			{
 //				LogFile.Instance.WriteLine("left side");
@@ -632,7 +642,7 @@ namespace MapView
 //			LogFile.Instance.WriteLine("right side");
 			return new Point(
 						(int)Math.Round(x1),
-						(int)Math.Floor(x2));
+						(int)Math.Floor(x2)); */
 		}
 
 		private Point ConvertCoordsRect(Point pt, int h)
