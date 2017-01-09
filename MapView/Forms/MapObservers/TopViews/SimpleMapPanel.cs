@@ -25,8 +25,8 @@ namespace MapView.Forms.MapObservers.TopViews
 		private readonly GraphicsPath _copyArea;
 		private readonly GraphicsPath _selected;
 
-		private int _mR;
-		private int _mC;
+		private int _mR = -1;
+		private int _mC = -1;
 
 		protected DrawContentService DrawContentService = new DrawContentService();
 
@@ -294,12 +294,12 @@ namespace MapView.Forms.MapObservers.TopViews
 //				if (selected != null) // clicked on
 //					g.DrawPath(new Pen(Brushes.Blue, 2), selected);
 
-				if (   _mR < map.MapSize.Rows
-					&& _mC < map.MapSize.Cols
-					&& _mR >= 0
-					&& _mC >= 0)
+				if (   _mR > -1
+					&& _mC > -1
+					&& _mR < map.MapSize.Rows
+					&& _mC < map.MapSize.Cols)
 				{
-					int xc = (_mC - _mR) * hWidth + _offX;
+					int xc = (_mC - _mR) * hWidth  + _offX;
 					int yc = (_mC + _mR) * hHeight + _offY;
 
 					GraphicsPath selPath = CellPath(xc, yc);
@@ -312,13 +312,16 @@ namespace MapView.Forms.MapObservers.TopViews
 		{
 			if (map != null)
 			{
-				var p = ConvertCoordsDiamond(
-										e.X - _offX,
-										e.Y - _offY );
-				map.SelectedTile = new MapLocation(p.Y, p.X, map.CurrentHeight);
+				var pt = ConvertCoordsDiamond(
+											e.X - _offX,
+											e.Y - _offY);
+				map.SelectedTile = new MapLocation(
+												pt.Y,
+												pt.X,
+												map.CurrentHeight);
 				_mDown = true;
 
-				MapViewPanel.Instance.MapView.SetDrag(p, p);
+				MapViewPanel.Instance.MapView.SetDrag(pt, pt);
 			}
 		}
 
@@ -333,18 +336,18 @@ namespace MapView.Forms.MapObservers.TopViews
 
 		protected override void OnMouseMove(MouseEventArgs e)
 		{
-			var p = ConvertCoordsDiamond(
-									e.X - _offX,
-									e.Y - _offY );
-			if (p.Y != _mR || p.X != _mC)
+			var pt = ConvertCoordsDiamond(
+										e.X - _offX,
+										e.Y - _offY);
+			if (pt.X != _mC || pt.Y != _mR)
 			{
-				_mR = p.Y;
-				_mC = p.X;
+				_mC = pt.X;
+				_mR = pt.Y;
 
 				if (_mDown)
 					MapViewPanel.Instance.MapView.SetDrag(
 													MapViewPanel.Instance.MapView.DragStart,
-													p);
+													pt);
 				Refresh();
 			}
 		}

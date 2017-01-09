@@ -28,19 +28,29 @@ namespace XCom
 		{}
 
 		public MapLocation[] StartLocations
-		{ get { return startLoc; } }
+		{
+			get { return startLoc; }
+		}
 
 		public int EndTile
-		{get { return endTile; } }
+		{
+			get { return endTile; }
+		}
 
 		public int StartTile
-		{ get { return startTile; } }
+		{
+			get { return startTile; }
+		}
 
 		public string[] MapOrder
-		{ get { return mapOrder; } }
+		{
+			get { return mapOrder; }
+		}
 
 		public string[] Order
-		{ get { return mapOrder; } }
+		{
+			get { return mapOrder; }
+		}
 
 //		public override IMap GetMap(ShipDescriptor xCom, ShipDescriptor alien)
 //		{ return new Type1Map(this, xCom, alien); }

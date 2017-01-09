@@ -62,7 +62,7 @@ namespace MapView.Forms.MapObservers.TopViews
 
 
 			if (_northColor == null)
-				_northColor = new SolidPenBrush(Pens["NorthColor"] );
+				_northColor = new SolidPenBrush(Pens["NorthColor"]);
 
 			if (mapTile.North != null && North.Checked)
 				DrawContentService.DrawContent(
@@ -73,7 +73,7 @@ namespace MapView.Forms.MapObservers.TopViews
 
 
 			if (_westColor == null)
-				_westColor = new SolidPenBrush(Pens["WestColor"] );
+				_westColor = new SolidPenBrush(Pens["WestColor"]);
 
 			if (mapTile.West != null && West.Checked)
 				DrawContentService.DrawContent(
