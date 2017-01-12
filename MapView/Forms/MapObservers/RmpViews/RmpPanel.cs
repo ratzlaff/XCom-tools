@@ -89,7 +89,7 @@ namespace MapView.Forms.MapObservers.RmpViews
 
 				var pt = GetTileCoordinates(Position.X, Position.Y);
 				g.DrawString(
-							"Tile (" + pt.X + "," + pt.Y + ")",
+							"Tile (c:" + pt.X + " r:" + pt.Y + ")",
 							Font,
 							Brushes.Black,
 							textLeft,
