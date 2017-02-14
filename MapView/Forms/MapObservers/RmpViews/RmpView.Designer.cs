@@ -360,7 +360,7 @@ namespace MapView.Forms.MapObservers.RmpViews
 			// 
 			// label7
 			// 
-			this.label7.Location = new System.Drawing.Point(235, 15);
+			this.label7.Location = new System.Drawing.Point(240, 15);
 			this.label7.Name = "label7";
 			this.label7.Size = new System.Drawing.Size(30, 15);
 			this.label7.TabIndex = 27;
@@ -412,7 +412,7 @@ namespace MapView.Forms.MapObservers.RmpViews
 			this.label6.Name = "label6";
 			this.label6.Size = new System.Drawing.Size(55, 15);
 			this.label6.TabIndex = 21;
-			this.label6.Text = "Use Info";
+			this.label6.Text = "Unit Info";
 			// 
 			// _contentPane
 			// 
@@ -429,10 +429,10 @@ namespace MapView.Forms.MapObservers.RmpViews
 			// 
 			this.menuStrip1.Font = new System.Drawing.Font("Verdana", 7F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-									this.miEdit,
-									this.connectNodesToolStripMenuItem,
-									this.extraHeightToolStripMenuItem,
-									this.HeightDifTextbox});
+			this.miEdit,
+			this.connectNodesToolStripMenuItem,
+			this.extraHeightToolStripMenuItem,
+			this.HeightDifTextbox});
 			this.menuStrip1.Location = new System.Drawing.Point(0, 0);
 			this.menuStrip1.Name = "menuStrip1";
 			this.menuStrip1.Size = new System.Drawing.Size(660, 24);
@@ -442,8 +442,8 @@ namespace MapView.Forms.MapObservers.RmpViews
 			// miEdit
 			// 
 			this.miEdit.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-									this.miOptions,
-									this.makeAllNodeRank0ToolStripMenuItem});
+			this.miOptions,
+			this.makeAllNodeRank0ToolStripMenuItem});
 			this.miEdit.Font = new System.Drawing.Font("Verdana", 7F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.miEdit.Name = "miEdit";
 			this.miEdit.Size = new System.Drawing.Size(37, 20);
@@ -468,9 +468,9 @@ namespace MapView.Forms.MapObservers.RmpViews
 			this.connectNodesToolStripMenuItem.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.connectNodesToolStripMenuItem.Font = new System.Drawing.Font("Verdana", 7F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.connectNodesToolStripMenuItem.Items.AddRange(new object[] {
-									"Dont connect",
-									"Connect One way",
-									"Connect Two ways"});
+			"Dont connect",
+			"Connect One way",
+			"Connect Two ways"});
 			this.connectNodesToolStripMenuItem.Name = "connectNodesToolStripMenuItem";
 			this.connectNodesToolStripMenuItem.Size = new System.Drawing.Size(154, 20);
 			this.connectNodesToolStripMenuItem.Click += new System.EventHandler(this.ConnectNodesToolStripMenuItemClick);
@@ -490,7 +490,7 @@ namespace MapView.Forms.MapObservers.RmpViews
 			this.HeightDifTextbox.Name = "HeightDifTextbox";
 			this.HeightDifTextbox.Size = new System.Drawing.Size(100, 20);
 			this.HeightDifTextbox.ToolTipText = "This amount will be added to the link\'s vertical position. Helps in UFO maps when" +
-			" the UFO terrain maps have basement floors.";
+	" the UFO terrain maps have basement floors.";
 			this.HeightDifTextbox.TextChanged += new System.EventHandler(this.HeightDifTextbox_TextChanged);
 			// 
 			// LinkGroupBox
@@ -619,6 +619,7 @@ namespace MapView.Forms.MapObservers.RmpViews
 			this.groupBox2.ResumeLayout(false);
 			this.ResumeLayout(false);
 			this.PerformLayout();
+
 		}
 		#endregion
 
