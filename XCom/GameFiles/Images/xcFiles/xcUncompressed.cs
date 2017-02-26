@@ -40,7 +40,7 @@ namespace XCom.GameFiles.Images.xcFiles
 			return new UncompressedCollection(
 										imgWid,
 										imgHei,
-										System.IO.File.OpenRead(directory + "\\" + file),
+										System.IO.File.OpenRead(directory + "/" + file),
 										pal);
 		}
 

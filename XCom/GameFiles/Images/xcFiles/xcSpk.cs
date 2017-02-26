@@ -40,7 +40,7 @@ namespace XCom.GameFiles.Images.xcFiles
 			XCImageCollection collect = new XCImageCollection();
 			XCImage img = new SPKImage(
 									pal,
-									File.OpenRead(directory + "\\" + file),
+									File.OpenRead(directory + "/" + file),
 									imgWid,
 									imgHei);
 			collect.Add(img);
@@ -57,14 +57,14 @@ namespace XCom.GameFiles.Images.xcFiles
 			{
 				SPKImage.Save(
 							images[0].Bytes,
-							File.OpenWrite(directory + "\\" + file + ext));
+							File.OpenWrite(directory + "/" + file + ext));
 			}
 			else
 			{
 				for (int i = 0; i < images.Count; i++)
 					SPKImage.Save(
 								images[i].Bytes,
-								File.OpenWrite(directory + "\\" + file + i.ToString() + ext));
+								File.OpenWrite(directory + "/" + file + i.ToString() + ext));
 			}
 		}
 	}

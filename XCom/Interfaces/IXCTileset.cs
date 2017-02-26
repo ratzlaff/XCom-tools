@@ -57,7 +57,7 @@ namespace XCom.Interfaces
 						break;
 
 					case "dll":
-						string dllName = rest.Substring(rest.LastIndexOf(@"\") + 1);
+						string dllName = rest.Substring(rest.LastIndexOf(@"/") + 1);
 						Console.WriteLine(name + " is in dll " + dllName);
 						break;
 

@@ -99,8 +99,8 @@ namespace XCom
 							XCImageCollection images,
 							int bpp)
 		{
-			System.IO.BinaryWriter pck = new System.IO.BinaryWriter(System.IO.File.Create(directory + "\\" + file + ".pck"));
-			System.IO.BinaryWriter tab = new System.IO.BinaryWriter(System.IO.File.Create(directory + "\\" + file + TAB_EXT));
+			System.IO.BinaryWriter pck = new System.IO.BinaryWriter(System.IO.File.Create(directory + "/" + file + ".pck"));
+			System.IO.BinaryWriter tab = new System.IO.BinaryWriter(System.IO.File.Create(directory + "/" + file + TAB_EXT));
 
 			if (bpp == 2)
 			{

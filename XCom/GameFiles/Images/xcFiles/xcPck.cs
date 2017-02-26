@@ -32,13 +32,13 @@ namespace XCom.GameFiles.Images.xcFiles
 		{
 			System.IO.Stream tabStream = null;
 			string tabBase = file.Substring(0, file.LastIndexOf("."));
-			var tabFilePath = directory + "\\" + tabBase + TAB_EXT;
+			var tabFilePath = directory + "/" + tabBase + TAB_EXT;
 
 			if (System.IO.File.Exists(tabFilePath))
 				tabStream = System.IO.File.OpenRead(tabFilePath);
 
 			using (tabStream)
-			using (var pckStream = System.IO.File.OpenRead(directory + "\\" + file))
+			using (var pckStream = System.IO.File.OpenRead(directory + "/" + file))
 			{
 				try
 				{

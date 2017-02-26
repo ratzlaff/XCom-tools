@@ -22,12 +22,12 @@ namespace XCom
 		{
 			this.images = images;
 			name="newTerrain";
-			path="C:\\";
+			path="C:/";
 		}
 
 		public static void Save(string directory, string file, IxCollection images)
 		{
-			BinaryWriter bw = new BinaryWriter(File.Create(directory+"\\"+file+".dat"));
+			BinaryWriter bw = new BinaryWriter(File.Create(directory+"/"+file+".dat"));
 			foreach(ITile te in images)
 				bw.Write(te.Bytes);
 			bw.Flush();

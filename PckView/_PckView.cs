@@ -66,8 +66,8 @@ namespace PckView
 			sharedSpace = SharedSpace.Instance;
 			sharedSpace.GetObj("PckView", this);
 			sharedSpace.GetObj("AppDir", Environment.CurrentDirectory);
-			sharedSpace.GetObj("CustomDir", Environment.CurrentDirectory + "\\custom");
-			sharedSpace.GetObj("SettingsDir", Environment.CurrentDirectory + "\\settings");
+			sharedSpace.GetObj("CustomDir", Environment.CurrentDirectory + "/custom");
+			sharedSpace.GetObj("SettingsDir", Environment.CurrentDirectory + "/settings");	
 		
 			xConsole.AddLine("Current directory: " + sharedSpace["AppDir"]);
 			xConsole.AddLine("Custom directory: " + sharedSpace["CustomDir"].ToString());
@@ -365,11 +365,11 @@ namespace PckView
 			{
 				OnResize(null);
 
-				string fName = openFile.FileName.Substring(openFile.FileName.LastIndexOf("\\") + 1).ToLower();
+				string fName = openFile.FileName.Substring(openFile.FileName.LastIndexOf("/") + 1).ToLower();
 
 				string ext = fName.Substring(fName.LastIndexOf("."));
 				string file = fName.Substring(0, fName.LastIndexOf("."));
-				string path = openFile.FileName.Substring(0, openFile.FileName.LastIndexOf("\\") + 1);
+				string path = openFile.FileName.Substring(0, openFile.FileName.LastIndexOf("/") + 1);
 
 				XCom.XCImageCollection toLoad = null;
 				bool recover = false;
@@ -509,7 +509,7 @@ namespace PckView
 
 			if (saveFile.ShowDialog() == DialogResult.OK)
 			{
-				string dir = saveFile.FileName.Substring(0, saveFile.FileName.LastIndexOf("\\"));
+				string dir = saveFile.FileName.Substring(0, saveFile.FileName.LastIndexOf("/"));
 				saveDictionary[saveFile.FilterIndex].SaveCollection(
 																dir,
 																Path.GetFileNameWithoutExtension(saveFile.FileName),
@@ -692,8 +692,8 @@ namespace PckView
 
 				if (saveBmpSingle.ShowDialog() == DialogResult.OK)
 				{
-					string path = saveBmpSingle.FileName.Substring(0, saveBmpSingle.FileName.LastIndexOf(@"\"));
-					string file = saveBmpSingle.FileName.Substring(saveBmpSingle.FileName.LastIndexOf(@"\") + 1);
+					string path = saveBmpSingle.FileName.Substring(0, saveBmpSingle.FileName.LastIndexOf(@"/"));
+					string file = saveBmpSingle.FileName.Substring(saveBmpSingle.FileName.LastIndexOf(@"/") + 1);
 					string fName = file.Substring(0, file.LastIndexOf("."));
 					string ext = file.Substring(file.LastIndexOf(".") + 1);
 
@@ -728,7 +728,7 @@ namespace PckView
 						//Console.WriteLine("Save to: " + path + @"\" + fName + (xc.FileNum + countNum) + "." + ext);
 						//Console.WriteLine("Save: " + path + @"\" + fName + string.Format("{0:" + zeros + "}", xc.FileNum) + "." + ext);
 						Bmp.Save(
-								path + @"\" + fName + string.Format(
+								path + @"/" + fName + string.Format(
 																"{0:" + zeros + "}",
 																xc.FileNum) + "." + ext,
 								xc.Image);

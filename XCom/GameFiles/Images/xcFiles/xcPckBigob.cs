@@ -31,13 +31,13 @@ namespace XCom.GameFiles.Images.xcFiles
 			string fName = file.Substring(0,file.LastIndexOf("."));
 			try	
 			{
-				return new PckFile(System.IO.File.OpenRead(directory+"\\"+file),
-					System.IO.File.OpenRead(directory+"\\"+fName+TAB_EXT),2,DefaultPalette,ImageSize.Height,ImageSize.Width);
+				return new PckFile(System.IO.File.OpenRead(directory+"/"+file),
+					System.IO.File.OpenRead(directory+"/"+fName+TAB_EXT),2,DefaultPalette,ImageSize.Height,ImageSize.Width);
 			}
 			catch
 			{
-				return new PckFile(System.IO.File.OpenRead(directory+"\\"+file),
-					System.IO.File.OpenRead(directory+"\\"+fName+TAB_EXT),4,DefaultPalette,ImageSize.Height,ImageSize.Width);
+				return new PckFile(System.IO.File.OpenRead(directory+"/"+file),
+					System.IO.File.OpenRead(directory+"/"+fName+TAB_EXT),4,DefaultPalette,ImageSize.Height,ImageSize.Width);
 			}
 		}
 	}

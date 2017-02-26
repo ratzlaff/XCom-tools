@@ -173,7 +173,7 @@ namespace MapView
 				if(tnSelectedNode.Nodes.Count <= 0)
 				{
 					// not expanded before. read subdirs
-					string sFullPath = tnSelectedNode.FullPath + @"\";
+					string sFullPath = tnSelectedNode.FullPath + @"/";
 					DirectoryInfo diCurrentDir = new DirectoryInfo(sFullPath);
 					
 					foreach(DirectoryInfo diDirectory in diCurrentDir.GetDirectories())
@@ -219,7 +219,7 @@ namespace MapView
 		{
 			TreeNode	tnPrevious, tnCurrent;
 		
-			string[] arrsDirsInCurrentPath = tbxCurrentPath.Text.Split('\\');
+			string[] arrsDirsInCurrentPath = tbxCurrentPath.Text.Split('/');
 
 			if(arrsDirsInCurrentPath.Length<=0)
 			{
@@ -456,7 +456,7 @@ namespace MapView
 		private void tvMain_AfterSelect(object sender, System.Windows.Forms.TreeViewEventArgs e)
 		{
 			// Mirror full path in textbox
-			tbxCurrentPath.Text = e.Node.FullPath+@"\";
+			tbxCurrentPath.Text = e.Node.FullPath+@"/";
 		}
 
 		private void tvMain_BeforeExpand(object sender, System.Windows.Forms.TreeViewCancelEventArgs e)

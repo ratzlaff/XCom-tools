@@ -29,8 +29,8 @@ namespace XCom.GameFiles.Images.xcFiles
 
 			string tabBase = file.Substring(0,file.LastIndexOf("."));
 
-			return new PckFile(System.IO.File.OpenRead(directory+"\\"+file),
-				System.IO.File.OpenRead(directory+"\\"+tabBase+PckFile.TAB_EXT),2,DefaultPalette,ImageSize.Height,ImageSize.Width);
+			return new PckFile(System.IO.File.OpenRead(directory+"/"+file),
+				System.IO.File.OpenRead(directory+"/"+tabBase+PckFile.TAB_EXT),2,DefaultPalette,ImageSize.Height,ImageSize.Width);
 		}
 
 		public override void SaveCollection(string directory, string file,XCImageCollection images)

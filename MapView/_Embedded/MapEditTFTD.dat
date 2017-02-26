@@ -26,9 +26,9 @@
 # files, so back them up if they are important
 ${tftdPath}:${tftd}
 
-${rootPath}:${tftdPath}\MAPS\
-${rmpPath}:${tftdPath}\ROUTES\
-${blankPath}:##RunPath##\BLANKS\TFTD\
+${rootPath}:${tftdPath}/MAPS/
+${rmpPath}:${tftdPath}/ROUTES/
+${blankPath}:##RunPath##/BLANKS/TFTD/
 
 # The Tileset keyword defines top-level nodes in the tree view.
 # The value is the name of the top-level node

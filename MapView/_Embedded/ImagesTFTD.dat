@@ -1,4 +1,4 @@
-${tftdImg}:${tftd}\TERRAIN\
+${tftdImg}:${tftd}/TERRAIN/
 
 ASUNK:${tftdImg}
 ATLANTIS:${tftdImg}

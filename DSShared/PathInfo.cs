@@ -87,9 +87,9 @@ namespace DSShared
 			if (parseFile && fullPath.IndexOf(".") > 0)
 			{
 				ext = fullPath.Substring(fullPath.LastIndexOf(".") + 1);
-				file = fullPath.Substring(fullPath.LastIndexOf("\\") + 1);
+				file = fullPath.Substring(fullPath.LastIndexOf("/") + 1);
 				file = file.Substring(0, file.LastIndexOf("."));
-				path = fullPath.Substring(0, fullPath.LastIndexOf("\\"));
+				path = fullPath.Substring(0, fullPath.LastIndexOf("/"));
 			}
 			else
 			{
@@ -106,7 +106,7 @@ namespace DSShared
 		/// <returns></returns>
 		public string ToStringExt(string newExt)
 		{
-			return path + "\\" + file + "." + newExt;
+			return path + "/" + file + "." + newExt;
 		}
 
 
@@ -119,9 +119,9 @@ namespace DSShared
 		public override string ToString()
 		{
 			if (ext != "")
-				return path + "\\" + file + "." + ext;
+				return path + "/" + file + "." + ext;
 
-			return path + "\\" + file;
+			return path + "/" + file;
 		}
 	}
 }

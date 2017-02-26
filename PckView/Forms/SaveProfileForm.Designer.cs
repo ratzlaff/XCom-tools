@@ -119,7 +119,7 @@ namespace PckView
 			// 
 			this.saveFile.FileName = "doc1";
 			this.saveFile.Filter = "Image Profiles|*.pvp";
-			this.saveFile.InitialDirectory = ".\\custom\\";
+			this.saveFile.InitialDirectory = "./custom/";
 			// 
 			// panelBottom
 			// 

@@ -39,7 +39,7 @@ namespace MapView
 #if(win98)
 			openFile.Title="Select any file in the "+type+" directory";
 			if(openFile.ShowDialog(parent)==DialogResult.OK)
-				return openFile.FileName.Substring(0,openFile.FileName.LastIndexOf(@"\")+1);
+				return openFile.FileName.Substring(0,openFile.FileName.LastIndexOf(@"/")+1);
 #else
 			dp.Text="Select the "+type+" directory";
 			dp.ShowDialog(parent);

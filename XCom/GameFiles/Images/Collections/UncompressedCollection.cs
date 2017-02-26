@@ -30,7 +30,7 @@ namespace XCom
 							string ext,
 							XCImageCollection images)
 		{
-			System.IO.BinaryWriter bw = new System.IO.BinaryWriter(System.IO.File.Create(directory + "\\" + file + ext));
+			System.IO.BinaryWriter bw = new System.IO.BinaryWriter(System.IO.File.Create(directory + "/" + file + ext));
 			foreach (XCImage tile in images)
 				bw.Write(tile.Bytes);
 
